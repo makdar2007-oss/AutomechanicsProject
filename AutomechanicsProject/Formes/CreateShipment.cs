@@ -250,7 +250,7 @@ namespace AutomechanicsProject.Formes
 
                 if (recipient == null)
                 {
-                    var newRecipient = new User
+                    var newRecipient = new Users
                     {
                         Id = Guid.NewGuid(),
                         Surname = recipientName,

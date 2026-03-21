@@ -171,7 +171,7 @@ namespace AutomechanicsProject.Formes
                         return;
                     }
 
-                    var newUser = new User
+                    var newUser = new Users
                     {
                         Id = Guid.NewGuid(),
                         Surname = textBoxSurname.Text,

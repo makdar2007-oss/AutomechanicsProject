@@ -12,7 +12,7 @@ namespace AutomechanicsProject.Classes
         {
             public Guid Id { get; set; }
             public string Position { get; set; }
-            public virtual ICollection<User> Users { get; set; } = new List<User>();
+            public virtual ICollection<Users> Users { get; set; } = new List<Users>();
             public override string ToString()
             {
                 return Position;

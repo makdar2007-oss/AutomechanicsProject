@@ -6,7 +6,7 @@ namespace AutomechanicsProject.Classes
 {
     public class DateBase : DbContext
     {
-        public DbSet<User> Users { get; set; }
+        public DbSet<Users> Users { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Shipment> Shipments { get; set; }
@@ -14,7 +14,7 @@ namespace AutomechanicsProject.Classes
         public DbSet<Role> Roles { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseNpgsql("Host=localhost;Database=AutomechanicDB;Username=postgres;Password=1234");
+            optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=project;Username=postgres;Password=1234");
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -35,9 +35,9 @@ namespace AutomechanicsProject.Classes
                     .HasMaxLength(255);
             });
 
-            modelBuilder.Entity<User>(entity =>
+            modelBuilder.Entity<Users>(entity =>
             {
-                entity.ToTable("User");
+                entity.ToTable("Users");
                 entity.HasKey(e => e.Id);
                 
                 entity.Property(e => e.Id)
@@ -148,7 +148,7 @@ namespace AutomechanicsProject.Classes
                     .HasDefaultValueSql("uuid_generate_v4()");
                 
                 entity.Property(e => e.UserId)
-                    .HasColumnName("ПолныйИдент");
+                    .HasColumnName("Пользовательский Идент");
                 
                 entity.Property(e => e.CreatedByUserId)
                     .HasColumnName("СоздалИдент");

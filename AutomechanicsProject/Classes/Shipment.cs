@@ -23,8 +23,8 @@ namespace AutomechanicsProject.Classes
         public Guid CreatedByUserId { get; set; }   
         public decimal TotalAmount { get; set; }    
 
-        public virtual User User { get; set; }             
-        public virtual User CreatedByUser { get; set; }     
+        public virtual Users User { get; set; }             
+        public virtual Users CreatedByUser { get; set; }     
         public virtual List<ShipmentItem> Items { get; set; } = new List<ShipmentItem>();
     } 
 }

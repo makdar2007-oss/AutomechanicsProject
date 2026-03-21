@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AutomechanicsProject.Classes
 {
-    public class User
+    public class Users
     {
         public Guid Id { get; set; }             
         public string Surname { get; set; }     
@@ -13,7 +13,7 @@ namespace AutomechanicsProject.Classes
         public string Lastname { get; set; }        
         public string Login { get; set; }      
         public string Password { get; set; }      
-        public Guid RoleId { get; set; }
+        public string RoleId { get; set; }
 
         public Role Role { get; set; }
 
