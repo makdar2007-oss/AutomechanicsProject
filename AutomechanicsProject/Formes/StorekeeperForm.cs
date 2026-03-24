@@ -1,70 +1,184 @@
 ﻿using AutomechanicsProject.Classes;
+using AutomechanicsProject.Helpers;
+using AutomechanicsProject.Properties;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace AutomechanicsProject.Formes
 {
+    /// <summary>
+    /// Главная форма кладовщика
+    /// </summary>
     public partial class StorekeeperForm : Form
     {
-        private DateBase db;
-        public static string UserRole { get; set; }
+        private readonly DateBase db;
+        /// <summary>
+        /// Инициализирует новый экземпляр формы кладовщика
+        /// </summary>
         public StorekeeperForm()
         {
             InitializeComponent();
             db = new DateBase();
-        }
-        private void StorekeeperForm_Load(object sender, EventArgs e)
-        {
-            if (Program.CurrentUser != null)
-            {
-                toolStripTextBox2.Text = $"Кладовщик: {Program.CurrentUser.FullName}";
-            }
+
+            TextBoxHelper.SetupWatermarkTextBox(textBoxSearch, Resources.SearchWatermark);
+
             LoadProducts();
         }
-
-        private void LoadProducts()
+        /// <summary>
+        /// Обработчик события загрузки формы
+        /// </summary>
+        private void StorekeeperForm_Load(object sender, EventArgs e)
         {
             try
             {
-                var query = from p in db.Products
-                            join c in db.Categories on p.CategoryId equals c.Id
-                            select new
-                            {
-                                p.Id,
-                                p.Article,
-                                p.Name,
-                                CategoryName = c.Name,
-                                p.Unit,
-                                p.Price,
-                                p.Balance
-                            };
-
-                dataGridViewStore.DataSource = query.ToList();
+                toolStripTextBoxStorekeeper.Text = "Кладовщик";
+                Program.LogInfo("Кладовщик вошел в StorekeeperForm");
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Ошибка при загрузке товаров: {ex.Message}", "Ошибка",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                toolStripTextBoxStorekeeper.Text = "Ошибка";
+                Program.LogError("Ошибка при загрузке StorekeeperForm", ex);
             }
         }
+        /// <summary>
+        /// Обновляет список товаров с учетом текущего поискового запроса
+        /// </summary>
+        public void RefreshProductList()
+        {
+            LoadProducts(textBoxSearch.Text);
+        }
+        /// <summary>
+        /// Обработчик нажатия кнопки Выйти
+        /// Завершает работу приложения
+        /// </summary>
         private void ButtonExit_Click(object sender, EventArgs e)
         {
+            Program.LogInfo("Приложение закрыто пользователем");
             Application.Exit();
         }
-
-        private void ToolStripTextBox1_Click(object sender, EventArgs e)
+        /// <summary>
+        /// Обработчик нажатия кнопки Оформить отгрузку
+        /// Открывает форму создания отгрузки и обновляет список товаров после ее завершения
+        /// </summary>
+        private void ButtonShipment_Click(object sender, EventArgs e)
         {
-            var shipmentForm = new CreateShipment();
-            shipmentForm.ShowDialog();
-            LoadProducts(); 
+            try
+            {
+                using (var shipmentForm = new CreateShipment())
+                {
+                    if (shipmentForm.ShowDialog() == DialogResult.OK)
+                    {
+                        RefreshProductList();
+                        Program.LogInfo("Отгрузка успешно оформлена");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Program.LogError("Ошибка при открытии формы отгрузки", ex);
+                MessageBox.Show("Не удалось открыть форму отгрузки",
+                    Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
-    
+        /// <summary>
+        /// Загружает список товаров из базы данных с учетом поискового запроса
+        /// </summary>
+        private void LoadProducts(string searchText = "")
+        {
+            try
+            {
+                var normalizedSearch = NormalizeSearch(searchText);
+                var products = GetProducts(normalizedSearch);
+
+                dataGridViewStore.DataSource = products;
+                ConfigureGrid();
+            }
+            catch (Exception ex)
+            {
+                Program.LogError("Ошибка при загрузке товаров", ex);
+                MessageBox.Show("Не удалось загрузить список товаров. Попробуйте позже.",
+                    Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        /// <summary>
+        /// Нормализует поисковый запрос
+        /// </summary>
+        private string NormalizeSearch(string text)
+        {
+            if (string.IsNullOrWhiteSpace(text) ||
+                text == Resources.SearchWatermark ||
+                text.StartsWith(Resources.SearchWatermark))
+            {
+                return "";
+            }
+
+            return text.Trim().ToLower();
+        }
+        /// <summary>
+        /// Получает список товаров из базы данных с применением фильтрации
+        /// </summary>
+        private object GetProducts(string search)
+        {
+            var query = db.Products
+                .Select(p => new
+                {
+                    p.Id,
+                    Артикул = p.Article,
+                    Название = p.Name,
+                    Категория = p.Category.Name,
+                    ЕдИзмерения = p.Unit,
+                    Цена = p.Price,
+                    Остаток = p.Balance
+                });
+
+            if (!string.IsNullOrEmpty(search))
+            {
+                query = query.Where(p =>
+                    p.Артикул.ToLower().Contains(search) ||
+                    p.Название.ToLower().Contains(search) ||
+                    p.Категория.ToLower().Contains(search));
+            }
+
+            return query.ToList();
+        }
+        /// <summary>
+        /// Настраивает внешний вид таблицы
+        /// </summary>
+        private void ConfigureGrid()
+        {
+            if (dataGridViewStore.Columns.Contains("Id"))
+                dataGridViewStore.Columns["Id"].Visible = false;
+
+            SetHeader("Артикул", "Артикул");
+            SetHeader("Название", "Название");
+            SetHeader("Категория", "Категория");
+            SetHeader("ЕдИзмерения", "Ед. изм.");
+            SetHeader("Цена", "Цена");
+            SetHeader("Остаток", "Остаток");
+        }
+        /// <summary>
+        /// Устанавливает заголовок для указанной колонки таблицы
+        /// </summary>
+        private void SetHeader(string columnName, string header)
+        {
+            if (dataGridViewStore.Columns[columnName] != null)
+                dataGridViewStore.Columns[columnName].HeaderText = header;
+        }
+        /// <summary>
+        /// Выполняет фильтрацию товаров при каждом изменении
+        /// </summary>
+        private void TextBoxSearch_TextChanged(object sender, EventArgs e)
+        {
+            LoadProducts(textBoxSearch.Text);
+        }
+        /// <summary>
+        /// Освобождает ресурсы при закрытии формы
+        /// </summary>
+        protected override void OnFormClosed(FormClosedEventArgs e)
+        {
+            db?.Dispose();
+            base.OnFormClosed(e);
+        }
     }
 }

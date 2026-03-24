@@ -1,19 +1,39 @@
 ﻿using AutomechanicsProject.Classes;
+using AutomechanicsProject.Helpers;
+using AutomechanicsProject.Properties;
 using System;
-using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+
 namespace AutomechanicsProject.Formes
 {
+    /// <summary>
+    /// Форма для добавления нового товара
+    /// </summary>
     public partial class AddProduct : Form
     {
-        private DateBase db;
+        private readonly DateBase db;
+
+        /// <summary>
+        /// Инициализирует новый экземпляр формы добавления товара
+        /// </summary>
         public AddProduct()
         {
             InitializeComponent();
             db = new DateBase();
+
+            TextBoxHelper.SetupWatermarkTextBox(textBoxArt, Resources.ProductArticleWatermark);
+            TextBoxHelper.SetupWatermarkTextBox(textBoxName, Resources.ProductNameWatermark);
+            TextBoxHelper.SetupWatermarkTextBox(textBoxUnit, Resources.ProductUnitWatermark);
+            TextBoxHelper.SetupWatermarkTextBox(textBoxPrice, Resources.ProductPriceWatermark);
+            TextBoxHelper.SetupWatermarkComboBox(comboBoxCategory, Resources.CategorySelectWatermark);
+
             LoadCategories();
         }
+
+        /// <summary>
+        /// Загружает список категорий из базы данных в выпадающий список
+        /// </summary>
         private void LoadCategories()
         {
             try
@@ -26,6 +46,7 @@ namespace AutomechanicsProject.Formes
                 comboBoxCategory.DataSource = categories;
                 comboBoxCategory.DisplayMember = "Name";
                 comboBoxCategory.ValueMember = "Id";
+
                 if (comboBoxCategory.Items.Count > 0)
                 {
                     comboBoxCategory.SelectedIndex = -1;
@@ -33,48 +54,39 @@ namespace AutomechanicsProject.Formes
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Ошибка при загрузке категорий: {ex.Message}", "Ошибка",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Program.LogError("Ошибка при загрузке категорий в AddProduct", ex);
+                MessageBox.Show("Не удалось загрузить категории",
+                    Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        /// <summary>
+        /// Обработчик нажатия кнопки "Добавить"
+        /// Сохранение нового товара в базу данных
+        /// </summary>
         private void ButtonAdd_Click(object sender, EventArgs e)
         {
+            if (!ValidateFields()) return;
+
+            if (!Validation.ValidatePrice(textBoxPrice.Text, out var price))
+            {
+                MessageBox.Show(Resources.ErrorEnterCorrectPrice, Resources.TitleWarning,
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             if (comboBoxCategory.SelectedItem == null)
             {
-                MessageBox.Show("Выберите категорию!", "Ошибка",
+                MessageBox.Show(Resources.ErrorSelectCategory, Resources.TitleWarning,
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-            if (textBoxArt.Text == "Введите артикул" || string.IsNullOrWhiteSpace(textBoxArt.Text) ||
-                textBoxName.Text == "Введите название" || string.IsNullOrWhiteSpace(textBoxName.Text) ||
-                textBoxPrice.Text == "Введите цену" || string.IsNullOrWhiteSpace(textBoxPrice.Text))
-            {
-                MessageBox.Show("Заполните все обязательные поля!", "Ошибка",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-            if (!decimal.TryParse(textBoxPrice.Text, out decimal price) || price < 0)
-            {
-                MessageBox.Show("Введите корректную цену!", "Ошибка",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
+
             try
             {
-                var selectedItem = comboBoxCategory.SelectedItem;
-                var categoryIdProperty = selectedItem.GetType().GetProperty("Id");
-                if (categoryIdProperty == null)
-                {
-                    MessageBox.Show("Ошибка получения данных категории!", "Ошибка",
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-
-                Guid categoryId = (Guid)categoryIdProperty.GetValue(selectedItem);
-                var categoryNameProperty = selectedItem.GetType().GetProperty("Name");
-                string categoryName = categoryNameProperty?.GetValue(selectedItem)?.ToString() ?? "Неизвестно";
-                string unit = textBoxUnit.Text.Trim();
-                if (string.IsNullOrWhiteSpace(unit) || unit == "Введите единицы измерения")
+                var categoryId = (Guid)((dynamic)comboBoxCategory.SelectedItem).Id;
+                var unit = textBoxUnit.Text.Trim();
+                if (Validation.IsWatermark(unit, Resources.ProductUnitWatermark))
                 {
                     unit = "шт";
                 }
@@ -89,132 +101,55 @@ namespace AutomechanicsProject.Formes
                     Price = price,
                     Balance = 0
                 };
+
                 db.Products.Add(product);
                 db.SaveChanges();
-                MessageBox.Show("Товар успешно добавлен!", "Успех",
+
+                Program.LogInfo($"Товар '{product.Article} - {product.Name}' успешно добавлен");
+                MessageBox.Show(Resources.SuccessProductAdded, Resources.TitleSuccess,
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
-                this.DialogResult = DialogResult.OK;
-                this.Close();
+                DialogResult = DialogResult.OK;
+                Close();
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Ошибка при добавлении товара: {ex.Message}", "Ошибка",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                FormHelper.HandleException("Ошибка при добавлении товара", ex);
             }
         }
-        private void textBoxArt_Leave(object sender, System.EventArgs e)
+        /// <summary>
+        /// Выполняет валидацию обязательных полей формы
+        /// </summary>
+        private bool ValidateFields()
         {
-            var tb = sender as TextBox;
-            if (string.IsNullOrWhiteSpace(tb.Text))
+            if (Validation.IsWatermark(textBoxArt.Text, Resources.ProductArticleWatermark) ||
+                Validation.IsWatermark(textBoxName.Text, Resources.ProductNameWatermark) ||
+                Validation.IsWatermark(textBoxPrice.Text, Resources.ProductPriceWatermark))
             {
-                tb.Text = "Введите артикул";
-                tb.ForeColor = Color.Gray;
+                MessageBox.Show(Resources.ErrorFillFields, Resources.TitleWarning,
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
             }
+            return true;
         }
-        private void textBoxArt_Enter(object sender, System.EventArgs e)
-        {
-            var tb = sender as TextBox;
-            if (tb.Text == "Введите артикул")
-            {
-                tb.Text = string.Empty;
-                tb.ForeColor = Color.Black;
-            }
-        }
-        private void textBoxName_Leave(object sender, System.EventArgs e)
-        {
-            var tb = sender as TextBox;
-            if (string.IsNullOrWhiteSpace(tb.Text))
-            {
-                tb.Text = "Введите название";
-                tb.ForeColor = Color.Gray;
-            }
-        }
-        private void textBoxName_Enter(object sender, System.EventArgs e)
-        {
-            var tb = sender as TextBox;
-            if (tb.Text == "Введите название")
-            {
-                tb.Text = string.Empty;
-                tb.ForeColor = Color.Black;
-            }
-        }
-        private void comboBoxCategory_Leave(object sender, System.EventArgs e)
-        {
-            var tb = sender as TextBox;
-            if (string.IsNullOrWhiteSpace(tb.Text))
-            {
-                tb.Text = "Выберите категорию";
-                tb.ForeColor = Color.Gray;
-            }
-        }
-        private void comboBoxCategory_Enter(object sender, System.EventArgs e)
-        {
-            var tb = sender as TextBox;
-            if (tb.Text == "Выберите категорию")
-            {
-                tb.Text = string.Empty;
-                tb.ForeColor = Color.Black;
-            }
-        }
-        private void textBoxUnit_Leave(object sender, System.EventArgs e)
-        {
-            var tb = sender as TextBox;
-            if (string.IsNullOrWhiteSpace(tb.Text))
-            {
-                tb.Text = "Введите  единицы измерения";
-                tb.ForeColor = Color.Gray;
-            }
-        }
-        private void textBoxUnit_Enter(object sender, System.EventArgs e)
-        {
-            var tb = sender as TextBox;
-            if (tb.Text == "Введите единицы измерения")
-            {
-                tb.Text = string.Empty;
-                tb.ForeColor = Color.Black;
-            }
-        }
-        private void textBoxPrice_Leave(object sender, System.EventArgs e)
-        {
-            var tb = sender as TextBox;
-            if (string.IsNullOrWhiteSpace(tb.Text))
-            {
-                tb.Text = "Введите цену";
-                tb.ForeColor = Color.Gray;
-            }
-        }
-        private void textBoxPrice_Enter(object sender, System.EventArgs e)
-        {
-            var tb = sender as TextBox;
-            if (tb.Text == "Введите цену")
-            {
-                tb.Text = string.Empty;
-                tb.ForeColor = Color.Black;
-            }
-        }
-
+        /// <summary>
+        /// Обработчик нажатия кнопки Отмена
+        /// Запрашивает подтверждение и закрывает форму без сохранения
+        /// </summary>
         private void buttonCancel_Click(object sender, EventArgs e)
         {
-            if (!((textBoxArt.Text == "Введите артикул" || string.IsNullOrWhiteSpace(textBoxArt.Text)) &&
-                   (textBoxName.Text == "Введите название" || string.IsNullOrWhiteSpace(textBoxName.Text)) &&
-                   (comboBoxCategory.Text == "Введите категорию" || string.IsNullOrWhiteSpace(comboBoxCategory.Text)) &&
-                   (textBoxUnit.Text == "Введите единицы измерения" || string.IsNullOrWhiteSpace(textBoxUnit.Text)) &&
-                   (textBoxPrice.Text == "Введите цену" || string.IsNullOrWhiteSpace(textBoxPrice.Text))))
-            {
-                var result = MessageBox.Show("Вы уверены, что хотите отменить добавление товара?\nВсе введенные данные будут потеряны.",
-                    "Подтверждение", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            var hasInput = !((textBoxArt.Text == Resources.ProductArticleWatermark || string.IsNullOrWhiteSpace(textBoxArt.Text)) &&
+                   (textBoxName.Text == Resources.ProductNameWatermark || string.IsNullOrWhiteSpace(textBoxName.Text)) &&
+                   (comboBoxCategory.Text == Resources.CategorySelectWatermark || string.IsNullOrWhiteSpace(comboBoxCategory.Text)) &&
+                   (textBoxUnit.Text == Resources.ProductUnitWatermark || string.IsNullOrWhiteSpace(textBoxUnit.Text)) &&
+                   (textBoxPrice.Text == Resources.ProductPriceWatermark || string.IsNullOrWhiteSpace(textBoxPrice.Text)));
 
-                if (result == DialogResult.Yes)
-                {
-                    this.DialogResult = DialogResult.Cancel;
-                    this.Close();
-                }
-            }
-            else
+            if (hasInput && !FormHelper.ShowCancelConfirmation("Вы уверены, что хотите отменить добавление товара?\n" +
+                "Все введенные данные будут потеряны."))
             {
-                this.DialogResult = DialogResult.Cancel;
-
-            }
+                return;
+            }    
+            DialogResult = DialogResult.Cancel;
+            Close();
         }
     }
 }

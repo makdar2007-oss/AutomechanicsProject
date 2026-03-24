@@ -1,213 +1,310 @@
 ﻿using AutomechanicsProject.Classes;
+using AutomechanicsProject.Helpers;
+using AutomechanicsProject.Properties;
 using System;
-using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 
 namespace AutomechanicsProject.Formes
 {
+    /// <summary>
+    /// Главная форма администратора системы
+    /// Предоставляет полный доступ к управлению товарами, категориями и просмотру истории отгрузок
+    /// </summary>
     public partial class AdminForm : Form
     {
+        private readonly DateBase db;
 
-        private DateBase db;
-        private Timer searchTimer;
+        /// <summary>
+        /// Инициализирует новый экземпляр формы администратора
+        /// </summary>
         public AdminForm()
         {
             InitializeComponent();
             db = new DateBase();
-            LoadProducts();
 
-            searchTimer = new Timer();
-            searchTimer.Interval = 500; 
-            searchTimer.Tick += SearchTimer_Tick;
-
-            товарToolStripMenuItem.Click += (s, e) => OpenAddProductForm();
-            категориюToolStripMenuItem.Click += (s, e) => OpenAddCategoryForm();
-
-            товарToolStripMenuItem1.Click += (s, e) => OpenEditProductForm();
-            категориюToolStripMenuItem1.Click += (s, e) => OpenEditCategoryForm();
-
-            товарToolStripMenuItem2.Click += (s, e) => OpenDeleteProductForm();
-            категориюToolStripMenuItem2.Click += (s, e) => OpenDeleteCategoryForm();
-
+            TextBoxHelper.SetupWatermarkTextBox(textBoxSearch, Resources.SearchWatermark);
+            RefreshProductList();
+            ProductToolStripMenuItem.Click += (s, e) => OpenAddProductForm();
+            CategoryToolStripMenuItem.Click += (s, e) => OpenAddCategoryForm();
+            ProductToolStripMenuItem1.Click += (s, e) => OpenEditProductForm();
+            CategoryToolStripMenuItem1.Click += (s, e) => OpenEditCategoryForm();
+            ProductToolStripMenuItem2.Click += (s, e) => OpenDeleteProductForm();
+            CategoryToolStripMenuItem2.Click += (s, e) => OpenDeleteCategoryForm();
         }
+        /// <summary>
+        /// Открывает форму редактирования категории
+        /// </summary>
+        private void OpenEditCategoryForm()
+        {
+            try
+            {
+                using (var editCategoryForm = new EditCategory())
+                {
+                    if (editCategoryForm.ShowDialog() == DialogResult.OK)
+                    {
+                        RefreshProductList();                     }
+                }
+            }
+            catch (Exception ex)
+            {
+                Program.LogError("Ошибка при открытии формы редактирования категории", ex);
+                MessageBox.Show("Не удалось открыть форму редактирования категории",
+                    Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        /// <summary>
+        /// Обновляет список товаров с учетом текущего поискового запроса
+        /// </summary>
         public void RefreshProductList()
         {
             LoadProducts(textBoxSearch.Text);
         }
-        public dynamic GetSelectedProduct()
+        /// <summary>
+        /// Получает выбранный товар из таблицы
+        /// </summary>
+        private Product GetSelectedProduct()
         {
-            if (dataGridViewMainForm.SelectedRows.Count > 0)
+            if (dataGridViewMainForm.SelectedRows.Count == 0)
             {
-                return dataGridViewMainForm.SelectedRows[0].DataBoundItem;
+                return null;
             }
+            try
+            {
+                var selectedRow = dataGridViewMainForm.SelectedRows[0];
+                var selectedItem = selectedRow.DataBoundItem;
+                var article = selectedItem.GetType()
+                    .GetProperty("Артикул")
+                    ?.GetValue(selectedItem)
+                    ?.ToString();
+
+                if (!string.IsNullOrEmpty(article))
+                {
+                    return db.Products.FirstOrDefault(p => p.Article == article);
+                }
+            }
+            catch (Exception ex)
+            {
+                Program.LogError("Ошибка при получении выбранного товара", ex);
+            }
+
             return null;
         }
+
+        ///// <summary>
+        ///// Обработчик события загрузки формы
+        ///// </summary>
         private void AdminForm_Load(object sender, EventArgs e)
         {
-            if (Program.CurrentUser != null)
+            try
             {
-                toolStripTextBoxAdmin.Text = $"Администратор: {Program.CurrentUser.FullName}";
+                toolStripTextBoxAdmin.Text = "Администратор";
+                dataGridViewMainForm.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+                dataGridViewMainForm.AllowUserToResizeColumns = false;
+                dataGridViewMainForm.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+                dataGridViewMainForm.MultiSelect = false;
             }
-            else
+            catch (Exception ex)
             {
-                toolStripTextBoxAdmin.Text = "Администратор: Неизвестный";
+                toolStripTextBoxAdmin.Text = "Ошибка";
+                Program.LogError("Ошибка при загрузке AdminForm", ex);
             }
         }
+
+        /// <summary>
+        /// Обработчик нажатия кнопки Выйти
+        /// Завершает работу приложения
+        /// </summary>
         private void ButtonExit_Click(object sender, EventArgs e)
         {
+            Program.LogInfo("Приложение закрыто пользователем");
             Application.Exit();
         }
-
+        /// <summary>
+        /// Обработчик нажатия кнопки История отгрузок
+        /// Открывает форму просмотра истории отгрузок
+        /// </summary>
         private void ButtonHistory_Click(object sender, EventArgs e)
         {
-            var historyForm = new ShipmentHistoryForm();
-            historyForm.ShowDialog();
+            try
+            {
+                using (var historyForm = new ShipmentHistoryForm())
+                {
+                    historyForm.ShowDialog();
+                }
+            }
+            catch (Exception ex)
+            {
+                Program.LogError("Ошибка при открытии формы истории", ex);
+                MessageBox.Show("Не удалось открыть историю",
+                    Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
-
+        /// <summary>
+        /// Открывает форму добавления товара
+        /// </summary>
         private void OpenAddProductForm()
         {
-            var addProductForm = new AddProduct();
-            if (addProductForm.ShowDialog() == DialogResult.OK)
+            try
             {
-                RefreshProductList();
+                using (var addProductForm = new AddProduct())
+                {
+                    if (addProductForm.ShowDialog() == DialogResult.OK)
+                    {
+                        RefreshProductList();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Program.LogError("Ошибка при открытии формы добавления товара", ex);
+                MessageBox.Show("Не удалось открыть форму добавления товара",
+                    Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-        private void OpenEditCategoryForm()
-        {
-            MessageBox.Show("Функция редактирования категорий пока недоступна.",
-                "Информация", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        }
+        /// <summary>
+        /// Открывает форму добавления категории
+        /// </summary>
         private void OpenAddCategoryForm()
         {
-            var addCategoryForm = new AddCategory();
-            addCategoryForm.ShowDialog();
-            LoadProducts(); 
+            try
+            {
+                using (var addCategoryForm = new AddCategory())
+                {
+                    if (addCategoryForm.ShowDialog() == DialogResult.OK)
+                    {
+                        RefreshProductList();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Program.LogError("Ошибка при открытии формы добавления категории", ex);
+                MessageBox.Show("Не удалось открыть форму добавления категории",
+                    Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
+        /// <summary>
+        /// Открывает форму редактирования товара для выбранного товара
+        /// </summary>
         private void OpenEditProductForm()
         {
-            if (dataGridViewMainForm.SelectedRows.Count > 0)
+            var product = GetSelectedProduct();
+            if (product == null)
             {
-                var selectedItem = dataGridViewMainForm.SelectedRows[0].DataBoundItem;
-                var productId = (Guid)selectedItem.GetType().GetProperty("Id").GetValue(selectedItem);
-
-                var editForm = new RedactProduct(productId);
-                if (editForm.ShowDialog() == DialogResult.OK)
+                MessageBox.Show("Выберите товар для редактирования", Resources.TitleInformation,
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+            try
+            {
+                using (var editForm = new RedactProduct(product.Id))
                 {
-                    LoadProducts();
+                    if (editForm.ShowDialog() == DialogResult.OK)
+                    {
+                        RefreshProductList();
+                    }
                 }
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("Выберите товар для редактирования", "Информация",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                FormHelper.HandleException("Ошибка при редактировании товара", ex);
             }
         }
+        /// <summary>
+        /// Открывает форму удаления товара для выбранного товара
+        /// </summary>
         private void OpenDeleteProductForm()
         {
-            if (dataGridViewMainForm.SelectedRows.Count > 0)
+            var product = GetSelectedProduct();
+            if (product == null)
             {
-                var selectedItem = dataGridViewMainForm.SelectedRows[0].DataBoundItem;
-                var productId = (Guid)selectedItem.GetType().GetProperty("Id").GetValue(selectedItem);
-
-                var result = MessageBox.Show("Вы действительно хотите удалить этот товар?",
-                    "Подтверждение", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-
-                if (result == DialogResult.Yes)
+                MessageBox.Show("Выберите товар для удаления", Resources.TitleInformation,
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+            try
+            {
+                using (var deleteForm = new DeleteProduct(product.Id))
                 {
-                    try
+                    if (deleteForm.ShowDialog() == DialogResult.OK)
                     {
-                        var product = db.Products.Find(productId);
-                        if (product != null)
-                        {
-                            db.Products.Remove(product);
-                            db.SaveChanges();
-                            LoadProducts();
-                            MessageBox.Show("Товар успешно удален!", "Успех",
-                                MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show($"Ошибка при удалении товара: {ex.Message}", "Ошибка",
-                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        RefreshProductList();
                     }
                 }
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("Выберите товар для удаления", "Информация",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                FormHelper.HandleException("Ошибка при удалении товара", ex);
             }
         }
+        /// <summary>
+        /// Открывает форму удаления категории
+        /// </summary>
         private void OpenDeleteCategoryForm()
         {
-            var deleteCategoryForm = new DeleteCategory();
-            deleteCategoryForm.ShowDialog();
-            LoadProducts(); 
+            try
+            {
+                using (var deleteCategoryForm = new DeleteCategory())
+                {
+                    if (deleteCategoryForm.ShowDialog() == DialogResult.OK)
+                    {
+                        RefreshProductList();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Program.LogError("Ошибка при удалении категории", ex);
+                MessageBox.Show("Не удалось удалить категорию",
+                    Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
-
+        /// <summary>
+        /// Загружает список товаров из базы данных с учетом поискового запроса
+        /// </summary>
         private void LoadProducts(string searchText = "")
         {
             try
             {
-                var query = from p in db.Products
-                            join c in db.Categories on p.CategoryId equals c.Id
-                            select new
-                            {
-                                p.Id,
-                                p.Article,
-                                p.Name,
-                                CategoryName = c.Name,
-                                p.Unit,
-                                p.Price,
-                                p.Balance
-                            };
+                var query = db.Products
+                    .Join(db.Categories,
+                        product => product.CategoryId,
+                        category => category.Id,
+                        (product, category) => new
+                        {
+                            Артикул = product.Article,
+                            Название = product.Name,
+                            Категория = category.Name,
+                            ЕдИзмерения = product.Unit,
+                            Цена = product.Price,
+                            Остаток = product.Balance
+                        });
 
-                if (!string.IsNullOrWhiteSpace(searchText) && searchText != "Поиск:")
+                if (!string.IsNullOrWhiteSpace(searchText) && searchText != Resources.SearchWatermark)
                 {
                     searchText = searchText.ToLower();
                     query = query.Where(p =>
-                        p.Article.ToLower().Contains(searchText) ||
-                        p.Name.ToLower().Contains(searchText) ||
-                        p.CategoryName.ToLower().Contains(searchText));
+                        p.Артикул.ToLower().Contains(searchText) ||
+                        p.Название.ToLower().Contains(searchText) ||
+                        p.Категория.ToLower().Contains(searchText));
                 }
 
                 dataGridViewMainForm.DataSource = query.ToList();
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Ошибка при загрузке товаров: {ex.Message}", "Ошибка",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Program.LogError($"Ошибка при загрузке товаров. Поисковый запрос: {searchText}", ex);
+                MessageBox.Show("Не удалось загрузить список товаров. Попробуйте позже.",
+                    Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-        private void textBoxSearch_Enter(object sender, EventArgs e)
-        {
-            var tb = sender as TextBox;
-            if (tb.Text == "Поиск:")
-            {
-                tb.Text = string.Empty;
-                tb.ForeColor = Color.Black;
-            }
-        }
-        private void textBoxSearch_Leave(object sender, EventArgs e)
-        {
-            var tb = sender as TextBox;
-            if (string.IsNullOrWhiteSpace(tb.Text))
-            {
-                tb.Text = "Поиск:";
-                tb.ForeColor = Color.Gray;
-            }
-        }
-
+        /// <summary>
+        /// Обработчик изменения текста в поле поиска
+        /// Выполняет фильтрацию товаров при каждом изменении
+        /// </summary>
         private void TextBoxSearch_TextChanged(object sender, EventArgs e)
         {
-            searchTimer.Stop();
-            searchTimer.Start();
-        }
-        private void SearchTimer_Tick(object sender, EventArgs e)
-        {
-            searchTimer.Stop();
             LoadProducts(textBoxSearch.Text);
         }
     }

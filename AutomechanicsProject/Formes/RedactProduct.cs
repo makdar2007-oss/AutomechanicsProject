@@ -1,4 +1,6 @@
 ﻿using AutomechanicsProject.Classes;
+using AutomechanicsProject.Helpers;
+using AutomechanicsProject.Properties;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Drawing;
@@ -7,24 +9,40 @@ using System.Windows.Forms;
 
 namespace AutomechanicsProject.Formes
 {
+    /// <summary>
+    /// Форма для редактирования товара
+    /// </summary>
     public partial class RedactProduct : Form
     {
-        private DateBase db;
-        private Guid productId;
+        private readonly DateBase db;
+        private readonly Guid productId;
         private Product currentProduct;
-        private bool hasChanges = false;
+        private bool hasChanges;
+        /// <summary>
+        /// Инициализирует новый экземпляр формы редактирования товара
+        /// </summary>
         public RedactProduct(Guid id)
         {
             InitializeComponent();
             db = new DateBase();
             productId = id;
+            TextBoxHelper.SetupWatermarkTextBox(textBoxArt, Resources.EditArticleWatermark);
+            TextBoxHelper.SetupWatermarkTextBox(textBoxName, Resources.EditNameWatermark);
+            TextBoxHelper.SetupWatermarkTextBox(textBoxCategory, Resources.EditCategoryWatermark);
+            TextBoxHelper.SetupWatermarkTextBox(textBoxUnit, Resources.EditUnitWatermark);
+            TextBoxHelper.SetupWatermarkTextBox(textBoxPrice, Resources.EditPriceWatermark);
+
             textBoxArt.TextChanged += (s, e) => hasChanges = true;
             textBoxName.TextChanged += (s, e) => hasChanges = true;
             textBoxCategory.TextChanged += (s, e) => hasChanges = true;
             textBoxUnit.TextChanged += (s, e) => hasChanges = true;
             textBoxPrice.TextChanged += (s, e) => hasChanges = true;
+
             LoadProductData();
         }
+        /// <summary>
+        /// Загружает данные товара из базы данных и отображает их в полях формы
+        /// </summary>
         private void LoadProductData()
         {
             try
@@ -35,10 +53,10 @@ namespace AutomechanicsProject.Formes
 
                 if (currentProduct == null)
                 {
-                    MessageBox.Show("Товар не найден!", "Ошибка",
+                    MessageBox.Show("Товар не найден!", Resources.TitleError,
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    this.DialogResult = DialogResult.Cancel;
-                    this.Close();
+                    DialogResult = DialogResult.Cancel;
+                    Close();
                     return;
                 }
                 textBoxArt.Text = currentProduct.Article;
@@ -55,42 +73,42 @@ namespace AutomechanicsProject.Formes
 
                 textBoxPrice.Text = currentProduct.Price.ToString("F2");
                 textBoxPrice.ForeColor = Color.Black;
+
                 hasChanges = false;
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Ошибка при загрузке данных: {ex.Message}", "Ошибка",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Program.LogError($"Ошибка при загрузке данных товара ID {productId}", ex);
+                MessageBox.Show("Не удалось загрузить данные товара",
+                    Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
+        /// <summary>
+        /// Обработчик нажатия кнопки Редактировать
+        /// </summary>
         private void ButtonRedact_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(textBoxArt.Text) || textBoxArt.Text == "Артикул" ||
-                string.IsNullOrWhiteSpace(textBoxName.Text) || textBoxName.Text == "Название" ||
-                string.IsNullOrWhiteSpace(textBoxCategory.Text) || textBoxCategory.Text == "Категория" ||
-                string.IsNullOrWhiteSpace(textBoxPrice.Text) || textBoxPrice.Text == "Цена")
+            if (string.IsNullOrWhiteSpace(textBoxArt.Text) || textBoxArt.Text == Resources.EditArticleWatermark ||
+                string.IsNullOrWhiteSpace(textBoxName.Text) || textBoxName.Text == Resources.EditNameWatermark ||
+                string.IsNullOrWhiteSpace(textBoxCategory.Text) || textBoxCategory.Text == Resources.EditCategoryWatermark ||
+                string.IsNullOrWhiteSpace(textBoxPrice.Text) || textBoxPrice.Text == Resources.EditPriceWatermark)
             {
-                MessageBox.Show("Заполните все обязательные поля!", "Ошибка",
+                MessageBox.Show(Resources.ErrorFillFields, Resources.TitleWarning,
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-
-            if (!decimal.TryParse(textBoxPrice.Text, out decimal price) || price < 0)
+            if (!decimal.TryParse(textBoxPrice.Text, out var price) || price < 0)
             {
-                MessageBox.Show("Введите корректную цену!", "Ошибка",
+                MessageBox.Show(Resources.ErrorEnterCorrectPrice, Resources.TitleWarning,
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-
             try
             {
                 currentProduct.Article = textBoxArt.Text;
                 currentProduct.Name = textBoxName.Text;
-
-                string categoryName = textBoxCategory.Text;
+                var categoryName = textBoxCategory.Text.Trim();
                 var category = db.Categories.FirstOrDefault(c => c.Name == categoryName);
-
                 if (category == null)
                 {
                     category = new Category
@@ -100,149 +118,53 @@ namespace AutomechanicsProject.Formes
                     };
                     db.Categories.Add(category);
                 }
-
                 currentProduct.CategoryId = category.Id;
-                currentProduct.Unit = string.IsNullOrWhiteSpace(textBoxUnit.Text) || textBoxUnit.Text == "Единица измерения"
+                currentProduct.Unit = string.IsNullOrWhiteSpace(textBoxUnit.Text) || textBoxUnit.Text == Resources.EditUnitWatermark
                     ? "шт"
                     : textBoxUnit.Text;
                 currentProduct.Price = price;
-
                 db.SaveChanges();
 
-                MessageBox.Show("Товар успешно обновлен!", "Успех",
+                Program.LogInfo($"Товар '{currentProduct.Article} - {currentProduct.Name}' обновлен");
+                MessageBox.Show(Resources.SuccessProductUpdated, Resources.TitleSuccess,
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                this.DialogResult = DialogResult.OK;
-                this.Close();
+                DialogResult = DialogResult.OK;
+                Close();
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Ошибка при обновлении товара: {ex.Message}", "Ошибка",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Program.LogError($"Ошибка при обновлении товара ID {productId}", ex);
+                MessageBox.Show("Не удалось обновить товар. Попробуйте позже.",
+                    Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+        /// <summary>
+        /// Обработчик нажатия кнопки Отмена
+        /// Запрашивает подтверждение при наличии несохраненных изменений
+        /// </summary>
         private void ButtonCancel_Click(object sender, EventArgs e)
         {
             if (hasChanges)
             {
                 var result = MessageBox.Show(
-                    "У вас есть несохраненные изменения.\n\n" +
-                    "Вы действительно хотите отменить редактирование?",
-                    "Подтверждение отмены",
+                    "У вас есть несохраненные изменения.\n\nВы действительно хотите отменить редактирование?",
+                    Resources.TitleConfirmation,
                     MessageBoxButtons.YesNo,
                     MessageBoxIcon.Question);
 
-                if (result == DialogResult.Yes)
-                {
-                    this.DialogResult = DialogResult.Cancel;
-                    this.Close();
-                }
+                if (result != DialogResult.Yes) return;
             }
-            else
-            {
-                this.DialogResult = DialogResult.Cancel;
-                this.Close();
-            }
+            DialogResult = DialogResult.Cancel;
+            Close();
         }
-        private void textBoxArt_Leave(object sender, EventArgs e)
+        /// <summary>
+        /// Освобождает ресурсы при закрытии формы
+        /// </summary>
+        protected override void OnFormClosed(FormClosedEventArgs e)
         {
-
-            var tb = sender as TextBox;
-            if (string.IsNullOrWhiteSpace(tb.Text))
-            {
-                tb.Text = "Артикул";
-                tb.ForeColor = Color.Gray;
-            }
-        }
-
-        private void textBoxName_Leave(object sender, EventArgs e)
-        {
-
-            var tb = sender as TextBox;
-            if (string.IsNullOrWhiteSpace(tb.Text))
-            {
-                tb.Text = "Название";
-                tb.ForeColor = Color.Gray;
-            }
-        }
-        private void textBoxName_Enter(object sender, EventArgs e)
-        {
-            var tb = sender as TextBox;
-            if (tb.Text == "Название")
-            {
-                tb.Text = string.Empty;
-                tb.ForeColor = Color.Black;
-            }
-        }
-        private void textBoxArt_Enter(object sender, EventArgs e)
-        {
-            var tb = sender as TextBox;
-            if (tb.Text == "Артикул")
-            {
-                tb.Text = string.Empty;
-                tb.ForeColor = Color.Black;
-            }
-        }
-
-        private void textBoxCategory_Enter(object sender, EventArgs e)
-        {
-            var tb = sender as TextBox;
-            if (tb.Text == "Категория")
-            {
-                tb.Text = string.Empty;
-                tb.ForeColor = Color.Black;
-            }
-        }
-       
-        private void textBoxCategory_Leave(object sender, EventArgs e)
-        {
-
-            var tb = sender as TextBox;
-            if (string.IsNullOrWhiteSpace(tb.Text))
-            {
-                tb.Text = "Категория";
-                tb.ForeColor = Color.Gray;
-            }
-        }
-
-        private void textBoxUnit_Enter(object sender, EventArgs e)
-        {
-            var tb = sender as TextBox;
-            if (tb.Text == "Единица измерения")
-            {
-                tb.Text = string.Empty;
-                tb.ForeColor = Color.Black;
-            }
-        }
-
-        private void textBoxUnit_Leave(object sender, EventArgs e)
-        {
-
-            var tb = sender as TextBox;
-            if (string.IsNullOrWhiteSpace(tb.Text))
-            {
-                tb.Text = "Единица измерения";
-                tb.ForeColor = Color.Gray;
-            }
-        }
-        private void textBoxPrice_Leave(object sender, EventArgs e)
-        {
-
-            var tb = sender as TextBox;
-            if (string.IsNullOrWhiteSpace(tb.Text))
-            {
-                tb.Text = "Цена";
-                tb.ForeColor = Color.Gray;
-            }
-        }
-        private void textBoxPrice_Enter(object sender, EventArgs e)
-        {
-            var tb = sender as TextBox;
-            if (tb.Text == "Цена")
-            {
-                tb.Text = string.Empty;
-                tb.ForeColor = Color.Black;
-            }
+            db?.Dispose();
+            base.OnFormClosed(e);
         }
     }
 }

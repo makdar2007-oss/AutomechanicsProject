@@ -1,56 +1,51 @@
 ﻿using AutomechanicsProject.Classes;
+using AutomechanicsProject.Helpers;
+using AutomechanicsProject.Properties;
 using System;
-using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+
 namespace AutomechanicsProject.Formes
 {
+    /// <summary>
+    /// Форма для добавления новой категории товаров
+    /// </summary>
     public partial class AddCategory : Form
     {
-        private DateBase db;
+        private readonly DateBase db;
+
+        /// <summary>
+        /// Инициализирует новый экземпляр формы добавления категории
+        /// </summary>
         public AddCategory()
         {
             InitializeComponent();
             db = new DateBase();
+            TextBoxHelper.SetupWatermarkTextBox(textBoxAddCategory, Resources.CategoryAddWatermark);
         }
 
-        private void textBoxAddCategory_Enter(object sender, EventArgs e)
-        {
-            var tb = sender as TextBox;
-            if (tb.Text == "Введите название")
-            {
-                tb.Text = string.Empty;
-                tb.ForeColor = Color.Gray;
-            }
-        }
-        private void textBoxAddCategory_Leave(object sender, EventArgs e)
-        {
-            var tb = sender as TextBox;
-            if (string.IsNullOrWhiteSpace(tb.Text))
-            {
-                tb.Text = "Введите название";
-                tb.ForeColor = Color.Gray;
-            }
-        }
+        /// <summary>
+        /// Обработчик нажатия кнопки "Добавить"
+        /// Сохранение новой категории в базу данных
+        /// </summary>
         private void buttonAdd_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(textBoxAddCategory.Text) ||
-                textBoxAddCategory.Text == "Введите название")
+                textBoxAddCategory.Text == Resources.CategoryAddWatermark)
             {
-                MessageBox.Show("Введите название категории!", "Ошибка",
+                MessageBox.Show(Resources.ErrorFillCategory, Resources.TitleWarning,
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
             try
             {
-                string categoryName = textBoxAddCategory.Text.Trim();
-
-                bool categoryExists = db.Categories.Any(c => c.Name.ToLower() == categoryName.ToLower());
+                var categoryName = textBoxAddCategory.Text.Trim();
+                var categoryExists = db.Categories.Any(c => c.Name.ToLower() == categoryName.ToLower());
 
                 if (categoryExists)
                 {
-                    MessageBox.Show("Категория с таким названием уже существует!", "Ошибка",
+                    MessageBox.Show(Resources.ErrorCategoryExists, Resources.TitleWarning,
                         MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
@@ -59,29 +54,29 @@ namespace AutomechanicsProject.Formes
                     Id = Guid.NewGuid(),
                     Name = categoryName
                 };
-
-                // Добавляем в базу данных
                 db.Categories.Add(newCategory);
                 db.SaveChanges();
-
-                MessageBox.Show($"Категория \"{categoryName}\" успешно добавлена!", "Успех",
+                Program.LogInfo($"Категория '{categoryName}' успешно добавлена");
+                MessageBox.Show(string.Format(Resources.SuccessCategoryAdded, categoryName), Resources.TitleSuccess,
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                // Закрываем форму с результатом OK
-                this.DialogResult = DialogResult.OK;
-                this.Close();
+                DialogResult = DialogResult.OK;
+                Close();
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Ошибка при добавлении категории: {ex.Message}", "Ошибка",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Program.LogError($"Ошибка при добавлении категории '{textBoxAddCategory.Text}'", ex);
+                MessageBox.Show("Не удалось добавить категорию. Попробуйте позже.",
+                    Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
+        /// <summary>
+        /// Закрывает форму без сохранения
+        /// </summary>
         private void ButtonCancel_Click(object sender, EventArgs e)
         {
-            this.DialogResult = DialogResult.Cancel;
-            this.Close();
+            DialogResult = DialogResult.Cancel;
+            Close();
         }
     }
 }

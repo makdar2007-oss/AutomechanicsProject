@@ -1,209 +1,177 @@
 ﻿using AutomechanicsProject.Classes;
+using AutomechanicsProject.Helpers;
+using AutomechanicsProject.Properties;
+using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Drawing;
 
 namespace AutomechanicsProject.Formes
 {
+    /// <summary>
+    /// Форма регистрации нового кладовщика в системе
     public partial class Registration : Form
     {
+        /// <summary>
+        /// Инициализирует новый экземпляр формы регистрации
+        /// </summary>
         public Registration()
         {
             InitializeComponent();
+
+            TextBoxHelper.SetupWatermarkTextBox(textBoxSurname, Resources.RegSurnameWatermark);
+            TextBoxHelper.SetupWatermarkTextBox(textBoxName, Resources.RegNameWatermark);
+            TextBoxHelper.SetupWatermarkTextBox(textBoxLastname, Resources.RegLastnameWatermark);
+            TextBoxHelper.SetupWatermarkTextBox(textBoxLogin, Resources.RegLoginWatermark);
+            TextBoxHelper.SetupPasswordTextBox(textBoxPassword, Resources.RegPasswordWatermark);
+            TextBoxHelper.SetupPasswordTextBox(textBoxAgreePassword, Resources.RegConfirmPasswordWatermark);
         }
-
-        private void textBoxSurname_Enter(object sender, EventArgs e)
+        /// <summary>
+        /// Сбрасывает подсветку всех полей ввода к белому цвету
+        /// </summary>
+        private void ResetAllHighlights()
         {
+            textBoxSurname.BackColor = Color.White;
+            textBoxName.BackColor = Color.White;
+            textBoxLastname.BackColor = Color.White;
+            textBoxLogin.BackColor = Color.White;
+            textBoxPassword.BackColor = Color.White;
+            textBoxAgreePassword.BackColor = Color.White;
+        }
+        /// <summary>
+        /// Проверяет заполнение обязательных полей и совпадение паролей
+        /// </summary>
+        private bool ValidateAllFields()
+        {
+            var isValid = true;
 
-            var tb = sender as TextBox;
-            if (tb.Text == "Введите фамилию")
+            if (Validation.IsWatermark(textBoxSurname.Text, Resources.RegSurnameWatermark))
             {
-                tb.Text = string.Empty;
-                tb.ForeColor = Color.Black;
+                textBoxSurname.BackColor = Color.LightPink;
+                isValid = false;
+            }
+            if (Validation.IsWatermark(textBoxName.Text, Resources.RegNameWatermark))
+            {
+                textBoxName.BackColor = Color.LightPink;
+                isValid = false;
             }
 
-        }
-
-        private void textBoxName_Enter(object sender, EventArgs e)
-        {
-            var tb = sender as TextBox;
-            if (tb.Text == "Введите имя")
+            if (Validation.IsWatermark(textBoxLogin.Text, Resources.RegLoginWatermark))
             {
-                tb.Text = string.Empty;
-                tb.ForeColor = Color.Black;
+                textBoxLogin.BackColor = Color.LightPink;
+                isValid = false;
             }
-        }
 
-        private void textBoxLastname_Enter(object sender, EventArgs e)
-        {
-            var tb = sender as TextBox;
-            if (tb.Text == "Введите отчество")
+            if (Validation.IsWatermark(textBoxPassword.Text, Resources.RegPasswordWatermark))
             {
-                tb.Text = string.Empty;
-                tb.ForeColor = Color.Black;
+                textBoxPassword.BackColor = Color.LightPink;
+                isValid = false;
             }
-        }
 
-        private void textBoxLogin_Enter(object sender, EventArgs e)
-        {
-            var tb = sender as TextBox;
-            if (tb.Text == "Введите логин")
+            if (Validation.IsWatermark(textBoxAgreePassword.Text, Resources.RegConfirmPasswordWatermark))
             {
-                tb.Text = string.Empty;
-                tb.ForeColor = Color.Black;
+                textBoxAgreePassword.BackColor = Color.LightPink;
+                isValid = false;
             }
-        }
 
-        private void textBoxPassword_Enter(object sender, EventArgs e)
-        {
-            var tb = sender as TextBox;
-            if (tb.Text == "Введите пароль" || tb.Text == "Повторите пароль")
+            if (!Validation.IsWatermark(textBoxPassword.Text, Resources.RegPasswordWatermark) &&
+                !Validation.IsWatermark(textBoxAgreePassword.Text, Resources.RegConfirmPasswordWatermark))
             {
-                tb.Text = string.Empty;
-                tb.ForeColor = Color.Black;
-                tb.PasswordChar = '*';
+                if (textBoxPassword.Text != textBoxAgreePassword.Text)
+                {
+                    textBoxPassword.BackColor = Color.LightPink;
+                    textBoxAgreePassword.BackColor = Color.LightPink;
+                    isValid = false;
+                }
             }
-        }
 
-        private void textBoxSurname_Leave(object sender, EventArgs e)
-        {
-            var tb = sender as TextBox;
-            if (string.IsNullOrWhiteSpace(tb.Text))
-            {
-                tb.Text = "Введите фамилию";
-                tb.ForeColor = Color.Gray;
-            }
+            return isValid;
         }
-
-        private void textBoxName_Leave(object sender, EventArgs e)
-        {
-            var tb = sender as TextBox;
-            if (string.IsNullOrWhiteSpace(tb.Text))
-            {
-                tb.Text = "Введите имя";
-                tb.ForeColor = Color.Gray;
-            }
-        }
-
-        private void textBoxLastname_Leave(object sender, EventArgs e)
-        {
-            var tb = sender as TextBox;
-            if (string.IsNullOrWhiteSpace(tb.Text))
-            {
-                tb.Text = "Введите отчество";
-                tb.ForeColor = Color.Gray;
-            }
-        }
-
-        private void textBoxLogin_Leave(object sender, EventArgs e)
-        {
-            var tb = sender as TextBox;
-            if (string.IsNullOrWhiteSpace(tb.Text))
-            {
-                tb.Text = "Введите логин";
-                tb.ForeColor = Color.Gray;
-            }
-        }
-
-        private void textBoxPassword_Leave(object sender, EventArgs e)
-        {
-            var tb = sender as TextBox;
-            if (string.IsNullOrWhiteSpace(tb.Text))
-            {
-                tb.PasswordChar = '\0';
-                tb.Text = "Введите пароль";
-                tb.ForeColor = Color.Gray;
-            }
-        }
-        private void textBoxAgreePassword_Leave(object sender, EventArgs e)
-        {
-            var tb = sender as TextBox;
-            if (string.IsNullOrWhiteSpace(tb.Text))
-            {
-                tb.PasswordChar = '\0';
-                tb.Text = "Повторите пароль";
-                tb.ForeColor = Color.Gray;
-            }
-        }
-
+        /// <summary>
+        /// Обработчик нажатия кнопки Зарегистрироваться
+        /// Выполняет регистрацию нового пользователя в системе
+        /// </summary>
         private void buttonRegistration_Click(object sender, EventArgs e)
         {
-            if (textBoxSurname.Text == "Введите фамилию" || string.IsNullOrWhiteSpace(textBoxSurname.Text) ||
-                textBoxName.Text == "Введите имя" || string.IsNullOrWhiteSpace(textBoxName.Text) ||
-                textBoxLogin.Text == "Введите логин" || string.IsNullOrWhiteSpace(textBoxLogin.Text) ||
-                textBoxPassword.Text == "Введите пароль" || string.IsNullOrWhiteSpace(textBoxPassword.Text) ||
-                textBoxAgreePassword.Text == "Повторите пароль" || string.IsNullOrWhiteSpace(textBoxAgreePassword.Text))
-            {
-                MessageBox.Show("Заполните все обязательные поля!", "Ошибка",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            ResetAllHighlights();
+            if (!ValidateAllFields())
                 return;
-            }
 
-            if (textBoxPassword.Text != textBoxAgreePassword.Text)
-            {
-                MessageBox.Show("Пароли не совпадают!", "Ошибка",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
             try
             {
                 using (var db = new DateBase())
                 {
-                    if (db.Users.Any(u => u.Login == textBoxLogin.Text))
-                    {
-                        MessageBox.Show("Пользователь с таким логином уже существует!", "Ошибка",
-                            MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        return;
-                    }
+                    var login = textBoxLogin.Text.Trim();
 
-                    var storekeeperRole = db.Roles.FirstOrDefault(r => r.Position == "Кладовщик");
+                    var storekeeperRole = db.Roles
+                        .FirstOrDefault(r => r.Position == "Кладовщик");
 
                     if (storekeeperRole == null)
                     {
-                        MessageBox.Show("Ошибка: роль 'Кладовщик' не найдена в базе данных!", "Ошибка",
-                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("Ошибка: роль 'Кладовщик' не найдена!",
+                            Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
+
+                    if (db.Users.Any(u => u.Login == login))
+                    {
+                        textBoxLogin.BackColor = System.Drawing.Color.LightPink;
+                        MessageBox.Show("Пользователь уже существует",
+                            Resources.TitleWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+
+                    var hashedPassword = PasswordHelper.HashPassword(textBoxPassword.Text);
 
                     var newUser = new Users
                     {
                         Id = Guid.NewGuid(),
-                        Surname = textBoxSurname.Text,
-                        Name = textBoxName.Text,
-                        Lastname = textBoxLastname.Text == "Введите отчество" ? null : textBoxLastname.Text,
-                        Login = textBoxLogin.Text,
-                        Password = textBoxPassword.Text,
+                        Surname = textBoxSurname.Text.Trim(),
+                        Name = textBoxName.Text.Trim(),
+                        Lastname = Validation.IsWatermark(textBoxLastname.Text, Resources.RegLastnameWatermark)
+                            ? null
+                            : textBoxLastname.Text.Trim(),
+                        Login = login,
+                        Password = hashedPassword,
                         RoleId = storekeeperRole.Id
                     };
-
                     db.Users.Add(newUser);
                     db.SaveChanges();
 
-                    MessageBox.Show($"Регистрация успешна!\n\nВы зарегистрированы как кладовщик:\n" +
-                                  $"{textBoxSurname.Text} {textBoxName.Text} {textBoxLastname.Text}\n" +
-                                  $"Логин: {textBoxLogin.Text}",
-                        "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    new Autorization().Show();
-                    this.Close();
+                    Program.LogInfo($"Зарегистрирован: {newUser.Login}");
+
+                    MessageBox.Show("Регистрация успешна!",
+                        Resources.TitleSuccess, MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    OpenAuthorization();
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Ошибка при регистрации: {ex.Message}", "Ошибка",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Program.LogError("Ошибка регистрации", ex);
+                MessageBox.Show("Ошибка. Попробуйте позже.",
+                    Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-        }     
+        }
+
+        /// <summary>
+        /// Открывает форму авторизации и закрывает текущую форму
+        /// Вызывается после успешной регистрации
+        /// </summary>
+        private void OpenAuthorization()
+        {
+            new Autorization().Show();
+            Close();
+        }
+        /// <summary>
+        /// Обработчик нажатия кнопки Уже есть аккаунт? Войти
+        /// Открывает форму авторизации и закрывает текущую форму
+        /// </summary>
         private void ButtonEnter_Click(object sender, EventArgs e)
         {
             new Autorization().Show();
-            this.Close();
+            Close();
         }
     }
 }
-

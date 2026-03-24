@@ -1,4 +1,6 @@
-﻿namespace AutomechanicsProject.Formes
+﻿using System.Windows.Forms;
+
+namespace AutomechanicsProject.Formes
 {
     partial class DeleteProduct
     {
@@ -33,6 +35,12 @@
             this.buttonCancel = new System.Windows.Forms.Button();
             this.textBoxArt = new System.Windows.Forms.TextBox();
             this.labelDeleteProduct = new System.Windows.Forms.Label();
+            this.textBoxArt.ReadOnly = true;
+            this.textBoxArt.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.StartPosition = FormStartPosition.CenterParent;
+            this.FormBorderStyle = FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -80,8 +88,6 @@
             this.textBoxArt.Size = new System.Drawing.Size(571, 54);
             this.textBoxArt.TabIndex = 1;
             this.textBoxArt.Text = "Введите артикул товара";
-            this.textBoxArt.Enter += new System.EventHandler(this.textBoxArt_Enter);
-            this.textBoxArt.Leave += new System.EventHandler(this.textBoxArt_Leave);
             // 
             // labelDeleteProduct
             // 

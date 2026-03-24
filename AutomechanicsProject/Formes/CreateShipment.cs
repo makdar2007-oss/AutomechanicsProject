@@ -1,4 +1,6 @@
 ﻿using AutomechanicsProject.Classes;
+using AutomechanicsProject.Helpers;
+using AutomechanicsProject.Properties;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -8,265 +10,310 @@ using System.Windows.Forms;
 
 namespace AutomechanicsProject.Formes
 {
+    /// <summary>
+    /// Форма для создания новой отгрузки товаров
+    /// </summary>
     public partial class CreateShipment : Form
     {
-        private DateBase db;
+        private readonly DateBase db;
         private List<ShipmentItem> shipmentItems;
-        private decimal totalAmount;    
+        private decimal totalAmount;
+        private int totalItemsCount;
+        /// <summary>
+        /// Инициализирует новый экземпляр формы создания отгрузки
+        /// </summary>
         public CreateShipment()
         {
             InitializeComponent();
             db = new DateBase();
             shipmentItems = new List<ShipmentItem>();
             totalAmount = 0;
+            totalItemsCount = 0;
+
+            TextBoxHelper.SetupWatermarkTextBox(textBoxUnit, Resources.ShipmentQuantityWatermark);
+            comboBoxProduct.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBoxRecipient1.DropDownStyle = ComboBoxStyle.DropDownList;
+
+            UpdateDisplay();
         }
+        /// <summary>
+        /// Обработчик загрузки формы
+        /// </summary>
         private void CreateShipment_Load(object sender, EventArgs e)
         {
             LoadProducts();
+            LoadRecipients();
         }
+        /// <summary>
+        /// Загружает товары, доступные для отгрузки 
+        /// </summary>
         private void LoadProducts()
         {
             try
             {
                 var products = db.Products
                     .Include(p => p.Category)
-                    .Where(p => p.Balance > 0) 
+                    .Where(p => p.Balance > 0)
                     .Select(p => new
                     {
                         p.Id,
-                        DisplayName = $"{p.Article} - {p.Name} (в наличии: {p.Balance} {p.Unit})",
+                        DisplayName = $"{p.Article} - {p.Name} (остаток: {p.Balance} {p.Unit})",
                         p.Article,
                         p.Name,
                         p.Price,
                         p.Balance,
                         p.Unit
                     })
+                    .OrderBy(p => p.Name)
                     .ToList();
-
                 comboBoxProduct.DisplayMember = "DisplayName";
                 comboBoxProduct.ValueMember = "Id";
                 comboBoxProduct.DataSource = products;
-
                 if (comboBoxProduct.Items.Count > 0)
                 {
                     comboBoxProduct.SelectedIndex = -1;
                 }
+                if (products.Count == 0)
+                {
+                    MessageBox.Show("Нет товаров в наличии для отгрузки!",
+                        Resources.TitleInformation, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Ошибка при загрузке товаров: {ex.Message}", "Ошибка",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Program.LogError("Ошибка при загрузке товаров в CreateShipment", ex);
+                MessageBox.Show("Не удалось загрузить товары",
+                    Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-        private void ButtonAdd_Click(object sender, EventArgs e)
+        /// <summary>
+        /// Загружает список получателей 
+        /// </summary>
+        private void LoadRecipients()
         {
             try
             {
-                if (comboBoxProduct.SelectedItem == null)
-                {
-                    MessageBox.Show("Выберите товар из списка!", "Ошибка",
-                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-                if (string.IsNullOrWhiteSpace(textBoxUser.Text) || textBoxUser.Text == "Введите кому")
-                {
-                    MessageBox.Show("Введите ФИО получателя!", "Ошибка",
-                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-                if (string.IsNullOrWhiteSpace(textBoxUnit.Text) || textBoxUnit.Text == "Введите количество товара")
-                {
-                    MessageBox.Show("Введите количество товара!", "Ошибка",
-                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-
-                if (!int.TryParse(textBoxUnit.Text, out int quantity) || quantity <= 0)
-                {
-                    MessageBox.Show("Введите корректное количество (целое положительное число)!", "Ошибка",
-                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-                var selectedProduct = (dynamic)comboBoxProduct.SelectedItem;
-                Guid productId = selectedProduct.Id;
-                string article = selectedProduct.Article;
-                string productName = selectedProduct.Name;
-                decimal price = selectedProduct.Price;
-                int availableBalance = selectedProduct.Balance;
-                string unit = selectedProduct.Unit;
-
-                if (quantity > availableBalance)
-                {
-                    MessageBox.Show($"Недостаточно товара на складе!\nДоступно: {availableBalance} {unit}",
-                        "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-
-                var existingItem = shipmentItems.FirstOrDefault(i => i.ProductId == productId);
-                if (existingItem != null)
-                {
-                    var result = MessageBox.Show(
-                        $"Товар \"{productName}\" уже добавлен в список.\n" +
-                        $"Текущее количество: {existingItem.Quantity} {unit}\n\n" +
-                        "Заменить количество новым значением?",
-                        "Товар уже в списке",
-                        MessageBoxButtons.YesNo,
-                        MessageBoxIcon.Question);
-
-                    if (result == DialogResult.Yes)
+                var recipients = db.Addresses
+                    .OrderBy(a => a.CompanyName)
+                    .Select(a => new
                     {
-                        int totalQuantity = quantity;
-                        if (totalQuantity > availableBalance)
-                        {
-                            MessageBox.Show($"Недостаточно товара на складе!\nДоступно: {availableBalance} {unit}",
-                                "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                            return;
-                        }
-                        existingItem.Quantity = quantity;
-                    }
-                }
-                else
+                        a.Id,
+                        CompanyName = a.CompanyName
+                    })
+                    .ToList();
+
+                comboBoxRecipient1.DisplayMember = "CompanyName";
+                comboBoxRecipient1.ValueMember = "Id";
+                comboBoxRecipient1.DataSource = recipients;
+
+                if (comboBoxRecipient1.Items.Count > 0)
                 {
-                    var newItem = new ShipmentItem
-                    {
-                        ProductId = productId,
-                        ProductName = productName,
-                        Article = article,
-                        Quantity = quantity,
-                        Price = price
-                    };
-                    shipmentItems.Add(newItem);
+                    comboBoxRecipient1.SelectedIndex = -1;
                 }
 
-                RefreshShipmentList();
-                textBoxUnit.Text = "Введите количество";
-                textBoxUnit.ForeColor = Color.Gray;
-                comboBoxProduct.SelectedIndex = -1;
+                buttonShipment.Enabled = recipients.Count > 0;
 
-                MessageBox.Show("Товар добавлен в список отгрузки!", "Успех",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                if (recipients.Count == 0)
+                {
+                    MessageBox.Show("Нет доступных получателей!\nОбратитесь к администратору для добавления компаний.",
+                        Resources.TitleInformation, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Ошибка при добавлении товара: {ex.Message}", "Ошибка",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Program.LogError("Ошибка при загрузке получателей", ex);
+                MessageBox.Show("Не удалось загрузить список получателей",
+                    Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+        /// <summary>
+        /// Обработчик нажатия кнопки Добавить в список
+        /// </summary>
+        private void ButtonAdd_Click(object sender, EventArgs e)
+        {
+            if (TryAddProductToShipment())
+            {
+                RefreshShipmentList();
+                ClearAddFields();
+                MessageBox.Show("Товар добавлен в список отгрузки", Resources.TitleSuccess,
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+        /// <summary>
+        /// Пытается добавить товар в список отгрузки
+        /// </summary>
+        private bool TryAddProductToShipment()
+        {
+            if (comboBoxProduct.SelectedItem == null)
+            {
+                MessageBox.Show(Resources.ErrorSelectProduct, Resources.TitleWarning,
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                comboBoxProduct.Focus();
+                return false;
+            }
+
+            if (comboBoxRecipient1.SelectedItem == null)
+            {
+                MessageBox.Show("Выберите получателя из списка!",
+                    Resources.TitleWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                comboBoxRecipient1.Focus();
+                return false;
+            }
+
+            if (!Validation.ValidateQuantity(textBoxUnit.Text, out var quantity) || quantity <= 0)
+            {
+                MessageBox.Show(Resources.ErrorEnterCorrectQuantity, Resources.TitleWarning,
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                textBoxUnit.Focus();
+                return false;
+            }
+
+            dynamic selectedProduct = comboBoxProduct.SelectedItem;
+            if (quantity > selectedProduct.Balance)
+            {
+                MessageBox.Show($"Недостаточно товара на складе!\nДоступно: {selectedProduct.Balance} {selectedProduct.Unit}",
+                    Resources.TitleWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                textBoxUnit.Focus();
+                return false;
+            }
+            return AddOrUpdateShipmentItem(selectedProduct, quantity);
+        }
+        /// <summary>
+        /// Добавляет или обновляет позицию в списке отгрузки
+        /// </summary>
+        private bool AddOrUpdateShipmentItem(dynamic selectedProduct, int quantity)
+        {
+            var productId = (Guid)selectedProduct.Id;
+            var existingItem = shipmentItems.FirstOrDefault(i => i.ProductId == productId);
+            if (existingItem != null)
+            {
+                var result = MessageBox.Show(
+                    $"Товар \"{selectedProduct.Name}\" уже добавлен в список.\n" +
+                    $"Текущее количество: {existingItem.Quantity} {selectedProduct.Unit}\n\n" +
+                    "Заменить количество новым значением?",
+                    "Товар уже в списке",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question);
+
+                if (result == DialogResult.Yes)
+                {
+                    existingItem.Quantity = quantity;
+                    return true;
+                }
+                return false;
+            }
+            shipmentItems.Add(new ShipmentItem
+            {
+                Id = Guid.NewGuid(),
+                ProductId = productId,
+                ProductName = selectedProduct.Name,
+                Article = selectedProduct.Article,
+                Quantity = quantity,
+                Price = selectedProduct.Price
+            });
+            return true;
+        }
+        /// <summary>
+        /// Очищает поля добавления товара
+        /// </summary>
+        private void ClearAddFields()
+        {
+            textBoxUnit.Text = Resources.ShipmentQuantityWatermark;
+            textBoxUnit.ForeColor = Color.Gray;
+            if (comboBoxProduct.Items.Count > 0)
+            {
+                comboBoxProduct.SelectedIndex = -1;
+            }
+        }
+        /// <summary>
+        /// Обновляет список товаров в отгрузке и отображает итоговую информацию
+        /// </summary>
         private void RefreshShipmentList()
         {
             totalAmount = 0;
-
+            totalItemsCount = 0;
+            var recipientName = "Не выбран";
+            if (comboBoxRecipient1.SelectedItem != null)
+            {
+                dynamic selectedRecipient = comboBoxRecipient1.SelectedItem;
+                recipientName = selectedRecipient.CompanyName;
+            }
             var displayList = shipmentItems.Select(item =>
             {
-                decimal itemTotal = item.Quantity * item.Price;
+                var itemTotal = item.Quantity * item.Price;
                 totalAmount += itemTotal;
+                totalItemsCount += item.Quantity;
 
                 return new
                 {
-                    item.Article,
-                    item.ProductName,
-                    item.Quantity,
-                    item.Price,
-                    Total = itemTotal,
-                    Recipient = textBoxUser.Text
+                    Артикул = item.Article,
+                    Название = item.ProductName,
+                    Колво = item.Quantity,
+                    Цена = item.Price,
+                    Сумма = itemTotal,
+                    Кому = recipientName
                 };
             }).ToList();
 
-            dataGridViewShipment.DataSource = null;
             dataGridViewShipment.DataSource = displayList;
-
-            this.Text = $"Отгрузка - Общая сумма: {totalAmount:C}";
+            UpdateDisplay();
         }
-        private void textBoxUser_Enter(object sender, EventArgs e)
+        /// <summary>
+        /// Обновляет отображение итоговой суммы
+        /// </summary>
+        private void UpdateDisplay()
         {
-            var tb = sender as TextBox;
-            if (tb.Text == "Введите кому")
+            if (labelTotalValue != null)
             {
-                tb.Text = string.Empty;
-                tb.ForeColor = Color.Black;
+                labelTotalValue.Text = totalAmount.ToString("F2");
             }
+            Text = $"Формирование отгрузки - Общая сумма: {totalAmount:F2}";
         }
-        private void textBoxUser_Leave(object sender, EventArgs e)
+        /// <summary>
+        /// Проверяет, выбран ли получатель
+        /// </summary>
+        private bool IsRecipientSelected()
         {
-            var tb = sender as TextBox;
-            if (string.IsNullOrWhiteSpace(tb.Text))
+            if (comboBoxRecipient1.SelectedItem == null)
             {
-                tb.Text = "Введите кому";
-                tb.ForeColor = Color.Gray;
+                MessageBox.Show("Выберите получателя из списка!",
+                    Resources.TitleWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                comboBoxRecipient1.Focus();
+                return false;
             }
+            return true;
         }
-
-        private void textBoxUnit_Leave(object sender, EventArgs e)
-        {
-            var tb = sender as TextBox;
-            if (string.IsNullOrWhiteSpace(tb.Text))
-            {
-                tb.Text = "Введите количество товара";
-                tb.ForeColor = Color.Gray;
-            }
-        }
-
-        private void textBoxUnit_Enter(object sender, EventArgs e)
-        {
-            var tb = sender as TextBox;
-            if (tb.Text == "Введите количество товара")
-            {
-                tb.Text = string.Empty;
-                tb.ForeColor = Color.Black;
-            }
-        }
+        /// <summary>
+        /// Обработчик нажатия кнопки Подтвердить отгрузку
+        /// </summary>
         private void ButtonShipment_Click(object sender, EventArgs e)
         {
             if (shipmentItems.Count == 0)
             {
-                MessageBox.Show("Добавьте товары в список отгрузки!", "Ошибка",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Добавьте товары в список отгрузки!",
+                    Resources.TitleWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-            string recipientName = textBoxUser.Text.Trim();
-            if (string.IsNullOrWhiteSpace(recipientName) || recipientName == "Введите кому")
-            {
-                MessageBox.Show("Введите ФИО получателя!", "Ошибка",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
+            if (!IsRecipientSelected()) return;
+            dynamic selectedRecipient = comboBoxRecipient1.SelectedItem;
+            var recipientName = selectedRecipient.CompanyName;
+            var recipientId = (Guid)selectedRecipient.Id;
             var confirmResult = MessageBox.Show(
                 $"Подтвердить отгрузку?\n\n" +
                 $"Получатель: {recipientName}\n" +
                 $"Количество позиций: {shipmentItems.Count}\n" +
-                $"Общая сумма: {totalAmount:C}",
-                "Подтверждение отгрузки",
+                $"Общее количество товаров: {totalItemsCount} шт.\n" +
+                $"Общая сумма: {totalAmount:C2}",
+                Resources.TitleConfirmation,
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question);
 
             if (confirmResult != DialogResult.Yes)
             {
                 return;
-            }
+            } 
             try
             {
-                var recipient = db.Users.FirstOrDefault(u => u.FullName == recipientName);
-                Guid recipientId;
-
-                if (recipient == null)
-                {
-                    var newRecipient = new Users
-                    {
-                        Id = Guid.NewGuid(),
-                        Surname = recipientName,
-                        Name = "Внешний",
-                        Login = $"external_{DateTime.Now.Ticks}",
-                        Password = "external",
-                        RoleId = db.Roles.FirstOrDefault(r => r.Position == "Кладовщик")?.Id ?? Guid.Empty
-                    };
-                    db.Users.Add(newRecipient);
-                    db.SaveChanges();
-                    recipientId = newRecipient.Id;
-                }
-                else
-                {
-                    recipientId = recipient.Id;
-                }
                 var shipment = new Shipment
                 {
                     Id = Guid.NewGuid(),
@@ -276,6 +323,7 @@ namespace AutomechanicsProject.Formes
                     TotalAmount = totalAmount
                 };
                 db.Shipments.Add(shipment);
+
                 foreach (var item in shipmentItems)
                 {
                     db.ShipmentItems.Add(new ShipmentItem
@@ -288,52 +336,101 @@ namespace AutomechanicsProject.Formes
                         ProductName = item.ProductName,
                         Article = item.Article
                     });
+
                     var product = db.Products.Find(item.ProductId);
                     if (product != null)
                     {
                         product.Balance -= item.Quantity;
+                        if (product.Balance < 0)
+                        {
+                            throw new Exception($"Отрицательный остаток товара {product.Name}! " +
+                                $"Остаток на складе: {product.Balance + item.Quantity}, запрошено: {item.Quantity}");
+                        }
                     }
                 }
                 db.SaveChanges();
+                Program.LogInfo($"Отгрузка оформлена: получатель {recipientName}, сумма {totalAmount:C2}");
                 MessageBox.Show($"Отгрузка успешно оформлена!\n\n" +
-                      $"Получатель: {recipientName}\n" +
-                      $"Количество позиций: {shipmentItems.Count}\n" +
-                      $"Общая сумма: {totalAmount:C}",
-                      "Успех",
-                      MessageBoxButtons.OK,
-                      MessageBoxIcon.Information);
+                    $"Получатель: {recipientName}\n" +
+                    $"Количество позиций: {shipmentItems.Count}\n" +
+                    $"Общее количество товаров: {totalItemsCount} шт.\n" +
+                    $"Общая сумма: {totalAmount:C2}",
+                    Resources.TitleSuccess, MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                this.DialogResult = DialogResult.OK;
-                this.Close();
+                DialogResult = DialogResult.OK;
+                Close();
+            }
+            catch (DbUpdateException dbEx)
+            {
+                Program.LogError("DbUpdateException при оформлении отгрузки", dbEx);
+                MessageBox.Show($"Не удалось оформить отгрузку.\n\nОшибка БД: {dbEx.InnerException?.Message ?? dbEx.Message}",
+                    Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Ошибка при оформлении отгрузки: {ex.Message}", "Ошибка",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Program.LogError("Ошибка при оформлении отгрузки", ex);
+                MessageBox.Show($"Не удалось оформить отгрузку.\n\nОшибка: {ex.Message}",
+                    Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+        /// <summary>
+        /// Обработчик нажатия кнопки Отмена
+        /// </summary>
         private void ButtonCancel_Click(object sender, EventArgs e)
         {
             if (shipmentItems.Count > 0)
             {
                 var result = MessageBox.Show(
-                    "У вас есть добавленные товары в списке отгрузки.\n" +
-                    "Вы действительно хотите отменить создание отгрузки?",
-                    "Подтверждение отмены",
+                    "У вас есть добавленные товары в списке отгрузки.\nВы действительно хотите отменить создание отгрузки?",
+                    Resources.TitleConfirmation,
                     MessageBoxButtons.YesNo,
                     MessageBoxIcon.Question);
 
-                if (result == DialogResult.Yes)
-                {
-                    this.DialogResult = DialogResult.Cancel;
-                    this.Close();
-                }
+                if (result != DialogResult.Yes) return;
             }
-            else
+
+            DialogResult = DialogResult.Cancel;
+            Close();
+        }
+        /// <summary>
+        /// Обработчик двойного клика по списку отгрузки - удаление товара
+        /// </summary>
+        private void DataGridViewShipment_DoubleClick(object sender, EventArgs e)
+        {
+            RemoveSelectedItem();
+        }
+        /// <summary>
+        /// Удаляет выбранный товар из списка отгрузки
+        /// </summary>
+        private void RemoveSelectedItem()
+        {
+            if (dataGridViewShipment.CurrentRow?.DataBoundItem == null) return;
+
+            dynamic selectedItem = dataGridViewShipment.CurrentRow.DataBoundItem;
+            var productName = (string)selectedItem.Название;
+
+            var result = MessageBox.Show(
+                $"Удалить товар \"{productName}\" из списка отгрузки?",
+                "Подтверждение удаления",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
+
+            if (result != DialogResult.Yes) return;
+
+            var itemToRemove = shipmentItems.FirstOrDefault(i => i.ProductName == productName);
+            if (itemToRemove != null)
             {
-                this.DialogResult = DialogResult.Cancel;
-                this.Close();
+                shipmentItems.Remove(itemToRemove);
+                RefreshShipmentList();
             }
+        }
+        /// <summary>
+        /// Освобождает ресурсы при закрытии формы
+        /// </summary>
+        protected override void OnFormClosed(FormClosedEventArgs e)
+        {
+            db?.Dispose();
+            base.OnFormClosed(e);
         }
     }
 }
