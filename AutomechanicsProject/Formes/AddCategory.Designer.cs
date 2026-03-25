@@ -55,8 +55,6 @@
             this.textBoxAddCategory.Size = new System.Drawing.Size(573, 61);
             this.textBoxAddCategory.TabIndex = 1;
             this.textBoxAddCategory.Text = "Введите название";
-            this.textBoxAddCategory.Enter += new System.EventHandler(this.textBoxAddCategory_Enter);
-            this.textBoxAddCategory.Leave += new System.EventHandler(this.textBoxAddCategory_Leave);
             // 
             // buttonCancel
             // 

@@ -91,8 +91,6 @@
             this.textBoxPrice.TabIndex = 5;
             this.textBoxPrice.Text = "Цена";
             this.textBoxPrice.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.textBoxPrice.Enter += new System.EventHandler(this.textBoxPrice_Enter);
-            this.textBoxPrice.Leave += new System.EventHandler(this.textBoxPrice_Leave);
             // 
             // textBoxUnit
             // 
@@ -104,8 +102,6 @@
             this.textBoxUnit.TabIndex = 4;
             this.textBoxUnit.Text = "Единица измерения";
             this.textBoxUnit.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.textBoxUnit.Enter += new System.EventHandler(this.textBoxUnit_Enter);
-            this.textBoxUnit.Leave += new System.EventHandler(this.textBoxUnit_Leave);
             // 
             // textBoxCategory
             // 
@@ -117,8 +113,6 @@
             this.textBoxCategory.TabIndex = 3;
             this.textBoxCategory.Text = "Категория";
             this.textBoxCategory.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.textBoxCategory.Enter += new System.EventHandler(this.textBoxCategory_Enter);
-            this.textBoxCategory.Leave += new System.EventHandler(this.textBoxCategory_Leave);
             // 
             // textBoxName
             // 
@@ -130,8 +124,6 @@
             this.textBoxName.TabIndex = 2;
             this.textBoxName.Text = "Название";
             this.textBoxName.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.textBoxName.Enter += new System.EventHandler(this.textBoxName_Enter);
-            this.textBoxName.Leave += new System.EventHandler(this.textBoxName_Leave);
             // 
             // textBoxArt
             // 
@@ -143,8 +135,6 @@
             this.textBoxArt.TabIndex = 1;
             this.textBoxArt.Text = "Артикул";
             this.textBoxArt.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.textBoxArt.Enter += new System.EventHandler(this.textBoxArt_Enter);
-            this.textBoxArt.Leave += new System.EventHandler(this.textBoxArt_Leave);
             // 
             // labelRedact
             // 

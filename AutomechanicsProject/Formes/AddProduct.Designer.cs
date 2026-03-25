@@ -60,8 +60,6 @@
             this.textBoxArt.Size = new System.Drawing.Size(476, 54);
             this.textBoxArt.TabIndex = 1;
             this.textBoxArt.Text = "Введите артикул";
-            this.textBoxArt.Enter += new System.EventHandler(this.textBoxArt_Enter);
-            this.textBoxArt.Leave += new System.EventHandler(this.textBoxArt_Leave);
             // 
             // textBoxName
             // 
@@ -72,8 +70,6 @@
             this.textBoxName.Size = new System.Drawing.Size(476, 54);
             this.textBoxName.TabIndex = 3;
             this.textBoxName.Text = "Введите название";
-            this.textBoxName.Enter += new System.EventHandler(this.textBoxName_Enter);
-            this.textBoxName.Leave += new System.EventHandler(this.textBoxName_Leave);
             // 
             // textBoxUnit
             // 
@@ -84,8 +80,6 @@
             this.textBoxUnit.Size = new System.Drawing.Size(476, 54);
             this.textBoxUnit.TabIndex = 4;
             this.textBoxUnit.Text = "Введите единицы измерения";
-            this.textBoxUnit.Enter += new System.EventHandler(this.textBoxUnit_Enter);
-            this.textBoxUnit.Leave += new System.EventHandler(this.textBoxUnit_Leave);
             // 
             // textBoxPrice
             // 
@@ -97,8 +91,6 @@
             this.textBoxPrice.Size = new System.Drawing.Size(476, 54);
             this.textBoxPrice.TabIndex = 5;
             this.textBoxPrice.Text = "Введите цену";
-            this.textBoxPrice.Enter += new System.EventHandler(this.textBoxPrice_Enter);
-            this.textBoxPrice.Leave += new System.EventHandler(this.textBoxPrice_Leave);
             // 
             // buttonCancel
             // 
@@ -143,8 +135,6 @@
             this.comboBoxCategory.Size = new System.Drawing.Size(476, 45);
             this.comboBoxCategory.TabIndex = 1;
             this.comboBoxCategory.Text = "Выберите категорию";
-            this.comboBoxCategory.Enter += new System.EventHandler(this.comboBoxCategory_Enter);
-            this.comboBoxCategory.Leave += new System.EventHandler(this.comboBoxCategory_Leave);
             // 
             // AddProduct
             // 

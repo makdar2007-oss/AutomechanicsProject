@@ -1,30 +1,62 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AutomechanicsProject.Classes
 {
-    public class ShipmentItem
-    {
-        public Guid Id { get; set; }            
-        public Guid ShipmentId { get; set; }      
-        public Guid ProductId { get; set; }        
-        public int Quantity { get; set; }        
-        public decimal Price { get; set; }         
-        public string ProductName { get; set; }  
-        public string Article { get; set; }      
-        public virtual Product Product { get; set; }
-        public virtual Shipment Shipment { get; set; }
-    }
+    /// <summary>
+    /// Представляет отгрузку товаров получателю
+    /// </summary>
+    [Table("shipment")]
     public class Shipment
     {
-        public Guid Id { get; set; }            
-        public DateTime Date { get; set; }         
-        public Guid UserId { get; set; }            
-        public Guid CreatedByUserId { get; set; }   
-        public decimal TotalAmount { get; set; }    
+        /// <summary>
+        /// Уникальный идентификатор отгрузки
+        /// </summary>
+        [Key]
+        [Column("id")]
+        public Guid Id { get; set; }
 
-        public virtual User User { get; set; }             
-        public virtual User CreatedByUser { get; set; }     
+        /// <summary>
+        /// Дата и время создания отгрузки
+        /// </summary>
+        [Column("date_created")]
+        public DateTime Date { get; set; }
+
+        /// <summary>
+        /// Идентификатор получателя 
+        /// </summary>
+        [Column("user_id")]
+        public Guid UserId { get; set; }
+
+        /// <summary>
+        /// Идентификатор кладовщика, создавшего отгрузку
+        /// </summary>
+        [Column("created_by_user_id")]
+        public Guid CreatedByUserId { get; set; }
+
+        /// <summary>
+        /// Общая сумма отгрузки
+        /// </summary>
+        [Column("total_amount")]
+        public decimal TotalAmount { get; set; }
+
+        /// <summary>
+        /// Получатель (навигационное свойство)
+        /// </summary>
+        [ForeignKey("UserId")]
+        public virtual Address User { get; set; }
+
+        /// <summary>
+        /// Кладовщик, создавший отгрузку (навигационное свойство)
+        /// </summary>
+        [ForeignKey("CreatedByUserId")]
+        public virtual Users CreatedByUser { get; set; }
+
+        /// <summary>
+        /// Коллекция позиций в отгрузке
+        /// </summary>
         public virtual List<ShipmentItem> Items { get; set; } = new List<ShipmentItem>();
-    } 
+    }
 }

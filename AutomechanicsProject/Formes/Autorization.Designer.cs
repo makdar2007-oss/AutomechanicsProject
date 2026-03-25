@@ -40,12 +40,15 @@
             this.textBoxLogin = new System.Windows.Forms.TextBox();
             this.panelautorization.SuspendLayout();
             this.SuspendLayout();
+            this.MinimumSize = new System.Drawing.Size(800, 600);
+            this.WindowState = System.Windows.Forms.FormWindowState.Normal;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             // 
             // labelEnter
             // 
             this.labelEnter.AutoSize = true;
             this.labelEnter.Font = new System.Drawing.Font("Jost", 22.125F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelEnter.Location = new System.Drawing.Point(26, 36);
+            this.labelEnter.Location = new System.Drawing.Point(38, 36);
             this.labelEnter.Name = "labelEnter";
             this.labelEnter.Size = new System.Drawing.Size(201, 85);
             this.labelEnter.TabIndex = 0;
@@ -55,7 +58,7 @@
             // 
             this.labelLogin.AutoSize = true;
             this.labelLogin.Font = new System.Drawing.Font("Jost", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelLogin.Location = new System.Drawing.Point(31, 140);
+            this.labelLogin.Location = new System.Drawing.Point(38, 140);
             this.labelLogin.Name = "labelLogin";
             this.labelLogin.Size = new System.Drawing.Size(104, 46);
             this.labelLogin.TabIndex = 1;
@@ -65,7 +68,7 @@
             // 
             this.labelPassword.AutoSize = true;
             this.labelPassword.Font = new System.Drawing.Font("Jost", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelPassword.Location = new System.Drawing.Point(31, 255);
+            this.labelPassword.Location = new System.Drawing.Point(38, 255);
             this.labelPassword.Name = "labelPassword";
             this.labelPassword.Size = new System.Drawing.Size(127, 46);
             this.labelPassword.TabIndex = 2;
@@ -81,6 +84,7 @@
             this.panelauto.Name = "panelauto";
             this.panelauto.Size = new System.Drawing.Size(535, 801);
             this.panelauto.TabIndex = 3;
+            this.panelauto.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             // 
             // panelautorization
             // 
@@ -92,20 +96,22 @@
             this.panelautorization.Controls.Add(this.labelEnter);
             this.panelautorization.Controls.Add(this.labelPassword);
             this.panelautorization.Controls.Add(this.labelLogin);
-            this.panelautorization.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelautorization.Font = new System.Drawing.Font("Jost", 7.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.panelautorization.Location = new System.Drawing.Point(0, 0);
             this.panelautorization.Name = "panelautorization";
             this.panelautorization.Size = new System.Drawing.Size(1176, 801);
             this.panelautorization.TabIndex = 4;
+            this.panelautorization.Dock = System.Windows.Forms.DockStyle.Fill; 
+            this.panelautorization.AutoSize = true;
+            this.panelautorization.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             // 
             // buttonRegest
             // 
             this.buttonRegest.FlatAppearance.BorderSize = 0;
             this.buttonRegest.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonRegest.Location = new System.Drawing.Point(91, 661);
+            this.buttonRegest.Location = new System.Drawing.Point(38, 661);
             this.buttonRegest.Name = "buttonRegest";
-            this.buttonRegest.Size = new System.Drawing.Size(460, 42);
+            this.buttonRegest.Size = new System.Drawing.Size(561, 42);
             this.buttonRegest.TabIndex = 6;
             this.buttonRegest.Text = "Нет аккаунта? Зарегистрироваться";
             this.buttonRegest.UseVisualStyleBackColor = true;
@@ -133,8 +139,6 @@
             this.textBoxPassword.Size = new System.Drawing.Size(561, 54);
             this.textBoxPassword.TabIndex = 4;
             this.textBoxPassword.Text = "Введите пароль";
-            this.textBoxPassword.Enter += new System.EventHandler(this.textBoxPassword_Enter);
-            this.textBoxPassword.Leave += new System.EventHandler(this.textBoxPassword_Leave);
             // 
             // textBoxLogin
             // 
@@ -145,9 +149,7 @@
             this.textBoxLogin.Name = "textBoxLogin";
             this.textBoxLogin.Size = new System.Drawing.Size(561, 54);
             this.textBoxLogin.TabIndex = 3;
-            this.textBoxLogin.Text = "Введите имя";
-            this.textBoxLogin.Enter += new System.EventHandler(this.textBoxLogin_Enter);
-            this.textBoxLogin.Leave += new System.EventHandler(this.textBoxLogin_Leave);
+            this.textBoxLogin.Text = "Введите логин";
             // 
             // Autorization
             // 
@@ -177,4 +179,3 @@
         private System.Windows.Forms.Button buttonRegest;
     }
 }
-

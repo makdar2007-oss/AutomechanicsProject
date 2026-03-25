@@ -28,154 +28,147 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.panelStorekeeper = new System.Windows.Forms.Panel();
-            this.buttonExit = new System.Windows.Forms.Button();
+            this.panelSearch = new System.Windows.Forms.Panel();
+            this.buttonShipment = new System.Windows.Forms.Button();
+            this.textBoxSearch = new System.Windows.Forms.TextBox();
+            this.panelData = new System.Windows.Forms.Panel();
             this.dataGridViewStore = new System.Windows.Forms.DataGridView();
+            this.buttonExit = new System.Windows.Forms.Button();
             this.menuStripStorekeeper = new System.Windows.Forms.MenuStrip();
-            this.toolStripTextBox1 = new System.Windows.Forms.ToolStripTextBox();
-            this.toolStripTextBox2 = new System.Windows.Forms.ToolStripTextBox();
-            this.Articul = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.NameStorekeeper = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Category = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Unit = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Price = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Balance = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.toolStripTextBoxStorekeeper = new System.Windows.Forms.ToolStripTextBox();
             this.panelStorekeeper.SuspendLayout();
+            this.panelSearch.SuspendLayout();
+            this.panelData.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewStore)).BeginInit();
             this.menuStripStorekeeper.SuspendLayout();
             this.SuspendLayout();
             // 
             // panelStorekeeper
             // 
+            this.panelStorekeeper.BackColor = System.Drawing.SystemColors.ActiveBorder;
+            this.panelStorekeeper.Controls.Add(this.panelSearch);
+            this.panelStorekeeper.Controls.Add(this.panelData);
             this.panelStorekeeper.Controls.Add(this.buttonExit);
-            this.panelStorekeeper.Controls.Add(this.dataGridViewStore);
             this.panelStorekeeper.Controls.Add(this.menuStripStorekeeper);
             this.panelStorekeeper.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelStorekeeper.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.125F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.panelStorekeeper.Font = new System.Drawing.Font("Jost", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.panelStorekeeper.Location = new System.Drawing.Point(0, 0);
             this.panelStorekeeper.Name = "panelStorekeeper";
-            this.panelStorekeeper.Size = new System.Drawing.Size(1286, 937);
+            this.panelStorekeeper.Size = new System.Drawing.Size(1322, 1154);
             this.panelStorekeeper.TabIndex = 0;
+            // 
+            // panelSearch
+            // 
+            this.panelSearch.Controls.Add(this.buttonShipment);
+            this.panelSearch.Controls.Add(this.textBoxSearch);
+            this.panelSearch.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panelSearch.Location = new System.Drawing.Point(0, 57);
+            this.panelSearch.Name = "panelSearch";
+            this.panelSearch.Size = new System.Drawing.Size(1322, 115);
+            this.panelSearch.TabIndex = 6;
+            // 
+            // buttonShipment
+            // 
+            this.buttonShipment.BackColor = System.Drawing.SystemColors.Control;
+            this.buttonShipment.Dock = System.Windows.Forms.DockStyle.Right;
+            this.buttonShipment.Font = new System.Drawing.Font("Jost", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.buttonShipment.Location = new System.Drawing.Point(999, 0);
+            this.buttonShipment.Name = "buttonShipment";
+            this.buttonShipment.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.buttonShipment.Size = new System.Drawing.Size(323, 115);
+            this.buttonShipment.TabIndex = 4;
+            this.buttonShipment.Text = "Оформить отгрузку";
+            this.buttonShipment.UseVisualStyleBackColor = false;
+            this.buttonShipment.Click += new System.EventHandler(this.ButtonShipment_Click);
+            // 
+            // textBoxSearch
+            // 
+            this.textBoxSearch.Font = new System.Drawing.Font("Jost", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.textBoxSearch.Location = new System.Drawing.Point(28, 19);
+            this.textBoxSearch.Name = "textBoxSearch";
+            this.textBoxSearch.Size = new System.Drawing.Size(484, 54);
+            this.textBoxSearch.TabIndex = 2;
+            this.textBoxSearch.Text = "Поиск:";
+            this.textBoxSearch.TextChanged += new System.EventHandler(this.TextBoxSearch_TextChanged);
+            // 
+            // panelData
+            // 
+            this.panelData.Controls.Add(this.dataGridViewStore);
+            this.panelData.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelData.Location = new System.Drawing.Point(0, 57);
+            this.panelData.Name = "panelData";
+            this.panelData.Size = new System.Drawing.Size(1322, 1097);
+            this.panelData.TabIndex = 5;
+            // 
+            // dataGridViewStore
+            // 
+            this.dataGridViewStore.AllowUserToResizeRows = false;
+            this.dataGridViewStore.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dataGridViewStore.BackgroundColor = System.Drawing.SystemColors.MenuBar;
+            this.dataGridViewStore.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dataGridViewStore.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewStore.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.dataGridViewStore.Location = new System.Drawing.Point(0, 108);
+            this.dataGridViewStore.Name = "dataGridViewStore";
+            this.dataGridViewStore.RowHeadersVisible = false;
+            this.dataGridViewStore.RowHeadersWidth = 82;
+            this.dataGridViewStore.RowTemplate.Height = 35;
+            this.dataGridViewStore.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dataGridViewStore.Size = new System.Drawing.Size(1322, 989);
+            this.dataGridViewStore.TabIndex = 1;
             // 
             // buttonExit
             // 
-            this.buttonExit.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.buttonExit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonExit.AutoSize = true;
+            this.buttonExit.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.buttonExit.FlatAppearance.BorderSize = 0;
             this.buttonExit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonExit.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.buttonExit.Location = new System.Drawing.Point(1098, 0);
+            this.buttonExit.Location = new System.Drawing.Point(938, 0);
             this.buttonExit.Name = "buttonExit";
-            this.buttonExit.Size = new System.Drawing.Size(185, 49);
-            this.buttonExit.TabIndex = 2;
+            this.buttonExit.Size = new System.Drawing.Size(350, 62);
+            this.buttonExit.TabIndex = 3;
             this.buttonExit.Text = "Выйти";
             this.buttonExit.UseVisualStyleBackColor = false;
             this.buttonExit.Click += new System.EventHandler(this.ButtonExit_Click);
             // 
-            // dataGridViewStore
-            // 
-            this.dataGridViewStore.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewStore.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Articul,
-            this.NameStorekeeper,
-            this.Category,
-            this.Unit,
-            this.Price,
-            this.Balance});
-            this.dataGridViewStore.Location = new System.Drawing.Point(0, 55);
-            this.dataGridViewStore.Name = "dataGridViewStore";
-            this.dataGridViewStore.RowHeadersVisible = false;
-            this.dataGridViewStore.RowHeadersWidth = 82;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.dataGridViewStore.RowsDefaultCellStyle = dataGridViewCellStyle1;
-            this.dataGridViewStore.RowTemplate.Height = 33;
-            this.dataGridViewStore.Size = new System.Drawing.Size(1286, 882);
-            this.dataGridViewStore.TabIndex = 0;
-            // 
             // menuStripStorekeeper
             // 
-            this.menuStripStorekeeper.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.menuStripStorekeeper.Font = new System.Drawing.Font("Jost", 10.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.menuStripStorekeeper.GripMargin = new System.Windows.Forms.Padding(2, 2, 0, 2);
             this.menuStripStorekeeper.ImageScalingSize = new System.Drawing.Size(32, 32);
             this.menuStripStorekeeper.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripTextBox1,
-            this.toolStripTextBox2});
+            this.toolStripTextBoxStorekeeper});
             this.menuStripStorekeeper.Location = new System.Drawing.Point(0, 0);
             this.menuStripStorekeeper.Name = "menuStripStorekeeper";
-            this.menuStripStorekeeper.Size = new System.Drawing.Size(1286, 54);
+            this.menuStripStorekeeper.Size = new System.Drawing.Size(1322, 57);
             this.menuStripStorekeeper.TabIndex = 1;
             // 
-            // toolStripTextBox1
+            // toolStripTextBoxStorekeeper
             // 
-            this.toolStripTextBox1.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.toolStripTextBox1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.toolStripTextBox1.Name = "toolStripTextBox1";
-            this.toolStripTextBox1.Size = new System.Drawing.Size(300, 50);
-            this.toolStripTextBox1.Text = "Оформить отгрузку";
-            this.toolStripTextBox1.Click += new System.EventHandler(this.ToolStripTextBox1_Click);
-            // 
-            // toolStripTextBox2
-            // 
-            this.toolStripTextBox2.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.toolStripTextBox2.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.toolStripTextBox2.Name = "toolStripTextBox2";
-            this.toolStripTextBox2.Size = new System.Drawing.Size(700, 50);
-            this.toolStripTextBox2.Text = "Кладовщик:";
-            this.toolStripTextBox2.TextBoxTextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // Articul
-            // 
-            this.Articul.HeaderText = "Артикул";
-            this.Articul.MinimumWidth = 10;
-            this.Articul.Name = "Articul";
-            this.Articul.Width = 150;
-            // 
-            // NameStorekeeper
-            // 
-            this.NameStorekeeper.HeaderText = "Название";
-            this.NameStorekeeper.MinimumWidth = 10;
-            this.NameStorekeeper.Name = "NameStorekeeper";
-            this.NameStorekeeper.Width = 350;
-            // 
-            // Category
-            // 
-            this.Category.HeaderText = "Категория";
-            this.Category.MinimumWidth = 10;
-            this.Category.Name = "Category";
-            this.Category.Width = 250;
-            // 
-            // Unit
-            // 
-            this.Unit.HeaderText = "Единица измерения";
-            this.Unit.MinimumWidth = 10;
-            this.Unit.Name = "Unit";
-            this.Unit.Width = 150;
-            // 
-            // Price
-            // 
-            this.Price.HeaderText = "Цена";
-            this.Price.MinimumWidth = 10;
-            this.Price.Name = "Price";
-            this.Price.Width = 200;
-            // 
-            // Balance
-            // 
-            this.Balance.HeaderText = "Остаток";
-            this.Balance.MinimumWidth = 10;
-            this.Balance.Name = "Balance";
-            this.Balance.Width = 200;
+            this.toolStripTextBoxStorekeeper.BackColor = System.Drawing.SystemColors.MenuBar;
+            this.toolStripTextBoxStorekeeper.Font = new System.Drawing.Font("Jost", 10.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.toolStripTextBoxStorekeeper.Name = "toolStripTextBoxStorekeeper";
+            this.toolStripTextBoxStorekeeper.ReadOnly = true;
+            this.toolStripTextBoxStorekeeper.Size = new System.Drawing.Size(500, 49);
+            this.toolStripTextBoxStorekeeper.Text = "Кладовщик";
             // 
             // StorekeeperForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1286, 937);
+            this.ClientSize = new System.Drawing.Size(1322, 1154);
             this.Controls.Add(this.panelStorekeeper);
             this.MainMenuStrip = this.menuStripStorekeeper;
             this.Name = "StorekeeperForm";
-            this.Text = "Кладовщик";
+            this.Text = "Кладовщик - Управление складом";
+            this.Load += new System.EventHandler(this.StorekeeperForm_Load);
             this.panelStorekeeper.ResumeLayout(false);
             this.panelStorekeeper.PerformLayout();
+            this.panelSearch.ResumeLayout(false);
+            this.panelSearch.PerformLayout();
+            this.panelData.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewStore)).EndInit();
             this.menuStripStorekeeper.ResumeLayout(false);
             this.menuStripStorekeeper.PerformLayout();
@@ -186,16 +179,13 @@
         #endregion
 
         private System.Windows.Forms.Panel panelStorekeeper;
+        private System.Windows.Forms.Panel panelSearch;
+        private System.Windows.Forms.Button buttonShipment;
+        private System.Windows.Forms.TextBox textBoxSearch;
+        private System.Windows.Forms.Panel panelData;
         private System.Windows.Forms.DataGridView dataGridViewStore;
-        private System.Windows.Forms.MenuStrip menuStripStorekeeper;
-        private System.Windows.Forms.ToolStripTextBox toolStripTextBox1;
-        private System.Windows.Forms.ToolStripTextBox toolStripTextBox2;
         private System.Windows.Forms.Button buttonExit;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Articul;
-        private System.Windows.Forms.DataGridViewTextBoxColumn NameStorekeeper;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Category;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Unit;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Price;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Balance;
+        private System.Windows.Forms.MenuStrip menuStripStorekeeper;
+        private System.Windows.Forms.ToolStripTextBox toolStripTextBoxStorekeeper;
     }
 }

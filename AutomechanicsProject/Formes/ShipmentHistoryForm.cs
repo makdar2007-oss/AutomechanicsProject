@@ -1,85 +1,105 @@
 ﻿using AutomechanicsProject.Classes;
+using AutomechanicsProject.Properties;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 
 namespace AutomechanicsProject.Formes
 {
+    /// <summary>
+    /// Форма для просмотра истории отгрузок товаров
+    /// </summary>
     public partial class ShipmentHistoryForm : Form
     {
-        private DateBase db;
+        private readonly DateBase db;
 
+        /// <summary>
+        /// Инициализирует новый экземпляр формы истории отгрузок
+        /// </summary>
         public ShipmentHistoryForm()
         {
-            db = new DateBase();
             InitializeComponent();
+            db = new DateBase();
         }
+
+        /// <summary>
+        /// Обработчик события загрузки формы
+        /// </summary>
         private void ShipmentHistoryForm_Load(object sender, EventArgs e)
         {
             LoadShipmentHistory();
         }
-
+        /// <summary>
+        /// Загружает историю отгрузок из базы данных и отображает в таблице
+        /// </summary>
         private void LoadShipmentHistory()
         {
             try
             {
                 var shipments = db.Shipments
-                    .Include(s => s.User)           
-                    .Include(s => s.CreatedByUser)   
-                    .Include(s => s.Items)           
-                    .OrderByDescending(s => s.Date)  
+                    .Include(s => s.User)
+                    .Include(s => s.CreatedByUser)
+                    .Include(s => s.Items)
+                    .OrderByDescending(s => s.Date)
                     .ToList();
+
                 if (shipments.Count == 0)
                 {
                     dataGridViewHistory.DataSource = null;
-                    MessageBox.Show("История отгрузок пуста", "Информация",
+                    MessageBox.Show("История отгрузок пуста", Resources.TitleInformation,
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
                 }
-                var displayList = shipments.SelectMany(s => s.Items.Select((item, index) => new
+                var displayList = shipments
+                    .Where(s => s.Items != null && s.Items.Any())
+                    .SelectMany(s => s.Items.Select(item => new
+                    {
+                        Артикул = item.Article ?? "Н/Д",
+                        Название = item.ProductName ?? "Н/Д",
+                        Количество = item.Quantity,
+                        Цена = item.Price,
+                        Сумма = item.Quantity * item.Price,
+                        Получатель = s.User?.CompanyName ?? "Не указан",
+                        Кладовщик = s.CreatedByUser?.FullName ?? "Не указан",
+                        Дата = s.Date.ToString("dd.MM.yyyy HH:mm")
+                    }))
+                    .OrderByDescending(x => x.Дата)
+                    .ToList();
+
+                if (!displayList.Any())
                 {
-                    ShipmentId = s.Id,
-                    ItemIndex = index + 1,
-                    item.Article,
-                    item.ProductName,
-                    item.Quantity,
-                    item.Price,
-                    Total = item.Quantity * item.Price,
-                    Recipient = s.User?.FullName ?? "Не указан",
-                    Storekeeper = s.CreatedByUser?.FullName ?? "Не указан",
-                    s.Date
-                })).ToList();
-                int counter = 1;
+                    dataGridViewHistory.DataSource = null;
+                    MessageBox.Show($"Найдено {shipments.Count} отгрузок, но ни одна не содержит позиций!",
+                        Resources.TitleInformation, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                var counter = 1;
                 var finalList = displayList.Select(item => new
                 {
-                    Number = counter++, 
-                    item.Article,
-                    item.ProductName,
-                    item.Quantity,
-                    item.Price,
-                    item.Total,
-                    item.Recipient,
-                    item.Storekeeper,
-                    Date = item.Date.ToString("dd.MM.yyyy HH:mm")
+                    Номер = counter++,
+                    item.Артикул,
+                    item.Название,
+                    item.Количество,
+                    ЦенаРуб = item.Цена.ToString("F2"),
+                    СуммаРуб = item.Сумма.ToString("F2"),
+                    item.Получатель,
+                    item.Кладовщик,
+                    item.Дата
                 }).ToList();
+
                 dataGridViewHistory.DataSource = finalList;
-                int totalShipments = shipments.Count;
-                int totalItems = displayList.Count;
-                decimal totalSum = displayList.Sum(x => x.Total);
-                this.Text = $"История отгрузок - Всего отгрузок: {totalShipments}, " +
-                           $"позиций: {totalItems}, сумма: {totalSum:C}";
+
+                var totalItems = displayList.Count;
+                var totalSum = displayList.Sum(x => x.Сумма);
+                Text = $"История отгрузок - Всего позиций: {totalItems}, общая сумма: {totalSum:C2}";
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Ошибка при загрузке истории отгрузок: {ex.Message}", "Ошибка",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Program.LogError("Ошибка при загрузке истории отгрузок", ex);
+                MessageBox.Show($"Не удалось загрузить историю отгрузок: {ex.Message}",
+                    Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-        }
-        private void buttonRefresh_Click(object sender, EventArgs e)
-        {
-            LoadShipmentHistory();
         }
     }
 }

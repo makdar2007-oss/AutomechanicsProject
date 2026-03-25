@@ -1,135 +1,185 @@
-﻿using AutomechanicsProject.Classes.AutomechanicsProject.Classes;
+﻿using AutomechanicsProject.Classes;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 
 namespace AutomechanicsProject.Classes
 {
+    /// <summary>
+    /// Контекст базы данных для работы с автомеханикой
+    /// </summary>
     public class DateBase : DbContext
     {
-        public DbSet<User> Users { get; set; }
+        /// <summary>
+        /// Коллекция пользователей системы
+        /// </summary>
+        public DbSet<Users> Users { get; set; }
+
+        /// <summary>
+        /// Коллекция категорий товаров
+        /// </summary>
         public DbSet<Category> Categories { get; set; }
+
+        /// <summary>
+        /// Коллекция товаров
+        /// </summary>
         public DbSet<Product> Products { get; set; }
+
+        /// <summary>
+        /// Коллекция отгрузок
+        /// </summary>
         public DbSet<Shipment> Shipments { get; set; }
+
+        /// <summary>
+        /// Коллекция позиций отгрузок
+        /// </summary>
         public DbSet<ShipmentItem> ShipmentItems { get; set; }
+
+        /// <summary>
+        /// Коллекция ролей пользователей
+        /// </summary>
         public DbSet<Role> Roles { get; set; }
+
+        /// <summary>
+        /// Коллекция адресов
+        /// </summary>
+        public DbSet<Address> Addresses { get; set; }
+
+        /// <summary>
+        /// Настройка подключения к базе данных
+        /// </summary>
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseNpgsql("Host=localhost;Database=AutomechanicDB;Username=postgres;Password=1234");
+            optionsBuilder.UseNpgsql("Host=localhost;Port=5433;Database=project_auto;Username=postgres;Password=1234");
         }
+
+        /// <summary>
+        /// Настройка модели базы данных
+        /// </summary>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasPostgresExtension("uuid-ossp");
-            modelBuilder.HasDefaultSchema("public");
-            modelBuilder.HasDefaultSchema("public");
+
+            // Настройка таблицы ролей
             modelBuilder.Entity<Role>(entity =>
             {
-                entity.ToTable("Role");
+                entity.ToTable("role");
                 entity.HasKey(e => e.Id);
+
                 entity.Property(e => e.Id)
-                    .HasColumnName("Идентификатор")
-                    .HasDefaultValueSql("uuid_generate_v4()");
-                
+                    .HasColumnName("id")
+                    .HasDefaultValueSql("gen_random_uuid()");
+
                 entity.Property(e => e.Position)
-                    .HasColumnName("Должность")
+                    .HasColumnName("position")
                     .IsRequired()
                     .HasMaxLength(255);
+
+                entity.HasIndex(e => e.Position).IsUnique();
             });
 
-            modelBuilder.Entity<User>(entity =>
+            // Настройка таблицы пользователей
+            modelBuilder.Entity<Users>(entity =>
             {
-                entity.ToTable("User");
+                entity.ToTable("users");
                 entity.HasKey(e => e.Id);
-                
+
                 entity.Property(e => e.Id)
-                    .HasColumnName("Идентификатор")
-                    .HasDefaultValueSql("uuid_generate_v4()");
-                
+                    .HasColumnName("id")
+                    .HasDefaultValueSql("gen_random_uuid()");
+
                 entity.Property(e => e.Surname)
-                    .HasColumnName("Фамилия")
+                    .HasColumnName("surname")
                     .IsRequired()
                     .HasMaxLength(100);
-                
+
                 entity.Property(e => e.Name)
-                    .HasColumnName("Имя")
+                    .HasColumnName("name")
                     .IsRequired()
                     .HasMaxLength(100);
-                
+
                 entity.Property(e => e.Lastname)
-                    .HasColumnName("Отчество")
+                    .HasColumnName("lastname")
                     .HasMaxLength(100);
-                
+
                 entity.Property(e => e.Login)
-                    .HasColumnName("Логин")
+                    .HasColumnName("login")
                     .IsRequired()
-                    .HasMaxLength(50);
-                
-                entity.HasIndex(e => e.Login)
-                    .IsUnique();
-                
+                    .HasMaxLength(100);
+
+                entity.HasIndex(e => e.Login).IsUnique();
+
                 entity.Property(e => e.Password)
-                    .HasColumnName("Пароль")
+                    .HasColumnName("password")
                     .IsRequired()
                     .HasMaxLength(255);
-                
+
                 entity.Property(e => e.RoleId)
-                    .HasColumnName("РольПользователя");
+                    .HasColumnName("role_id")
+                    .IsRequired();
 
                 entity.HasOne(u => u.Role)
-                    .WithMany()
+                    .WithMany(r => r.Users)
                     .HasForeignKey(u => u.RoleId)
                     .OnDelete(DeleteBehavior.Restrict);
+
                 entity.Ignore(u => u.RoleName);
                 entity.Ignore(u => u.FullName);
             });
 
+            // Настройка таблицы категорий
             modelBuilder.Entity<Category>(entity =>
             {
-                entity.ToTable("Category");
+                entity.ToTable("category");
                 entity.HasKey(e => e.Id);
-                
+
                 entity.Property(e => e.Id)
-                    .HasColumnName("Идентификатор")
-                    .HasDefaultValueSql("uuid_generate_v4()");
-                
+                    .HasColumnName("id")
+                    .HasDefaultValueSql("gen_random_uuid()");
+
                 entity.Property(e => e.Name)
-                    .HasColumnName("Название")
+                    .HasColumnName("name")
                     .IsRequired()
                     .HasMaxLength(255);
+
+                entity.HasIndex(e => e.Name).IsUnique();
             });
 
+            // Настройка таблицы товаров
             modelBuilder.Entity<Product>(entity =>
             {
-                entity.ToTable("Product");
+                entity.ToTable("product");
                 entity.HasKey(e => e.Id);
-                
+
                 entity.Property(e => e.Id)
-                    .HasColumnName("Идентификатор")
-                    .HasDefaultValueSql("uuid_generate_v4()");
-                
+                    .HasColumnName("id")
+                    .HasDefaultValueSql("gen_random_uuid()");
+
                 entity.Property(e => e.Article)
-                    .HasColumnName("Артикул")
+                    .HasColumnName("article")
                     .IsRequired()
                     .HasMaxLength(100);
-                
+
+                entity.HasIndex(e => e.Article).IsUnique();
+
                 entity.Property(e => e.Name)
-                    .HasColumnName("Название")
+                    .HasColumnName("name")
                     .IsRequired()
                     .HasMaxLength(255);
-                
+
                 entity.Property(e => e.CategoryId)
-                    .HasColumnName("CategoryID");
-                
+                    .HasColumnName("category_id")
+                    .IsRequired();
+
                 entity.Property(e => e.Unit)
-                    .HasColumnName("ЕдиницаИзмерения")
+                    .HasColumnName("unit")
                     .HasMaxLength(50)
                     .HasDefaultValue("шт");
-                
+
                 entity.Property(e => e.Price)
-                    .HasColumnName("Цена")
+                    .HasColumnName("price")
                     .HasColumnType("decimal(10,2)");
-                
+
                 entity.Property(e => e.Balance)
-                    .HasColumnName("Остаток")
+                    .HasColumnName("balance")
                     .HasDefaultValue(0);
 
                 entity.HasOne(p => p.Category)
@@ -138,27 +188,46 @@ namespace AutomechanicsProject.Classes
                     .OnDelete(DeleteBehavior.Restrict);
             });
 
+            // Настройка таблицы адресов
+            modelBuilder.Entity<Address>(entity =>
+            {
+                entity.ToTable("address");
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .HasDefaultValueSql("gen_random_uuid()");
+
+                entity.Property(e => e.CompanyName)
+                    .HasColumnName("company_name")
+                    .IsRequired()
+                    .HasMaxLength(255);
+            });
+
+            // Настройка таблицы отгрузок
             modelBuilder.Entity<Shipment>(entity =>
             {
-                entity.ToTable("Shipping");
+                entity.ToTable("shipment");
                 entity.HasKey(e => e.Id);
-                
+
                 entity.Property(e => e.Id)
-                    .HasColumnName("Идентификатор")
-                    .HasDefaultValueSql("uuid_generate_v4()");
-                
+                    .HasColumnName("id")
+                    .HasDefaultValueSql("gen_random_uuid()");
+
                 entity.Property(e => e.UserId)
-                    .HasColumnName("ПолныйИдент");
-                
+                    .HasColumnName("user_id")
+                    .IsRequired();
+
                 entity.Property(e => e.CreatedByUserId)
-                    .HasColumnName("СоздалИдент");
-                
+                    .HasColumnName("created_by_user_id")
+                    .IsRequired();
+
                 entity.Property(e => e.Date)
-                    .HasColumnName("ДатаСоздания")
+                    .HasColumnName("date_created")
                     .HasDefaultValueSql("CURRENT_TIMESTAMP");
-                
+
                 entity.Property(e => e.TotalAmount)
-                    .HasColumnName("ОбщаяСумма")
+                    .HasColumnName("total_amount")
                     .HasColumnType("decimal(10,2)")
                     .HasDefaultValue(0);
 
@@ -173,34 +242,39 @@ namespace AutomechanicsProject.Classes
                     .OnDelete(DeleteBehavior.Restrict);
             });
 
+            // Настройка таблицы позиций отгрузок
             modelBuilder.Entity<ShipmentItem>(entity =>
             {
-                entity.ToTable("ShippingPositions");
+                entity.ToTable("shipment_positions");
                 entity.HasKey(e => e.Id);
-                
+
                 entity.Property(e => e.Id)
-                    .HasColumnName("Идентификатор")
-                    .HasDefaultValueSql("uuid_generate_v4()");
-                
+                    .HasColumnName("id")
+                    .HasDefaultValueSql("gen_random_uuid()");
+
                 entity.Property(e => e.ShipmentId)
-                    .HasColumnName("ОтгрузИдент");
-                
+                    .HasColumnName("shipment_id")
+                    .IsRequired();
+
                 entity.Property(e => e.ProductId)
-                    .HasColumnName("ТоварИдент");
-                
+                    .HasColumnName("product_id")
+                    .IsRequired();
+
                 entity.Property(e => e.Quantity)
-                    .HasColumnName("КоличествоТовара");
-                
+                    .HasColumnName("quantity")
+                    .IsRequired();
+
                 entity.Property(e => e.Price)
-                    .HasColumnName("Цена")
-                    .HasColumnType("decimal(10,2)");
-                
+                    .HasColumnName("price")
+                    .HasColumnType("decimal(10,2)")
+                    .IsRequired();
+
                 entity.Property(e => e.ProductName)
-                    .HasColumnName("НазваниеТовара")
+                    .HasColumnName("product_name")
                     .HasMaxLength(255);
-                
+
                 entity.Property(e => e.Article)
-                    .HasColumnName("Артикул")
+                    .HasColumnName("article")
                     .HasMaxLength(100);
 
                 entity.HasOne(si => si.Shipment)
@@ -213,7 +287,6 @@ namespace AutomechanicsProject.Classes
                     .HasForeignKey(si => si.ProductId)
                     .OnDelete(DeleteBehavior.Restrict);
             });
-
             base.OnModelCreating(modelBuilder);
         }
     }
