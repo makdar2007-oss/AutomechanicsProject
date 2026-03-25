@@ -101,13 +101,5 @@ namespace AutomechanicsProject.Formes
                     Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-        /// <summary>
-        /// Освобождает ресурсы при закрытии формы
-        /// </summary>
-        protected override void OnFormClosed(FormClosedEventArgs e)
-        {
-            db?.Dispose();
-            base.OnFormClosed(e);
-        }
     }
 }

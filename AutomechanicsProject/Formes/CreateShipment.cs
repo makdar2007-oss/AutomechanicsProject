@@ -420,13 +420,5 @@ namespace AutomechanicsProject.Formes
                 RefreshShipmentList();
             }
         }
-        /// <summary>
-        /// Освобождает ресурсы при закрытии формы
-        /// </summary>
-        protected override void OnFormClosed(FormClosedEventArgs e)
-        {
-            db?.Dispose();
-            base.OnFormClosed(e);
-        }
     }
 }

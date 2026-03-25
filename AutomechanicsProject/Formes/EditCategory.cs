@@ -188,13 +188,5 @@ namespace AutomechanicsProject.Formes
             DialogResult = DialogResult.Cancel;
             Close();
         }
-        /// <summary>
-        /// Освобождает ресурсы при закрытии формы
-        /// </summary>
-        protected override void OnFormClosed(FormClosedEventArgs e)
-        {
-            db?.Dispose();
-            base.OnFormClosed(e);
-        }
     }
 }

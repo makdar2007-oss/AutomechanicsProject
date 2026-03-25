@@ -180,13 +180,5 @@ namespace AutomechanicsProject.Formes
             }
             return text.Trim().ToLower(); 
         }
-        /// <summary>
-        /// Освобождает ресурсы при закрытии формы
-        /// </summary>
-        protected override void OnFormClosed(FormClosedEventArgs e)
-        {
-            db?.Dispose();
-            base.OnFormClosed(e);
-        }
     }
 }
