@@ -188,7 +188,7 @@ namespace AutomechanicsProject.Classes
                     .OnDelete(DeleteBehavior.Restrict);
             });
 
-            // Настройка таблицы адресов/компаний
+            // Настройка таблицы адресов
             modelBuilder.Entity<Address>(entity =>
             {
                 entity.ToTable("address");
