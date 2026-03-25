@@ -35,12 +35,6 @@ namespace AutomechanicsProject.Formes
             this.buttonCancel = new System.Windows.Forms.Button();
             this.textBoxArt = new System.Windows.Forms.TextBox();
             this.labelDeleteProduct = new System.Windows.Forms.Label();
-            this.textBoxArt.ReadOnly = true;
-            this.textBoxArt.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.StartPosition = FormStartPosition.CenterParent;
-            this.FormBorderStyle = FormBorderStyle.FixedDialog;
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -82,22 +76,29 @@ namespace AutomechanicsProject.Formes
             // 
             // textBoxArt
             // 
+            this.textBoxArt.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.textBoxArt.BackColor = System.Drawing.SystemColors.ControlLight;
             this.textBoxArt.Font = new System.Drawing.Font("Jost", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBoxArt.Location = new System.Drawing.Point(125, 198);
+            this.textBoxArt.Location = new System.Drawing.Point(201, 271);
             this.textBoxArt.Name = "textBoxArt";
-            this.textBoxArt.Size = new System.Drawing.Size(571, 54);
+            this.textBoxArt.ReadOnly = true;
+            this.textBoxArt.Size = new System.Drawing.Size(350, 54);
             this.textBoxArt.TabIndex = 1;
             this.textBoxArt.Text = "Введите артикул товара";
+            this.textBoxArt.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // labelDeleteProduct
             // 
+            this.labelDeleteProduct.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.labelDeleteProduct.AutoSize = true;
-            this.labelDeleteProduct.Font = new System.Drawing.Font("Jost", 19.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelDeleteProduct.Location = new System.Drawing.Point(199, 53);
+            this.labelDeleteProduct.Font = new System.Drawing.Font("Jost", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelDeleteProduct.Location = new System.Drawing.Point(257, 52);
+            this.labelDeleteProduct.MaximumSize = new System.Drawing.Size(360, 0);
             this.labelDeleteProduct.Name = "labelDeleteProduct";
-            this.labelDeleteProduct.Size = new System.Drawing.Size(364, 77);
+            this.labelDeleteProduct.Size = new System.Drawing.Size(218, 46);
             this.labelDeleteProduct.TabIndex = 0;
             this.labelDeleteProduct.Text = "Удалить товар";
+            this.labelDeleteProduct.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // DeleteProduct
             // 
@@ -105,7 +106,11 @@ namespace AutomechanicsProject.Formes
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(849, 685);
             this.Controls.Add(this.panel1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "DeleteProduct";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Удалить товар";
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();

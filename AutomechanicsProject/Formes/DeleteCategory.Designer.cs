@@ -76,10 +76,10 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Jost", 19.875F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label1.Location = new System.Drawing.Point(172, 91);
+            this.label1.Font = new System.Drawing.Font("Jost", 13.875F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label1.Location = new System.Drawing.Point(200, 30);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(525, 77);
+            this.label1.Size = new System.Drawing.Size(200, 60);
             this.label1.TabIndex = 1;
             this.label1.Text = "Удалить категорию";
             // 
