@@ -73,7 +73,7 @@
             this.panelSearchHIstory.Controls.Add(this.buttonhistory);
             this.panelSearchHIstory.Controls.Add(this.textBoxSearch);
             this.panelSearchHIstory.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panelSearchHIstory.Location = new System.Drawing.Point(0, 53);
+            this.panelSearchHIstory.Location = new System.Drawing.Point(0, 57);
             this.panelSearchHIstory.Name = "panelSearchHIstory";
             this.panelSearchHIstory.Size = new System.Drawing.Size(1322, 115);
             this.panelSearchHIstory.TabIndex = 6;
@@ -154,7 +154,7 @@
             this.toolStripTextBoxAdmin});
             this.menuStripMainForm.Location = new System.Drawing.Point(0, 0);
             this.menuStripMainForm.Name = "menuStripMainForm";
-            this.menuStripMainForm.Size = new System.Drawing.Size(1322, 53);
+            this.menuStripMainForm.Size = new System.Drawing.Size(1322, 57);
             this.menuStripMainForm.TabIndex = 1;
             // 
             // toolStripComboBoxAdd
@@ -163,7 +163,7 @@
             this.ProductToolStripMenuItem,
             this.CategoryToolStripMenuItem});
             this.toolStripComboBoxAdd.Name = "toolStripComboBoxAdd";
-            this.toolStripComboBoxAdd.Size = new System.Drawing.Size(158, 53);
+            this.toolStripComboBoxAdd.Size = new System.Drawing.Size(158, 49);
             this.toolStripComboBoxAdd.Text = "Добавить";
             // 
             // ProductToolStripMenuItem
@@ -184,7 +184,7 @@
             this.ProductToolStripMenuItem1,
             this.CategoryToolStripMenuItem1});
             this.toolStripComboBox2.Name = "toolStripComboBox2";
-            this.toolStripComboBox2.Size = new System.Drawing.Size(221, 53);
+            this.toolStripComboBox2.Size = new System.Drawing.Size(221, 49);
             this.toolStripComboBox2.Text = "Редактировать";
             // 
             // ProductToolStripMenuItem1
@@ -205,7 +205,7 @@
             this.ProductToolStripMenuItem2,
             this.CategoryToolStripMenuItem2});
             this.toolStripComboBox3.Name = "toolStripComboBox3";
-            this.toolStripComboBox3.Size = new System.Drawing.Size(141, 53);
+            this.toolStripComboBox3.Size = new System.Drawing.Size(141, 49);
             this.toolStripComboBox3.Text = "Удалить";
             // 
             // ProductToolStripMenuItem2
@@ -226,7 +226,7 @@
             this.toolStripTextBoxAdmin.Font = new System.Drawing.Font("Jost", 10.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.toolStripTextBoxAdmin.Name = "toolStripTextBoxAdmin";
             this.toolStripTextBoxAdmin.ReadOnly = true;
-            this.toolStripTextBoxAdmin.Size = new System.Drawing.Size(500, 53);
+            this.toolStripTextBoxAdmin.Size = new System.Drawing.Size(500, 49);
             this.toolStripTextBoxAdmin.Text = "Администратор";
             // 
             // AdminForm
@@ -238,6 +238,7 @@
             this.MainMenuStrip = this.menuStripMainForm;
             this.Name = "AdminForm";
             this.Text = "Главная форма";
+            this.Load += new System.EventHandler(this.AdminForm_Load);
             this.panelAdmin.ResumeLayout(false);
             this.panelAdmin.PerformLayout();
             this.panelSearchHIstory.ResumeLayout(false);

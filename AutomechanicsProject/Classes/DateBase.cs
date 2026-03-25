@@ -1,5 +1,6 @@
 ﻿using AutomechanicsProject.Classes;
 using Microsoft.EntityFrameworkCore;
+using System.Configuration;
 
 namespace AutomechanicsProject.Classes
 {
@@ -48,7 +49,13 @@ namespace AutomechanicsProject.Classes
         /// </summary>
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseNpgsql("Host=localhost;Port=5433;Database=project_auto;Username=postgres;Password=1234");
+            if (!optionsBuilder.IsConfigured)
+            {
+                var connectionString = ConfigurationManager
+                    .ConnectionStrings["DefaultConnection"]
+                    .ConnectionString;
+                optionsBuilder.UseNpgsql(connectionString);
+            }
         }
 
         /// <summary>
