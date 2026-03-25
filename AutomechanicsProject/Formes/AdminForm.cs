@@ -305,7 +305,16 @@ namespace AutomechanicsProject.Formes
         /// </summary>
         private void TextBoxSearch_TextChanged(object sender, EventArgs e)
         {
-            LoadProducts(textBoxSearch.Text);
+            var searchText = textBoxSearch.Text;
+            if (searchText == Resources.SearchWatermark ||
+                string.IsNullOrWhiteSpace(searchText))
+            {
+                LoadProducts("");  
+            }
+            else
+            {
+                LoadProducts(searchText);
+            }
         }
     }
 }

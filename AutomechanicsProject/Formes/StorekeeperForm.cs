@@ -102,20 +102,6 @@ namespace AutomechanicsProject.Formes
             }
         }
         /// <summary>
-        /// Нормализует поисковый запрос
-        /// </summary>
-        private string NormalizeSearch(string text)
-        {
-            if (string.IsNullOrWhiteSpace(text) ||
-                text == Resources.SearchWatermark ||
-                text.StartsWith(Resources.SearchWatermark))
-            {
-                return "";
-            }
-
-            return text.Trim().ToLower();
-        }
-        /// <summary>
         /// Получает список товаров из базы данных с применением фильтрации
         /// </summary>
         private object GetProducts(string search)
@@ -170,7 +156,29 @@ namespace AutomechanicsProject.Formes
         /// </summary>
         private void TextBoxSearch_TextChanged(object sender, EventArgs e)
         {
-            LoadProducts(textBoxSearch.Text);
+            var searchText = textBoxSearch.Text;
+
+            if (searchText == Resources.SearchWatermark ||
+                string.IsNullOrWhiteSpace(searchText))
+            {
+                LoadProducts("");
+            }
+            else
+            {
+                LoadProducts(searchText);
+            }
+        }
+        /// <summary>
+        /// Нормализует поисковый запрос
+        /// </summary>
+        private string NormalizeSearch(string text)
+        {
+            if (string.IsNullOrWhiteSpace(text) ||
+                text == Resources.SearchWatermark)
+            {
+                return "";
+            }
+            return text.Trim().ToLower(); 
         }
         /// <summary>
         /// Освобождает ресурсы при закрытии формы

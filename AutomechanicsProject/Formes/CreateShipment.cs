@@ -32,8 +32,7 @@ namespace AutomechanicsProject.Formes
 
             TextBoxHelper.SetupWatermarkTextBox(textBoxUnit, Resources.ShipmentQuantityWatermark);
             comboBoxProduct.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboBoxRecipient1.DropDownStyle = ComboBoxStyle.DropDownList;
-
+            comboBoxRecipient1.DropDownStyle = ComboBoxStyle.DropDownList;  
             UpdateDisplay();
         }
         /// <summary>
@@ -294,77 +293,74 @@ namespace AutomechanicsProject.Formes
                     Resources.TitleWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
+
             if (!IsRecipientSelected()) return;
+
             dynamic selectedRecipient = comboBoxRecipient1.SelectedItem;
             var recipientName = selectedRecipient.CompanyName;
             var recipientId = (Guid)selectedRecipient.Id;
+
             var confirmResult = MessageBox.Show(
                 $"Подтвердить отгрузку?\n\n" +
                 $"Получатель: {recipientName}\n" +
                 $"Количество позиций: {shipmentItems.Count}\n" +
-                $"Общее количество товаров: {totalItemsCount} шт.\n" +
                 $"Общая сумма: {totalAmount:C2}",
                 Resources.TitleConfirmation,
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question);
 
-            if (confirmResult != DialogResult.Yes)
-            {
-                return;
-            } 
+            if (confirmResult != DialogResult.Yes) return;
+
             try
             {
-                var shipment = new Shipment
+                using (var transaction = db.Database.BeginTransaction())
                 {
-                    Id = Guid.NewGuid(),
-                    Date = DateTime.Now,
-                    UserId = recipientId,
-                    CreatedByUserId = Program.CurrentUser?.Id ?? Guid.Empty,
-                    TotalAmount = totalAmount
-                };
-                db.Shipments.Add(shipment);
-
-                foreach (var item in shipmentItems)
-                {
-                    db.ShipmentItems.Add(new ShipmentItem
+                    var shipment = new Shipment
                     {
                         Id = Guid.NewGuid(),
-                        ShipmentId = shipment.Id,
-                        ProductId = item.ProductId,
-                        Quantity = item.Quantity,
-                        Price = item.Price,
-                        ProductName = item.ProductName,
-                        Article = item.Article
-                    });
+                        Date = DateTime.Now,
+                        UserId = recipientId,
+                        CreatedByUserId = Program.CurrentUser?.Id ?? Guid.Empty,
+                        TotalAmount = totalAmount
+                    };
 
-                    var product = db.Products.Find(item.ProductId);
-                    if (product != null)
+                    db.Shipments.Add(shipment);
+                    db.SaveChanges(); 
+                    foreach (var item in shipmentItems)
                     {
-                        product.Balance -= item.Quantity;
-                        if (product.Balance < 0)
+                        var shipmentItem = new ShipmentItem
                         {
-                            throw new Exception($"Отрицательный остаток товара {product.Name}! " +
-                                $"Остаток на складе: {product.Balance + item.Quantity}, запрошено: {item.Quantity}");
+                            Id = Guid.NewGuid(),
+                            ShipmentId = shipment.Id,
+                            ProductId = item.ProductId,
+                            Quantity = item.Quantity,
+                            Price = item.Price,
+                            ProductName = item.ProductName,
+                            Article = item.Article
+                        };
+
+                        db.ShipmentItems.Add(shipmentItem);
+                        var product = db.Products.Find(item.ProductId);
+                        if (product != null)
+                        {
+                            product.Balance -= item.Quantity;
                         }
                     }
-                }
-                db.SaveChanges();
-                Program.LogInfo($"Отгрузка оформлена: получатель {recipientName}, сумма {totalAmount:C2}");
-                MessageBox.Show($"Отгрузка успешно оформлена!\n\n" +
-                    $"Получатель: {recipientName}\n" +
-                    $"Количество позиций: {shipmentItems.Count}\n" +
-                    $"Общее количество товаров: {totalItemsCount} шт.\n" +
-                    $"Общая сумма: {totalAmount:C2}",
-                    Resources.TitleSuccess, MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                DialogResult = DialogResult.OK;
-                Close();
-            }
-            catch (DbUpdateException dbEx)
-            {
-                Program.LogError("DbUpdateException при оформлении отгрузки", dbEx);
-                MessageBox.Show($"Не удалось оформить отгрузку.\n\nОшибка БД: {dbEx.InnerException?.Message ?? dbEx.Message}",
-                    Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    db.SaveChanges();
+                    transaction.Commit();
+
+                    Program.LogInfo($"Отгрузка оформлена: получатель {recipientName}, сумма {totalAmount:C2}, позиций: {shipmentItems.Count}");
+
+                    MessageBox.Show($"Отгрузка успешно оформлена!\n\n" +
+                        $"Получатель: {recipientName}\n" +
+                        $"Количество позиций: {shipmentItems.Count}\n" +
+                        $"Общая сумма: {totalAmount:C2}",
+                        Resources.TitleSuccess, MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    DialogResult = DialogResult.OK;
+                    Close();
+                }
             }
             catch (Exception ex)
             {

@@ -65,4 +65,4 @@ namespace AutomechanicsProject.Classes
         [ForeignKey("ShipmentId")]
         public virtual Shipment Shipment { get; set; }
     }
-}
+}   

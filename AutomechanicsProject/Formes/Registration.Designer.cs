@@ -38,6 +38,12 @@
             this.textBoxLastname = new System.Windows.Forms.TextBox();
             this.textBoxName = new System.Windows.Forms.TextBox();
             this.textBoxSurname = new System.Windows.Forms.TextBox();
+            this.textBoxSurname.TextChanged += new System.EventHandler(this.textBoxSurname_TextChanged);
+            this.textBoxName.TextChanged += new System.EventHandler(this.textBoxName_TextChanged);
+            this.textBoxLastname.TextChanged += new System.EventHandler(this.textBoxLastname_TextChanged);
+            this.textBoxLogin.TextChanged += new System.EventHandler(this.textBoxLogin_TextChanged);
+            this.textBoxPassword.TextChanged += new System.EventHandler(this.textBoxPassword_TextChanged);
+            this.textBoxAgreePassword.TextChanged += new System.EventHandler(this.textBoxAgreePassword_TextChanged);
             this.labelPassword = new System.Windows.Forms.Label();
             this.labelAgreePassword = new System.Windows.Forms.Label();
             this.labelLogin = new System.Windows.Forms.Label();

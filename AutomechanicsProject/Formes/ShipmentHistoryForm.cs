@@ -8,11 +8,12 @@ using System.Windows.Forms;
 namespace AutomechanicsProject.Formes
 {
     /// <summary>
-    /// Форма для просмотра истории отгрузок
+    /// Форма для просмотра истории отгрузок товаров
     /// </summary>
     public partial class ShipmentHistoryForm : Form
     {
         private readonly DateBase db;
+
         /// <summary>
         /// Инициализирует новый экземпляр формы истории отгрузок
         /// </summary>
@@ -21,74 +22,77 @@ namespace AutomechanicsProject.Formes
             InitializeComponent();
             db = new DateBase();
         }
+
         /// <summary>
-        /// Обработчик загрузки формы
+        /// Обработчик события загрузки формы
         /// </summary>
         private void ShipmentHistoryForm_Load(object sender, EventArgs e)
         {
             LoadShipmentHistory();
         }
         /// <summary>
-        /// Загружает историю отгрузок из базы данных и отображает в DataGridView
+        /// Загружает историю отгрузок из базы данных и отображает в таблице
         /// </summary>
         private void LoadShipmentHistory()
         {
             try
             {
                 var shipments = db.Shipments
-                    .Include(s => s.User)          
-                    .Include(s => s.CreatedByUser) 
-                    .Include(s => s.Items)        
-                    .OrderByDescending(s => s.Date) 
+                    .Include(s => s.User)
+                    .Include(s => s.CreatedByUser)
+                    .Include(s => s.Items)
+                    .OrderByDescending(s => s.Date)
                     .ToList();
 
-                if (shipments.Count == 0 || !shipments.Any(s => s.Items.Any()))
+                if (shipments.Count == 0)
                 {
                     dataGridViewHistory.DataSource = null;
                     MessageBox.Show("История отгрузок пуста", Resources.TitleInformation,
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
                 }
-                foreach (var shipment in shipments)
-                {
-                    Program.LogInfo($"Отгрузка ID: {shipment.Id}, User: {shipment.User?.CompanyName ?? "NULL"}, CreatedBy: {shipment.CreatedByUser?.FullName ?? "NULL"}");
-                }
-
                 var displayList = shipments
-                    .Where(s => s.Items.Any()) 
-                    .SelectMany(s => s.Items.Select((item, index) => new
+                    .Where(s => s.Items != null && s.Items.Any())
+                    .SelectMany(s => s.Items.Select(item => new
                     {
-                        ShipmentId = s.Id,
-                        ItemIndex = index + 1,
-                        item.Article,
-                        item.ProductName,
-                        item.Quantity,
-                        item.Price,
-                        Total = item.Quantity * item.Price,
-                        Recipient = s.User?.CompanyName ?? "Не указан",
-                        Storekeeper = s.CreatedByUser?.FullName ?? "Не указан",
-                        s.Date
+                        Артикул = item.Article ?? "Н/Д",
+                        Название = item.ProductName ?? "Н/Д",
+                        Количество = item.Quantity,
+                        Цена = item.Price,
+                        Сумма = item.Quantity * item.Price,
+                        Получатель = s.User?.CompanyName ?? "Не указан",
+                        Кладовщик = s.CreatedByUser?.FullName ?? "Не указан",
+                        Дата = s.Date.ToString("dd.MM.yyyy HH:mm")
                     }))
+                    .OrderByDescending(x => x.Дата)
                     .ToList();
 
+                if (!displayList.Any())
+                {
+                    dataGridViewHistory.DataSource = null;
+                    MessageBox.Show($"Найдено {shipments.Count} отгрузок, но ни одна не содержит позиций!",
+                        Resources.TitleInformation, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
                 var counter = 1;
                 var finalList = displayList.Select(item => new
                 {
-                    Number = counter++,
-                    item.Article,
-                    item.ProductName,
-                    item.Quantity,
-                    item.Price,
-                    item.Total,
-                    item.Recipient,
-                    item.Storekeeper,
-                    Date = item.Date.ToString("dd.MM.yyyy HH:mm")
+                    Номер = counter++,
+                    item.Артикул,
+                    item.Название,
+                    item.Количество,
+                    ЦенаРуб = item.Цена.ToString("F2"),
+                    СуммаРуб = item.Сумма.ToString("F2"),
+                    item.Получатель,
+                    item.Кладовщик,
+                    item.Дата
                 }).ToList();
+
                 dataGridViewHistory.DataSource = finalList;
-                var totalShipments = shipments.Count(s => s.Items.Any());
+
                 var totalItems = displayList.Count;
-                var totalSum = displayList.Sum(x => x.Total);
-                Text = $"История отгрузок - Всего отгрузок: {totalShipments}, позиций: {totalItems}, сумма: {totalSum:C}";
+                var totalSum = displayList.Sum(x => x.Сумма);
+                Text = $"История отгрузок - Всего позиций: {totalItems}, общая сумма: {totalSum:C2}";
             }
             catch (Exception ex)
             {
@@ -96,14 +100,6 @@ namespace AutomechanicsProject.Formes
                 MessageBox.Show($"Не удалось загрузить историю отгрузок: {ex.Message}",
                     Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-        }
-        /// <summary>
-        /// Обработчик нажатия кнопки обновления
-        /// Перезагружает историю отгрузок
-        /// </summary>
-        private void buttonRefresh_Click(object sender, EventArgs e)
-        {
-            LoadShipmentHistory();
         }
         /// <summary>
         /// Освобождает ресурсы при закрытии формы

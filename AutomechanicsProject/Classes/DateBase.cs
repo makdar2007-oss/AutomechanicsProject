@@ -39,7 +39,7 @@ namespace AutomechanicsProject.Classes
         public DbSet<Role> Roles { get; set; }
 
         /// <summary>
-        /// Коллекция адресов компаний
+        /// Коллекция адресов
         /// </summary>
         public DbSet<Address> Addresses { get; set; }
 
@@ -287,7 +287,6 @@ namespace AutomechanicsProject.Classes
                     .HasForeignKey(si => si.ProductId)
                     .OnDelete(DeleteBehavior.Restrict);
             });
-
             base.OnModelCreating(modelBuilder);
         }
     }

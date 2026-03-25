@@ -11,6 +11,7 @@ namespace AutomechanicsProject.Formes
 {
     /// <summary>
     /// Форма регистрации нового кладовщика в системе
+    /// </summary>
     public partial class Registration : Form
     {
         /// <summary>
@@ -19,13 +20,130 @@ namespace AutomechanicsProject.Formes
         public Registration()
         {
             InitializeComponent();
-
             TextBoxHelper.SetupWatermarkTextBox(textBoxSurname, Resources.RegSurnameWatermark);
             TextBoxHelper.SetupWatermarkTextBox(textBoxName, Resources.RegNameWatermark);
             TextBoxHelper.SetupWatermarkTextBox(textBoxLastname, Resources.RegLastnameWatermark);
             TextBoxHelper.SetupWatermarkTextBox(textBoxLogin, Resources.RegLoginWatermark);
             TextBoxHelper.SetupPasswordTextBox(textBoxPassword, Resources.RegPasswordWatermark);
             TextBoxHelper.SetupPasswordTextBox(textBoxAgreePassword, Resources.RegConfirmPasswordWatermark);
+        }
+
+        /// <summary>
+        /// Выполняет валидацию всех полей формы регистрации
+        /// </summary>
+        private bool ValidateAllFields()
+        {
+            var isValid = true;
+            if (Validation.IsWatermark(textBoxSurname.Text, Resources.RegSurnameWatermark))
+            {
+                textBoxSurname.BackColor = Color.LightPink;
+                isValid = false;
+            }
+            else if (!Validation.IsValidRussianName(textBoxSurname.Text))
+            {
+                textBoxSurname.BackColor = Color.LightPink;
+                isValid = false;
+            }
+            else if (!Validation.IsValidNameLength(textBoxSurname.Text))
+            {
+                textBoxSurname.BackColor = Color.LightPink;
+                isValid = false;
+            }
+            else
+            {
+                textBoxSurname.BackColor = Color.White;
+            }
+            if (Validation.IsWatermark(textBoxName.Text, Resources.RegNameWatermark))
+            {
+                textBoxName.BackColor = Color.LightPink;
+                isValid = false;
+            }
+            else if (!Validation.IsValidRussianName(textBoxName.Text))
+            {
+                textBoxName.BackColor = Color.LightPink;
+                isValid = false;
+            }
+            else if (!Validation.IsValidNameLength(textBoxName.Text))
+            {
+                textBoxName.BackColor = Color.LightPink;
+                isValid = false;
+            }
+            else
+            {
+                textBoxName.BackColor = Color.White;
+            }
+            if (!Validation.IsWatermark(textBoxLastname.Text, Resources.RegLastnameWatermark) &&
+                !string.IsNullOrWhiteSpace(textBoxLastname.Text))
+            {
+                if (!Validation.IsValidRussianName(textBoxLastname.Text))
+                {
+                    textBoxLastname.BackColor = Color.LightPink;
+                    isValid = false;
+                }
+                else if (!Validation.IsValidNameLength(textBoxLastname.Text))
+                {
+                    textBoxLastname.BackColor = Color.LightPink;
+                    isValid = false;
+                }
+                else
+                {
+                    textBoxLastname.BackColor = Color.White;
+                }
+            }
+            else
+            {
+                textBoxLastname.BackColor = Color.White;
+            }
+            if (Validation.IsWatermark(textBoxLogin.Text, Resources.RegLoginWatermark))
+            {
+                textBoxLogin.BackColor = Color.LightPink;
+                isValid = false;
+            }
+            else if (!Validation.IsValidLogin(textBoxLogin.Text))
+            {
+                textBoxLogin.BackColor = Color.LightPink;
+                isValid = false;
+            }
+            else if (!Validation.IsValidLoginLength(textBoxLogin.Text))
+            {
+                textBoxLogin.BackColor = Color.LightPink;
+                isValid = false;
+            }
+            else
+            {
+                textBoxLogin.BackColor = Color.White;
+            }
+            if (Validation.IsWatermark(textBoxPassword.Text, Resources.RegPasswordWatermark))
+            {
+                textBoxPassword.BackColor = Color.LightPink;
+                isValid = false;
+            }
+            else if (!Validation.IsValidPassword(textBoxPassword.Text))
+            {
+                textBoxPassword.BackColor = Color.LightPink;
+                isValid = false;
+            }
+            else
+            {
+                textBoxPassword.BackColor = Color.White;
+            }
+            if (Validation.IsWatermark(textBoxAgreePassword.Text, Resources.RegConfirmPasswordWatermark))
+            {
+                textBoxAgreePassword.BackColor = Color.LightPink;
+                isValid = false;
+            }
+            else if (textBoxPassword.Text != textBoxAgreePassword.Text)
+            {
+                textBoxPassword.BackColor = Color.LightPink;
+                textBoxAgreePassword.BackColor = Color.LightPink;
+                isValid = false;
+            }
+            else
+            {
+                textBoxAgreePassword.BackColor = Color.White;
+            }
+
+            return isValid;
         }
         /// <summary>
         /// Сбрасывает подсветку всех полей ввода к белому цвету
@@ -40,64 +158,27 @@ namespace AutomechanicsProject.Formes
             textBoxAgreePassword.BackColor = Color.White;
         }
         /// <summary>
-        /// Проверяет заполнение обязательных полей и совпадение паролей
+        /// Отображает сообщение об ошибке пользователю
         /// </summary>
-        private bool ValidateAllFields()
+        private void ShowErrorMessage(string message)
         {
-            var isValid = true;
-
-            if (Validation.IsWatermark(textBoxSurname.Text, Resources.RegSurnameWatermark))
-            {
-                textBoxSurname.BackColor = Color.LightPink;
-                isValid = false;
-            }
-            if (Validation.IsWatermark(textBoxName.Text, Resources.RegNameWatermark))
-            {
-                textBoxName.BackColor = Color.LightPink;
-                isValid = false;
-            }
-
-            if (Validation.IsWatermark(textBoxLogin.Text, Resources.RegLoginWatermark))
-            {
-                textBoxLogin.BackColor = Color.LightPink;
-                isValid = false;
-            }
-
-            if (Validation.IsWatermark(textBoxPassword.Text, Resources.RegPasswordWatermark))
-            {
-                textBoxPassword.BackColor = Color.LightPink;
-                isValid = false;
-            }
-
-            if (Validation.IsWatermark(textBoxAgreePassword.Text, Resources.RegConfirmPasswordWatermark))
-            {
-                textBoxAgreePassword.BackColor = Color.LightPink;
-                isValid = false;
-            }
-
-            if (!Validation.IsWatermark(textBoxPassword.Text, Resources.RegPasswordWatermark) &&
-                !Validation.IsWatermark(textBoxAgreePassword.Text, Resources.RegConfirmPasswordWatermark))
-            {
-                if (textBoxPassword.Text != textBoxAgreePassword.Text)
-                {
-                    textBoxPassword.BackColor = Color.LightPink;
-                    textBoxAgreePassword.BackColor = Color.LightPink;
-                    isValid = false;
-                }
-            }
-
-            return isValid;
+            MessageBox.Show(message, Resources.TitleWarning,
+                MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
         /// <summary>
-        /// Обработчик нажатия кнопки Зарегистрироваться
+        /// Обработчик нажатия кнопки регистрации
         /// Выполняет регистрацию нового пользователя в системе
         /// </summary>
         private void buttonRegistration_Click(object sender, EventArgs e)
         {
             ResetAllHighlights();
-            if (!ValidateAllFields())
-                return;
 
+            if (!ValidateAllFields())
+            {
+                ShowErrorMessage("Пожалуйста, исправьте ошибки в форме.\n" +
+                    "Поля, выделенные розовым, заполнены неверно.");
+                return;
+            }
             try
             {
                 using (var db = new DateBase())
@@ -106,24 +187,20 @@ namespace AutomechanicsProject.Formes
 
                     var storekeeperRole = db.Roles
                         .FirstOrDefault(r => r.Position == "Кладовщик");
-
                     if (storekeeperRole == null)
                     {
-                        MessageBox.Show("Ошибка: роль 'Кладовщик' не найдена!",
+                        MessageBox.Show("Ошибка: роль 'Кладовщик' не найдена!\n" +
+                            "Обратитесь к администратору.",
                             Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
-
                     if (db.Users.Any(u => u.Login == login))
                     {
-                        textBoxLogin.BackColor = System.Drawing.Color.LightPink;
-                        MessageBox.Show("Пользователь уже существует",
-                            Resources.TitleWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        textBoxLogin.BackColor = Color.LightPink;
+                        ShowErrorMessage("Пользователь с таким логином уже существует");
                         return;
                     }
-
                     var hashedPassword = PasswordHelper.HashPassword(textBoxPassword.Text);
-
                     var newUser = new Users
                     {
                         Id = Guid.NewGuid(),
@@ -138,10 +215,11 @@ namespace AutomechanicsProject.Formes
                     };
                     db.Users.Add(newUser);
                     db.SaveChanges();
-
-                    Program.LogInfo($"Зарегистрирован: {newUser.Login}");
-
-                    MessageBox.Show("Регистрация успешна!",
+                    Program.LogInfo($"Зарегистрирован новый пользователь: {newUser.Login} - {newUser.FullName}");
+                    MessageBox.Show($"Регистрация успешна!\n\n" +
+                        $"Логин: {login}\n" +
+                        $"ФИО: {newUser.FullName}\n\n" +
+                        $"Теперь вы можете войти в систему.",
                         Resources.TitleSuccess, MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                     OpenAuthorization();
@@ -150,28 +228,173 @@ namespace AutomechanicsProject.Formes
             catch (Exception ex)
             {
                 Program.LogError("Ошибка регистрации", ex);
-                MessageBox.Show("Ошибка. Попробуйте позже.",
+                MessageBox.Show("Ошибка при регистрации. Попробуйте позже.",
                     Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
         /// <summary>
         /// Открывает форму авторизации и закрывает текущую форму
-        /// Вызывается после успешной регистрации
         /// </summary>
         private void OpenAuthorization()
         {
-            new Autorization().Show();
-            Close();
+            var authForm = new Autorization();
+            authForm.Show();
+            this.Close();
         }
         /// <summary>
         /// Обработчик нажатия кнопки Уже есть аккаунт? Войти
-        /// Открывает форму авторизации и закрывает текущую форму
         /// </summary>
         private void ButtonEnter_Click(object sender, EventArgs e)
         {
-            new Autorization().Show();
-            Close();
+            OpenAuthorization();
+        }
+        /// <summary>
+        /// Обработчик изменения текста в поле фамилии
+        /// </summary>
+        private void textBoxSurname_TextChanged(object sender, EventArgs e)
+        {
+            if (!Validation.IsWatermark(textBoxSurname.Text, Resources.RegSurnameWatermark))
+            {
+                if (!Validation.IsValidRussianName(textBoxSurname.Text) ||
+                    !Validation.IsValidNameLength(textBoxSurname.Text))
+                {
+                    textBoxSurname.BackColor = Color.LightPink;
+                }
+                else
+                {
+                    textBoxSurname.BackColor = Color.White;
+                }
+            }
+            else
+            {
+                textBoxSurname.BackColor = Color.White;
+            }
+        }
+        /// <summary>
+        /// Обработчик изменения текста в поле имени
+        /// </summary>
+        private void textBoxName_TextChanged(object sender, EventArgs e)
+        {
+            if (!Validation.IsWatermark(textBoxName.Text, Resources.RegNameWatermark))
+            {
+                if (!Validation.IsValidRussianName(textBoxName.Text) ||
+                    !Validation.IsValidNameLength(textBoxName.Text))
+                {
+                    textBoxName.BackColor = Color.LightPink;
+                }
+                else
+                {
+                    textBoxName.BackColor = Color.White;
+                }
+            }
+            else
+            {
+                textBoxName.BackColor = Color.White;
+            }
+        }
+        /// <summary>
+        /// Обработчик изменения текста в поле отчества
+        /// </summary>
+        private void textBoxLastname_TextChanged(object sender, EventArgs e)
+        {
+            if (!Validation.IsWatermark(textBoxLastname.Text, Resources.RegLastnameWatermark) &&
+                !string.IsNullOrWhiteSpace(textBoxLastname.Text))
+            {
+                if (!Validation.IsValidRussianName(textBoxLastname.Text) ||
+                    !Validation.IsValidNameLength(textBoxLastname.Text))
+                {
+                    textBoxLastname.BackColor = Color.LightPink;
+                }
+                else
+                {
+                    textBoxLastname.BackColor = Color.White;
+                }
+            }
+            else
+            {
+                textBoxLastname.BackColor = Color.White;
+            }
+        }
+        /// <summary>
+        /// Обработчик изменения текста в поле логина
+        /// </summary>
+        private void textBoxLogin_TextChanged(object sender, EventArgs e)
+        {
+            if (!Validation.IsWatermark(textBoxLogin.Text, Resources.RegLoginWatermark))
+            {
+                if (!Validation.IsValidLogin(textBoxLogin.Text) ||
+                    !Validation.IsValidLoginLength(textBoxLogin.Text))
+                {
+                    textBoxLogin.BackColor = Color.LightPink;
+                }
+                else
+                {
+                    textBoxLogin.BackColor = Color.White;
+                }
+            }
+            else
+            {
+                textBoxLogin.BackColor = Color.White;
+            }
+        }
+        /// <summary>
+        /// Обработчик изменения текста в поле пароля
+        /// </summary>
+        private void textBoxPassword_TextChanged(object sender, EventArgs e)
+        {
+            if (!Validation.IsWatermark(textBoxPassword.Text, Resources.RegPasswordWatermark))
+            {
+                if (!Validation.IsValidPassword(textBoxPassword.Text))
+                {
+                    textBoxPassword.BackColor = Color.LightPink;
+                }
+                else
+                {
+                    textBoxPassword.BackColor = Color.White;
+                }
+            }
+            else
+            {
+                textBoxPassword.BackColor = Color.White;
+            }
+            if (!Validation.IsWatermark(textBoxAgreePassword.Text, Resources.RegConfirmPasswordWatermark))
+            {
+                if (textBoxPassword.Text != textBoxAgreePassword.Text)
+                {
+                    textBoxAgreePassword.BackColor = Color.LightPink;
+                }
+                else if (!Validation.IsWatermark(textBoxAgreePassword.Text, Resources.RegConfirmPasswordWatermark))
+                {
+                    textBoxAgreePassword.BackColor = Color.White;
+                }
+            }
+        }
+        /// <summary>
+        /// Обработчик изменения текста в поле подтверждения пароля
+        /// Выполняет проверку совпадения паролей в реальном времени
+        /// </summary>
+        private void textBoxAgreePassword_TextChanged(object sender, EventArgs e)
+        {
+            if (!Validation.IsWatermark(textBoxAgreePassword.Text, Resources.RegConfirmPasswordWatermark))
+            {
+                if (textBoxPassword.Text != textBoxAgreePassword.Text)
+                {
+                    textBoxAgreePassword.BackColor = Color.LightPink;
+                    textBoxPassword.BackColor = Color.LightPink;
+                }
+                else if (!Validation.IsWatermark(textBoxPassword.Text, Resources.RegPasswordWatermark))
+                {
+                    textBoxAgreePassword.BackColor = Color.White;
+                    if (Validation.IsValidPassword(textBoxPassword.Text))
+                    {
+                        textBoxPassword.BackColor = Color.White;
+                    }
+                }
+            }
+            else
+            {
+                textBoxAgreePassword.BackColor = Color.White;
+            }
         }
     }
 }
