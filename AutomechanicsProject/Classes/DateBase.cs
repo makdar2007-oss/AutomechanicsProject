@@ -1,71 +1,33 @@
 ﻿using AutomechanicsProject.Classes;
 using Microsoft.EntityFrameworkCore;
-using System.Configuration;
+using System;
 
 namespace AutomechanicsProject.Classes
 {
     /// <summary>
     /// Контекст базы данных для работы с автомеханикой
+    /// Предоставляет доступ к сущностям и методы для работы с данными
     /// </summary>
     public class DateBase : DbContext
     {
-        /// <summary>
-        /// Коллекция пользователей системы
-        /// </summary>
         public DbSet<Users> Users { get; set; }
-
-        /// <summary>
-        /// Коллекция категорий товаров
-        /// </summary>
         public DbSet<Category> Categories { get; set; }
-
-        /// <summary>
-        /// Коллекция товаров
-        /// </summary>
         public DbSet<Product> Products { get; set; }
-
-        /// <summary>
-        /// Коллекция отгрузок
-        /// </summary>
         public DbSet<Shipment> Shipments { get; set; }
-
-        /// <summary>
-        /// Коллекция позиций отгрузок
-        /// </summary>
         public DbSet<ShipmentItem> ShipmentItems { get; set; }
-
-        /// <summary>
-        /// Коллекция ролей пользователей
-        /// </summary>
         public DbSet<Role> Roles { get; set; }
-
-        /// <summary>
-        /// Коллекция адресов
-        /// </summary>
         public DbSet<Address> Addresses { get; set; }
 
-        /// <summary>
-        /// Настройка подключения к базе данных
-        /// </summary>
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (!optionsBuilder.IsConfigured)
-            {
-                var connectionString = ConfigurationManager
-                    .ConnectionStrings["DefaultConnection"]
-                    .ConnectionString;
-                optionsBuilder.UseNpgsql(connectionString);
-            }
+            optionsBuilder.UseNpgsql("Host=localhost;Port=5433;Database=project_auto;Username=postgres;Password=1234");
         }
 
-        /// <summary>
-        /// Настройка модели базы данных
-        /// </summary>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasPostgresExtension("uuid-ossp");
 
-            // Настройка таблицы ролей
+            // Настройка таблицы Role
             modelBuilder.Entity<Role>(entity =>
             {
                 entity.ToTable("role");
@@ -83,7 +45,7 @@ namespace AutomechanicsProject.Classes
                 entity.HasIndex(e => e.Position).IsUnique();
             });
 
-            // Настройка таблицы пользователей
+            // Настройка таблицы Users
             modelBuilder.Entity<Users>(entity =>
             {
                 entity.ToTable("users");
@@ -132,7 +94,7 @@ namespace AutomechanicsProject.Classes
                 entity.Ignore(u => u.FullName);
             });
 
-            // Настройка таблицы категорий
+            // Настройка таблицы Category
             modelBuilder.Entity<Category>(entity =>
             {
                 entity.ToTable("category");
@@ -150,7 +112,7 @@ namespace AutomechanicsProject.Classes
                 entity.HasIndex(e => e.Name).IsUnique();
             });
 
-            // Настройка таблицы товаров
+            // Настройка таблицы Product
             modelBuilder.Entity<Product>(entity =>
             {
                 entity.ToTable("product");
@@ -195,7 +157,7 @@ namespace AutomechanicsProject.Classes
                     .OnDelete(DeleteBehavior.Restrict);
             });
 
-            // Настройка таблицы адресов
+            // Настройка таблицы Address
             modelBuilder.Entity<Address>(entity =>
             {
                 entity.ToTable("address");
@@ -211,7 +173,7 @@ namespace AutomechanicsProject.Classes
                     .HasMaxLength(255);
             });
 
-            // Настройка таблицы отгрузок
+            // Настройка таблицы Shipment
             modelBuilder.Entity<Shipment>(entity =>
             {
                 entity.ToTable("shipment");
@@ -249,7 +211,7 @@ namespace AutomechanicsProject.Classes
                     .OnDelete(DeleteBehavior.Restrict);
             });
 
-            // Настройка таблицы позиций отгрузок
+            // Настройка таблицы ShipmentPositions
             modelBuilder.Entity<ShipmentItem>(entity =>
             {
                 entity.ToTable("shipment_positions");
@@ -294,6 +256,7 @@ namespace AutomechanicsProject.Classes
                     .HasForeignKey(si => si.ProductId)
                     .OnDelete(DeleteBehavior.Restrict);
             });
+
             base.OnModelCreating(modelBuilder);
         }
     }

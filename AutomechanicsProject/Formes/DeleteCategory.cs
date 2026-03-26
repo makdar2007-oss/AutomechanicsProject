@@ -52,14 +52,14 @@ namespace AutomechanicsProject.Formes
                 var hasCategories = comboBoxCategory.Items.Count > 0;
                 comboBoxCategory.SelectedIndex = hasCategories ? -1 : -1;
 
-                label1.Text = hasCategories ? "Выберите категорию для удаления" : "Нет доступных категорий для удаления";
+                label1.Text = hasCategories ? Resources.SelectCategoryForDelete : Resources.NoCategoriesForDelete;
                 buttonDelete.Enabled = hasCategories;
             }
             catch (Exception ex)
             {
                 Program.LogError("Ошибка при загрузке категорий в DeleteCategory", ex);
-                MessageBox.Show("Не удалось загрузить категории",
-                    Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(Resources.ErrorLoadCategories, Resources.TitleError,
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         /// <summary>
@@ -82,7 +82,7 @@ namespace AutomechanicsProject.Formes
 
                 if (category == null)
                 {
-                    MessageBox.Show("Категория не найдена в базе данных!", Resources.TitleError,
+                    MessageBox.Show(Resources.ErrorCategoryNotFound, Resources.TitleError,
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
@@ -94,21 +94,17 @@ namespace AutomechanicsProject.Formes
 
                     if (hasShipments)
                     {
-                        MessageBox.Show(
-                            "Невозможно удалить категорию, так как некоторые товары используются в отгрузках.\n" +
-                            "Сначала удалите связанные отгрузки.",
+                        MessageBox.Show(Resources.ErrorCannotDeleteCategoryWithShipments,
                             Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
                 }
                 var confirmMessage = products.Any()
-                    ? $"В категории \"{category.Name}\" находится {products.Count} товаров.\n\n" +
-                      "Вы уверены, что хотите удалить категорию и все товары в ней?\n" +
-                      "Это действие нельзя отменить"
-                    : $"Вы действительно хотите удалить категорию \"{category.Name}\"?";
+                    ? string.Format(Resources.ConfirmDeleteCategoryWithProducts, category.Name, products.Count)
+                    : string.Format(Resources.ConfirmDeleteCategory, category.Name);
 
                 var result = MessageBox.Show(confirmMessage,
-                    products.Any() ? "Подтверждение удаления" : Resources.TitleConfirmation,
+                    products.Any() ? Resources.TitleDeleteConfirmation : Resources.TitleConfirmation,
                     MessageBoxButtons.YesNo,
                     products.Any() ? MessageBoxIcon.Warning : MessageBoxIcon.Question);
 
@@ -123,7 +119,7 @@ namespace AutomechanicsProject.Formes
                 Program.LogInfo($"Категория '{category.Name}' успешно удалена");
 
                 var successMessage = products.Any()
-                    ? $"Категория \"{category.Name}\" и все ({products.Count}) товары в ней успешно удалены!"
+                    ? string.Format(Resources.SuccessCategoryAndProductsDeleted, category.Name, products.Count)
                     : string.Format(Resources.SuccessCategoryDeleted, category.Name);
 
                 MessageBox.Show(successMessage, Resources.TitleSuccess,
@@ -134,8 +130,8 @@ namespace AutomechanicsProject.Formes
             catch (Exception ex)
             {
                 Program.LogError("Ошибка при удалении категории", ex);
-                MessageBox.Show("Не удалось удалить категорию. Попробуйте позже.",
-                    Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(Resources.ErrorDeleteCategory, Resources.TitleError,
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         /// <summary>

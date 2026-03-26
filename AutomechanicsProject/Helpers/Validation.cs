@@ -55,7 +55,7 @@ public static class Validation
         if (string.IsNullOrWhiteSpace(text))
             return false;
 
-        string pattern = @"^[а-яА-ЯёЁ\s\-]+$";
+        string pattern = @"^[а-яА-ЯёЁ\-]+$";
         return Regex.IsMatch(text, pattern);
     }
 
@@ -147,7 +147,7 @@ public static class Validation
         }
         if (!IsValidNameLength(surname))
         {
-            errorMessage = "Фамилия должна быть от 2 до 50 символов";
+            errorMessage = "Фамилия должна быть от 2 до 100 символов";
             return false;
         }
         if (IsWatermark(name, nameWatermark))
@@ -162,7 +162,7 @@ public static class Validation
         }
         if (!IsValidNameLength(name))
         {
-            errorMessage = "Имя должно быть от 2 до 50 символов";
+            errorMessage = "Имя должно быть от 2 до 100 символов";
             return false;
         }
         if (!string.IsNullOrWhiteSpace(lastname) &&
@@ -175,7 +175,7 @@ public static class Validation
             }
             if (!IsValidNameLength(lastname))
             {
-                errorMessage = "Отчество должно быть от 2 до 50 символов";
+                errorMessage = "Отчество должно быть от 2 до 100 символов";
                 return false;
             }
         }

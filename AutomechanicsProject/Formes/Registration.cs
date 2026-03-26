@@ -175,8 +175,7 @@ namespace AutomechanicsProject.Formes
 
             if (!ValidateAllFields())
             {
-                ShowErrorMessage("Пожалуйста, исправьте ошибки в форме.\n" +
-                    "Поля, выделенные розовым, заполнены неверно.");
+                ShowErrorMessage(Resources.ErrorFixFormErrors);
                 return;
             }
             try
@@ -189,15 +188,14 @@ namespace AutomechanicsProject.Formes
                         .FirstOrDefault(r => r.Position == "Кладовщик");
                     if (storekeeperRole == null)
                     {
-                        MessageBox.Show("Ошибка: роль 'Кладовщик' не найдена!\n" +
-                            "Обратитесь к администратору.",
+                        MessageBox.Show(Resources.ErrorRoleNotFound,
                             Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
                     if (db.Users.Any(u => u.Login == login))
                     {
                         textBoxLogin.BackColor = Color.LightPink;
-                        ShowErrorMessage("Пользователь с таким логином уже существует");
+                        ShowErrorMessage(Resources.ErrorUserExists);
                         return;
                     }
                     var hashedPassword = PasswordHelper.HashPassword(textBoxPassword.Text);
@@ -216,10 +214,7 @@ namespace AutomechanicsProject.Formes
                     db.Users.Add(newUser);
                     db.SaveChanges();
                     Program.LogInfo($"Зарегистрирован новый пользователь: {newUser.Login} - {newUser.FullName}");
-                    MessageBox.Show($"Регистрация успешна!\n\n" +
-                        $"Логин: {login}\n" +
-                        $"ФИО: {newUser.FullName}\n\n" +
-                        $"Теперь вы можете войти в систему.",
+                    MessageBox.Show(string.Format(Resources.SuccessRegistrationWithDetails, login, newUser.FullName),
                         Resources.TitleSuccess, MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                     OpenAuthorization();
@@ -228,8 +223,8 @@ namespace AutomechanicsProject.Formes
             catch (Exception ex)
             {
                 Program.LogError("Ошибка регистрации", ex);
-                MessageBox.Show("Ошибка при регистрации. Попробуйте позже.",
-                    Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(Resources.ErrorRegistration, Resources.TitleError,
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         /// <summary>

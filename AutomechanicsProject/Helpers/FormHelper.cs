@@ -26,7 +26,7 @@ public static class FormHelper
     public static void HandleException(string message, Exception ex, IWin32Window owner = null)
     {
         Program.LogError(message, ex);
-        MessageBox.Show("Произошла ошибка. Попробуйте позже.",
-            Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
+        MessageBox.Show(Resources.ErrorGeneric, Resources.TitleError,
+            MessageBoxButtons.OK, MessageBoxIcon.Error);
     }
 }

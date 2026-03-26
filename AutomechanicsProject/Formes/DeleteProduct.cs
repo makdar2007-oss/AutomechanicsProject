@@ -57,8 +57,8 @@ namespace AutomechanicsProject.Formes
             catch (Exception ex)
             {
                 Program.LogError($"Ошибка при загрузке товара с ID {productId}", ex);
-                MessageBox.Show("Не удалось загрузить товар",
-                    Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(Resources.ErrorLoadProduct, Resources.TitleError,
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         /// <summary>
@@ -97,9 +97,7 @@ namespace AutomechanicsProject.Formes
 
                 if (HasShipments(product, out int shipmentsCount))
                 {
-                    MessageBox.Show(
-                        $"Невозможно удалить товар \"{product.Article} - {product.Name}\",\n" +
-                        $"так как он используется в {shipmentsCount} отгрузках.",
+                    MessageBox.Show(string.Format(Resources.ErrorProductInShipments, product.Article, shipmentsCount),
                         Resources.TitleWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
@@ -120,22 +118,17 @@ namespace AutomechanicsProject.Formes
             catch (Exception ex)
             {
                 Program.LogError("Ошибка при удалении товара", ex);
-                MessageBox.Show("Не удалось удалить товар. Попробуйте позже.",
-                    Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(Resources.ErrorDeleteProduct, Resources.TitleError,
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         private bool ConfirmDelete(Product product)
         {
-            var categoryName = product.Category?.Name ?? "Без категории";
+            var categoryName = product.Category?.Name ?? Resources.CategoryNone;
 
             var result = MessageBox.Show(
-                $"Вы действительно хотите удалить товар?\n\n" +
-                $"Артикул: {product.Article}\n" +
-                $"Название: {product.Name}\n" +
-                $"Категория: {categoryName}\n" +
-                $"Цена: {product.Price:F2}\n" +
-                $"Остаток: {product.Balance} {product.Unit}\n\n" +
-                $"Это действие нельзя отменить!",
+                string.Format(Resources.ConfirmDeleteProduct,
+                    product.Article, product.Name, categoryName, product.Price, product.Balance, product.Unit),
                 Resources.TitleConfirmation,
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Warning);
@@ -169,7 +162,7 @@ namespace AutomechanicsProject.Formes
             if (hasInput)
             {
                 var result = MessageBox.Show(
-                    "Вы уверены, что хотите отменить удаление?",
+                    Resources.ConfirmCancelDelete,
                     Resources.TitleConfirmation,
                     MessageBoxButtons.YesNo,
                     MessageBoxIcon.Question);

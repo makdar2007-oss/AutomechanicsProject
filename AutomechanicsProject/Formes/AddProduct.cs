@@ -55,8 +55,8 @@ namespace AutomechanicsProject.Formes
             catch (Exception ex)
             {
                 Program.LogError("Ошибка при загрузке категорий в AddProduct", ex);
-                MessageBox.Show("Не удалось загрузить категории",
-                    Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(Resources.ErrorLoadCategories, Resources.TitleError,
+                   MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -113,7 +113,7 @@ namespace AutomechanicsProject.Formes
             }
             catch (Exception ex)
             {
-                FormHelper.HandleException("Ошибка при добавлении товара", ex);
+                FormHelper.HandleException(Resources.ErrorAddProduct, ex);
             }
         }
         /// <summary>
@@ -143,8 +143,7 @@ namespace AutomechanicsProject.Formes
                    (textBoxUnit.Text == Resources.ProductUnitWatermark || string.IsNullOrWhiteSpace(textBoxUnit.Text)) &&
                    (textBoxPrice.Text == Resources.ProductPriceWatermark || string.IsNullOrWhiteSpace(textBoxPrice.Text)));
 
-            if (hasInput && !FormHelper.ShowCancelConfirmation("Вы уверены, что хотите отменить добавление товара?\n" +
-                "Все введенные данные будут потеряны."))
+            if (hasInput && !FormHelper.ShowCancelConfirmation(Resources.ConfirmCancelAddProduct))
             {
                 return;
             }    
