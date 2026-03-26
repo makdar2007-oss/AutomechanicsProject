@@ -117,7 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="SearchWatermark" xml:space="preserve">
+	<data name="SearchWatermark" xml:space="preserve">
     <value>Поиск:</value>
   </data>
 	<data name="AuthLoginWatermark" xml:space="preserve">
@@ -150,6 +150,71 @@
 	<data name="EditUnitWatermark" xml:space="preserve">
     <value>Единица измерения</value>
   </data>
+	<data name="ProductArticleWatermark" xml:space="preserve">
+    <value>Введите артикул</value>
+  </data>
+	<data name="ProductNameWatermark" xml:space="preserve">
+    <value>Введите название</value>
+  </data>
+	<data name="ProductPriceWatermark" xml:space="preserve">
+    <value>Введите цену</value>
+  </data>
+	<data name="ProductUnitWatermark" xml:space="preserve">
+    <value>Введите единицы измерения</value>
+  </data>
+	<data name="RegConfirmPasswordWatermark" xml:space="preserve">
+    <value>Повторите пароль</value>
+  </data>
+	<data name="RegLastnameWatermark" xml:space="preserve">
+    <value>Введите отчество</value>
+  </data>
+	<data name="RegLoginWatermark" xml:space="preserve">
+    <value>Введите логин</value>
+  </data>
+	<data name="RegNameWatermark" xml:space="preserve">
+    <value>Введите имя</value>
+  </data>
+	<data name="RegPasswordWatermark" xml:space="preserve">
+    <value>Введите пароль</value>
+  </data>
+	<data name="RegSurnameWatermark" xml:space="preserve">
+    <value>Введите фамилию</value>
+  </data>
+	<data name="ShipmentQuantityWatermark" xml:space="preserve">
+    <value>Введите количество товара</value>
+  </data>
+	<data name="ShipmentRecipientWatermark" xml:space="preserve">
+    <value>Введите кому</value>
+  </data>
+	<data name="TitleConfirmation" xml:space="preserve">
+    <value>Подтверждение</value>
+  </data>
+	<data name="TitleError" xml:space="preserve">
+    <value>Ошибка</value>
+  </data>
+	<data name="TitleInformation" xml:space="preserve">
+    <value>Информация</value>
+  </data>
+	<data name="TitleSuccess" xml:space="preserve">
+    <value>Успех</value>
+  </data>
+	<data name="TitleWarning" xml:space="preserve">
+    <value>Внимание</value>
+  </data>
+	<data name="TitleDeleteConfirmation" xml:space="preserve">
+    <value>Подтверждение удаления</value>
+  </data>
+	<data name="TitleRemoveConfirmation" xml:space="preserve">
+    <value>Подтверждение удаления</value>
+  </data>
+	<data name="TitleProductAlreadyInList" xml:space="preserve">
+    <value>Товар уже в списке</value>
+  </data>
+	<data name="TitleActionForbidden" xml:space="preserve">
+    <value>Действие запрещено</value>
+  </data>
+
+	<!-- Сообщения об ошибках -->
 	<data name="ErrorAuthInvalid" xml:space="preserve">
     <value>Неверный логин или пароль!</value>
   </data>
@@ -201,84 +266,6 @@
 	<data name="ErrorUserExists" xml:space="preserve">
     <value>Пользователь с таким логином уже существует!</value>
   </data>
-	<data name="ProductArticleWatermark" xml:space="preserve">
-    <value>Введите артикул</value>
-  </data>
-	<data name="ProductNameWatermark" xml:space="preserve">
-    <value>Введите название</value>
-  </data>
-	<data name="ProductPriceWatermark" xml:space="preserve">
-    <value>Введите цену</value>
-  </data>
-	<data name="ProductUnitWatermark" xml:space="preserve">
-    <value>Введите единицы измерения</value>
-  </data>
-	<data name="RegConfirmPasswordWatermark" xml:space="preserve">
-    <value>Повторите пароль</value>
-  </data>
-	<data name="RegLastnameWatermark" xml:space="preserve">
-    <value>Введите отчество</value>
-  </data>
-	<data name="RegLoginWatermark" xml:space="preserve">
-    <value>Введите логин</value>
-  </data>
-	<data name="RegNameWatermark" xml:space="preserve">
-    <value>Введите имя</value>
-  </data>
-	<data name="RegPasswordWatermark" xml:space="preserve">
-    <value>Введите пароль</value>
-  </data>
-	<data name="RegSurnameWatermark" xml:space="preserve">
-    <value>Введите фамилию</value>
-  </data>
-	<data name="SearchWatermark" xml:space="preserve">
-    <value>Поиск:</value>
-  </data>
-	<data name="ShipmentQuantityWatermark" xml:space="preserve">
-    <value>Введите количество товара</value>
-  </data>
-	<data name="ShipmentRecipientWatermark" xml:space="preserve">
-    <value>Введите кому</value>
-  </data>
-	<data name="SuccessCategoryAdded" xml:space="preserve">
-    <value>Категория "{0}" успешно добавлена!</value>
-  </data>
-	<data name="SuccessCategoryDeleted" xml:space="preserve">
-    <value>Категория "{0}" успешно удалена!</value>
-  </data>
-	<data name="SuccessCategoryUpdated" xml:space="preserve">
-    <value>Категория "{0}" успешно переименована в "{1}"!</value>
-  </data>
-	<data name="SuccessProductAdded" xml:space="preserve">
-    <value>Товар успешно добавлен!</value>
-  </data>
-	<data name="SuccessProductDeleted" xml:space="preserve">
-    <value>Товар успешно удален!</value>
-  </data>
-	<data name="SuccessProductUpdated" xml:space="preserve">
-    <value>Товар успешно обновлен!</value>
-  </data>
-	<data name="SuccessRegistration" xml:space="preserve">
-    <value>Регистрация успешна! Добро пожаловать, {0}!</value>
-  </data>
-	<data name="SuccessShipmentCreated" xml:space="preserve">
-    <value>Отгрузка успешно оформлена!</value>
-  </data>
-	<data name="TitleConfirmation" xml:space="preserve">
-    <value>Подтверждение</value>
-  </data>
-	<data name="TitleError" xml:space="preserve">
-    <value>Ошибка</value>
-  </data>
-	<data name="TitleInformation" xml:space="preserve">
-    <value>Информация</value>
-  </data>
-	<data name="TitleSuccess" xml:space="preserve">
-    <value>Успех</value>
-  </data>
-	<data name="TitleWarning" xml:space="preserve">
-    <value>Внимание</value>
-  </data>
 	<data name="ErrorAddCategory" xml:space="preserve">
     <value>Не удалось добавить категорию. Попробуйте позже.</value>
   </data>
@@ -301,7 +288,7 @@
     <value>Ошибка при редактировании товара</value>
   </data>
 	<data name="ErrorFixFormErrors" xml:space="preserve">
-    <value>Пожалуйста, исправьте ошибки в форме.\nПоля, выделенные розовым, заполнены неверно.</value>
+    <value>Пожалуйста, исправьте ошибки в форме.&#xA;Поля, выделенные розовым, заполнены неверно.</value>
   </data>
 	<data name="ErrorGeneric" xml:space="preserve">
     <value>Произошла ошибка. Попробуйте позже.</value>
@@ -355,22 +342,22 @@
     <value>Ошибка при регистрации. Попробуйте позже.</value>
   </data>
 	<data name="ErrorRoleNotFound" xml:space="preserve">
-    <value>Ошибка: роль 'Кладовщик' не найдена!\nОбратитесь к администратору.</value>
+    <value>Ошибка: роль 'Кладовщик' не найдена!&#xA;Обратитесь к администратору.</value>
   </data>
 	<data name="ErrorUpdateProduct" xml:space="preserve">
     <value>Не удалось обновить товар. Попробуйте позже.</value>
   </data>
 	<data name="ErrorCannotDeleteCategoryWithShipments" xml:space="preserve">
-    <value>Невозможно удалить категорию, так как некоторые товары используются в отгрузках.\nСначала удалите связанные отгрузки.</value>
+    <value>Невозможно удалить категорию, так как некоторые товары используются в отгрузках.&#xA;Сначала удалите связанные отгрузки.</value>
   </data>
 	<data name="ErrorCategoryNotFound" xml:space="preserve">
     <value>Категория не найдена в базе данных!</value>
   </data>
 	<data name="ErrorCreateShipment" xml:space="preserve">
-    <value>Не удалось оформить отгрузку.\n\nОшибка: {0}</value>
+    <value>Не удалось оформить отгрузку.&#xA;&#xA;Ошибка: {0}</value>
   </data>
 	<data name="ErrorInsufficientStockWithDetails" xml:space="preserve">
-    <value>Недостаточно товара на складе!\nДоступно: {0} {1}</value>
+    <value>Недостаточно товара на складе!&#xA;Доступно: {0} {1}</value>
   </data>
 	<data name="ErrorProductNotFoundGeneric" xml:space="preserve">
     <value>Товар не найден!</value>
@@ -378,7 +365,54 @@
 	<data name="ErrorSelectRecipient" xml:space="preserve">
     <value>Выберите получателя из списка!</value>
   </data>
-
+	<data name="ErrorCategoryChangeForbidden" xml:space="preserve">
+    <value>Изменение категории товара запрещено!</value>
+  </data>
+	<data name="ErrorCategoryChangeInstruction" xml:space="preserve">
+    <value>Если вам необходимо изменить категорию, удалите товар и создайте новый в нужной категории.</value>
+  </data>
+	<data name="ErrorEnterSurname" xml:space="preserve">
+    <value>Введите фамилию</value>
+  </data>
+	<data name="ErrorInvalidSurname" xml:space="preserve">
+    <value>Фамилия должна содержать только русские буквы, дефис и пробел</value>
+  </data>
+	<data name="ErrorSurnameLength" xml:space="preserve">
+    <value>Фамилия должна быть от 2 до 100 символов</value>
+  </data>
+	<data name="ErrorEnterName" xml:space="preserve">
+    <value>Введите имя</value>
+  </data>
+	<data name="ErrorInvalidName" xml:space="preserve">
+    <value>Имя должно содержать только русские буквы, дефис и пробел</value>
+  </data>
+	<data name="ErrorNameLength" xml:space="preserve">
+    <value>Имя должно быть от 2 до 100 символов</value>
+  </data>
+	<data name="ErrorInvalidLastname" xml:space="preserve">
+    <value>Отчество должно содержать только русские буквы, дефис и пробел</value>
+  </data>
+	<data name="ErrorLastnameLength" xml:space="preserve">
+    <value>Отчество должно быть от 2 до 100 символов</value>
+  </data>
+	<data name="ErrorEnterLogin" xml:space="preserve">
+    <value>Введите логин</value>
+  </data>
+	<data name="ErrorInvalidLogin" xml:space="preserve">
+    <value>Логин может содержать только английские буквы, цифры и подчеркивание</value>
+  </data>
+	<data name="ErrorLoginLength" xml:space="preserve">
+    <value>Логин должен быть от 3 до 20 символов</value>
+  </data>
+	<data name="ErrorEnterPassword" xml:space="preserve">
+    <value>Введите пароль</value>
+  </data>
+	<data name="ErrorInvalidPassword" xml:space="preserve">
+    <value>Пароль должен содержать минимум 6 символов, хотя бы одну цифру и одну букву</value>
+  </data>
+	<data name="ErrorConfirmPassword" xml:space="preserve">
+    <value>Подтвердите пароль</value>
+  </data>
 	<data name="InfoCategoryNameNotChanged" xml:space="preserve">
     <value>Название категории не изменилось</value>
   </data>
@@ -389,9 +423,8 @@
     <value>Нет товаров в наличии для отгрузки!</value>
   </data>
 	<data name="InfoNoRecipientsAvailable" xml:space="preserve">
-    <value>Нет доступных получателей!\nОбратитесь к администратору для добавления компаний.</value>
+    <value>Нет доступных получателей!&#xA;Обратитесь к администратору для добавления компаний.</value>
   </data>
-
 	<data name="SelectCategoryForEdit" xml:space="preserve">
     <value>Выберите категорию для редактирования</value>
   </data>
@@ -407,7 +440,30 @@
 	<data name="NoCategoriesForDelete" xml:space="preserve">
     <value>Нет доступных категорий для удаления</value>
   </data>
-
+	<data name="SuccessCategoryAdded" xml:space="preserve">
+    <value>Категория "{0}" успешно добавлена!</value>
+  </data>
+	<data name="SuccessCategoryDeleted" xml:space="preserve">
+    <value>Категория "{0}" успешно удалена!</value>
+  </data>
+	<data name="SuccessCategoryUpdated" xml:space="preserve">
+    <value>Категория "{0}" успешно переименована в "{1}"!</value>
+  </data>
+	<data name="SuccessProductAdded" xml:space="preserve">
+    <value>Товар успешно добавлен!</value>
+  </data>
+	<data name="SuccessProductDeleted" xml:space="preserve">
+    <value>Товар успешно удален!</value>
+  </data>
+	<data name="SuccessProductUpdated" xml:space="preserve">
+    <value>Товар успешно обновлен!</value>
+  </data>
+	<data name="SuccessRegistration" xml:space="preserve">
+    <value>Регистрация успешна! Добро пожаловать, {0}!</value>
+  </data>
+	<data name="SuccessShipmentCreated" xml:space="preserve">
+    <value>Отгрузка успешно оформлена!</value>
+  </data>
 	<data name="SuccessCategoryAndProductsDeleted" xml:space="preserve">
     <value>Категория "{0}" и все ({1}) товары в ней успешно удалены!</value>
   </data>
@@ -418,60 +474,48 @@
     <value>Товар добавлен в список отгрузки</value>
   </data>
 	<data name="SuccessRegistrationWithDetails" xml:space="preserve">
-    <value>Регистрация успешна!\n\nЛогин: {0}\nФИО: {1}\n\nТеперь вы можете войти в систему.</value>
+    <value>Регистрация успешна!&#xA;&#xA;Логин: {0}&#xA;ФИО: {1}&#xA;&#xA;Теперь вы можете войти в систему.</value>
   </data>
-	<data name="SuccessShipmentCreated" xml:space="preserve">
-    <value>Отгрузка успешно оформлена!\n\nПолучатель: {0}\nКоличество позиций: {1}\nОбщая сумма: {2:C2}</value>
+	<data name="SuccessShipmentCreatedWithDetails" xml:space="preserve">
+    <value>Отгрузка успешно оформлена!&#xA;&#xA;Получатель: {0}&#xA;Количество позиций: {1}&#xA;Общая сумма: {2:C2}</value>
   </data>
-
 	<data name="ConfirmCancelAddProduct" xml:space="preserve">
-    <value>Вы уверены, что хотите отменить добавление товара?\nВсе введенные данные будут потеряны.</value>
+    <value>Вы уверены, что хотите отменить добавление товара?&#xA;Все введенные данные будут потеряны.</value>
   </data>
 	<data name="ConfirmCancelDelete" xml:space="preserve">
     <value>Вы уверены, что хотите отменить удаление?</value>
   </data>
 	<data name="ConfirmCancelEdit" xml:space="preserve">
-    <value>У вас есть несохраненные изменения.\nВы действительно хотите отменить редактирование?</value>
+    <value>У вас есть несохраненные изменения.&#xA;Вы действительно хотите отменить редактирование?</value>
   </data>
 	<data name="ConfirmCancelEditWithDetails" xml:space="preserve">
-    <value>У вас есть несохраненные изменения.\n\nВы действительно хотите отменить редактирование?</value>
+    <value>У вас есть несохраненные изменения.&#xA;&#xA;Вы действительно хотите отменить редактирование?</value>
   </data>
 	<data name="ConfirmCancelShipment" xml:space="preserve">
-    <value>У вас есть добавленные товары в списке отгрузки.\nВы действительно хотите отменить создание отгрузки?</value>
+    <value>У вас есть добавленные товары в списке отгрузки.&#xA;Вы действительно хотите отменить создание отгрузки?</value>
   </data>
 	<data name="ConfirmDeleteCategory" xml:space="preserve">
     <value>Вы действительно хотите удалить категорию "{0}"?</value>
   </data>
 	<data name="ConfirmDeleteCategoryWithProducts" xml:space="preserve">
-    <value>В категории "{0}" находится {1} товаров.\n\nВы уверены, что хотите удалить категорию и все товары в ней?\nЭто действие нельзя отменить</value>
+    <value>В категории "{0}" находится {1} товаров.&#xA;&#xA;Вы уверены, что хотите удалить категорию и все товары в ней?&#xA;Это действие нельзя отменить</value>
   </data>
 	<data name="ConfirmDeleteProduct" xml:space="preserve">
-    <value>Вы действительно хотите удалить товар?\n\nАртикул: {0}\nНазвание: {1}\nКатегория: {2}\nЦена: {3:F2}\nОстаток: {4} {5}\n\nЭто действие нельзя отменить!</value>
+    <value>Вы действительно хотите удалить товар?&#xA;&#xA;Артикул: {0}&#xA;Название: {1}&#xA;Категория: {2}&#xA;Цена: {3:F2}&#xA;Остаток: {4} {5}&#xA;&#xA;Это действие нельзя отменить!</value>
   </data>
 	<data name="ConfirmRemoveShipmentItem" xml:space="preserve">
     <value>Удалить товар "{0}" из списка отгрузки?</value>
   </data>
 	<data name="ConfirmShipment" xml:space="preserve">
-    <value>Подтвердить отгрузку?\n\nПолучатель: {0}\nКоличество позиций: {1}\nОбщая сумма: {2:C2}</value>
+    <value>Подтвердить отгрузку?&#xA;&#xA;Получатель: {0}&#xA;Количество позиций: {1}&#xA;Общая сумма: {2:C2}</value>
   </data>
-
-	<data name="ProductAlreadyInList" xml:space="preserve">
-    <value>Товар "{0}" уже добавлен в список.\nТекущее количество: {1} {2}\n\nЗаменить количество новым значением?</value>
-  </data>
-	<data name="TitleProductAlreadyInList" xml:space="preserve">
-    <value>Товар уже в списке</value>
-  </data>
-	<data name="TitleDeleteConfirmation" xml:space="preserve">
-    <value>Подтверждение удаления</value>
-  </data>
-	<data name="TitleRemoveConfirmation" xml:space="preserve">
-    <value>Подтверждение удаления</value>
-  </data>
-
 	<data name="CategoryNone" xml:space="preserve">
     <value>Без категории</value>
   </data>
 	<data name="WarningShipmentsWithoutItems" xml:space="preserve">
     <value>Найдено {0} отгрузок, но ни одна не содержит позиций!</value>
+  </data>
+	<data name="ProductAlreadyInList" xml:space="preserve">
+    <value>Товар "{0}" уже добавлен в список.&#xA;Текущее количество: {1} {2}&#xA;&#xA;Заменить количество новым значением?</value>
   </data>
 </root>

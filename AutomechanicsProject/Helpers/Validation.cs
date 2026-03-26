@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Linq;
+using AutomechanicsProject.Properties; // Добавляем using для ресурсов
 
 /// <summary>
 /// Вспомогательный класс для валидации данных в формах
@@ -55,7 +56,7 @@ public static class Validation
         if (string.IsNullOrWhiteSpace(text))
             return false;
 
-        string pattern = @"^[а-яА-ЯёЁ\-]+$";
+        string pattern = @"^[а-яА-ЯёЁ\s\-]+$";
         return Regex.IsMatch(text, pattern);
     }
 
@@ -137,32 +138,32 @@ public static class Validation
 
         if (IsWatermark(surname, surnameWatermark))
         {
-            errorMessage = "Введите фамилию";
+            errorMessage = Resources.  ErrorEnterSurname;
             return false;
         }
         if (!IsValidRussianName(surname))
         {
-            errorMessage = "Фамилия должна содержать только русские буквы, дефис и пробел";
+            errorMessage = Resources.ErrorInvalidSurname;
             return false;
         }
         if (!IsValidNameLength(surname))
         {
-            errorMessage = "Фамилия должна быть от 2 до 100 символов";
+            errorMessage = Resources.ErrorSurnameLength;
             return false;
         }
         if (IsWatermark(name, nameWatermark))
         {
-            errorMessage = "Введите имя";
+            errorMessage = Resources.ErrorEnterName;
             return false;
         }
         if (!IsValidRussianName(name))
         {
-            errorMessage = "Имя должно содержать только русские буквы, дефис и пробел";
+            errorMessage = Resources.ErrorInvalidName;
             return false;
         }
         if (!IsValidNameLength(name))
         {
-            errorMessage = "Имя должно быть от 2 до 100 символов";
+            errorMessage = Resources.ErrorNameLength;
             return false;
         }
         if (!string.IsNullOrWhiteSpace(lastname) &&
@@ -170,48 +171,48 @@ public static class Validation
         {
             if (!IsValidRussianName(lastname))
             {
-                errorMessage = "Отчество должно содержать только русские буквы, дефис и пробел";
+                errorMessage = Resources.ErrorInvalidLastname;
                 return false;
             }
             if (!IsValidNameLength(lastname))
             {
-                errorMessage = "Отчество должно быть от 2 до 100 символов";
+                errorMessage = Resources.ErrorLastnameLength;
                 return false;
             }
         }
         if (IsWatermark(login, loginWatermark))
         {
-            errorMessage = "Введите логин";
+            errorMessage = Resources.ErrorEnterLogin;
             return false;
         }
         if (!IsValidLogin(login))
         {
-            errorMessage = "Логин может содержать только английские буквы, цифры и подчеркивание";
+            errorMessage = Resources.ErrorInvalidLogin;
             return false;
         }
         if (!IsValidLoginLength(login))
         {
-            errorMessage = "Логин должен быть от 3 до 20 символов";
+            errorMessage = Resources.ErrorLoginLength;
             return false;
         }
         if (IsWatermark(password, passwordWatermark))
         {
-            errorMessage = "Введите пароль";
+            errorMessage = Resources.ErrorEnterPassword;
             return false;
         }
         if (!IsValidPassword(password))
         {
-            errorMessage = "Пароль должен содержать минимум 6 символов, хотя бы одну цифру и одну букву";
+            errorMessage = Resources.ErrorInvalidPassword;
             return false;
         }
         if (IsWatermark(confirmPassword, confirmWatermark))
         {
-            errorMessage = "Подтвердите пароль";
+            errorMessage = Resources.ErrorConfirmPassword;
             return false;
         }
         if (!IsPasswordMatch(password, confirmPassword))
         {
-            errorMessage = "Пароли не совпадают";
+            errorMessage = Resources.ErrorPasswordMismatch;
             return false;
         }
 
@@ -233,7 +234,6 @@ public static class Validation
             textBox.BackColor = Color.White;
         }
     }
-
     /// <summary>
     /// Сбрасывает подсветку всех полей
     /// </summary>
