@@ -59,22 +59,11 @@ namespace AutomechanicsProject.Formes
                     Close();
                     return;
                 }
-                textBoxArt.Text = currentProduct.Article;
-                textBoxArt.ForeColor = Color.Black;
-
+                textBoxArt.Text = currentProduct.Article;         
                 textBoxName.Text = currentProduct.Name;
-                textBoxName.ForeColor = Color.Black;
-
                 textBoxCategory.Text = currentProduct.Category?.Name ?? Resources.CategoryNone;
-                textBoxCategory.ForeColor = Color.Black;
-
                 textBoxUnit.Text = currentProduct.Unit;
-                textBoxUnit.ForeColor = Color.Black;
-
                 textBoxPrice.Text = currentProduct.Price.ToString("F2");
-                textBoxPrice.ForeColor = Color.Black;
-
-                hasChanges = false;
             }
             catch (Exception ex)
             {

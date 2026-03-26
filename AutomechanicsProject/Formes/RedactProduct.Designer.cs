@@ -1,4 +1,6 @@
-﻿namespace AutomechanicsProject.Formes
+﻿using System.Drawing;
+
+namespace AutomechanicsProject.Formes
 {
     partial class RedactProduct
     {
@@ -91,6 +93,7 @@
             this.textBoxPrice.TabIndex = 5;
             this.textBoxPrice.Text = "Цена";
             this.textBoxPrice.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBoxPrice.ForeColor = Color.Black;
             // 
             // textBoxUnit
             // 
@@ -102,6 +105,7 @@
             this.textBoxUnit.TabIndex = 4;
             this.textBoxUnit.Text = "Единица измерения";
             this.textBoxUnit.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBoxUnit.ForeColor = Color.Black;
             // 
             // textBoxCategory
             // 
@@ -114,6 +118,7 @@
             this.textBoxCategory.TabIndex = 3;
             this.textBoxCategory.Text = "Категория";
             this.textBoxCategory.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBoxCategory.ForeColor = Color.Black;
             // 
             // textBoxName
             // 
@@ -125,6 +130,7 @@
             this.textBoxName.TabIndex = 2;
             this.textBoxName.Text = "Название";
             this.textBoxName.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBoxName.ForeColor = Color.Black;
             // 
             // textBoxArt
             // 
@@ -136,6 +142,7 @@
             this.textBoxArt.TabIndex = 1;
             this.textBoxArt.Text = "Артикул";
             this.textBoxArt.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBoxArt.ForeColor = Color.Black;
             // 
             // labelRedact
             // 

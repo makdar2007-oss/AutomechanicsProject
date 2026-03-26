@@ -96,8 +96,8 @@ public class ValidationTests
         );
 
         Assert.False(result);
-        Assert.Equal("Пароли не совпадают", error);
-        }
+        Assert.Equal("Пароли не совпадают!", error);
+    }
     [Theory]
     [InlineData("ab", false)]
     [InlineData("abc", true)]

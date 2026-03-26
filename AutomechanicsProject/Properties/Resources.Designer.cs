@@ -106,7 +106,8 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Вы уверены, что хотите отменить добавление товара?\nВсе введенные данные будут потеряны..
+        ///   Ищет локализованную строку, похожую на Вы уверены, что хотите отменить добавление товара?
+        ///Все введенные данные будут потеряны..
         /// </summary>
         public static string ConfirmCancelAddProduct {
             get {
@@ -124,7 +125,8 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на У вас есть несохраненные изменения.\nВы действительно хотите отменить редактирование?.
+        ///   Ищет локализованную строку, похожую на У вас есть несохраненные изменения.
+        ///Вы действительно хотите отменить редактирование?.
         /// </summary>
         public static string ConfirmCancelEdit {
             get {
@@ -133,7 +135,9 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на У вас есть несохраненные изменения.\n\nВы действительно хотите отменить редактирование?.
+        ///   Ищет локализованную строку, похожую на У вас есть несохраненные изменения.
+        ///
+        ///Вы действительно хотите отменить редактирование?.
         /// </summary>
         public static string ConfirmCancelEditWithDetails {
             get {
@@ -142,7 +146,8 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на У вас есть добавленные товары в списке отгрузки.\nВы действительно хотите отменить создание отгрузки?.
+        ///   Ищет локализованную строку, похожую на У вас есть добавленные товары в списке отгрузки.
+        ///Вы действительно хотите отменить создание отгрузки?.
         /// </summary>
         public static string ConfirmCancelShipment {
             get {
@@ -160,7 +165,10 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на В категории &quot;{0}&quot; находится {1} товаров.\n\nВы уверены, что хотите удалить категорию и все товары в ней?\nЭто действие нельзя отменить.
+        ///   Ищет локализованную строку, похожую на В категории &quot;{0}&quot; находится {1} товаров.
+        ///
+        ///Вы уверены, что хотите удалить категорию и все товары в ней?
+        ///Это действие нельзя отменить.
         /// </summary>
         public static string ConfirmDeleteCategoryWithProducts {
             get {
@@ -169,7 +177,15 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Вы действительно хотите удалить товар?\n\nАртикул: {0}\nНазвание: {1}\nКатегория: {2}\nЦена: {3:F2}\nОстаток: {4} {5}\n\nЭто действие нельзя отменить!.
+        ///   Ищет локализованную строку, похожую на Вы действительно хотите удалить товар?
+        ///
+        ///Артикул: {0}
+        ///Название: {1}
+        ///Категория: {2}
+        ///Цена: {3:F2}
+        ///Остаток: {4} {5}
+        ///
+        ///Это действие нельзя отменить!.
         /// </summary>
         public static string ConfirmDeleteProduct {
             get {
@@ -187,7 +203,11 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Подтвердить отгрузку?\n\nПолучатель: {0}\nКоличество позиций: {1}\nОбщая сумма: {2:C2}.
+        ///   Ищет локализованную строку, похожую на Подтвердить отгрузку?
+        ///
+        ///Получатель: {0}
+        ///Количество позиций: {1}
+        ///Общая сумма: {2:C2}.
         /// </summary>
         public static string ConfirmShipment {
             get {
@@ -286,11 +306,30 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Невозможно удалить категорию, так как некоторые товары используются в отгрузках.\nСначала удалите связанные отгрузки..
+        ///   Ищет локализованную строку, похожую на Невозможно удалить категорию, так как некоторые товары используются в отгрузках.
+        ///Сначала удалите связанные отгрузки..
         /// </summary>
         public static string ErrorCannotDeleteCategoryWithShipments {
             get {
                 return ResourceManager.GetString("ErrorCannotDeleteCategoryWithShipments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Изменение категории товара запрещено!.
+        /// </summary>
+        public static string ErrorCategoryChangeForbidden {
+            get {
+                return ResourceManager.GetString("ErrorCategoryChangeForbidden", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Если вам необходимо изменить категорию, удалите товар и создайте новый в нужной категории..
+        /// </summary>
+        public static string ErrorCategoryChangeInstruction {
+            get {
+                return ResourceManager.GetString("ErrorCategoryChangeInstruction", resourceCulture);
             }
         }
         
@@ -313,7 +352,18 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Не удалось оформить отгрузку.\n\nОшибка: {0}.
+        ///   Ищет локализованную строку, похожую на Подтвердите пароль.
+        /// </summary>
+        public static string ErrorConfirmPassword {
+            get {
+                return ResourceManager.GetString("ErrorConfirmPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Не удалось оформить отгрузку.
+        ///
+        ///Ошибка: {0}.
         /// </summary>
         public static string ErrorCreateShipment {
             get {
@@ -385,6 +435,33 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Введите логин.
+        /// </summary>
+        public static string ErrorEnterLogin {
+            get {
+                return ResourceManager.GetString("ErrorEnterLogin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Введите имя.
+        /// </summary>
+        public static string ErrorEnterName {
+            get {
+                return ResourceManager.GetString("ErrorEnterName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Введите пароль.
+        /// </summary>
+        public static string ErrorEnterPassword {
+            get {
+                return ResourceManager.GetString("ErrorEnterPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Введите количество товара!.
         /// </summary>
         public static string ErrorEnterQuantity {
@@ -399,6 +476,15 @@ namespace AutomechanicsProject.Properties {
         public static string ErrorEnterRecipient {
             get {
                 return ResourceManager.GetString("ErrorEnterRecipient", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Введите фамилию.
+        /// </summary>
+        public static string ErrorEnterSurname {
+            get {
+                return ResourceManager.GetString("ErrorEnterSurname", resourceCulture);
             }
         }
         
@@ -421,7 +507,8 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Пожалуйста, исправьте ошибки в форме.\nПоля, выделенные розовым, заполнены неверно..
+        ///   Ищет локализованную строку, похожую на Пожалуйста, исправьте ошибки в форме.
+        ///Поля, выделенные розовым, заполнены неверно..
         /// </summary>
         public static string ErrorFixFormErrors {
             get {
@@ -448,11 +535,66 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Недостаточно товара на складе!\nДоступно: {0} {1}.
+        ///   Ищет локализованную строку, похожую на Недостаточно товара на складе!
+        ///Доступно: {0} {1}.
         /// </summary>
         public static string ErrorInsufficientStockWithDetails {
             get {
                 return ResourceManager.GetString("ErrorInsufficientStockWithDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Отчество должно содержать только русские буквы, дефис и пробел.
+        /// </summary>
+        public static string ErrorInvalidLastname {
+            get {
+                return ResourceManager.GetString("ErrorInvalidLastname", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Логин может содержать только английские буквы, цифры и подчеркивание.
+        /// </summary>
+        public static string ErrorInvalidLogin {
+            get {
+                return ResourceManager.GetString("ErrorInvalidLogin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Имя должно содержать только русские буквы, дефис и пробел.
+        /// </summary>
+        public static string ErrorInvalidName {
+            get {
+                return ResourceManager.GetString("ErrorInvalidName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Пароль должен содержать минимум 6 символов, хотя бы одну цифру и одну букву.
+        /// </summary>
+        public static string ErrorInvalidPassword {
+            get {
+                return ResourceManager.GetString("ErrorInvalidPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Фамилия должна содержать только русские буквы, дефис и пробел.
+        /// </summary>
+        public static string ErrorInvalidSurname {
+            get {
+                return ResourceManager.GetString("ErrorInvalidSurname", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Отчество должно быть от 2 до 100 символов.
+        /// </summary>
+        public static string ErrorLastnameLength {
+            get {
+                return ResourceManager.GetString("ErrorLastnameLength", resourceCulture);
             }
         }
         
@@ -516,6 +658,24 @@ namespace AutomechanicsProject.Properties {
         public static string ErrorLoadShipmentHistory {
             get {
                 return ResourceManager.GetString("ErrorLoadShipmentHistory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Логин должен быть от 3 до 20 символов.
+        /// </summary>
+        public static string ErrorLoginLength {
+            get {
+                return ResourceManager.GetString("ErrorLoginLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Имя должно быть от 2 до 100 символов.
+        /// </summary>
+        public static string ErrorNameLength {
+            get {
+                return ResourceManager.GetString("ErrorNameLength", resourceCulture);
             }
         }
         
@@ -637,7 +797,8 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Ошибка: роль &apos;Кладовщик&apos; не найдена!\nОбратитесь к администратору..
+        ///   Ищет локализованную строку, похожую на Ошибка: роль &apos;Кладовщик&apos; не найдена!
+        ///Обратитесь к администратору..
         /// </summary>
         public static string ErrorRoleNotFound {
             get {
@@ -678,6 +839,15 @@ namespace AutomechanicsProject.Properties {
         public static string ErrorSelectRecipient {
             get {
                 return ResourceManager.GetString("ErrorSelectRecipient", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Фамилия должна быть от 2 до 100 символов.
+        /// </summary>
+        public static string ErrorSurnameLength {
+            get {
+                return ResourceManager.GetString("ErrorSurnameLength", resourceCulture);
             }
         }
         
@@ -727,7 +897,8 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Нет доступных получателей!\nОбратитесь к администратору для добавления компаний..
+        ///   Ищет локализованную строку, похожую на Нет доступных получателей!
+        ///Обратитесь к администратору для добавления компаний..
         /// </summary>
         public static string InfoNoRecipientsAvailable {
             get {
@@ -745,7 +916,10 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Товар &quot;{0}&quot; уже добавлен в список.\nТекущее количество: {1} {2}\n\nЗаменить количество новым значением?.
+        ///   Ищет локализованную строку, похожую на Товар &quot;{0}&quot; уже добавлен в список.
+        ///Текущее количество: {1} {2}
+        ///
+        ///Заменить количество новым значением?.
         /// </summary>
         public static string ProductAlreadyInList {
             get {
@@ -997,7 +1171,12 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Регистрация успешна!\n\nЛогин: {0}\nФИО: {1}\n\nТеперь вы можете войти в систему..
+        ///   Ищет локализованную строку, похожую на Регистрация успешна!
+        ///
+        ///Логин: {0}
+        ///ФИО: {1}
+        ///
+        ///Теперь вы можете войти в систему..
         /// </summary>
         public static string SuccessRegistrationWithDetails {
             get {
@@ -1006,11 +1185,33 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Отгрузка успешно оформлена!\n\nПолучатель: {0}\nКоличество позиций: {1}\nОбщая сумма: {2:C2}.
+        ///   Ищет локализованную строку, похожую на Отгрузка успешно оформлена!.
         /// </summary>
         public static string SuccessShipmentCreated {
             get {
                 return ResourceManager.GetString("SuccessShipmentCreated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Отгрузка успешно оформлена!
+        ///
+        ///Получатель: {0}
+        ///Количество позиций: {1}
+        ///Общая сумма: {2:C2}.
+        /// </summary>
+        public static string SuccessShipmentCreatedWithDetails {
+            get {
+                return ResourceManager.GetString("SuccessShipmentCreatedWithDetails", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Действие запрещено.
+        /// </summary>
+        public static string TitleActionForbidden {
+            get {
+                return ResourceManager.GetString("TitleActionForbidden", resourceCulture);
             }
         }
         

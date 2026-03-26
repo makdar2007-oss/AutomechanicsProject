@@ -226,9 +226,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutomechanicsTest\HelpersTest\PasswordHelperTests.cs" />
+    <Compile Include="AutomechanicsTest\HelpersTest\ValidationTest.cs" />
+    <Compile Include="AutomechanicsTest\ModelsTest\AddressTests.cs" />
+    <Compile Include="AutomechanicsTest\ModelsTest\CategoryTests.cs" />
+    <Compile Include="AutomechanicsTest\ModelsTest\ProductTests.cs" />
     <Compile Include="AutomechanicsTest\ModelsTest\RoleTests.cs" />
+    <Compile Include="AutomechanicsTest\ModelsTest\ShipmentItemTests.cs" />
+    <Compile Include="AutomechanicsTest\ModelsTest\ShipmentTests.cs" />
     <Compile Include="AutomechanicsTest\ModelsTest\UserTests.cs" />
-    <Compile Include="AutomechanicsTest\ValidationTest\Validation.cs" />
     <Compile Include="Classes\Address.cs" />
     <Compile Include="Classes\Category.cs" />
     <Compile Include="Classes\DateBase.cs" />

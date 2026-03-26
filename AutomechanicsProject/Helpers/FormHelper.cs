@@ -10,7 +10,7 @@ using System.Windows.Forms;
 public static class FormHelper
 {
     /// <summary>
-    /// Проверяет, является ли текст водяным знаком
+    /// Проверяет, является ли текст подсказкой
     /// </summary>
     public static bool IsWatermark(string text, string watermark) =>
         string.IsNullOrWhiteSpace(text) || text == watermark;
