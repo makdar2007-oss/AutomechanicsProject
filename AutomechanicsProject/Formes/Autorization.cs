@@ -68,8 +68,8 @@ namespace AutomechanicsProject
             ResetHighlights();
             if (!ValidateFields())
             {
-                MessageBox.Show("Пожалуйста, заполните все поля!",
-                    Resources.TitleWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(Resources.ErrorFillFields, Resources.TitleWarning,
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
             try
@@ -83,8 +83,8 @@ namespace AutomechanicsProject
                     if (user == null)
                     {
                         textBoxLogin.BackColor = Color.LightPink;
-                        MessageBox.Show("Неверный логин или пароль!",
-                            Resources.TitleWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        MessageBox.Show(Resources.ErrorAuthInvalid, Resources.TitleWarning,
+                            MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         return;
                     }
                     var isValid = PasswordHelper.VerifyPassword(textBoxPassword.Text, user.Password);
@@ -98,8 +98,8 @@ namespace AutomechanicsProject
                     if (!isValid)
                     {
                         textBoxPassword.BackColor = Color.LightPink;
-                        MessageBox.Show("Неверный логин или пароль!",
-                            Resources.TitleWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        MessageBox.Show(Resources.ErrorAuthInvalid, Resources.TitleWarning,
+                          MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         return;
                     }
                     Program.CurrentUser = user;
@@ -109,8 +109,8 @@ namespace AutomechanicsProject
             catch (Exception ex)
             {
                 Program.LogError("Ошибка авторизации", ex);
-                MessageBox.Show("Ошибка при входе в систему",
-                    Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(Resources.ErrorAuthFailed, Resources.TitleError,
+                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         /// <summary>
@@ -140,8 +140,8 @@ namespace AutomechanicsProject
             }
             else
             {
-                MessageBox.Show("У вас нет доступа к системе! Обратитесь к администратору.",
-                    Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(Resources.ErrorNoAccess, Resources.TitleError,
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Program.LogWarning($"Пользователь {user.FullName} не имеет назначенной роли");
             }
         }

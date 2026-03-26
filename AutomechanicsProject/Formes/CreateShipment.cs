@@ -32,7 +32,7 @@ namespace AutomechanicsProject.Formes
 
             TextBoxHelper.SetupWatermarkTextBox(textBoxUnit, Resources.ShipmentQuantityWatermark);
             comboBoxProduct.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboBoxRecipient1.DropDownStyle = ComboBoxStyle.DropDownList;  
+            comboBoxRecipient1.DropDownStyle = ComboBoxStyle.DropDownList;
             UpdateDisplay();
         }
         /// <summary>
@@ -74,15 +74,15 @@ namespace AutomechanicsProject.Formes
                 }
                 if (products.Count == 0)
                 {
-                    MessageBox.Show("Нет товаров в наличии для отгрузки!",
-                        Resources.TitleInformation, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show(Resources.InfoNoProductsForShipment, Resources.TitleInformation,
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
             catch (Exception ex)
             {
                 Program.LogError("Ошибка при загрузке товаров в CreateShipment", ex);
-                MessageBox.Show("Не удалось загрузить товары",
-                    Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(Resources.ErrorLoadProducts, Resources.TitleError,
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         /// <summary>
@@ -114,15 +114,15 @@ namespace AutomechanicsProject.Formes
 
                 if (recipients.Count == 0)
                 {
-                    MessageBox.Show("Нет доступных получателей!\nОбратитесь к администратору для добавления компаний.",
-                        Resources.TitleInformation, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show(Resources.InfoNoRecipientsAvailable, Resources.TitleInformation,
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
             catch (Exception ex)
             {
                 Program.LogError("Ошибка при загрузке получателей", ex);
-                MessageBox.Show("Не удалось загрузить список получателей",
-                    Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(Resources.ErrorLoadRecipients, Resources.TitleError,
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         /// <summary>
@@ -134,7 +134,7 @@ namespace AutomechanicsProject.Formes
             {
                 RefreshShipmentList();
                 ClearAddFields();
-                MessageBox.Show("Товар добавлен в список отгрузки", Resources.TitleSuccess,
+                MessageBox.Show(Resources.SuccessProductAddedToList, Resources.TitleSuccess,
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
@@ -153,8 +153,8 @@ namespace AutomechanicsProject.Formes
 
             if (comboBoxRecipient1.SelectedItem == null)
             {
-                MessageBox.Show("Выберите получателя из списка!",
-                    Resources.TitleWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(Resources.ErrorSelectRecipient, Resources.TitleWarning,
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 comboBoxRecipient1.Focus();
                 return false;
             }
@@ -170,7 +170,7 @@ namespace AutomechanicsProject.Formes
             dynamic selectedProduct = comboBoxProduct.SelectedItem;
             if (quantity > selectedProduct.Balance)
             {
-                MessageBox.Show($"Недостаточно товара на складе!\nДоступно: {selectedProduct.Balance} {selectedProduct.Unit}",
+                MessageBox.Show(string.Format(Resources.ErrorInsufficientStockWithDetails, selectedProduct.Balance, selectedProduct.Unit),
                     Resources.TitleWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 textBoxUnit.Focus();
                 return false;
@@ -187,10 +187,8 @@ namespace AutomechanicsProject.Formes
             if (existingItem != null)
             {
                 var result = MessageBox.Show(
-                    $"Товар \"{selectedProduct.Name}\" уже добавлен в список.\n" +
-                    $"Текущее количество: {existingItem.Quantity} {selectedProduct.Unit}\n\n" +
-                    "Заменить количество новым значением?",
-                    "Товар уже в списке",
+                    string.Format(Resources.ProductAlreadyInList, selectedProduct.Name, existingItem.Quantity, selectedProduct.Unit),
+                    Resources.TitleProductAlreadyInList,
                     MessageBoxButtons.YesNo,
                     MessageBoxIcon.Question);
 
@@ -275,8 +273,8 @@ namespace AutomechanicsProject.Formes
         {
             if (comboBoxRecipient1.SelectedItem == null)
             {
-                MessageBox.Show("Выберите получателя из списка!",
-                    Resources.TitleWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(Resources.ErrorSelectRecipient, Resources.TitleWarning,
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 comboBoxRecipient1.Focus();
                 return false;
             }
@@ -289,8 +287,8 @@ namespace AutomechanicsProject.Formes
         {
             if (shipmentItems.Count == 0)
             {
-                MessageBox.Show("Добавьте товары в список отгрузки!",
-                    Resources.TitleWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(Resources.ErrorNoItemsInShipment, Resources.TitleWarning,
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -301,10 +299,7 @@ namespace AutomechanicsProject.Formes
             var recipientId = (Guid)selectedRecipient.Id;
 
             var confirmResult = MessageBox.Show(
-                $"Подтвердить отгрузку?\n\n" +
-                $"Получатель: {recipientName}\n" +
-                $"Количество позиций: {shipmentItems.Count}\n" +
-                $"Общая сумма: {totalAmount:C2}",
+                string.Format(Resources.ConfirmShipment, recipientName, shipmentItems.Count, totalAmount),
                 Resources.TitleConfirmation,
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question);
@@ -325,7 +320,7 @@ namespace AutomechanicsProject.Formes
                     };
 
                     db.Shipments.Add(shipment);
-                    db.SaveChanges(); 
+                    db.SaveChanges();
                     foreach (var item in shipmentItems)
                     {
                         var shipmentItem = new ShipmentItem
@@ -352,10 +347,7 @@ namespace AutomechanicsProject.Formes
 
                     Program.LogInfo($"Отгрузка оформлена: получатель {recipientName}, сумма {totalAmount:C2}, позиций: {shipmentItems.Count}");
 
-                    MessageBox.Show($"Отгрузка успешно оформлена!\n\n" +
-                        $"Получатель: {recipientName}\n" +
-                        $"Количество позиций: {shipmentItems.Count}\n" +
-                        $"Общая сумма: {totalAmount:C2}",
+                    MessageBox.Show(string.Format(Resources.SuccessShipmentCreated, recipientName, shipmentItems.Count, totalAmount),
                         Resources.TitleSuccess, MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                     DialogResult = DialogResult.OK;
@@ -365,7 +357,7 @@ namespace AutomechanicsProject.Formes
             catch (Exception ex)
             {
                 Program.LogError("Ошибка при оформлении отгрузки", ex);
-                MessageBox.Show($"Не удалось оформить отгрузку.\n\nОшибка: {ex.Message}",
+                MessageBox.Show(string.Format(Resources.ErrorCreateShipment, ex.Message),
                     Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -377,7 +369,7 @@ namespace AutomechanicsProject.Formes
             if (shipmentItems.Count > 0)
             {
                 var result = MessageBox.Show(
-                    "У вас есть добавленные товары в списке отгрузки.\nВы действительно хотите отменить создание отгрузки?",
+                    Resources.ConfirmCancelShipment,
                     Resources.TitleConfirmation,
                     MessageBoxButtons.YesNo,
                     MessageBoxIcon.Question);
@@ -406,8 +398,8 @@ namespace AutomechanicsProject.Formes
             var productName = (string)selectedItem.Название;
 
             var result = MessageBox.Show(
-                $"Удалить товар \"{productName}\" из списка отгрузки?",
-                "Подтверждение удаления",
+                string.Format(Resources.ConfirmRemoveShipmentItem, productName),
+                Resources.TitleRemoveConfirmation,
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question);
 

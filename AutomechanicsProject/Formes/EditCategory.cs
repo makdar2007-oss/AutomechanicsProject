@@ -74,8 +74,8 @@ namespace AutomechanicsProject.Formes
             catch (Exception ex)
             {
                 Program.LogError("Ошибка при загрузке категорий в EditCategory", ex);
-                MessageBox.Show("Не удалось загрузить категории",
-                    Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(Resources.ErrorLoadCategories, Resources.TitleError,
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         /// <summary>
@@ -116,8 +116,8 @@ namespace AutomechanicsProject.Formes
         {
             if (selectedCategory == null)
             {
-                MessageBox.Show("Выберите категорию для редактирования",
-                    Resources.TitleWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(Resources.SelectCategoryForEdit, Resources.TitleWarning,
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -125,15 +125,15 @@ namespace AutomechanicsProject.Formes
 
             if (string.IsNullOrWhiteSpace(newName) || newName == Resources.EditCategoryWatermark)
             {
-                MessageBox.Show(Resources.ErrorFillCategory,
-                    Resources.TitleWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(Resources.ErrorFillCategory, Resources.TitleWarning,
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
             if (newName == selectedCategory.Name)
             {
-                MessageBox.Show("Название категории не изменилось",
-                    Resources.TitleInformation, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(Resources.InfoCategoryNameNotChanged, Resources.TitleInformation,
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
 
@@ -144,8 +144,8 @@ namespace AutomechanicsProject.Formes
 
                 if (categoryExists)
                 {
-                    MessageBox.Show(Resources.ErrorCategoryExists,
-                        Resources.TitleWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show(Resources.ErrorCategoryExists, Resources.TitleWarning,
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
@@ -154,15 +154,15 @@ namespace AutomechanicsProject.Formes
                 db.SaveChanges();
 
                 Program.LogInfo($"Категория '{oldName}' переименована в '{newName}'");
-                MessageBox.Show($"Категория \"{oldName}\" успешно переименована в \"{newName}\"!",
+                MessageBox.Show(string.Format(Resources.SuccessCategoryRenamed, oldName, newName),
                     Resources.TitleSuccess, MessageBoxButtons.OK, MessageBoxIcon.Information);
                 LoadCategories();
             }
             catch (Exception ex)
             {
                 Program.LogError($"Ошибка при редактировании категории ID {selectedCategory?.Id}", ex);
-                MessageBox.Show("Не удалось отредактировать категорию. Попробуйте позже.",
-                    Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(Resources.ErrorEditCategory, Resources.TitleError,
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         /// <summary>
@@ -177,7 +177,7 @@ namespace AutomechanicsProject.Formes
             if (hasChanges)
             {
                 var result = MessageBox.Show(
-                    "У вас есть несохраненные изменения.\nВы действительно хотите отменить редактирование?",
+                    Resources.ConfirmCancelEdit,
                     Resources.TitleConfirmation,
                     MessageBoxButtons.YesNo,
                     MessageBoxIcon.Question);

@@ -47,7 +47,7 @@ namespace AutomechanicsProject.Formes
                 if (shipments.Count == 0)
                 {
                     dataGridViewHistory.DataSource = null;
-                    MessageBox.Show("История отгрузок пуста", Resources.TitleInformation,
+                    MessageBox.Show(Resources.InfoHistoryEmpty, Resources.TitleInformation,
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
                 }
@@ -70,7 +70,7 @@ namespace AutomechanicsProject.Formes
                 if (!displayList.Any())
                 {
                     dataGridViewHistory.DataSource = null;
-                    MessageBox.Show($"Найдено {shipments.Count} отгрузок, но ни одна не содержит позиций!",
+                    MessageBox.Show(string.Format(Resources.WarningShipmentsWithoutItems, shipments.Count),
                         Resources.TitleInformation, MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
@@ -97,7 +97,7 @@ namespace AutomechanicsProject.Formes
             catch (Exception ex)
             {
                 Program.LogError("Ошибка при загрузке истории отгрузок", ex);
-                MessageBox.Show($"Не удалось загрузить историю отгрузок: {ex.Message}",
+                MessageBox.Show(string.Format(Resources.ErrorLoadShipmentHistory, ex.Message),
                     Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }

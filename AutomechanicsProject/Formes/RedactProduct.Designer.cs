@@ -109,6 +109,7 @@
             this.textBoxCategory.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.textBoxCategory.Location = new System.Drawing.Point(144, 335);
             this.textBoxCategory.Name = "textBoxCategory";
+            this.textBoxCategory.ReadOnly = true;
             this.textBoxCategory.Size = new System.Drawing.Size(599, 44);
             this.textBoxCategory.TabIndex = 3;
             this.textBoxCategory.Text = "Категория";

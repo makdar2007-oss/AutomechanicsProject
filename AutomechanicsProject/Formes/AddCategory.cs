@@ -66,8 +66,8 @@ namespace AutomechanicsProject.Formes
             catch (Exception ex)
             {
                 Program.LogError($"Ошибка при добавлении категории '{textBoxAddCategory.Text}'", ex);
-                MessageBox.Show("Не удалось добавить категорию. Попробуйте позже.",
-                    Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(Resources.ErrorAddCategory, Resources.TitleError,
+                  MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         /// <summary>

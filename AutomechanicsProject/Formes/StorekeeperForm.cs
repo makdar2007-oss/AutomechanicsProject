@@ -77,8 +77,8 @@ namespace AutomechanicsProject.Formes
             catch (Exception ex)
             {
                 Program.LogError("Ошибка при открытии формы отгрузки", ex);
-                MessageBox.Show("Не удалось открыть форму отгрузки",
-                    Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(Resources.ErrorOpenShipmentForm, Resources.TitleError,
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         /// <summary>
@@ -97,8 +97,8 @@ namespace AutomechanicsProject.Formes
             catch (Exception ex)
             {
                 Program.LogError("Ошибка при загрузке товаров", ex);
-                MessageBox.Show("Не удалось загрузить список товаров. Попробуйте позже.",
-                    Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(Resources.ErrorLoadProductsList, Resources.TitleError,
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         /// <summary>
@@ -178,7 +178,7 @@ namespace AutomechanicsProject.Formes
             {
                 return "";
             }
-            return text.Trim().ToLower(); 
+            return text.Trim().ToLower();
         }
     }
 }

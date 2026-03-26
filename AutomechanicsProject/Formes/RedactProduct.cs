@@ -53,7 +53,7 @@ namespace AutomechanicsProject.Formes
 
                 if (currentProduct == null)
                 {
-                    MessageBox.Show("Товар не найден!", Resources.TitleError,
+                    MessageBox.Show(Resources.ErrorProductNotFoundGeneric, Resources.TitleError,
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
                     DialogResult = DialogResult.Cancel;
                     Close();
@@ -65,7 +65,7 @@ namespace AutomechanicsProject.Formes
                 textBoxName.Text = currentProduct.Name;
                 textBoxName.ForeColor = Color.Black;
 
-                textBoxCategory.Text = currentProduct.Category?.Name ?? "Без категории";
+                textBoxCategory.Text = currentProduct.Category?.Name ?? Resources.CategoryNone;
                 textBoxCategory.ForeColor = Color.Black;
 
                 textBoxUnit.Text = currentProduct.Unit;
@@ -79,8 +79,8 @@ namespace AutomechanicsProject.Formes
             catch (Exception ex)
             {
                 Program.LogError($"Ошибка при загрузке данных товара ID {productId}", ex);
-                MessageBox.Show("Не удалось загрузить данные товара",
-                    Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(Resources.ErrorLoadProductData, Resources.TitleError,
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         /// <summary>
@@ -135,8 +135,8 @@ namespace AutomechanicsProject.Formes
             catch (Exception ex)
             {
                 Program.LogError($"Ошибка при обновлении товара ID {productId}", ex);
-                MessageBox.Show("Не удалось обновить товар. Попробуйте позже.",
-                    Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(Resources.ErrorUpdateProduct, Resources.TitleError,
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         /// <summary>
@@ -148,7 +148,7 @@ namespace AutomechanicsProject.Formes
             if (hasChanges)
             {
                 var result = MessageBox.Show(
-                    "У вас есть несохраненные изменения.\n\nВы действительно хотите отменить редактирование?",
+                    Resources.ConfirmCancelEditWithDetails,
                     Resources.TitleConfirmation,
                     MessageBoxButtons.YesNo,
                     MessageBoxIcon.Question);

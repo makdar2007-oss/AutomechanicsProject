@@ -1,4 +1,4 @@
-﻿    using AutomechanicsProject.Classes;
+﻿        using AutomechanicsProject.Classes;
 using AutomechanicsProject.Helpers;
 using AutomechanicsProject.Properties;
 using System;
@@ -49,8 +49,8 @@ namespace AutomechanicsProject.Formes
             catch (Exception ex)
             {
                 Program.LogError("Ошибка при открытии формы редактирования категории", ex);
-                MessageBox.Show("Не удалось открыть форму редактирования категории",
-                    Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(Resources.ErrorOpenEditCategoryForm, Resources.TitleError,
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         /// <summary>
@@ -136,8 +136,8 @@ namespace AutomechanicsProject.Formes
             catch (Exception ex)
             {
                 Program.LogError("Ошибка при открытии формы истории", ex);
-                MessageBox.Show("Не удалось открыть историю",
-                    Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(Resources.ErrorOpenHistory, Resources.TitleError,
+                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         /// <summary>
@@ -158,8 +158,8 @@ namespace AutomechanicsProject.Formes
             catch (Exception ex)
             {
                 Program.LogError("Ошибка при открытии формы добавления товара", ex);
-                MessageBox.Show("Не удалось открыть форму добавления товара",
-                    Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(Resources.ErrorOpenAddProductForm, Resources.TitleError,
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         /// <summary>
@@ -180,8 +180,8 @@ namespace AutomechanicsProject.Formes
             catch (Exception ex)
             {
                 Program.LogError("Ошибка при открытии формы добавления категории", ex);
-                MessageBox.Show("Не удалось открыть форму добавления категории",
-                    Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(Resources.ErrorOpenAddCategoryForm, Resources.TitleError,
+                   MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         /// <summary>
@@ -192,7 +192,7 @@ namespace AutomechanicsProject.Formes
             var product = GetSelectedProduct();
             if (product == null)
             {
-                MessageBox.Show("Выберите товар для редактирования", Resources.TitleInformation,
+                MessageBox.Show(Resources.SelectProductForEdit, Resources.TitleInformation,
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
@@ -208,7 +208,7 @@ namespace AutomechanicsProject.Formes
             }
             catch (Exception ex)
             {
-                FormHelper.HandleException("Ошибка при редактировании товара", ex);
+                FormHelper.HandleException(Resources.ErrorEditProduct, ex);
             }
         }
         /// <summary>
@@ -219,8 +219,8 @@ namespace AutomechanicsProject.Formes
             var product = GetSelectedProduct();
             if (product == null)
             {
-                MessageBox.Show("Выберите товар для удаления", Resources.TitleInformation,
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(Resources.SelectProductForDelete, Resources.TitleInformation,
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);  
                 return;
             }
             try
@@ -235,7 +235,7 @@ namespace AutomechanicsProject.Formes
             }
             catch (Exception ex)
             {
-                FormHelper.HandleException("Ошибка при удалении товара", ex);
+                FormHelper.HandleException(Resources.ErrorDeleteProduct, ex);
             }
         }
         /// <summary>
@@ -256,8 +256,8 @@ namespace AutomechanicsProject.Formes
             catch (Exception ex)
             {
                 Program.LogError("Ошибка при удалении категории", ex);
-                MessageBox.Show("Не удалось удалить категорию",
-                    Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(Resources.ErrorOpenDeleteCategoryForm, Resources.TitleError,
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         /// <summary>
@@ -295,8 +295,8 @@ namespace AutomechanicsProject.Formes
             catch (Exception ex)
             {
                 Program.LogError($"Ошибка при загрузке товаров. Поисковый запрос: {searchText}", ex);
-                MessageBox.Show("Не удалось загрузить список товаров. Попробуйте позже.",
-                    Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(Resources.ErrorLoadProductsList, Resources.TitleError,
+                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         /// <summary>
