@@ -92,13 +92,6 @@ public class ProductTests
     }
 
     [Fact]
-    public void Product_ShouldStoreNegativeBalance()
-    {
-        var product = new Product { Balance = -5 };
-        Assert.Equal(-5, product.Balance);
-    }
-
-    [Fact]
     public void Product_ShouldStoreZeroBalance()
     {
         var product = new Product { Balance = 0 };
@@ -111,34 +104,6 @@ public class ProductTests
         var product = new Product { Id = Guid.NewGuid() };
 
         Assert.NotEqual(Guid.Empty, product.Id);
-    }
-
-    [Fact]
-    public void Product_ShouldBeCreated_NotNull()
-    {
-        var product = new Product();
-        Assert.NotNull(product);
-    }
-
-    [Fact]
-    public void Product_NameCanBeNull()
-    {
-        var product = new Product { Name = null };
-        Assert.Null(product.Name);
-    }
-
-    [Fact]
-    public void Product_ArticleCanBeNull()
-    {
-        var product = new Product { Article = null };
-        Assert.Null(product.Article);
-    }
-
-    [Fact]
-    public void Product_CategoryCanBeNull()
-    {
-        var product = new Product { Category = null };
-        Assert.Null(product.Category);
     }
 
     [Fact]

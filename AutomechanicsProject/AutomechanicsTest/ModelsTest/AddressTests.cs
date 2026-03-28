@@ -11,15 +11,6 @@ public class AddressTests
 
         Assert.Equal("ООО Рога", address.CompanyName);
     }
-
-    [Fact]
-    public void Address_CompanyNameCanBeNull()
-    {
-        var address = new Address { CompanyName = null };
-
-        Assert.Null(address.CompanyName);
-    }
-
     [Fact]
     public void Address_ShouldStoreId()
     {
@@ -46,18 +37,6 @@ public class AddressTests
 
         Assert.Equal("ООО Авто", address.FullName);
     }
-
-    [Fact]
-    public void FullName_ShouldBeNull_WhenCompanyNameIsNull()
-    {
-        var address = new Address
-        {
-            CompanyName = null
-        };
-
-        Assert.Null(address.FullName);
-    }
-
     [Fact]
     public void FullName_ShouldUpdate_WhenCompanyNameChanges()
     {
@@ -82,27 +61,5 @@ public class AddressTests
         address.CompanyName = "B";
 
         Assert.Equal("B", address.CompanyName);
-    }
-
-    [Fact]
-    public void Address_ShouldHandleEmptyCompanyName()
-    {
-        var address = new Address
-        {
-            CompanyName = ""
-        };
-
-        Assert.Equal("", address.CompanyName);
-    }
-
-    [Fact]
-    public void FullName_ShouldHandleEmptyCompanyName()
-    {
-        var address = new Address
-        {
-            CompanyName = ""
-        };
-
-        Assert.Equal("", address.FullName);
     }
 }

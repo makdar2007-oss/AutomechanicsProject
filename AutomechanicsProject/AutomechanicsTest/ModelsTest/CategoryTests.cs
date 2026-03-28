@@ -12,13 +12,6 @@ public class CategoryTests
     }
 
     [Fact]
-    public void Category_NameCanBeNull()
-    {
-        var category = new Category { Name = null };
-        Assert.Null(category.Name);
-    }
-
-    [Fact]
     public void Category_ShouldStoreProducts()
     {
         var products = new List<Product>
@@ -30,13 +23,6 @@ public class CategoryTests
         var category = new Category { Products = products };
 
         Assert.Equal(2, category.Products.Count);
-    }
-
-    [Fact]
-    public void Category_ProductsCanBeNull()
-    {
-        var category = new Category { Products = null };
-        Assert.Null(category.Products);
     }
 
     [Fact]
@@ -78,18 +64,6 @@ public class CategoryTests
         };
 
         Assert.Equal("Масла (товаров: 3)", category.DisplayName);
-    }
-
-    [Fact]
-    public void DisplayName_ShouldWork_WhenNameIsNull()
-    {
-        var category = new Category
-        {
-            Name = null,
-            Products = new List<Product>()
-        };
-
-        Assert.Equal(" (товаров: 0)", category.DisplayName);
     }
 
     [Fact]

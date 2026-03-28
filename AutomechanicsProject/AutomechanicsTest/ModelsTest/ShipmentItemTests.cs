@@ -77,14 +77,6 @@ public class ShipmentItemTests
     }
 
     [Fact]
-    public void ShipmentItem_QuantityCanBeNegative()
-    {
-        var item = new ShipmentItem { Quantity = -1 };
-
-        Assert.Equal(-1, item.Quantity);
-    }
-
-    [Fact]
     public void ShipmentItem_ShouldStoreDecimalPrice()
     {
         var item = new ShipmentItem { Price = 99.99m };

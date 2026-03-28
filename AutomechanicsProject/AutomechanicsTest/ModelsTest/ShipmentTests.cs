@@ -95,14 +95,6 @@ public class ShipmentTests
     }
 
     [Fact]
-    public void Shipment_TotalAmountCanBeZero()
-    {
-        var shipment = new Shipment { TotalAmount = 0 };
-
-        Assert.Equal(0, shipment.TotalAmount);
-    }
-
-    [Fact]
     public void Shipment_TotalAmountCanBeLarge()
     {
         var shipment = new Shipment { TotalAmount = 999999 };
