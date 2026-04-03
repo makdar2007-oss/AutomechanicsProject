@@ -225,15 +225,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AutomechanicsTest\HelpersTest\PasswordHelperTests.cs" />
-    <Compile Include="AutomechanicsTest\HelpersTest\ValidationTest.cs" />
-    <Compile Include="AutomechanicsTest\ModelsTest\AddressTests.cs" />
-    <Compile Include="AutomechanicsTest\ModelsTest\CategoryTests.cs" />
-    <Compile Include="AutomechanicsTest\ModelsTest\ProductTests.cs" />
-    <Compile Include="AutomechanicsTest\ModelsTest\RoleTests.cs" />
-    <Compile Include="AutomechanicsTest\ModelsTest\ShipmentItemTests.cs" />
-    <Compile Include="AutomechanicsTest\ModelsTest\ShipmentTests.cs" />
-    <Compile Include="AutomechanicsTest\ModelsTest\UserTests.cs" />
     <Compile Include="Classes\Address.cs" />
     <Compile Include="Classes\Category.cs" />
     <Compile Include="Classes\DateBase.cs" />
@@ -241,6 +232,10 @@
     <Compile Include="Classes\Role.cs" />
     <Compile Include="Classes\Shipment.cs" />
     <Compile Include="Classes\ShipmentItem.cs" />
+    <Compile Include="Classes\Supplier.cs" />
+    <Compile Include="Classes\Supply.cs" />
+    <Compile Include="Classes\SupplyPosition.cs" />
+    <Compile Include="Classes\Unit.cs" />
     <Compile Include="Formes\EditCategory.cs">
       <SubType>Form</SubType>
     </Compile>

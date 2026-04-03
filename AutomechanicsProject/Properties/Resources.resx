@@ -518,4 +518,7 @@
 	<data name="ProductAlreadyInList" xml:space="preserve">
     <value>Товар "{0}" уже добавлен в список.&#xA;Текущее количество: {1} {2}&#xA;&#xA;Заменить количество новым значением?</value>
   </data>
+<data name="UnitSelectWatermark" xml:space="preserve">
+    <value>Выберите единицу измерения</value>
+</data>
 </root>

@@ -17,10 +17,14 @@ namespace AutomechanicsProject.Classes
         public DbSet<ShipmentItem> ShipmentItems { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<Address> Addresses { get; set; }
+        public DbSet<Unit> Units { get; set; }
+        public DbSet<Supplier> Suppliers { get; set; }
+        public DbSet<Supply> Supplies { get; set; }
+        public DbSet<SupplyPosition> SupplyPositions { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseNpgsql("Host=localhost;Port=5433;Database=project_auto;Username=postgres;Password=1234");
+            optionsBuilder.UseNpgsql("Host=localhost;Port=5433;Database=automechanics;Username=postgres;Password=1234");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -94,6 +98,29 @@ namespace AutomechanicsProject.Classes
                 entity.Ignore(u => u.FullName);
             });
 
+            // Настройка таблицы Unit
+            modelBuilder.Entity<Unit>(entity =>
+            {
+                entity.ToTable("unit");
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .HasDefaultValueSql("gen_random_uuid()");
+
+                entity.Property(e => e.Name)
+                    .HasColumnName("name")
+                    .IsRequired()
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.ShortName)
+                    .HasColumnName("short_name")
+                    .IsRequired()
+                    .HasMaxLength(10);
+
+                entity.HasIndex(e => e.Name).IsUnique();
+            });
+
             // Настройка таблицы Category
             modelBuilder.Entity<Category>(entity =>
             {
@@ -138,10 +165,9 @@ namespace AutomechanicsProject.Classes
                     .HasColumnName("category_id")
                     .IsRequired();
 
-                entity.Property(e => e.Unit)
-                    .HasColumnName("unit")
-                    .HasMaxLength(50)
-                    .HasDefaultValue("шт");
+                entity.Property(e => e.UnitId)
+                    .HasColumnName("unit_id")
+                    .IsRequired();
 
                 entity.Property(e => e.Price)
                     .HasColumnName("price")
@@ -154,6 +180,11 @@ namespace AutomechanicsProject.Classes
                 entity.HasOne(p => p.Category)
                     .WithMany(c => c.Products)
                     .HasForeignKey(p => p.CategoryId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasOne(p => p.Unit)
+                    .WithMany()
+                    .HasForeignKey(p => p.UnitId)
                     .OnDelete(DeleteBehavior.Restrict);
             });
 

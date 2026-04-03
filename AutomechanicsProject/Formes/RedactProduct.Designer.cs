@@ -34,7 +34,7 @@ namespace AutomechanicsProject.Formes
             this.buttonRedact = new System.Windows.Forms.Button();
             this.buttonCancel = new System.Windows.Forms.Button();
             this.textBoxPrice = new System.Windows.Forms.TextBox();
-            this.textBoxUnit = new System.Windows.Forms.TextBox();
+            this.comboBoxUnit = new System.Windows.Forms.ComboBox();
             this.textBoxCategory = new System.Windows.Forms.TextBox();
             this.textBoxName = new System.Windows.Forms.TextBox();
             this.textBoxArt = new System.Windows.Forms.TextBox();
@@ -48,7 +48,7 @@ namespace AutomechanicsProject.Formes
             this.panelRedact.Controls.Add(this.buttonRedact);
             this.panelRedact.Controls.Add(this.buttonCancel);
             this.panelRedact.Controls.Add(this.textBoxPrice);
-            this.panelRedact.Controls.Add(this.textBoxUnit);
+            this.panelRedact.Controls.Add(this.comboBoxUnit);
             this.panelRedact.Controls.Add(this.textBoxCategory);
             this.panelRedact.Controls.Add(this.textBoxName);
             this.panelRedact.Controls.Add(this.textBoxArt);
@@ -95,17 +95,17 @@ namespace AutomechanicsProject.Formes
             this.textBoxPrice.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.textBoxPrice.ForeColor = Color.Black;
             // 
-            // textBoxUnit
+            // comboBoxUnit
             // 
-            this.textBoxUnit.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.textBoxUnit.Font = new System.Drawing.Font("Jost", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBoxUnit.Location = new System.Drawing.Point(144, 409);
-            this.textBoxUnit.Name = "textBoxUnit";
-            this.textBoxUnit.Size = new System.Drawing.Size(599, 54);
-            this.textBoxUnit.TabIndex = 4;
-            this.textBoxUnit.Text = "Единица измерения";
-            this.textBoxUnit.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.textBoxUnit.ForeColor = Color.Black;
+            this.comboBoxUnit.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxUnit.Font = new System.Drawing.Font("Jost", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.comboBoxUnit.FormattingEnabled = true;
+            this.comboBoxUnit.Location = new System.Drawing.Point(144, 409);
+            this.comboBoxUnit.Name = "comboBoxUnit";
+            this.comboBoxUnit.Size = new System.Drawing.Size(599, 54);
+            this.comboBoxUnit.TabIndex = 4;
+            this.comboBoxUnit.Text = "Выберите единицу измерения";
+            this.comboBoxUnit.ForeColor = Color.Black;
             // 
             // textBoxCategory
             // 
@@ -174,7 +174,7 @@ namespace AutomechanicsProject.Formes
         private System.Windows.Forms.Button buttonRedact;
         private System.Windows.Forms.Button buttonCancel;
         private System.Windows.Forms.TextBox textBoxPrice;
-        private System.Windows.Forms.TextBox textBoxUnit;
+        private System.Windows.Forms.ComboBox comboBoxUnit;
         private System.Windows.Forms.TextBox textBoxCategory;
         private System.Windows.Forms.TextBox textBoxName;
         private System.Windows.Forms.TextBox textBoxArt;

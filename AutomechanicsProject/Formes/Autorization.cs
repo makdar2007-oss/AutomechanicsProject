@@ -87,19 +87,27 @@ namespace AutomechanicsProject
                             MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         return;
                     }
-                    var isValid = PasswordHelper.VerifyPassword(textBoxPassword.Text, user.Password);
 
-                    if (!isValid && textBoxPassword.Text == user.Password)
+                    bool isValid = false;
+                    if (user.Password.StartsWith("$2"))
                     {
-                        user.Password = PasswordHelper.HashPassword(textBoxPassword.Text);
-                        db.SaveChanges();
-                        isValid = true;
+                        isValid = PasswordHelper.VerifyPassword(textBoxPassword.Text, user.Password);
+                    }
+                    else
+                    {
+                        isValid = (textBoxPassword.Text == user.Password);
+                        if (isValid)
+                        {
+                            user.Password = PasswordHelper.HashPassword(textBoxPassword.Text);
+                            db.SaveChanges();
+                            Program.LogInfo($"Пароль для пользователя {user.Login} был хеширован");
+                        }
                     }
                     if (!isValid)
                     {
                         textBoxPassword.BackColor = Color.LightPink;
                         MessageBox.Show(Resources.ErrorAuthInvalid, Resources.TitleWarning,
-                          MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         return;
                     }
                     Program.CurrentUser = user;
@@ -110,7 +118,7 @@ namespace AutomechanicsProject
             {
                 Program.LogError("Ошибка авторизации", ex);
                 MessageBox.Show(Resources.ErrorAuthFailed, Resources.TitleError,
-                     MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         /// <summary>

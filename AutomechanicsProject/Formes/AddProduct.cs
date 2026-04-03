@@ -21,14 +21,13 @@ namespace AutomechanicsProject.Formes
         {
             InitializeComponent();
             db = new DateBase();
-
             TextBoxHelper.SetupWatermarkTextBox(textBoxArt, Resources.ProductArticleWatermark);
             TextBoxHelper.SetupWatermarkTextBox(textBoxName, Resources.ProductNameWatermark);
-            TextBoxHelper.SetupWatermarkTextBox(textBoxUnit, Resources.ProductUnitWatermark);
             TextBoxHelper.SetupWatermarkTextBox(textBoxPrice, Resources.ProductPriceWatermark);
             TextBoxHelper.SetupWatermarkComboBox(comboBoxCategory, Resources.CategorySelectWatermark);
-
+            TextBoxHelper.SetupWatermarkComboBox(comboBoxUnit, Resources.UnitSelectWatermark);
             LoadCategories();
+            LoadUnits();
         }
 
         /// <summary>
@@ -61,6 +60,40 @@ namespace AutomechanicsProject.Formes
         }
 
         /// <summary>
+        /// Загружает список единиц измерения из базы данных в выпадающий список
+        /// </summary>
+        private void LoadUnits()
+        {
+            try
+            {
+                var units = db.Units
+                    .OrderBy(u => u.Name)
+                    .Select(u => new
+                    {
+                        u.Id,
+                        DisplayName = $"{u.Name} ({u.ShortName})",
+                        u.ShortName
+                    })
+                    .ToList();
+
+                comboBoxUnit.DataSource = units;
+                comboBoxUnit.DisplayMember = "DisplayName";
+                comboBoxUnit.ValueMember = "Id";
+
+                if (comboBoxUnit.Items.Count > 0)
+                {
+                    comboBoxUnit.SelectedIndex = -1;
+                }
+            }
+            catch (Exception ex)
+            {
+                Program.LogError("Ошибка при загрузке единиц измерения", ex);
+                MessageBox.Show("Не удалось загрузить список единиц измерения",
+                    Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
         /// Обработчик нажатия кнопки "Добавить"
         /// Сохранение нового товара в базу данных
         /// </summary>
@@ -82,22 +115,24 @@ namespace AutomechanicsProject.Formes
                 return;
             }
 
+            if (comboBoxUnit.SelectedItem == null)
+            {
+                MessageBox.Show("Выберите единицу измерения!", Resources.TitleWarning,
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             try
             {
                 var categoryId = (Guid)((dynamic)comboBoxCategory.SelectedItem).Id;
-                var unit = textBoxUnit.Text.Trim();
-                if (Validation.IsWatermark(unit, Resources.ProductUnitWatermark))
-                {
-                    unit = "шт";
-                }
-
+                var unitId = (Guid)((dynamic)comboBoxUnit.SelectedItem).Id;  
                 var product = new Product
                 {
                     Id = Guid.NewGuid(),
                     Article = textBoxArt.Text.Trim(),
                     Name = textBoxName.Text.Trim(),
                     CategoryId = categoryId,
-                    Unit = unit,
+                    UnitId = unitId, 
                     Price = price,
                     Balance = 0
                 };
@@ -116,6 +151,7 @@ namespace AutomechanicsProject.Formes
                 FormHelper.HandleException(Resources.ErrorAddProduct, ex);
             }
         }
+
         /// <summary>
         /// Выполняет валидацию обязательных полей формы
         /// </summary>
@@ -131,6 +167,7 @@ namespace AutomechanicsProject.Formes
             }
             return true;
         }
+
         /// <summary>
         /// Обработчик нажатия кнопки Отмена
         /// Запрашивает подтверждение и закрывает форму без сохранения
@@ -140,13 +177,13 @@ namespace AutomechanicsProject.Formes
             var hasInput = !((textBoxArt.Text == Resources.ProductArticleWatermark || string.IsNullOrWhiteSpace(textBoxArt.Text)) &&
                    (textBoxName.Text == Resources.ProductNameWatermark || string.IsNullOrWhiteSpace(textBoxName.Text)) &&
                    (comboBoxCategory.Text == Resources.CategorySelectWatermark || string.IsNullOrWhiteSpace(comboBoxCategory.Text)) &&
-                   (textBoxUnit.Text == Resources.ProductUnitWatermark || string.IsNullOrWhiteSpace(textBoxUnit.Text)) &&
+                   (comboBoxUnit.Text == Resources.UnitSelectWatermark || string.IsNullOrWhiteSpace(comboBoxUnit.Text)) &&  // Исправлено: было Resources.ProductUnitWatermark, нужно Resources.UnitSelectWatermark
                    (textBoxPrice.Text == Resources.ProductPriceWatermark || string.IsNullOrWhiteSpace(textBoxPrice.Text)));
 
             if (hasInput && !FormHelper.ShowCancelConfirmation(Resources.ConfirmCancelAddProduct))
             {
                 return;
-            }    
+            }
             DialogResult = DialogResult.Cancel;
             Close();
         }

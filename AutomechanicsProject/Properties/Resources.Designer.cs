@@ -1288,6 +1288,15 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Выберите единицу измерения.
+        /// </summary>
+        public static string UnitSelectWatermark {
+            get {
+                return ResourceManager.GetString("UnitSelectWatermark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Найдено {0} отгрузок, но ни одна не содержит позиций!.
         /// </summary>
         public static string WarningShipmentsWithoutItems {
