@@ -36,10 +36,10 @@ namespace AutomechanicsProject.Classes
         public Guid CategoryId { get; set; }
 
         /// <summary>
-        /// Единица измерения товара (по умолчанию "шт")
+        /// Идентификатор единицы измерения
         /// </summary>
-        [Column("unit")]
-        public string Unit { get; set; } = "шт";
+        [Column("unit_id")]
+        public Guid UnitId { get; set; }
 
         /// <summary>
         /// Цена товара
@@ -54,9 +54,27 @@ namespace AutomechanicsProject.Classes
         public int Balance { get; set; }
 
         /// <summary>
+        /// Номер партии
+        /// </summary>
+        [Column("batch_number")]
+        public string BatchNumber { get; set; }
+
+        /// <summary>
+        /// Срок годности
+        /// </summary>
+        [Column("expiry_date")]
+        public DateTime? ExpiryDate { get; set; }
+
+        /// <summary>
         /// Категория товара (навигационное свойство)
         /// </summary>
         [ForeignKey("CategoryId")]
         public virtual Category Category { get; set; }
+
+        /// <summary>
+        /// Единица измерения (навигационное свойство)
+        /// </summary>
+        [ForeignKey("UnitId")]
+        public virtual Unit Unit { get; set; }
     }
 }
