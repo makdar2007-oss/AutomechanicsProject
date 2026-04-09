@@ -119,7 +119,7 @@ namespace AutomechanicsProject
                         {
                             user.Password = PasswordHelper.HashPassword(textBoxPassword.Text);
                             db.SaveChanges();
-                            Program.LogInfo(string.Format("Пароль для пользователя {0} был хеширован", user.Login));
+                            Program.LogInfo(string.Format($"Пароль для пользователя {user.Login} был хеширован"));
                         }
                     }
                     if (!isValid)
@@ -170,7 +170,7 @@ namespace AutomechanicsProject
             {
                 MessageBox.Show(Resources.ErrorNoAccess, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Program.LogWarning(string.Format("Пользователь {0} не имеет назначенной роли", user.FullName));
+                Program.LogWarning(string.Format($"Пользователь {user.FullName} не имеет назначенной роли"));
             }
         }
     }

@@ -78,12 +78,14 @@ namespace AutomechanicsProject.Formes
                         }
                     }
 
+                    Program.LogWarning($"Не удалось загрузить курсы валют из API. Используются резервные курсы.");
                     LoadFallbackRates();
                     PopulateCurrencyComboBox();
                 }
             }
             catch (Exception ex)
             {
+                Program.LogError($"Ошибка при загрузке курсов валют.", ex);
                 MessageBox.Show(string.Format(Resources.ErrorLoadCurrencies, ex.Message),
                     Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 LoadFallbackRates();

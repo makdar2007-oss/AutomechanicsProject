@@ -21,7 +21,7 @@ namespace AutomechanicsProject.Formes
         private int totalItemsCount;
         private List<dynamic> allProducts;
         private bool isClearingText = false;
-        private bool isUpdatingText = false; // Флаг для предотвращения рекурсии
+        private bool isUpdatingText = false;
 
         /// <summary>
         /// Инициализирует новый экземпляр формы создания отгрузки
@@ -56,7 +56,7 @@ namespace AutomechanicsProject.Formes
         }
 
         /// <summary>
-        /// Настраивает ComboBox для поиска по названию товара
+        /// Настраивает выпадающий список для поиска по названию товара
         /// </summary>
         private void SetupSearchableComboBox()
         {
@@ -65,7 +65,7 @@ namespace AutomechanicsProject.Formes
             comboBoxProduct.TextUpdate += ComboBoxProduct_TextUpdate;
             comboBoxProduct.DropDown += ComboBoxProduct_DropDown;
             comboBoxProduct.KeyDown += ComboBoxProduct_KeyDown;
-            comboBoxProduct.SelectionChangeCommitted += ComboBoxProduct_SelectionChangeCommitted; // Добавляем обработчик выбора
+            comboBoxProduct.SelectionChangeCommitted += ComboBoxProduct_SelectionChangeCommitted;
         }
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace AutomechanicsProject.Formes
         }
 
         /// <summary>
-        /// Обработчик нажатия клавиш в ComboBox
+        /// Обработчик нажатия клавиш в выпадающем списке
         /// </summary>
         private void ComboBoxProduct_KeyDown(object sender, KeyEventArgs e)
         {
@@ -156,7 +156,7 @@ namespace AutomechanicsProject.Formes
         }
 
         /// <summary>
-        /// Очищает ComboBox
+        /// Очищает выпадающий список
         /// </summary>
         private void ClearComboBox()
         {
@@ -168,7 +168,7 @@ namespace AutomechanicsProject.Formes
         }
 
         /// <summary>
-        /// Обработчик изменения текста в ComboBox
+        /// Обработчик изменения текста в выпадающем списке
         /// </summary>
         private void ComboBoxProduct_TextUpdate(object sender, EventArgs e)
         {
@@ -192,7 +192,7 @@ namespace AutomechanicsProject.Formes
         }
 
         /// <summary>
-        /// Загружает все товары в ComboBox
+        /// Загружает все товары доступные для отгрузки
         /// </summary>
         private void LoadAllProductsToComboBox()
         {
@@ -220,8 +220,8 @@ namespace AutomechanicsProject.Formes
                         ShortName = $"{p.Article} - {p.Name}",
                         p.Article,
                         p.Name,
-                        PurchaseCost = p.Price, 
-                        SellingPrice = p.Price * 2, 
+                        PurchaseCost = p.Price,
+                        SellingPrice = p.Price * 2,
                         p.Balance,
                         UnitName = p.Unit != null ? p.Unit.Name : "шт",
                         p.Unit
@@ -240,7 +240,7 @@ namespace AutomechanicsProject.Formes
             }
             catch (Exception ex)
             {
-                Program.LogError(Resources.ErrorLoadProducts, ex);
+                Program.LogError("Ошибка при загрузке товаров в CreateShipment", ex);
                 MessageBox.Show(Resources.ErrorLoadProducts, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -281,7 +281,7 @@ namespace AutomechanicsProject.Formes
             }
             catch (Exception ex)
             {
-                Program.LogError(Resources.ErrorLoadRecipients, ex);
+                Program.LogError("Ошибка при загрузке списка получателей", ex);
                 MessageBox.Show(Resources.ErrorLoadRecipients, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -372,8 +372,8 @@ namespace AutomechanicsProject.Formes
                 ProductName = selectedProduct.Name,
                 Article = selectedProduct.Article,
                 Quantity = quantity,
-                Price = selectedProduct.PurchaseCost,  
-                PurchasePrice = selectedProduct.SellingPrice  
+                Price = selectedProduct.PurchaseCost,
+                PurchasePrice = selectedProduct.SellingPrice
             });
             return true;
         }
@@ -398,7 +398,7 @@ namespace AutomechanicsProject.Formes
             decimal totalProfit = 0;
             decimal totalCost = 0;
 
-            var recipientName = Resources.NotSpecified;
+            var recipientName = "Не выбран";
             if (comboBoxRecipient1.SelectedItem != null)
             {
                 dynamic selectedRecipient = comboBoxRecipient1.SelectedItem;
@@ -430,13 +430,9 @@ namespace AutomechanicsProject.Formes
 
             dataGridViewShipment.DataSource = displayList;
 
-
             UpdateDisplay(totalProfit);
         }
 
-        /// <summary>
-        /// Обновляет отображение итоговой суммы
-        /// </summary>
         /// <summary>
         /// Обновляет отображение итоговой суммы и прибыли
         /// </summary>
@@ -514,8 +510,8 @@ namespace AutomechanicsProject.Formes
                             ShipmentId = shipment.Id,
                             ProductId = item.ProductId,
                             Quantity = item.Quantity,
-                            Price = item.Price,           
-                            PurchasePrice = item.PurchasePrice, 
+                            Price = item.Price,
+                            PurchasePrice = item.PurchasePrice,
                             ProductName = item.ProductName,
                             Article = item.Article
                         };
@@ -532,7 +528,7 @@ namespace AutomechanicsProject.Formes
                     db.SaveChanges();
                     transaction.Commit();
 
-                    Program.LogInfo(string.Format(Resources.SuccessShipmentCreatedWithDetails, recipientName, shipmentItems.Count, totalAmount));
+                    Program.LogInfo($"Отгрузка успешно оформлена! Получатель: {recipientName}, Количество позиций: {shipmentItems.Count}, Общая сумма: {totalAmount:C2}");
 
                     MessageBox.Show(string.Format(Resources.SuccessShipmentCreatedWithDetails, recipientName, shipmentItems.Count, totalAmount),
                         Resources.TitleSuccess, MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -543,7 +539,7 @@ namespace AutomechanicsProject.Formes
             }
             catch (Exception ex)
             {
-                Program.LogError(string.Format(Resources.ErrorCreateShipment, ex.Message), ex);
+                Program.LogError($"Не удалось оформить отгрузку.", ex);
                 MessageBox.Show(string.Format(Resources.ErrorCreateShipment, ex.Message),
                     Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -570,7 +566,7 @@ namespace AutomechanicsProject.Formes
         }
 
         /// <summary>
-        /// Обработчик двойного клика по списку отгрузки
+        /// Обработчик двойного клика по списку отгрузки - удаление товара
         /// </summary>
         private void DataGridViewShipment_DoubleClick(object sender, EventArgs e)
         {

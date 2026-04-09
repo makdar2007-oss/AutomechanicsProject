@@ -105,6 +105,12 @@
 	</data>
 
 	<!-- Сообщения об ошибках -->
+	<data name="ErrorFormatColumnsMessage" xml:space="preserve">
+    <value>Ошибка при отображении таблицы. Некоторые колонки могут быть отображены некорректно.</value>
+</data>
+	<data name="ErrorGeneric" xml:space="preserve">
+    <value>Произошла ошибка. Попробуйте позже.</value>
+</data>
 	<data name="ErrorAuthInvalid" xml:space="preserve">
 		<value>Неверный логин или пароль!</value>
 	</data>

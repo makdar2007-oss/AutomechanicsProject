@@ -121,7 +121,7 @@ namespace AutomechanicsProject.Formes
             }
             catch (Exception ex)
             {
-                Program.LogError("Не удалось загрузить историю отгрузок: " + ex.Message, ex);
+                Program.LogError("Не удалось загрузить историю отгрузок.", ex);
                 MessageBox.Show(string.Format(Resources.ErrorLoadShipmentHistory, ex.Message),
                     Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -206,7 +206,7 @@ namespace AutomechanicsProject.Formes
             }
             catch (Exception ex)
             {
-                Program.LogError("Ошибка при экспорте данных: " + ex.Message, ex);
+                Program.LogError("Ошибка при экспорте данных.", ex);
                 MessageBox.Show(string.Format(Resources.ErrorExportToCsvWithMessage, ex.Message),
                     Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }

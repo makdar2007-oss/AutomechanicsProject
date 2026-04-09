@@ -10,6 +10,7 @@ namespace AutomechanicsProject.Formes
 {
     /// <summary>
     /// Главная форма администратора системы
+    /// Предоставляет полный доступ к управлению товарами, категориями и просмотру истории отгрузок
     /// </summary>
     public partial class AdminForm : Form
     {
@@ -56,6 +57,7 @@ namespace AutomechanicsProject.Formes
             }
             catch (Exception ex)
             {
+                Program.LogError("Ошибка при открытии формы редактирования категории", ex);
                 MessageBox.Show(Resources.ErrorOpenEditCategoryForm, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -119,14 +121,14 @@ namespace AutomechanicsProject.Formes
             {
                 string error = ex.Message;
                 if (ex.InnerException != null)
-                    error += "\n\n" + ex.InnerException.Message;
+                    error += ex.InnerException.Message;
 
                 MessageBox.Show($"Ошибка: {error}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         /// <summary>
-        /// Обновляет список товаров в таблице
+        /// Обновляет список товаров с учетом текущего поискового запроса
         /// </summary>
         public void RefreshProductList()
         {
@@ -134,9 +136,8 @@ namespace AutomechanicsProject.Formes
         }
 
         /// <summary>
-        /// Получает выбранный товар из DataGridView
-        /// </summary>
-        /// <returns>Выбранный товар или null, если ничего не выбрано</returns>
+        /// Получает выбранный товар из таблицы
+        /// </summary>>
         private Product GetSelectedProduct()
         {
             if (dataGridViewMainForm.SelectedRows.Count == 0)
@@ -157,9 +158,9 @@ namespace AutomechanicsProject.Formes
                     return db.Products.FirstOrDefault(p => p.Article == article);
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                // Ошибка логируется в ресурсах
+                Program.LogError("Ошибка при получении выбранного товара", ex);
             }
 
             return null;
@@ -172,7 +173,7 @@ namespace AutomechanicsProject.Formes
         {
             try
             {
-                toolStripTextBoxAdmin.Text = Resources.AdminRoleName;
+                toolStripTextBoxAdmin.Text = "Администратоор";
                 dataGridViewMainForm.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
                 dataGridViewMainForm.AllowUserToResizeColumns = false;
                 dataGridViewMainForm.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
@@ -180,9 +181,10 @@ namespace AutomechanicsProject.Formes
 
                 RefreshProductList();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                toolStripTextBoxAdmin.Text = Resources.ErrorLabel;
+                toolStripTextBoxAdmin.Text = "Ошибка";
+                Program.LogError("Ошибка при получении выбранного товара", ex);
             }
         }
 
@@ -205,7 +207,7 @@ namespace AutomechanicsProject.Formes
         }
 
         /// <summary>
-        /// Обработчик нажатия кнопки "История"
+        /// Обработчик нажатия кнопки История
         /// Открывает форму истории отгрузок
         /// </summary>
         private void ButtonHistory_Click(object sender, EventArgs e)
@@ -217,8 +219,9 @@ namespace AutomechanicsProject.Formes
                     historyForm.ShowDialog();
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Program.LogError("Ошибка при открытии формы истории", ex); 
                 MessageBox.Show(Resources.ErrorOpenHistory, Resources.TitleError,
                      MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -239,8 +242,9 @@ namespace AutomechanicsProject.Formes
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Program.LogError("Ошибка при открытии формы добавления товара", ex);
                 MessageBox.Show(Resources.ErrorOpenAddProductForm, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -261,8 +265,9 @@ namespace AutomechanicsProject.Formes
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Program.LogError("Ошибка при открытии формы добавления категории", ex);
                 MessageBox.Show(Resources.ErrorOpenAddCategoryForm, Resources.TitleError,
                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -297,7 +302,7 @@ namespace AutomechanicsProject.Formes
         }
 
         /// <summary>
-        /// Открывает форму удаления товара
+        /// Открывает форму удаления для выбранного товара
         /// </summary>
         private void OpenDeleteProductForm()
         {
@@ -339,8 +344,9 @@ namespace AutomechanicsProject.Formes
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Program.LogError("Ошибка при удалении категории", ex);
                 MessageBox.Show(Resources.ErrorOpenDeleteCategoryForm, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -349,7 +355,6 @@ namespace AutomechanicsProject.Formes
         /// <summary>
         /// Загружает список товаров из базы данных с учётом поискового запроса
         /// </summary>
-        /// <param name="searchText">Поисковый запрос</param>
         private void LoadProducts(string searchText = "")
         {
             try
@@ -404,8 +409,9 @@ namespace AutomechanicsProject.Formes
                 dataGridViewMainForm.DataSource = query.ToList();
                 FormatDataGridViewColumns();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Program.LogError("Ошибка при загрузке товаров.", ex);
                 MessageBox.Show(Resources.ErrorLoadProductsList, Resources.TitleError,
                      MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -440,26 +446,26 @@ namespace AutomechanicsProject.Formes
                 {
                     dataGridViewMainForm.Columns["Цена"].DefaultCellStyle.Format = "F2";
                     dataGridViewMainForm.Columns["Цена"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-                    dataGridViewMainForm.Columns["Цена"].HeaderText = string.Format(Resources.PriceColumnHeader, ChoosingCurrency.SelectedCurrencyCode);
+                    dataGridViewMainForm.Columns["Цена"].HeaderText = $"Цена ({ChoosingCurrency.SelectedCurrencyCode})";
                 }
 
                 if (dataGridViewMainForm.Columns["ЦенаЗакупки"] != null)
                 {
-                    dataGridViewMainForm.Columns["ЦенаЗакупки"].HeaderText = Resources.PurchasePriceColumnHeader;
+                    dataGridViewMainForm.Columns["ЦенаЗакупки"].HeaderText = "Цена закупки (₽)";
                     dataGridViewMainForm.Columns["ЦенаЗакупки"].DefaultCellStyle.Format = "F2";
                     dataGridViewMainForm.Columns["ЦенаЗакупки"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
                 }
 
                 if (dataGridViewMainForm.Columns["СрокГодности"] != null)
                 {
-                    dataGridViewMainForm.Columns["СрокГодности"].HeaderText = Resources.ExpiryDateColumnHeader;
+                    dataGridViewMainForm.Columns["СрокГодности"].HeaderText = "Срок годности";
                     dataGridViewMainForm.Columns["СрокГодности"].DefaultCellStyle.Format = "dd.MM.yyyy";
                     dataGridViewMainForm.Columns["СрокГодности"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
                 }
 
                 if (dataGridViewMainForm.Columns["ЕдИзмерения"] != null)
                 {
-                    dataGridViewMainForm.Columns["ЕдИзмерения"].HeaderText = Resources.UnitColumnHeader;
+                    dataGridViewMainForm.Columns["ЕдИзмерения"].HeaderText = "Ед. измерения";
                 }
 
                 if (dataGridViewMainForm.Columns["Остаток"] != null)
@@ -467,9 +473,11 @@ namespace AutomechanicsProject.Formes
                     dataGridViewMainForm.Columns["Остаток"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                // Ошибка форматирования
+                Program.LogError("Ошибка при форматировании колонок таблицы", ex);
+                MessageBox.Show(Resources.ErrorFormatColumnsMessage, Resources.TitleError,
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
@@ -498,9 +506,11 @@ namespace AutomechanicsProject.Formes
                         row.DefaultCellStyle.BackColor = System.Drawing.Color.LightCoral;
                     }
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    // Ошибка подсветки строки
+                    Program.LogError("Ошибка при подсветке строки в DataGridView", ex);
+                    MessageBox.Show(Resources.ErrorHighlightRow, Resources.TitleError,
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }
         }
@@ -540,7 +550,7 @@ namespace AutomechanicsProject.Formes
         /// </summary>
         private void buttonSupply_Click(object sender, EventArgs e)
         {
-            // Здесь будет код для формы поставок
+            //код для формы поставок
         }
     }
 }

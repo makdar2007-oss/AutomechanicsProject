@@ -22,7 +22,7 @@ namespace AutomechanicsProject.Formes
             InitializeComponent();
             db = new DateBase();
 
-            TextBoxHelper.SetupWatermarkTextBox(textBoxSearch, "Поиск...");
+            TextBoxHelper.SetupWatermarkTextBox(textBoxSearch, Resources.SearchWatermark);
 
             buttonCurrency.Click += ButtonCurrency_Click;
             buttonSupply.Click += ButtonSupply_Click;
@@ -322,7 +322,7 @@ namespace AutomechanicsProject.Formes
         {
             var searchText = textBoxSearch.Text;
 
-            if (searchText == "Поиск..." || string.IsNullOrWhiteSpace(searchText))
+            if (searchText == Resources.SearchWatermark || string.IsNullOrWhiteSpace(searchText))
             {
                 LoadProducts("");
             }

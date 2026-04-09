@@ -634,6 +634,24 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Ошибка при отображении таблицы. Некоторые колонки могут быть отображены некорректно..
+        /// </summary>
+        public static string ErrorFormatColumnsMessage {
+            get {
+                return ResourceManager.GetString("ErrorFormatColumnsMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Произошла ошибка. Попробуйте позже..
+        /// </summary>
+        public static string ErrorGeneric {
+            get {
+                return ResourceManager.GetString("ErrorGeneric", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Ошибка при подсветке строки.
         /// </summary>
         public static string ErrorHighlightRow {
