@@ -23,7 +23,23 @@ namespace AutomechanicsProject
             InitializeComponent();
             TextBoxHelper.SetupWatermarkTextBox(textBoxLogin, Resources.AuthLoginWatermark);
             TextBoxHelper.SetupPasswordTextBox(textBoxPassword, Resources.AuthPasswordWatermark);
+
+            textBoxLogin.KeyDown += TextBox_KeyDown;
+            textBoxPassword.KeyDown += TextBox_KeyDown;
         }
+
+        /// <summary>
+        /// Обработчик нажатия клавиш в текстовых полях
+        /// </summary>
+        private void TextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.SuppressKeyPress = true;
+                BtnLoginClick(sender, e);
+            }
+        }
+
         /// <summary>
         /// Сбрасывает подсветку полей ввода
         /// </summary>
@@ -32,6 +48,7 @@ namespace AutomechanicsProject
             textBoxLogin.BackColor = Color.White;
             textBoxPassword.BackColor = Color.White;
         }
+
         /// <summary>
         /// Проверяет заполнение обязательных полей
         /// </summary>
@@ -51,6 +68,7 @@ namespace AutomechanicsProject
             }
             return isValid;
         }
+
         /// <summary>
         /// Обработчик перехода на форму регистрации
         /// </summary>
@@ -59,6 +77,7 @@ namespace AutomechanicsProject
             new Registration().Show();
             Hide();
         }
+
         /// <summary>
         /// Обработчик нажатия кнопки "Войти"
         /// Выполняет аутентификацию пользователя и открывает соответствующую главную форму
@@ -100,7 +119,7 @@ namespace AutomechanicsProject
                         {
                             user.Password = PasswordHelper.HashPassword(textBoxPassword.Text);
                             db.SaveChanges();
-                            Program.LogInfo($"Пароль для пользователя {user.Login} был хеширован");
+                            Program.LogInfo(string.Format($"Пароль для пользователя {user.Login} был хеширован"));
                         }
                     }
                     if (!isValid)
@@ -121,6 +140,7 @@ namespace AutomechanicsProject
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
         /// <summary>
         /// Открывает главную форму в зависимости от роли пользователя
         /// </summary>
@@ -133,11 +153,11 @@ namespace AutomechanicsProject
                 {
                     case RoleType.Administrator:
                         nextForm = new AdminForm();
-                        Program.LogInfo($"Открыта форма администратора для {user.FullName}");
+                        Program.LogInfo(string.Format("Открыта форма администратора для {0}", user.FullName));
                         break;
                     case RoleType.Storekeeper:
                         nextForm = new StorekeeperForm();
-                        Program.LogInfo($"Открыта форма кладовщика для {user.FullName}");
+                        Program.LogInfo(string.Format("Открыта форма кладовщика для {0}", user.FullName));
                         break;
                 }
             }
@@ -150,7 +170,7 @@ namespace AutomechanicsProject
             {
                 MessageBox.Show(Resources.ErrorNoAccess, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Program.LogWarning($"Пользователь {user.FullName} не имеет назначенной роли");
+                Program.LogWarning(string.Format($"Пользователь {user.FullName} не имеет назначенной роли"));
             }
         }
     }
