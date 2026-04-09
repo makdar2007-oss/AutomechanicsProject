@@ -42,6 +42,13 @@ namespace AutomechanicsProject.Classes
         public decimal Price { get; set; }
 
         /// <summary>
+        /// Цена продажи товара на момент отгрузки
+        /// </summary>
+        [Column("purchase_price")]
+        public decimal PurchasePrice { get; set; }
+
+
+        /// <summary>
         /// Наименование товара 
         /// </summary>
         [Column("product_name")]

@@ -227,7 +227,10 @@
   <ItemGroup>
     <Compile Include="Classes\Address.cs" />
     <Compile Include="Classes\Category.cs" />
+    <Compile Include="Classes\CurrencyInfo.cs" />
+    <Compile Include="Classes\CurrencyManager.cs" />
     <Compile Include="Classes\DateBase.cs" />
+    <Compile Include="Classes\ExchangeRateResponse.cs" />
     <Compile Include="Classes\Product.cs" />
     <Compile Include="Classes\Role.cs" />
     <Compile Include="Classes\Shipment.cs" />
@@ -236,6 +239,12 @@
     <Compile Include="Classes\Supply.cs" />
     <Compile Include="Classes\SupplyPosition.cs" />
     <Compile Include="Classes\Unit.cs" />
+    <Compile Include="Formes\ChoosingCurrency.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formes\ChoosingCurrency.Designer.cs">
+      <DependentUpon>ChoosingCurrency.cs</DependentUpon>
+    </Compile>
     <Compile Include="Formes\EditCategory.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -327,6 +336,9 @@
     <EmbeddedResource Include="Formes\Autorization.resx">
       <DependentUpon>Autorization.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Formes\ChoosingCurrency.resx">
+      <DependentUpon>ChoosingCurrency.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Formes\CreateShipment.resx">
       <DependentUpon>CreateShipment.cs</DependentUpon>
     </EmbeddedResource>
@@ -371,6 +383,8 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="Shipment History\История_отгрузок_20260409_011659.csv" />
+    <None Include="Shipment History\История_отгрузок_20260409_163554.csv" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

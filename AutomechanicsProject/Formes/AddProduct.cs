@@ -117,7 +117,7 @@ namespace AutomechanicsProject.Formes
 
             if (comboBoxUnit.SelectedItem == null)
             {
-                MessageBox.Show("Выберите единицу измерения!", Resources.TitleWarning,
+                MessageBox.Show(Resources.UnitSelectWatermark, Resources.TitleWarning,
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
@@ -177,7 +177,7 @@ namespace AutomechanicsProject.Formes
             var hasInput = !((textBoxArt.Text == Resources.ProductArticleWatermark || string.IsNullOrWhiteSpace(textBoxArt.Text)) &&
                    (textBoxName.Text == Resources.ProductNameWatermark || string.IsNullOrWhiteSpace(textBoxName.Text)) &&
                    (comboBoxCategory.Text == Resources.CategorySelectWatermark || string.IsNullOrWhiteSpace(comboBoxCategory.Text)) &&
-                   (comboBoxUnit.Text == Resources.UnitSelectWatermark || string.IsNullOrWhiteSpace(comboBoxUnit.Text)) &&  // Исправлено: было Resources.ProductUnitWatermark, нужно Resources.UnitSelectWatermark
+                   (comboBoxUnit.Text == Resources.UnitSelectWatermark || string.IsNullOrWhiteSpace(comboBoxUnit.Text)) &&  
                    (textBoxPrice.Text == Resources.ProductPriceWatermark || string.IsNullOrWhiteSpace(textBoxPrice.Text)));
 
             if (hasInput && !FormHelper.ShowCancelConfirmation(Resources.ConfirmCancelAddProduct))

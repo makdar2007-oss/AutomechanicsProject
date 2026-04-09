@@ -4,11 +4,13 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Windows.Forms;
+using System.IO;
+using System.Text;
 
 namespace AutomechanicsProject.Formes
 {
     /// <summary>
-    /// Форма для просмотра истории отгрузок товаров
+    /// Форма просмотра истории отгрузок и списаний
     /// </summary>
     public partial class ShipmentHistoryForm : Form
     {
@@ -25,22 +27,30 @@ namespace AutomechanicsProject.Formes
 
         /// <summary>
         /// Обработчик события загрузки формы
+        /// Устанавливает начальные даты и загружает историю
         /// </summary>
         private void ShipmentHistoryForm_Load(object sender, EventArgs e)
         {
+            dateTimePickerFrom.Value = DateTime.Now.AddMonths(-1);
+            dateTimePickerTo.Value = DateTime.Now;
             LoadShipmentHistory();
         }
+
         /// <summary>
-        /// Загружает историю отгрузок из базы данных и отображает в таблице
+        /// Загружает историю отгрузок за выбранный период
         /// </summary>
         private void LoadShipmentHistory()
         {
             try
             {
+                DateTime startDate = dateTimePickerFrom.Value.Date;
+                DateTime endDate = dateTimePickerTo.Value.Date.AddDays(1).AddSeconds(-1);
+
                 var shipments = db.Shipments
                     .Include(s => s.User)
                     .Include(s => s.CreatedByUser)
                     .Include(s => s.Items)
+                    .Where(s => s.Date >= startDate && s.Date <= endDate)
                     .OrderByDescending(s => s.Date)
                     .ToList();
 
@@ -49,19 +59,27 @@ namespace AutomechanicsProject.Formes
                     dataGridViewHistory.DataSource = null;
                     MessageBox.Show(Resources.InfoHistoryEmpty, Resources.TitleInformation,
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    UpdateTotalInfo(0, 0, 0, 0, 0);
                     return;
                 }
+
                 var displayList = shipments
                     .Where(s => s.Items != null && s.Items.Any())
                     .SelectMany(s => s.Items.Select(item => new
                     {
-                        Артикул = item.Article ?? "Н/Д",
-                        Название = item.ProductName ?? "Н/Д",
+                        Артикул = item.Article ?? Resources.NA,
+                        Название = item.ProductName ?? Resources.NA,
                         Количество = item.Quantity,
-                        Цена = item.Price,
-                        Сумма = item.Quantity * item.Price,
-                        Получатель = s.User?.CompanyName ?? "Не указан",
-                        Кладовщик = s.CreatedByUser?.FullName ?? "Не указан",
+                        ЦенаЗакупки = item.Price,                    
+                        ЦенаПродажи = item.Quantity >= 0 ? item.PurchasePrice : 0,  
+                        Прибыль = item.Quantity >= 0
+                            ? (item.PurchasePrice - item.Price) * item.Quantity  
+                            : item.Price * item.Quantity,
+                        Сумма = item.Quantity >= 0
+                            ? item.PurchasePrice * item.Quantity     
+                            : 0,
+                        Получатель = item.Quantity < 0 ? Resources.WriteOff : (s.User?.CompanyName ?? Resources.NotSpecified),
+                        Кладовщик = s.CreatedByUser?.FullName ?? Resources.NotSpecified,
                         Дата = s.Date.ToString("dd.MM.yyyy HH:mm")
                     }))
                     .OrderByDescending(x => x.Дата)
@@ -72,17 +90,20 @@ namespace AutomechanicsProject.Formes
                     dataGridViewHistory.DataSource = null;
                     MessageBox.Show(string.Format(Resources.WarningShipmentsWithoutItems, shipments.Count),
                         Resources.TitleInformation, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    UpdateTotalInfo(0, 0, 0, 0, 0);
                     return;
                 }
+
                 var counter = 1;
                 var finalList = displayList.Select(item => new
                 {
                     Номер = counter++,
                     item.Артикул,
                     item.Название,
-                    item.Количество,
-                    ЦенаРуб = item.Цена.ToString("F2"),
-                    СуммаРуб = item.Сумма.ToString("F2"),
+                    Количество = item.Количество,
+                    Цена = item.ЦенаПродажи.ToString("F2"),
+                    Прибыль = item.Прибыль.ToString("F2"),
+                    Сумма = item.Сумма.ToString("F2"),
                     item.Получатель,
                     item.Кладовщик,
                     item.Дата
@@ -90,16 +111,121 @@ namespace AutomechanicsProject.Formes
 
                 dataGridViewHistory.DataSource = finalList;
 
-                var totalItems = displayList.Count;
-                var totalSum = displayList.Sum(x => x.Сумма);
-                Text = $"История отгрузок - Всего позиций: {totalItems}, общая сумма: {totalSum:C2}";
+                var totalItemsShipped = displayList.Where(x => x.Количество > 0).Sum(x => x.Количество);
+                var totalItemsWrittenOff = displayList.Where(x => x.Количество < 0).Sum(x => -x.Количество);
+                var totalSum = displayList.Where(x => x.Количество > 0).Sum(x => x.Сумма);
+                var totalProfit = displayList.Where(x => x.Количество > 0).Sum(x => x.Прибыль);
+                var totalLoss = displayList.Where(x => x.Количество < 0).Sum(x => -x.Прибыль);
+
+                UpdateTotalInfo(totalItemsShipped, totalItemsWrittenOff, totalSum, totalProfit, totalLoss);
             }
             catch (Exception ex)
             {
-                Program.LogError("Ошибка при загрузке истории отгрузок", ex);
+                Program.LogError(Resources.ErrorLoadShipmentHistory, ex);
                 MessageBox.Show(string.Format(Resources.ErrorLoadShipmentHistory, ex.Message),
                     Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        /// <summary>
+        /// Обновляет информацию в заголовке формы (итоги по отгрузкам)
+        /// </summary>
+        private void UpdateTotalInfo(int totalItemsShipped, int totalItemsWrittenOff, decimal totalSum, decimal totalProfit, decimal totalLoss)
+        {
+            Text = string.Format(Resources.ShipmentHistoryTitle,
+                totalItemsShipped, totalItemsWrittenOff, totalSum, totalProfit, totalLoss);
+        }
+
+        /// <summary>
+        /// Экспортирует данные истории в CSV файл
+        /// </summary>
+        private void ExportToCsv()
+        {
+            try
+            {
+                if (dataGridViewHistory.Rows.Count == 0)
+                {
+                    MessageBox.Show(Resources.NoDataToExport, Resources.TitleWarning,
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                using (SaveFileDialog saveFileDialog = new SaveFileDialog())
+                {
+                    saveFileDialog.Filter = Resources.CsvFileFilter;
+                    saveFileDialog.DefaultExt = "csv";
+                    saveFileDialog.FileName = string.Format(Resources.ExportFileName, DateTime.Now.ToString("yyyyMMdd_HHmmss"));
+                    saveFileDialog.Title = Resources.SaveCsvFileTitle;
+
+                    if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                    {
+                        StringBuilder csvContent = new StringBuilder();
+                        csvContent.AppendLine("\uFEFF");
+
+                        string[] headers = {
+                            Resources.ExportHeaderNumber,
+                            Resources.ExportHeaderArticle,
+                            Resources.ExportHeaderName,
+                            Resources.ExportHeaderQuantity,
+                            Resources.ExportHeaderPrice,
+                            Resources.ExportHeaderProfit,
+                            Resources.ExportHeaderSum,
+                            Resources.ExportHeaderRecipient,
+                            Resources.ExportHeaderStorekeeper,
+                            Resources.ExportHeaderDate
+                        };
+                        csvContent.AppendLine(string.Join(";", headers));
+
+                        foreach (DataGridViewRow row in dataGridViewHistory.Rows)
+                        {
+                            if (!row.IsNewRow)
+                            {
+                                string[] rowData = new string[headers.Length];
+                                for (int i = 0; i < headers.Length; i++)
+                                {
+                                    var cellValue = row.Cells[i].Value;
+                                    var cellString = cellValue?.ToString() ?? "";
+
+                                    if (cellString.Contains("\""))
+                                        cellString = cellString.Replace("\"", "\"\"");
+                                    if (cellString.Contains(";") || cellString.Contains("\n"))
+                                        cellString = $"\"{cellString}\"";
+
+                                    rowData[i] = cellString;
+                                }
+                                csvContent.AppendLine(string.Join(";", rowData));
+                            }
+                        }
+
+                        File.WriteAllText(saveFileDialog.FileName, csvContent.ToString(), Encoding.UTF8);
+
+                        MessageBox.Show(string.Format(Resources.ExportSuccess, saveFileDialog.FileName),
+                            Resources.TitleSuccess, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Program.LogError(Resources.ErrorExportToCsv, ex);
+                MessageBox.Show(string.Format(Resources.ErrorExportToCsvWithMessage, ex.Message),
+                    Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// Обработчик нажатия кнопки экспорта
+        /// </summary>
+        private void buttonExport_Click(object sender, EventArgs e)
+        {
+            ExportToCsv();
+        }
+
+        /// <summary>
+        /// Обработчик нажатия кнопки применения фильтра
+        /// </summary>
+        private void buttonApplyFilter_Click(object sender, EventArgs e)
+        {
+            LoadShipmentHistory();
         }
     }
 }

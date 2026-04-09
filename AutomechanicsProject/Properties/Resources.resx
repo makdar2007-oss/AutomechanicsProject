@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-  <!-- 
+	<!-- 
     Microsoft ResX Schema 
     
     Version 2.0
@@ -59,64 +59,66 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
-    <xsd:element name="root" msdata:IsDataSet="true">
-      <xsd:complexType>
-        <xsd:choice maxOccurs="unbounded">
-          <xsd:element name="metadata">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
-              </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="assembly">
-            <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="data">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
-              </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="resheader">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-              </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
-            </xsd:complexType>
-          </xsd:element>
-        </xsd:choice>
-      </xsd:complexType>
-    </xsd:element>
-  </xsd:schema>
-  <resheader name="resmimetype">
-    <value>text/microsoft-resx</value>
-  </resheader>
-  <resheader name="version">
-    <value>2.0</value>
-  </resheader>
-  <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </resheader>
-  <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </resheader>
+	<xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+		<xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+		<xsd:element name="root" msdata:IsDataSet="true">
+			<xsd:complexType>
+				<xsd:choice maxOccurs="unbounded">
+					<xsd:element name="metadata">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" />
+							</xsd:sequence>
+							<xsd:attribute name="name" use="required" type="xsd:string" />
+							<xsd:attribute name="type" type="xsd:string" />
+							<xsd:attribute name="mimetype" type="xsd:string" />
+							<xsd:attribute ref="xml:space" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="assembly">
+						<xsd:complexType>
+							<xsd:attribute name="alias" type="xsd:string" />
+							<xsd:attribute name="name" type="xsd:string" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="data">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+							<xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+							<xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+							<xsd:attribute ref="xml:space" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="resheader">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" use="required" />
+						</xsd:complexType>
+					</xsd:element>
+				</xsd:choice>
+			</xsd:complexType>
+		</xsd:element>
+	</xsd:schema>
+	<resheader name="resmimetype">
+		<value>text/microsoft-resx</value>
+	</resheader>
+	<resheader name="version">
+		<value>2.0</value>
+	</resheader>
+	<resheader name="reader">
+		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<resheader name="writer">
+		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+
+	<!-- Названия -->
 	<data name="SearchWatermark" xml:space="preserve">
     <value>Поиск:</value>
   </data>
@@ -186,6 +188,9 @@
 	<data name="ShipmentRecipientWatermark" xml:space="preserve">
     <value>Введите кому</value>
   </data>
+	<data name="UnitSelectWatermark" xml:space="preserve">
+    <value>Выберите единицу измерения</value>
+  </data>
 	<data name="TitleConfirmation" xml:space="preserve">
     <value>Подтверждение</value>
   </data>
@@ -214,7 +219,7 @@
     <value>Действие запрещено</value>
   </data>
 
-	<!-- Сообщения об ошибках -->
+	<!-- Собщения об ошибках -->
 	<data name="ErrorAuthInvalid" xml:space="preserve">
     <value>Неверный логин или пароль!</value>
   </data>
@@ -413,6 +418,107 @@
 	<data name="ErrorConfirmPassword" xml:space="preserve">
     <value>Подтвердите пароль</value>
   </data>
+	<data name="ErrorLoadAdminForm" xml:space="preserve">
+    <value>Ошибка при загрузке формы администратора</value>
+  </data>
+	<data name="ErrorLoadStorekeeperForm" xml:space="preserve">
+    <value>Ошибка при загрузке формы кладовщика</value>
+  </data>
+	<data name="ErrorLogout" xml:space="preserve">
+    <value>Ошибка при выходе из системы</value>
+  </data>
+	<data name="ErrorOpenCurrencyForm" xml:space="preserve">
+    <value>Ошибка при открытии формы выбора валюты</value>
+  </data>
+	<data name="ErrorOpenSupplyForm" xml:space="preserve">
+    <value>Ошибка при открытии формы поставки</value>
+  </data>
+	<data name="ErrorGetSelectedProduct" xml:space="preserve">
+    <value>Ошибка при получении выбранного товара</value>
+  </data>
+	<data name="ErrorFormatColumns" xml:space="preserve">
+    <value>Ошибка при форматировании колонок таблицы</value>
+  </data>
+	<data name="ErrorHighlightRow" xml:space="preserve">
+    <value>Ошибка при подсветке строки</value>
+  </data>
+	<data name="ErrorLoadProductsWithSearch" xml:space="preserve">
+    <value>Ошибка при загрузке товаров. Поисковый запрос: {0}</value>
+  </data>
+	<data name="ErrorLoadCurrencies" xml:space="preserve">
+    <value>Ошибка загрузки курсов валют: {0}\nБудут использованы стандартные курсы.</value>
+  </data>
+	<data name="ErrorExportToCsv" xml:space="preserve">
+    <value>Ошибка при экспорте данных</value>
+  </data>
+	<data name="ErrorExportToCsvWithMessage" xml:space="preserve">
+    <value>Ошибка при экспорте данных: {0}</value>
+  </data>
+	<data name="ErrorLabel" xml:space="preserve">
+    <value>Ошибка</value>
+</data>
+	<data name="LogAutoWriteOffSuccess" xml:space="preserve">
+    <value>Автоматическое списание: списано {0} просроченных товаров</value>
+</data>
+	<data name="LogAutoWriteOffError" xml:space="preserve">
+    <value>Ошибка при автоматическом списании просроченных товаров</value>
+</data>
+	<data name="LogWriteOffDetail" xml:space="preserve">
+    <value>Списан товар: {0}, артикул: {1}, количество: {2}, срок годности истек: {3}</value>
+</data>
+	<data name="LogWriteOffUserNotFound" xml:space="preserve">
+    <value>Автоматическое списание: пользователь 'Списание' не найден</value>
+</data>
+	<data name="LogWriteOffAddressNotFound" xml:space="preserve">
+    <value>Автоматическое списание: адрес 'Списание' не найден</value>
+</data>
+	<data name="ErrorGetSelectedProduct" xml:space="preserve">
+    <value>Ошибка при получении выбранного товара</value>
+</data>
+	<data name="ErrorLoadAdminForm" xml:space="preserve">
+    <value>Ошибка при загрузке формы администратора</value>
+</data>
+	<data name="ErrorOpenHistory" xml:space="preserve">
+    <value>Ошибка при открытии истории отгрузок</value>
+</data>
+	<data name="ErrorOpenAddProductForm" xml:space="preserve">
+    <value>Ошибка при открытии формы добавления товара</value>
+</data>
+	<data name="ErrorOpenAddCategoryForm" xml:space="preserve">
+    <value>Ошибка при открытии формы добавления категории</value>
+</data>
+	<data name="ErrorOpenDeleteCategoryForm" xml:space="preserve">
+    <value>Ошибка при открытии формы удаления категории</value>
+</data>
+	<data name="ErrorLoadProductsWithSearch" xml:space="preserve">
+    <value>Ошибка при загрузке товаров с поиском: {0}</value>
+</data>
+	<data name="ErrorLoadProductsList" xml:space="preserve">
+    <value>Ошибка при загрузке списка товаров</value>
+</data>
+	<data name="ErrorFormatColumns" xml:space="preserve">
+    <value>Ошибка при форматировании колонок таблицы</value>
+</data>
+	<data name="ErrorHighlightRow" xml:space="preserve">
+    <value>Ошибка при подсветке строки</value>
+</data>
+	<data name="UserLogout" xml:space="preserve">
+    <value>Пользователь вышел из системы</value>
+</data>
+	<data name="ErrorLogout" xml:space="preserve">
+    <value>Ошибка при выходе из системы</value>
+</data>
+	<data name="ErrorOpenEditCategoryForm" xml:space="preserve">
+    <value>Ошибка при открытии формы редактирования категории</value>
+</data>
+	<data name="ErrorEditProduct" xml:space="preserve">
+    <value>Ошибка при редактировании товара</value>
+</data>
+	<data name="ErrorDeleteProduct" xml:space="preserve">
+    <value>Ошибка при удалении товара</value>
+</data>
+
+	<!-- Сообщения информации -->
 	<data name="InfoCategoryNameNotChanged" xml:space="preserve">
     <value>Название категории не изменилось</value>
   </data>
@@ -425,6 +531,8 @@
 	<data name="InfoNoRecipientsAvailable" xml:space="preserve">
     <value>Нет доступных получателей!&#xA;Обратитесь к администратору для добавления компаний.</value>
   </data>
+
+	<!-- Сообщения о выборе -->
 	<data name="SelectCategoryForEdit" xml:space="preserve">
     <value>Выберите категорию для редактирования</value>
   </data>
@@ -440,6 +548,8 @@
 	<data name="NoCategoriesForDelete" xml:space="preserve">
     <value>Нет доступных категорий для удаления</value>
   </data>
+
+	<!-- Сообщения об успешном выполнении -->
 	<data name="SuccessCategoryAdded" xml:space="preserve">
     <value>Категория "{0}" успешно добавлена!</value>
   </data>
@@ -479,6 +589,8 @@
 	<data name="SuccessShipmentCreatedWithDetails" xml:space="preserve">
     <value>Отгрузка успешно оформлена!&#xA;&#xA;Получатель: {0}&#xA;Количество позиций: {1}&#xA;Общая сумма: {2:C2}</value>
   </data>
+
+	<!-- Сообщения о подтверждении -->
 	<data name="ConfirmCancelAddProduct" xml:space="preserve">
     <value>Вы уверены, что хотите отменить добавление товара?&#xA;Все введенные данные будут потеряны.</value>
   </data>
@@ -509,6 +621,8 @@
 	<data name="ConfirmShipment" xml:space="preserve">
     <value>Подтвердить отгрузку?&#xA;&#xA;Получатель: {0}&#xA;Количество позиций: {1}&#xA;Общая сумма: {2:C2}</value>
   </data>
+
+	<!-- Остальное -->
 	<data name="CategoryNone" xml:space="preserve">
     <value>Без категории</value>
   </data>
@@ -518,7 +632,166 @@
 	<data name="ProductAlreadyInList" xml:space="preserve">
     <value>Товар "{0}" уже добавлен в список.&#xA;Текущее количество: {1} {2}&#xA;&#xA;Заменить количество новым значением?</value>
   </data>
-<data name="UnitSelectWatermark" xml:space="preserve">
-    <value>Выберите единицу измерения</value>
+
+	<!-- Сообщения для логирования -->
+	<data name="LogPasswordHashed" xml:space="preserve">
+    <value>Пароль для пользователя {0} был хеширован</value>
 </data>
+	<data name="LogAdminFormOpened" xml:space="preserve">
+    <value>Открыта форма администратора для {0}</value>
+</data>
+	<data name="LogStorekeeperFormOpened" xml:space="preserve">
+    <value>Открыта форма кладовщика для {0}</value>
+</data>
+	<data name="LogAuthError" xml:space="preserve">
+    <value>Ошибка авторизации</value>
+</data>
+	<data name="LogNoRoleAssigned" xml:space="preserve">
+    <value>Пользователь {0} не имеет назначенной роли</value>
+</data>
+
+	<!-- Заголовки колонок -->
+	<data name="ArticleColumnHeader" xml:space="preserve">
+    <value>Артикул</value>
+  </data>
+	<data name="NameColumnHeader" xml:space="preserve">
+    <value>Название</value>
+  </data>
+	<data name="CategoryColumnHeader" xml:space="preserve">
+    <value>Категория</value>
+  </data>
+	<data name="BalanceColumnHeader" xml:space="preserve">
+    <value>Остаток</value>
+  </data>
+	<data name="PriceColumnHeader" xml:space="preserve">
+    <value>Цена ({0})</value>
+  </data>
+	<data name="PurchasePriceColumnHeader" xml:space="preserve">
+    <value>Цена закупки (₽)</value>
+  </data>
+	<data name="ExpiryDateColumnHeader" xml:space="preserve">
+    <value>Срок годности</value>
+  </data>
+	<data name="UnitColumnHeader" xml:space="preserve">
+    <value>Ед. измерения</value>
+  </data>
+
+	<!-- Сообщения для формы с валютами -->
+	<data name="LoadingCurrencies" xml:space="preserve">
+    <value>Загрузка курсов валют...</value>
+  </data>
+	<data name="NoCurrenciesAvailable" xml:space="preserve">
+    <value>Нет доступных валют</value>
+  </data>
+	<data name="CurrencyRUB" xml:space="preserve">
+    <value>Российский рубль</value>
+  </data>
+	<data name="CurrencyUSD" xml:space="preserve">
+    <value>Доллар США</value>
+  </data>
+	<data name="CurrencyEUR" xml:space="preserve">
+    <value>Евро</value>
+  </data>
+	<data name="CurrencyCNY" xml:space="preserve">
+    <value>Китайский юань</value>
+  </data>
+	<data name="CurrencyKZT" xml:space="preserve">
+    <value>Казахстанский тенге</value>
+  </data>
+	<data name="CurrencyBYN" xml:space="preserve">
+    <value>Белорусский рубль</value>
+  </data>
+	<data name="CurrencyGBP" xml:space="preserve">
+    <value>Британский фунт</value>
+  </data>
+	<data name="CurrencyJPY" xml:space="preserve">
+    <value>Японская иена</value>
+  </data>
+	<data name="CurrencyChangeConfirm" xml:space="preserve">
+    <value>Валюта изменена с {0} на {1}\nКурс: 1 RUB = {2:F4} {3}\n\nВсе цены (кроме закупочных) будут пересчитаны в {4}.\nПродолжить?</value>
+  </data>
+	<data name="CurrencyChangeTitle" xml:space="preserve">
+    <value>Изменение валюты</value>
+  </data>
+	<data name="PleaseSelectCurrency" xml:space="preserve">
+    <value>Пожалуйста, выберите валюту</value>
+  </data>
+	<data name="CurrencyChanged" xml:space="preserve">
+    <value>Валюта изменена</value>
+  </data>
+	<data name="ShipmentSuccess" xml:space="preserve">
+    <value>Отгрузка успешно оформлена</value>
+  </data>
+	<data name="SupplyFormInDevelopment" xml:space="preserve">
+    <value>Форма поставок в разработке</value>
+  </data>
+	<data name="NoDataToExport" xml:space="preserve">
+    <value>Нет данных для экспорта</value>
+  </data>
+	<data name="CsvFileFilter" xml:space="preserve">
+    <value>CSV файлы (*.csv)|*.csv</value>
+  </data>
+	<data name="ExportFileName" xml:space="preserve">
+    <value>История_отгрузок_{0}.csv</value>
+  </data>
+	<data name="SaveCsvFileTitle" xml:space="preserve">
+    <value>Сохранить CSV файл</value>
+  </data>
+	<data name="ExportHeaderNumber" xml:space="preserve">
+    <value>№</value>
+  </data>
+	<data name="ExportHeaderArticle" xml:space="preserve">
+    <value>Артикул</value>
+  </data>
+	<data name="ExportHeaderName" xml:space="preserve">
+    <value>Название</value>
+  </data>
+	<data name="ExportHeaderQuantity" xml:space="preserve">
+    <value>Кол-во</value>
+  </data>
+	<data name="ExportHeaderPrice" xml:space="preserve">
+    <value>Цена</value>
+  </data>
+	<data name="ExportHeaderProfit" xml:space="preserve">
+    <value>Прибыль</value>
+  </data>
+	<data name="ExportHeaderSum" xml:space="preserve">
+    <value>Сумма</value>
+  </data>
+	<data name="ExportHeaderRecipient" xml:space="preserve">
+    <value>Получатель</value>
+  </data>
+	<data name="ExportHeaderStorekeeper" xml:space="preserve">
+    <value>Кладовщик</value>
+  </data>
+	<data name="ExportHeaderDate" xml:space="preserve">
+    <value>Дата</value>
+  </data>
+	<data name="ExportSuccess" xml:space="preserve">
+    <value>Экспорт успешно завершен!\nФайл сохранен: {0}</value>
+  </data>
+	<data name="NA" xml:space="preserve">
+    <value>Н/Д</value>
+  </data>
+	<data name="NotSpecified" xml:space="preserve">
+    <value>Не указан</value>
+  </data>
+	<data name="WriteOff" xml:space="preserve">
+    <value>Списание</value>
+  </data>
+	<data name="ShipmentHistoryTitle" xml:space="preserve">
+    <value>История отгрузок - Отгружено: {0} ед. | Списано: {1} ед. | Сумма: {2:C2} | Прибыль: {3:C2} | Убыток: {4:C2}</value>
+  </data>
+	<data name="AdminRoleName" xml:space="preserve">
+    <value>Администратор</value>
+  </data>
+	<data name="StorekeeperRoleName" xml:space="preserve">
+    <value>Кладовщик</value>
+  </data>
+	<data name="UserLogout" xml:space="preserve">
+    <value>Пользователь вышел из системы</value>
+  </data>
+	<data name="StorekeeperFormLoaded" xml:space="preserve">
+    <value>Кладовщик вошёл в StorekeeperForm</value>
+  </data>
 </root>
