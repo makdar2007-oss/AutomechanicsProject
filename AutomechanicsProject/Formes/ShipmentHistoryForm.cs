@@ -67,19 +67,19 @@ namespace AutomechanicsProject.Formes
                     .Where(s => s.Items != null && s.Items.Any())
                     .SelectMany(s => s.Items.Select(item => new
                     {
-                        Артикул = item.Article ?? Resources.NA,
-                        Название = item.ProductName ?? Resources.NA,
+                        Артикул = item.Article ?? "Н/Д",
+                        Название = item.ProductName ?? "Н/Д",
                         Количество = item.Quantity,
-                        ЦенаЗакупки = item.Price,                    
-                        ЦенаПродажи = item.Quantity >= 0 ? item.PurchasePrice : 0,  
+                        ЦенаЗакупки = item.Price,
+                        ЦенаПродажи = item.Quantity >= 0 ? item.PurchasePrice : 0,
                         Прибыль = item.Quantity >= 0
-                            ? (item.PurchasePrice - item.Price) * item.Quantity  
+                            ? (item.PurchasePrice - item.Price) * item.Quantity
                             : item.Price * item.Quantity,
                         Сумма = item.Quantity >= 0
-                            ? item.PurchasePrice * item.Quantity     
+                            ? item.PurchasePrice * item.Quantity
                             : 0,
-                        Получатель = item.Quantity < 0 ? Resources.WriteOff : (s.User?.CompanyName ?? Resources.NotSpecified),
-                        Кладовщик = s.CreatedByUser?.FullName ?? Resources.NotSpecified,
+                        Получатель = item.Quantity < 0 ? "Списание" : (s.User?.CompanyName ?? "Не указан"),
+                        Кладовщик = s.CreatedByUser?.FullName ?? "Не указан",
                         Дата = s.Date.ToString("dd.MM.yyyy HH:mm")
                     }))
                     .OrderByDescending(x => x.Дата)
@@ -121,7 +121,7 @@ namespace AutomechanicsProject.Formes
             }
             catch (Exception ex)
             {
-                Program.LogError(Resources.ErrorLoadShipmentHistory, ex);
+                Program.LogError("Не удалось загрузить историю отгрузок: " + ex.Message, ex);
                 MessageBox.Show(string.Format(Resources.ErrorLoadShipmentHistory, ex.Message),
                     Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -163,16 +163,16 @@ namespace AutomechanicsProject.Formes
                         csvContent.AppendLine("\uFEFF");
 
                         string[] headers = {
-                            Resources.ExportHeaderNumber,
-                            Resources.ExportHeaderArticle,
-                            Resources.ExportHeaderName,
-                            Resources.ExportHeaderQuantity,
-                            Resources.ExportHeaderPrice,
-                            Resources.ExportHeaderProfit,
-                            Resources.ExportHeaderSum,
-                            Resources.ExportHeaderRecipient,
-                            Resources.ExportHeaderStorekeeper,
-                            Resources.ExportHeaderDate
+                            "№",
+                            "Артикул",
+                            "Название",
+                            "Кол-во",
+                            "Цена",
+                            "Прибыль",
+                            "Сумма",
+                            "Получатель",
+                            "Кладовщик",
+                            "Дата"
                         };
                         csvContent.AppendLine(string.Join(";", headers));
 
@@ -206,7 +206,7 @@ namespace AutomechanicsProject.Formes
             }
             catch (Exception ex)
             {
-                Program.LogError(Resources.ErrorExportToCsv, ex);
+                Program.LogError("Ошибка при экспорте данных: " + ex.Message, ex);
                 MessageBox.Show(string.Format(Resources.ErrorExportToCsvWithMessage, ex.Message),
                     Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }

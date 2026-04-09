@@ -22,7 +22,7 @@ namespace AutomechanicsProject.Formes
             InitializeComponent();
             db = new DateBase();
 
-            TextBoxHelper.SetupWatermarkTextBox(textBoxSearch, Resources.SearchWatermark);
+            TextBoxHelper.SetupWatermarkTextBox(textBoxSearch, "Поиск...");
 
             buttonCurrency.Click += ButtonCurrency_Click;
             buttonSupply.Click += ButtonSupply_Click;
@@ -69,7 +69,7 @@ namespace AutomechanicsProject.Formes
                 }
                 catch (Exception ex)
                 {
-                    Program.LogError(Resources.ErrorHighlightRow, ex);
+                    Program.LogError("Ошибка при подсветке строки", ex);
                 }
             }
         }
@@ -87,13 +87,13 @@ namespace AutomechanicsProject.Formes
                     if (currencyForm.ShowDialog() == DialogResult.OK)
                     {
                         RefreshProductList();
-                        Program.LogInfo(Resources.CurrencyChanged);
+                        Program.LogInfo("Валюта изменена");
                     }
                 }
             }
             catch (Exception ex)
             {
-                Program.LogError(Resources.ErrorOpenCurrencyForm, ex);
+                Program.LogError("Ошибка при открытии формы выбора валюты", ex);
                 MessageBox.Show(Resources.ErrorOpenCurrencyForm, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -108,11 +108,11 @@ namespace AutomechanicsProject.Formes
             try
             {
                 MessageBox.Show(Resources.SupplyFormInDevelopment, Resources.TitleInformation,
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                     MessageBoxButtons.OK, MessageBoxIcon.Information); 
             }
             catch (Exception ex)
             {
-                Program.LogError(Resources.ErrorOpenSupplyForm, ex);
+                Program.LogError("Ошибка при открытии формы поставки", ex);
                 MessageBox.Show(Resources.ErrorOpenSupplyForm, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -131,13 +131,13 @@ namespace AutomechanicsProject.Formes
                     if (shipmentForm.ShowDialog() == DialogResult.OK)
                     {
                         RefreshProductList();
-                        Program.LogInfo(Resources.ShipmentSuccess);
+                        Program.LogInfo("Отгрузка успешно оформлена");
                     }
                 }
             }
             catch (Exception ex)
             {
-                Program.LogError(Resources.ErrorOpenShipmentForm, ex);
+                Program.LogError("Ошибка при открытии формы отгрузки", ex);
                 MessageBox.Show(Resources.ErrorOpenShipmentForm, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -151,14 +151,14 @@ namespace AutomechanicsProject.Formes
         {
             try
             {
-                Program.LogInfo(Resources.UserLogout);
+                Program.LogInfo("Пользователь вышел из системы");
                 this.Close();
                 var loginForm = new Autorization();
                 loginForm.ShowDialog();
             }
             catch (Exception ex)
             {
-                Program.LogError(Resources.ErrorLogout, ex);
+                Program.LogError("Ошибка при выходе из системы", ex);
                 MessageBox.Show(Resources.ErrorLogout, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -215,7 +215,7 @@ namespace AutomechanicsProject.Formes
             }
             catch (Exception ex)
             {
-                Program.LogError(Resources.ErrorLoadProducts, ex);
+                Program.LogError("Ошибка при загрузке товаров", ex);
                 MessageBox.Show(Resources.ErrorLoadProductsList, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -234,14 +234,29 @@ namespace AutomechanicsProject.Formes
             if (dataGridViewStore.Columns.Contains("Просрочен"))
                 dataGridViewStore.Columns["Просрочен"].Visible = false;
 
-            SetHeader("Артикул", Resources.ArticleColumnHeader);
-            SetHeader("Название", Resources.NameColumnHeader);
-            SetHeader("Категория", Resources.CategoryColumnHeader);
-            SetHeader("ЕдИзмерения", Resources.UnitColumnHeader);
-            SetHeader("СрокГодности", Resources.ExpiryDateColumnHeader);
-            SetHeader("Цена", string.Format(Resources.PriceColumnHeader, ChoosingCurrency.SelectedCurrencyCode));
-            SetHeader("ЦенаЗакупки", Resources.PurchasePriceColumnHeader);
-            SetHeader("Остаток", Resources.BalanceColumnHeader);
+            if (dataGridViewStore.Columns["Артикул"] != null)
+                dataGridViewStore.Columns["Артикул"].HeaderText = "Артикул";
+
+            if (dataGridViewStore.Columns["Название"] != null)
+                dataGridViewStore.Columns["Название"].HeaderText = "Наименование";
+
+            if (dataGridViewStore.Columns["Категория"] != null)
+                dataGridViewStore.Columns["Категория"].HeaderText = "Категория";
+
+            if (dataGridViewStore.Columns["ЕдИзмерения"] != null)
+                dataGridViewStore.Columns["ЕдИзмерения"].HeaderText = "Ед. изм.";
+
+            if (dataGridViewStore.Columns["СрокГодности"] != null)
+                dataGridViewStore.Columns["СрокГодности"].HeaderText = "Срок годности";
+
+            if (dataGridViewStore.Columns["Цена"] != null)
+                dataGridViewStore.Columns["Цена"].HeaderText = $"Цена ({ChoosingCurrency.SelectedCurrencyCode})";
+
+            if (dataGridViewStore.Columns["ЦенаЗакупки"] != null)
+                dataGridViewStore.Columns["ЦенаЗакупки"].HeaderText = "Цена закупки";
+
+            if (dataGridViewStore.Columns["Остаток"] != null)
+                dataGridViewStore.Columns["Остаток"].HeaderText = "Остаток";
 
             SetColumnOrder();
         }
@@ -290,15 +305,14 @@ namespace AutomechanicsProject.Formes
             {
                 dataGridViewStore.Columns["Остаток"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
             }
-        }
 
-        /// <summary>
-        /// Устанавливает заголовок для указанной колонки таблицы
-        /// </summary>
-        private void SetHeader(string columnName, string header)
-        {
-            if (dataGridViewStore.Columns[columnName] != null)
-                dataGridViewStore.Columns[columnName].HeaderText = header;
+            dataGridViewStore.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridViewStore.RowHeadersVisible = false;
+            dataGridViewStore.AllowUserToAddRows = false;
+            dataGridViewStore.AllowUserToDeleteRows = false;
+            dataGridViewStore.ReadOnly = true;
+            dataGridViewStore.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dataGridViewStore.MultiSelect = false;
         }
 
         /// <summary>
@@ -308,7 +322,7 @@ namespace AutomechanicsProject.Formes
         {
             var searchText = textBoxSearch.Text;
 
-            if (searchText == Resources.SearchWatermark || string.IsNullOrWhiteSpace(searchText))
+            if (searchText == "Поиск..." || string.IsNullOrWhiteSpace(searchText))
             {
                 LoadProducts("");
             }
@@ -323,7 +337,7 @@ namespace AutomechanicsProject.Formes
         /// </summary>
         private string NormalizeSearch(string text)
         {
-            if (string.IsNullOrWhiteSpace(text) || text == Resources.SearchWatermark)
+            if (string.IsNullOrWhiteSpace(text) || text == "Поиск...")
             {
                 return "";
             }
@@ -337,13 +351,13 @@ namespace AutomechanicsProject.Formes
         {
             try
             {
-                toolStripTextBoxStorekeeper.Text = Resources.StorekeeperRoleName;
-                Program.LogInfo(Resources.StorekeeperFormLoaded);
+                toolStripTextBoxStorekeeper.Text = "Кладовщик";
+                Program.LogInfo("Кладовщик вошёл в StorekeeperForm");
             }
             catch (Exception ex)
             {
-                toolStripTextBoxStorekeeper.Text = Resources.ErrorLabel;
-                Program.LogError(Resources.ErrorLoadStorekeeperForm, ex);
+                toolStripTextBoxStorekeeper.Text = "Ошибка";
+                Program.LogError("Ошибка при загрузке формы кладовщика", ex);
             }
         }
     }

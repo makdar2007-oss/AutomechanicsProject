@@ -119,7 +119,7 @@ namespace AutomechanicsProject
                         {
                             user.Password = PasswordHelper.HashPassword(textBoxPassword.Text);
                             db.SaveChanges();
-                            Program.LogInfo(string.Format(Resources.LogPasswordHashed, user.Login));
+                            Program.LogInfo(string.Format("Пароль для пользователя {0} был хеширован", user.Login));
                         }
                     }
                     if (!isValid)
@@ -135,7 +135,7 @@ namespace AutomechanicsProject
             }
             catch (Exception ex)
             {
-                Program.LogError(Resources.LogAuthError, ex);
+                Program.LogError("Ошибка авторизации", ex);
                 MessageBox.Show(Resources.ErrorAuthFailed, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -153,11 +153,11 @@ namespace AutomechanicsProject
                 {
                     case RoleType.Administrator:
                         nextForm = new AdminForm();
-                        Program.LogInfo(string.Format(Resources.LogAdminFormOpened, user.FullName));
+                        Program.LogInfo(string.Format("Открыта форма администратора для {0}", user.FullName));
                         break;
                     case RoleType.Storekeeper:
                         nextForm = new StorekeeperForm();
-                        Program.LogInfo(string.Format(Resources.LogStorekeeperFormOpened, user.FullName));
+                        Program.LogInfo(string.Format("Открыта форма кладовщика для {0}", user.FullName));
                         break;
                 }
             }
@@ -170,7 +170,7 @@ namespace AutomechanicsProject
             {
                 MessageBox.Show(Resources.ErrorNoAccess, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Program.LogWarning(string.Format(Resources.LogNoRoleAssigned, user.FullName));
+                Program.LogWarning(string.Format("Пользователь {0} не имеет назначенной роли", user.FullName));
             }
         }
     }
