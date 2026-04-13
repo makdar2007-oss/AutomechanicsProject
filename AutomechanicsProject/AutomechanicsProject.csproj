@@ -229,9 +229,14 @@
     <Compile Include="Classes\Category.cs" />
     <Compile Include="Classes\CurrencyInfo.cs" />
     <Compile Include="Classes\CurrencyManager.cs" />
+    <Compile Include="Classes\CurrentUser.cs" />
     <Compile Include="Classes\DateBase.cs" />
+    <Compile Include="Classes\DBContextManager.cs" />
     <Compile Include="Classes\ExchangeRateResponse.cs" />
+    <Compile Include="Classes\ImportFileData.cs" />
+    <Compile Include="Classes\ImportProductItem.cs" />
     <Compile Include="Classes\Product.cs" />
+    <Compile Include="Classes\ProductDisplayItem.cs" />
     <Compile Include="Classes\Role.cs" />
     <Compile Include="Classes\Shipment.cs" />
     <Compile Include="Classes\ShipmentItem.cs" />
@@ -239,11 +244,22 @@
     <Compile Include="Classes\Supply.cs" />
     <Compile Include="Classes\SupplyPosition.cs" />
     <Compile Include="Classes\Unit.cs" />
+    <Compile Include="Dtos\CategoryComboBoxDto.cs" />
+    <Compile Include="Dtos\ProductComboBoxDto.cs" />
+    <Compile Include="Dtos\RecipientComboBoxDto.cs" />
+    <Compile Include="Dtos\ShipmentDisplayItem.cs" />
+    <Compile Include="Dtos\UnitComboBoxDto.cs" />
     <Compile Include="Formes\ChoosingCurrency.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Formes\ChoosingCurrency.Designer.cs">
       <DependentUpon>ChoosingCurrency.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Formes\CreateSupply.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formes\CreateSupply.Designer.cs">
+      <DependentUpon>CreateSupply.cs</DependentUpon>
     </Compile>
     <Compile Include="Formes\EditCategory.cs">
       <SubType>Form</SubType>
@@ -251,6 +267,13 @@
     <Compile Include="Formes\EditCategory.Designer.cs">
       <DependentUpon>EditCategory.cs</DependentUpon>
     </Compile>
+    <Compile Include="Formes\ReportForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formes\ReportForm.Designer.cs">
+      <DependentUpon>ReportForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Helpers\CurrencyStorage.cs" />
     <Compile Include="Helpers\FormHelper.cs" />
     <Compile Include="Helpers\PasswordHasher.cs" />
     <Compile Include="Helpers\TextBoxHelper.cs" />
@@ -342,6 +365,9 @@
     <EmbeddedResource Include="Formes\CreateShipment.resx">
       <DependentUpon>CreateShipment.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Formes\CreateSupply.resx">
+      <DependentUpon>CreateSupply.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Formes\DeleteCategory.resx">
       <DependentUpon>DeleteCategory.cs</DependentUpon>
     </EmbeddedResource>
@@ -356,6 +382,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Formes\Registration.resx">
       <DependentUpon>Registration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formes\ReportForm.resx">
+      <DependentUpon>ReportForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Formes\ShipmentHistoryForm.resx">
       <DependentUpon>ShipmentHistoryForm.cs</DependentUpon>
@@ -385,6 +414,7 @@
     </Compile>
     <None Include="Shipment History\История_отгрузок_20260409_011659.csv" />
     <None Include="Shipment History\История_отгрузок_20260409_163554.csv" />
+    <None Include="Shipment History\Отчет_20260412_025940.csv" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -48,6 +48,7 @@
             this.ProductToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.CategoryToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripTextBoxAdmin = new System.Windows.Forms.ToolStripTextBox();
+            this.buttonReport = new System.Windows.Forms.Button();
             this.panelAdmin.SuspendLayout();
             this.panelSearchHIstory.SuspendLayout();
             this.panelAdminData.SuspendLayout();
@@ -91,6 +92,7 @@
             // 
             this.panelSearchHIstory.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.panelSearchHIstory.Controls.Add(this.buttonReport);
             this.panelSearchHIstory.Controls.Add(this.buttonCurrency);
             this.panelSearchHIstory.Controls.Add(this.buttonSupply);
             this.panelSearchHIstory.Controls.Add(this.buttonhistory);
@@ -108,7 +110,7 @@
             this.buttonCurrency.BackColor = System.Drawing.SystemColors.Control;
             this.buttonCurrency.FlatAppearance.BorderSize = 0;
             this.buttonCurrency.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonCurrency.Location = new System.Drawing.Point(214, 22);
+            this.buttonCurrency.Location = new System.Drawing.Point(316, 19);
             this.buttonCurrency.Margin = new System.Windows.Forms.Padding(2);
             this.buttonCurrency.Name = "buttonCurrency";
             this.buttonCurrency.Size = new System.Drawing.Size(159, 35);
@@ -124,7 +126,7 @@
             this.buttonSupply.BackColor = System.Drawing.SystemColors.Control;
             this.buttonSupply.FlatAppearance.BorderSize = 0;
             this.buttonSupply.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonSupply.Location = new System.Drawing.Point(402, 22);
+            this.buttonSupply.Location = new System.Drawing.Point(500, 19);
             this.buttonSupply.Margin = new System.Windows.Forms.Padding(2);
             this.buttonSupply.Name = "buttonSupply";
             this.buttonSupply.Size = new System.Drawing.Size(109, 35);
@@ -140,7 +142,7 @@
             this.buttonhistory.BackColor = System.Drawing.SystemColors.Control;
             this.buttonhistory.FlatAppearance.BorderSize = 0;
             this.buttonhistory.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonhistory.Location = new System.Drawing.Point(544, 22);
+            this.buttonhistory.Location = new System.Drawing.Point(638, 19);
             this.buttonhistory.Margin = new System.Windows.Forms.Padding(2);
             this.buttonhistory.Name = "buttonhistory";
             this.buttonhistory.Size = new System.Drawing.Size(190, 35);
@@ -279,6 +281,19 @@
             this.toolStripTextBoxAdmin.Size = new System.Drawing.Size(335, 28);
             this.toolStripTextBoxAdmin.Text = "Администратор";
             // 
+            // buttonReport
+            // 
+            this.buttonReport.AutoSize = true;
+            this.buttonReport.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.buttonReport.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.buttonReport.Location = new System.Drawing.Point(214, 19);
+            this.buttonReport.Name = "buttonReport";
+            this.buttonReport.Size = new System.Drawing.Size(83, 35);
+            this.buttonReport.TabIndex = 6;
+            this.buttonReport.Text = "Отчет";
+            this.buttonReport.UseVisualStyleBackColor = true;
+            this.buttonReport.Click += new System.EventHandler(this.buttonReport_Click);
+            // 
             // AdminForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -325,5 +340,6 @@
         private System.Windows.Forms.Panel panelSearchHIstory;
         private System.Windows.Forms.Button buttonSupply;
         private System.Windows.Forms.Button buttonCurrency;
+        private System.Windows.Forms.Button buttonReport;
     }
 }

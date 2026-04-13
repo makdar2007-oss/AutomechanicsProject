@@ -6,6 +6,7 @@ using System;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using AutomechanicsProject.Classes.Dtos;
 
 namespace AutomechanicsProject.Formes
 {
@@ -22,7 +23,8 @@ namespace AutomechanicsProject.Formes
         public DeleteProduct()
         {
             InitializeComponent();
-            db = new DateBase();
+            db = DbContextManager.GetContext();
+            DbContextManager.AddReference();
             TextBoxHelper.SetupWatermarkTextBox(textBoxArt, Resources.DeleteArticleWatermark);
         }
         /// <summary>
@@ -51,7 +53,7 @@ namespace AutomechanicsProject.Formes
                     textBoxArt.Text = product.Article;
                     textBoxArt.ForeColor = Color.Black;
                     textBoxArt.ReadOnly = true;
-                    labelDeleteProduct.Text = $"Удаление товара:\n{product.Article} - {product.Name}";
+                    labelDeleteProduct.Text = $"Удаление товара: \n{product.Article} - {product.Name}";
                 }
             }
             catch (Exception ex)
@@ -122,6 +124,10 @@ namespace AutomechanicsProject.Formes
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        /// <summary>
+        /// Подтверждает удаление товара
+        /// </summary>
         private bool ConfirmDelete(Product product)
         {
             var categoryName = product.Category?.Name ?? Resources.CategoryNone;
@@ -151,6 +157,7 @@ namespace AutomechanicsProject.Formes
             return !string.IsNullOrWhiteSpace(textBoxArt.Text) &&
                    textBoxArt.Text != Resources.DeleteArticleWatermark;
         }
+
         /// <summary>
         /// Обработчик нажатия кнопки Отмена
         /// </summary>
@@ -186,6 +193,15 @@ namespace AutomechanicsProject.Formes
             }
 
             return FindProductByArticle(textBoxArt.Text);
+        }
+
+        /// <summary>
+        /// Освобождает ресурсы контекста базы данных при закрытии формы
+        /// </summary>
+        protected override void OnFormClosed(FormClosedEventArgs e)
+        {
+            base.OnFormClosed(e);
+            DbContextManager.ReleaseReference();
         }
     }
 }

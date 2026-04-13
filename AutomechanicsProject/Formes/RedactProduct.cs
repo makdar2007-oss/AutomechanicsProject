@@ -6,6 +6,7 @@ using System;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using AutomechanicsProject.Classes.Dtos;
 
 namespace AutomechanicsProject.Formes
 {
@@ -25,27 +26,24 @@ namespace AutomechanicsProject.Formes
         public RedactProduct(Guid id)
         {
             InitializeComponent();
-            db = new DateBase();
+            db = DbContextManager.GetContext();
+            DbContextManager.AddReference();
             productId = id;
 
-            // Настройка водяных знаков для текстовых полей
             TextBoxHelper.SetupWatermarkTextBox(textBoxArt, Resources.EditArticleWatermark);
             TextBoxHelper.SetupWatermarkTextBox(textBoxName, Resources.EditNameWatermark);
             TextBoxHelper.SetupWatermarkTextBox(textBoxCategory, Resources.EditCategoryWatermark);
             TextBoxHelper.SetupWatermarkTextBox(textBoxPrice, Resources.EditPriceWatermark);
 
-            // Настройка водяного знака для выпадающего списка единиц измерения
             TextBoxHelper.SetupWatermarkComboBox(comboBoxUnit, Resources.UnitSelectWatermark);
 
-            // Подписка на события изменения текста
             textBoxArt.TextChanged += (s, e) => hasChanges = true;
             textBoxName.TextChanged += (s, e) => hasChanges = true;
             textBoxCategory.TextChanged += (s, e) => hasChanges = true;
             comboBoxUnit.SelectedIndexChanged += (s, e) => hasChanges = true;  // Изменено
             textBoxPrice.TextChanged += (s, e) => hasChanges = true;
 
-            // Загрузка данных
-            LoadUnits();  // Сначала загружаем единицы измерения
+            LoadUnits();  
             LoadProductData();
         }
 
@@ -58,11 +56,12 @@ namespace AutomechanicsProject.Formes
             {
                 var units = db.Units
                     .OrderBy(u => u.Name)
-                    .Select(u => new
+                    .Select(u => new UnitComboBoxDto 
                     {
-                        u.Id,
+                        Id = u.Id,
                         DisplayName = $"{u.Name} ({u.ShortName})",
-                        u.ShortName
+                        ShortName = u.ShortName,
+                        Name = u.Name
                     })
                     .ToList();
 
@@ -78,8 +77,8 @@ namespace AutomechanicsProject.Formes
             catch (Exception ex)
             {
                 Program.LogError("Ошибка при загрузке единиц измерения в RedactProduct", ex);
-                MessageBox.Show("Не удалось загрузить список единиц измерения",
-                    Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(Resources.ErrorLoadUnits,
+    Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -92,7 +91,7 @@ namespace AutomechanicsProject.Formes
             {
                 currentProduct = db.Products
                     .Include(p => p.Category)
-                    .Include(p => p.Unit)  // Добавляем загрузку единицы измерения
+                    .Include(p => p.Unit)  
                     .FirstOrDefault(p => p.Id == productId);
 
                 if (currentProduct == null)
@@ -109,15 +108,12 @@ namespace AutomechanicsProject.Formes
                 textBoxCategory.Text = currentProduct.Category?.Name ?? Resources.CategoryNone;
                 textBoxPrice.Text = currentProduct.Price.ToString("F2");
 
-                // Устанавливаем выбранную единицу измерения в комбобоксе
                 if (currentProduct.Unit != null && comboBoxUnit.Items.Count > 0)
                 {
-                    // Ищем и выбираем нужную единицу измерения по Id
                     for (int i = 0; i < comboBoxUnit.Items.Count; i++)
                     {
-                        var item = comboBoxUnit.Items[i];
-                        var itemId = (Guid)((dynamic)item).Id;
-                        if (itemId == currentProduct.UnitId)
+                        var item = (UnitComboBoxDto)comboBoxUnit.Items[i];
+                        if (item.Id == currentProduct.UnitId)
                         {
                             comboBoxUnit.SelectedIndex = i;
                             break;
@@ -138,7 +134,6 @@ namespace AutomechanicsProject.Formes
         /// </summary>
         private void ButtonRedact_Click(object sender, EventArgs e)
         {
-            // Проверка заполнения обязательных полей
             if (string.IsNullOrWhiteSpace(textBoxArt.Text) || textBoxArt.Text == Resources.EditArticleWatermark ||
                 string.IsNullOrWhiteSpace(textBoxName.Text) || textBoxName.Text == Resources.EditNameWatermark ||
                 string.IsNullOrWhiteSpace(textBoxCategory.Text) || textBoxCategory.Text == Resources.EditCategoryWatermark ||
@@ -149,15 +144,13 @@ namespace AutomechanicsProject.Formes
                 return;
             }
 
-            // Проверка выбора единицы измерения
             if (comboBoxUnit.SelectedItem == null)
             {
-                MessageBox.Show("Выберите единицу измерения!", Resources.TitleWarning,
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(Resources.ErrorSelectUnit, Resources.TitleWarning,
+                  MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            // Проверка корректности цены
             if (!decimal.TryParse(textBoxPrice.Text, out var price) || price < 0)
             {
                 MessageBox.Show(Resources.ErrorEnterCorrectPrice, Resources.TitleWarning,
@@ -167,11 +160,9 @@ namespace AutomechanicsProject.Formes
 
             try
             {
-                // Обновляем основные поля
                 currentProduct.Article = textBoxArt.Text.Trim();
                 currentProduct.Name = textBoxName.Text.Trim();
 
-                // Обработка категории
                 var categoryName = textBoxCategory.Text.Trim();
                 var category = db.Categories.FirstOrDefault(c => c.Name == categoryName);
                 if (category == null)
@@ -185,14 +176,11 @@ namespace AutomechanicsProject.Formes
                 }
                 currentProduct.CategoryId = category.Id;
 
-                // Обновляем единицу измерения (теперь это Guid)
-                var unitId = (Guid)((dynamic)comboBoxUnit.SelectedItem).Id;
-                currentProduct.UnitId = unitId;
+                var selectedUnit = (UnitComboBoxDto)comboBoxUnit.SelectedItem; 
+                currentProduct.UnitId = selectedUnit.Id;
 
-                // Обновляем цену
                 currentProduct.Price = price;
 
-                // Сохраняем изменения
                 db.SaveChanges();
 
                 Program.LogInfo($"Товар '{currentProduct.Article} - {currentProduct.Name}' обновлен");
@@ -228,6 +216,15 @@ namespace AutomechanicsProject.Formes
             }
             DialogResult = DialogResult.Cancel;
             Close();
+        }
+
+        /// <summary>
+        /// Освобождает ресурсы контекста базы данных при закрытии формы
+        /// </summary>
+        protected override void OnFormClosed(FormClosedEventArgs e)
+        {
+            base.OnFormClosed(e);
+            DbContextManager.ReleaseReference();
         }
     }
 }

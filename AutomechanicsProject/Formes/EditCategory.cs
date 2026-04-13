@@ -5,8 +5,10 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Windows.Forms;
+using AutomechanicsProject.Classes.Dtos;
 
 namespace AutomechanicsProject.Formes
+
 {
     /// <summary>
     /// Форма для редактирования категории товаров
@@ -22,7 +24,8 @@ namespace AutomechanicsProject.Formes
         public EditCategory()
         {
             InitializeComponent();
-            db = new DateBase();
+            db = DbContextManager.GetContext();
+            DbContextManager.AddReference();
             Load += EditCategory_Load;
         }
 
@@ -52,10 +55,12 @@ namespace AutomechanicsProject.Formes
             {
                 var categories = db.Categories
                     .OrderBy(c => c.Name)
-                    .Select(c => new
+                    .Select(c => new CategoryComboBoxDto  
                     {
-                        c.Id,
-                        DisplayName = $"{c.Name} (товаров: {db.Products.Count(p => p.CategoryId == c.Id)})"
+                        Id = c.Id,
+                        DisplayName = $"{c.Name} (товаров: {db.Products.Count(p => p.CategoryId == c.Id)})",
+                        Name = c.Name,
+                        ProductsCount = db.Products.Count(p => p.CategoryId == c.Id)
                     })
                     .ToList();
 
@@ -85,8 +90,8 @@ namespace AutomechanicsProject.Formes
         {
             if (comboBoxCategory.SelectedItem != null)
             {
-                var selectedItem = (dynamic)comboBoxCategory.SelectedItem;
-                var categoryId = (Guid)selectedItem.Id;
+                var selectedItem = (CategoryComboBoxDto)comboBoxCategory.SelectedItem;  
+                var categoryId = selectedItem.Id;
 
                 selectedCategory = db.Categories
                     .FirstOrDefault(c => c.Id == categoryId);
@@ -187,6 +192,14 @@ namespace AutomechanicsProject.Formes
 
             DialogResult = DialogResult.Cancel;
             Close();
+        }
+        /// <summary>
+        /// Освобождает ресурсы контекста базы данных при закрытии формы
+        /// </summary>
+        protected override void OnFormClosed(FormClosedEventArgs e)
+        {
+            base.OnFormClosed(e);
+            DbContextManager.ReleaseReference();
         }
     }
 }

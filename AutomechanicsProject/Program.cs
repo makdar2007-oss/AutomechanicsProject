@@ -37,6 +37,10 @@ namespace AutomechanicsProject
                 MessageBox.Show("Произошла критическая ошибка. Приложение будет закрыто.",
                     "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+            finally
+            {
+                DbContextManager.ForceDispose();
+            }
         }
 
         private static void Log(string message, Exception ex = null, string level = "INFO")
@@ -65,6 +69,7 @@ namespace AutomechanicsProject
             }
             catch { }
         }
+
 
         public static void LogInfo(string message) => Log(message, null, "INFO");
         public static void LogWarning(string message) => Log(message, null, "WARNING");

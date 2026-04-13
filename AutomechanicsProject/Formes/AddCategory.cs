@@ -4,29 +4,27 @@ using AutomechanicsProject.Properties;
 using System;
 using System.Linq;
 using System.Windows.Forms;
+using AutomechanicsProject.Classes.Dtos;
 
 namespace AutomechanicsProject.Formes
 {
     /// <summary>
-    /// Форма для добавления новой категории товаров
+    /// Форма для добавления категории
     /// </summary>
     public partial class AddCategory : Form
     {
         private readonly DateBase db;
 
-        /// <summary>
-        /// Инициализирует новый экземпляр формы добавления категории
-        /// </summary>
         public AddCategory()
         {
             InitializeComponent();
-            db = new DateBase();
+            db = DbContextManager.GetContext();
+            DbContextManager.AddReference();
             TextBoxHelper.SetupWatermarkTextBox(textBoxAddCategory, Resources.CategoryAddWatermark);
         }
 
         /// <summary>
         /// Обработчик нажатия кнопки "Добавить"
-        /// Сохранение новой категории в базу данных
         /// </summary>
         private void buttonAdd_Click(object sender, EventArgs e)
         {
@@ -70,13 +68,23 @@ namespace AutomechanicsProject.Formes
                   MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
         /// <summary>
-        /// Закрывает форму без сохранения
+        /// Обработчик нажатия кнопки "Отмена"
         /// </summary>
         private void ButtonCancel_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.Cancel;
             Close();
+        }
+
+        /// <summary>
+        /// Освобождает ресурсы контекста базы данных при закрытии формы
+        /// </summary>
+        protected override void OnFormClosed(FormClosedEventArgs e)
+        {
+            base.OnFormClosed(e);
+            DbContextManager.ReleaseReference();
         }
     }
 }

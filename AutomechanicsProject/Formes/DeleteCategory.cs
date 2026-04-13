@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Windows.Forms;
+using AutomechanicsProject.Classes.Dtos;
 
 namespace AutomechanicsProject.Formes
 {
@@ -13,15 +14,14 @@ namespace AutomechanicsProject.Formes
     public partial class DeleteCategory : Form
     {
         private readonly DateBase db;
-        /// <summary>
-        /// Инициализирует новый экземпляр формы удаления категории
-        /// </summary>
         public DeleteCategory()
         {
             InitializeComponent();
-            db = new DateBase();
+            db = DbContextManager.GetContext();
+            DbContextManager.AddReference();
             Load += DeleteCategory_Load;
         }
+
         /// <summary>
         /// Обработчик загрузки формы
         /// </summary>
@@ -29,6 +29,7 @@ namespace AutomechanicsProject.Formes
         {
             LoadCategories();
         }
+
         /// <summary>
         /// Загружает список категорий для удаления
         /// </summary>
@@ -38,10 +39,12 @@ namespace AutomechanicsProject.Formes
             {
                 var categories = db.Categories
                     .OrderBy(c => c.Name)
-                    .Select(c => new
+                    .Select(c => new CategoryComboBoxDto  
                     {
-                        c.Id,
-                        DisplayName = $"{c.Name} (товаров: {db.Products.Count(p => p.CategoryId == c.Id)})"
+                        Id = c.Id,
+                        DisplayName = $"{c.Name} (товаров: {db.Products.Count(p => p.CategoryId == c.Id)})",
+                        Name = c.Name,
+                        ProductsCount = db.Products.Count(p => p.CategoryId == c.Id)
                     })
                     .ToList();
 
@@ -62,6 +65,7 @@ namespace AutomechanicsProject.Formes
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
         /// <summary>
         /// Обработчик нажатия кнопки Удалить
         /// </summary>
@@ -75,8 +79,8 @@ namespace AutomechanicsProject.Formes
             }
             try
             {
-                var selectedItem = (dynamic)comboBoxCategory.SelectedItem;
-                var categoryId = (Guid)selectedItem.Id;
+                var selectedItem = (CategoryComboBoxDto)comboBoxCategory.SelectedItem;
+                var categoryId = selectedItem.Id;
                 var category = db.Categories
                     .FirstOrDefault(c => c.Id == categoryId);
 
@@ -134,6 +138,7 @@ namespace AutomechanicsProject.Formes
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
         /// <summary>
         /// Обработчик нажатия кнопки Отмена
         /// </summary>
@@ -141,6 +146,15 @@ namespace AutomechanicsProject.Formes
         {
             DialogResult = DialogResult.Cancel;
             Close();
+        }
+
+        /// <summary>
+        /// Освобождает ресурсы контекста базы данных при закрытии формы
+        /// </summary>
+        protected override void OnFormClosed(FormClosedEventArgs e)
+        {
+            base.OnFormClosed(e);
+            DbContextManager.ReleaseReference();
         }
     }
 }

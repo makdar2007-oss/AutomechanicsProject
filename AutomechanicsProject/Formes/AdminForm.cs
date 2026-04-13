@@ -4,6 +4,7 @@ using AutomechanicsProject.Properties;
 using System;
 using System.Linq;
 using System.Windows.Forms;
+using AutomechanicsProject.Classes.Dtos;
 using Microsoft.EntityFrameworkCore;
 
 namespace AutomechanicsProject.Formes
@@ -22,7 +23,8 @@ namespace AutomechanicsProject.Formes
         public AdminForm()
         {
             InitializeComponent();
-            db = new DateBase();
+            db = DbContextManager.GetContext();
+            DbContextManager.AddReference();
 
             TextBoxHelper.SetupWatermarkTextBox(textBoxSearch, Resources.SearchWatermark);
 
@@ -103,8 +105,7 @@ namespace AutomechanicsProject.Formes
                         Article = product.Article,
                         ProductName = product.Name,
                         Quantity = -product.Balance,
-                        Price = product.Price,
-                        PurchasePrice = product.Price * 2
+                        Price = product.Price
                     };
 
                     db.ShipmentItems.Add(shipmentItem);
@@ -114,8 +115,8 @@ namespace AutomechanicsProject.Formes
                 db.SaveChanges();
                 RefreshProductList();
 
-                MessageBox.Show($"Списано {expiredProducts.Count} просроченных товаров.",
-                    "Автоматическое списание", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(string.Format(Resources.SuccessAutoWriteOffMessage, expiredProducts.Count),
+                      Resources.TitleAutoWriteOff, MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
@@ -123,7 +124,8 @@ namespace AutomechanicsProject.Formes
                 if (ex.InnerException != null)
                     error += ex.InnerException.Message;
 
-                MessageBox.Show($"Ошибка: {error}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(string.Format(Resources.ErrorWithDetails, error), Resources.TitleError,
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -173,7 +175,7 @@ namespace AutomechanicsProject.Formes
         {
             try
             {
-                toolStripTextBoxAdmin.Text = "Администратоор";
+                toolStripTextBoxAdmin.Text = "Администратор";
                 dataGridViewMainForm.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
                 dataGridViewMainForm.AllowUserToResizeColumns = false;
                 dataGridViewMainForm.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
@@ -184,7 +186,7 @@ namespace AutomechanicsProject.Formes
             catch (Exception ex)
             {
                 toolStripTextBoxAdmin.Text = "Ошибка";
-                Program.LogError("Ошибка при получении выбранного товара", ex);
+                Program.LogError("Ошибка при загрузке формы администратора", ex);
             }
         }
 
@@ -550,7 +552,26 @@ namespace AutomechanicsProject.Formes
         /// </summary>
         private void buttonSupply_Click(object sender, EventArgs e)
         {
-            //код для формы поставок
+            CreateSupply supplyForm = new CreateSupply();
+            supplyForm.ShowDialog();
+        }
+
+        /// <summary>
+        /// Освобождает ресурсы контекста базы данных при закрытии формы
+        /// </summary>
+        protected override void OnFormClosed(FormClosedEventArgs e)
+        {
+            base.OnFormClosed(e);
+            DbContextManager.ReleaseReference();
+        }
+
+        /// <summary>
+        /// Открытие формы отчета
+        /// </summary>
+        private void buttonReport_Click(object sender, EventArgs e)
+        {
+            ReportForm reportForm = new ReportForm();
+            reportForm.ShowDialog();
         }
     }
 }

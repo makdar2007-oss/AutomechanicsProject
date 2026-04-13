@@ -122,6 +122,7 @@
             this.buttonSupply.TabIndex = 6;
             this.buttonSupply.Text = "Поставка";
             this.buttonSupply.UseVisualStyleBackColor = false;
+            this.buttonSupply.Click += new System.EventHandler(this.buttonSupply_Click_1);
             // 
             // buttonShipment
             // 

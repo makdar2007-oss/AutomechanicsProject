@@ -61,24 +61,6 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Администратор.
-        /// </summary>
-        public static string AdminRoleName {
-            get {
-                return ResourceManager.GetString("AdminRoleName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Артикул.
-        /// </summary>
-        public static string ArticleColumnHeader {
-            get {
-                return ResourceManager.GetString("ArticleColumnHeader", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Ищет локализованную строку, похожую на Введите имя.
         /// </summary>
         public static string AuthLoginWatermark {
@@ -97,11 +79,11 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Остаток.
+        ///   Ищет локализованную строку, похожую на Подтвердить поставку.
         /// </summary>
-        public static string BalanceColumnHeader {
+        public static string ButtonConfirmSupply {
             get {
-                return ResourceManager.GetString("BalanceColumnHeader", resourceCulture);
+                return ResourceManager.GetString("ButtonConfirmSupply", resourceCulture);
             }
         }
         
@@ -111,15 +93,6 @@ namespace AutomechanicsProject.Properties {
         public static string CategoryAddWatermark {
             get {
                 return ResourceManager.GetString("CategoryAddWatermark", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Категория.
-        /// </summary>
-        public static string CategoryColumnHeader {
-            get {
-                return ResourceManager.GetString("CategoryColumnHeader", resourceCulture);
             }
         }
         
@@ -142,8 +115,7 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Вы уверены, что хотите отменить добавление товара?
-        ///Все введенные данные будут потеряны..
+        ///   Ищет локализованную строку, похожую на Вы уверены, что хотите отменить добавление товара?\nВсе введенные данные будут потеряны..
         /// </summary>
         public static string ConfirmCancelAddProduct {
             get {
@@ -161,8 +133,7 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на У вас есть несохраненные изменения.
-        ///Вы действительно хотите отменить редактирование?.
+        ///   Ищет локализованную строку, похожую на У вас есть несохраненные изменения.\nВы действительно хотите отменить редактирование?.
         /// </summary>
         public static string ConfirmCancelEdit {
             get {
@@ -171,9 +142,7 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на У вас есть несохраненные изменения.
-        ///
-        ///Вы действительно хотите отменить редактирование?.
+        ///   Ищет локализованную строку, похожую на У вас есть несохраненные изменения.\n\nВы действительно хотите отменить редактирование?.
         /// </summary>
         public static string ConfirmCancelEditWithDetails {
             get {
@@ -182,12 +151,20 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на У вас есть добавленные товары в списке отгрузки.
-        ///Вы действительно хотите отменить создание отгрузки?.
+        ///   Ищет локализованную строку, похожую на У вас есть добавленные товары в списке отгрузки.\nВы действительно хотите отменить создание отгрузки?.
         /// </summary>
         public static string ConfirmCancelShipment {
             get {
                 return ResourceManager.GetString("ConfirmCancelShipment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Отменить поставку? Все данные будут потеряны..
+        /// </summary>
+        public static string ConfirmCancelSupply {
+            get {
+                return ResourceManager.GetString("ConfirmCancelSupply", resourceCulture);
             }
         }
         
@@ -201,10 +178,7 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на В категории &quot;{0}&quot; находится {1} товаров.
-        ///
-        ///Вы уверены, что хотите удалить категорию и все товары в ней?
-        ///Это действие нельзя отменить.
+        ///   Ищет локализованную строку, похожую на В категории &quot;{0}&quot; находится {1} товаров.\n\nВы уверены, что хотите удалить категорию и все товары в ней?\nЭто действие нельзя отменить..
         /// </summary>
         public static string ConfirmDeleteCategoryWithProducts {
             get {
@@ -213,15 +187,7 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Вы действительно хотите удалить товар?
-        ///
-        ///Артикул: {0}
-        ///Название: {1}
-        ///Категория: {2}
-        ///Цена: {3:F2}
-        ///Остаток: {4} {5}
-        ///
-        ///Это действие нельзя отменить!.
+        ///   Ищет локализованную строку, похожую на Вы действительно хотите удалить товар?\n\nАртикул: {0}\nНазвание: {1}\nКатегория: {2}\nЦена: {3:F2}\nОстаток: {4} {5}\n\nЭто действие нельзя отменить!.
         /// </summary>
         public static string ConfirmDeleteProduct {
             get {
@@ -239,11 +205,7 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Подтвердить отгрузку?
-        ///
-        ///Получатель: {0}
-        ///Количество позиций: {1}
-        ///Общая сумма: {2:C2}.
+        ///   Ищет локализованную строку, похожую на Подтвердить отгрузку?\n\nПолучатель: {0}\nКоличество позиций: {1}\nОбщая сумма: {2:C2}.
         /// </summary>
         public static string ConfirmShipment {
             get {
@@ -252,11 +214,11 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на CSV файлы (*.csv)|*.csv.
+        ///   Ищет локализованную строку, похожую на Подтвердить поставку?\n\nОбщая сумма: {0}.
         /// </summary>
-        public static string CsvFileFilter {
+        public static string ConfirmSupplyFormat {
             get {
-                return ResourceManager.GetString("CsvFileFilter", resourceCulture);
+                return ResourceManager.GetString("ConfirmSupplyFormat", resourceCulture);
             }
         }
         
@@ -270,20 +232,11 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Валюта изменена с {0} на {1}\nКурс: 1 RUB = {2:F4} {3}\n\nВсе цены (кроме закупочных) будут пересчитаны в {4}.\nПродолжить?.
+        ///   Ищет локализованную строку, похожую на Валюта изменена с {0} на {1}\n\tКурс: 1 RUB = {2:F4} {3} \n\nВсе цены (кроме закупочных) будут пересчитаны в {4}.\nПродолжить?.
         /// </summary>
         public static string CurrencyChangeConfirm {
             get {
                 return ResourceManager.GetString("CurrencyChangeConfirm", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Валюта изменена.
-        /// </summary>
-        public static string CurrencyChanged {
-            get {
-                return ResourceManager.GetString("CurrencyChanged", resourceCulture);
             }
         }
         
@@ -356,6 +309,15 @@ namespace AutomechanicsProject.Properties {
         public static string CurrencyUSD {
             get {
                 return ResourceManager.GetString("CurrencyUSD", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Сохраняю кэш в: {0}.
+        /// </summary>
+        public static string DebugSavingCache {
+            get {
+                return ResourceManager.GetString("DebugSavingCache", resourceCulture);
             }
         }
         
@@ -441,8 +403,7 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Невозможно удалить категорию, так как некоторые товары используются в отгрузках.
-        ///Сначала удалите связанные отгрузки..
+        ///   Ищет локализованную строку, похожую на Невозможно удалить категорию, так как некоторые товары используются в отгрузках.\nСначала удалите связанные отгрузки..
         /// </summary>
         public static string ErrorCannotDeleteCategoryWithShipments {
             get {
@@ -478,9 +439,7 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Не удалось оформить отгрузку.
-        ///
-        ///Ошибка: {0}.
+        ///   Ищет локализованную строку, похожую на Не удалось оформить отгрузку.\n\nОшибка: {0}.
         /// </summary>
         public static string ErrorCreateShipment {
             get {
@@ -588,11 +547,20 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Ошибка при экспорте данных.
+        ///   Ищет локализованную строку, похожую на Введите корректную цену закупки!.
         /// </summary>
-        public static string ErrorExportToCsv {
+        public static string ErrorEnterValidPrice {
             get {
-                return ResourceManager.GetString("ErrorExportToCsv", resourceCulture);
+                return ResourceManager.GetString("ErrorEnterValidPrice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Введите корректное количество товара!.
+        /// </summary>
+        public static string ErrorEnterValidQuantity {
+            get {
+                return ResourceManager.GetString("ErrorEnterValidQuantity", resourceCulture);
             }
         }
         
@@ -624,8 +592,7 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Пожалуйста, исправьте ошибки в форме.
-        ///Поля, выделенные розовым, заполнены неверно..
+        ///   Ищет локализованную строку, похожую на Пожалуйста, исправьте ошибки в форме.\nПоля, выделенные розовым, заполнены неверно..
         /// </summary>
         public static string ErrorFixFormErrors {
             get {
@@ -661,17 +628,34 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Недостаточно товара на складе!.
+        ///   Ищет локализованную строку, похожую на Ошибка при импорте: {0}.
         /// </summary>
-        public static string ErrorInsufficientStock {
+        public static string ErrorImportFailed {
             get {
-                return ResourceManager.GetString("ErrorInsufficientStock", resourceCulture);
+                return ResourceManager.GetString("ErrorImportFailed", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Недостаточно товара на складе!
-        ///Доступно: {0} {1}.
+        ///   Ищет локализованную строку, похожую на Файл не содержит данных для импорта!.
+        /// </summary>
+        public static string ErrorImportNoData {
+            get {
+                return ResourceManager.GetString("ErrorImportNoData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Не найдено в каталоге.
+        /// </summary>
+        public static string ErrorImportNotFound {
+            get {
+                return ResourceManager.GetString("ErrorImportNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Недостаточно товара на складе!\nДоступно: {0} {1}.
         /// </summary>
         public static string ErrorInsufficientStockWithDetails {
             get {
@@ -680,7 +664,7 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Отчество должно содержать только русские буквы, дефис и пробел.
+        ///   Ищет локализованную строку, похожую на Отчество должно содержать только русские буквы, дефис и пробел..
         /// </summary>
         public static string ErrorInvalidLastname {
             get {
@@ -689,7 +673,7 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Логин может содержать только английские буквы, цифры и подчеркивание.
+        ///   Ищет локализованную строку, похожую на Логин может содержать только английские буквы, цифры и подчеркивание..
         /// </summary>
         public static string ErrorInvalidLogin {
             get {
@@ -698,7 +682,7 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Имя должно содержать только русские буквы, дефис и пробел.
+        ///   Ищет локализованную строку, похожую на Имя должно содержать только русские буквы, дефис и пробел..
         /// </summary>
         public static string ErrorInvalidName {
             get {
@@ -707,7 +691,7 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Пароль должен содержать минимум 6 символов, хотя бы одну цифру и одну букву.
+        ///   Ищет локализованную строку, похожую на Пароль должен содержать минимум 6 символов, хотя бы одну цифру и одну букву..
         /// </summary>
         public static string ErrorInvalidPassword {
             get {
@@ -716,7 +700,7 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Фамилия должна содержать только русские буквы, дефис и пробел.
+        ///   Ищет локализованную строку, похожую на Фамилия должна содержать только русские буквы, дефис и пробел..
         /// </summary>
         public static string ErrorInvalidSurname {
             get {
@@ -725,29 +709,11 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Ошибка.
-        /// </summary>
-        public static string ErrorLabel {
-            get {
-                return ResourceManager.GetString("ErrorLabel", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Отчество должно быть от 2 до 100 символов.
+        ///   Ищет локализованную строку, похожую на Отчество должно быть от 2 до 100 символов..
         /// </summary>
         public static string ErrorLastnameLength {
             get {
                 return ResourceManager.GetString("ErrorLastnameLength", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Ошибка при загрузке формы администратора.
-        /// </summary>
-        public static string ErrorLoadAdminForm {
-            get {
-                return ResourceManager.GetString("ErrorLoadAdminForm", resourceCulture);
             }
         }
         
@@ -757,15 +723,6 @@ namespace AutomechanicsProject.Properties {
         public static string ErrorLoadCategories {
             get {
                 return ResourceManager.GetString("ErrorLoadCategories", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Ошибка загрузки курсов валют: {0}\nБудут использованы стандартные курсы..
-        /// </summary>
-        public static string ErrorLoadCurrencies {
-            get {
-                return ResourceManager.GetString("ErrorLoadCurrencies", resourceCulture);
             }
         }
         
@@ -815,6 +772,15 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Ошибка при загрузке отчета: {0}.
+        /// </summary>
+        public static string ErrorLoadReportFormat {
+            get {
+                return ResourceManager.GetString("ErrorLoadReportFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Не удалось загрузить историю отгрузок: {0}.
         /// </summary>
         public static string ErrorLoadShipmentHistory {
@@ -824,16 +790,25 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Ошибка при загрузке формы кладовщика.
+        ///   Ищет локализованную строку, похожую на Ошибка при загрузке поставщиков.
         /// </summary>
-        public static string ErrorLoadStorekeeperForm {
+        public static string ErrorLoadSuppliers {
             get {
-                return ResourceManager.GetString("ErrorLoadStorekeeperForm", resourceCulture);
+                return ResourceManager.GetString("ErrorLoadSuppliers", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Логин должен быть от 3 до 20 символов.
+        ///   Ищет локализованную строку, похожую на Не удалось загрузить список единиц измерения.
+        /// </summary>
+        public static string ErrorLoadUnits {
+            get {
+                return ResourceManager.GetString("ErrorLoadUnits", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Логин должен быть от 3 до 20 символов..
         /// </summary>
         public static string ErrorLoginLength {
             get {
@@ -851,7 +826,7 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Имя должно быть от 2 до 100 символов.
+        ///   Ищет локализованную строку, похожую на Имя должно быть от 2 до 100 символов..
         /// </summary>
         public static string ErrorNameLength {
             get {
@@ -869,11 +844,47 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Нет данных для экспорта.
+        /// </summary>
+        public static string ErrorNoDataToExport {
+            get {
+                return ResourceManager.GetString("ErrorNoDataToExport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Добавьте товары в список отгрузки!.
         /// </summary>
         public static string ErrorNoItemsInShipment {
             get {
                 return ResourceManager.GetString("ErrorNoItemsInShipment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Добавьте хотя бы одну позицию!.
+        /// </summary>
+        public static string ErrorNoPositions {
+            get {
+                return ResourceManager.GetString("ErrorNoPositions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на В базе данных нет товаров! Добавьте товары через каталог..
+        /// </summary>
+        public static string ErrorNoProducts {
+            get {
+                return ResourceManager.GetString("ErrorNoProducts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на В базе данных нет поставщиков! Добавьте поставщиков..
+        /// </summary>
+        public static string ErrorNoSuppliers {
+            get {
+                return ResourceManager.GetString("ErrorNoSuppliers", resourceCulture);
             }
         }
         
@@ -941,15 +952,6 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Ошибка при открытии формы поставки.
-        /// </summary>
-        public static string ErrorOpenSupplyForm {
-            get {
-                return ResourceManager.GetString("ErrorOpenSupplyForm", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Ищет локализованную строку, похожую на Пароли не совпадают!.
         /// </summary>
         public static string ErrorPasswordMismatch {
@@ -995,8 +997,7 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Ошибка: роль &apos;Кладовщик&apos; не найдена!
-        ///Обратитесь к администратору..
+        ///   Ищет локализованную строку, похожую на Ошибка: роль &apos;Кладовщик&apos; не найдена!\nОбратитесь к администратору..
         /// </summary>
         public static string ErrorRoleNotFound {
             get {
@@ -1041,7 +1042,34 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Фамилия должна быть от 2 до 100 символов.
+        ///   Ищет локализованную строку, похожую на Пожалуйста, выберите поставщика!.
+        /// </summary>
+        public static string ErrorSelectSupplier {
+            get {
+                return ResourceManager.GetString("ErrorSelectSupplier", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Выберите единицу измерения!.
+        /// </summary>
+        public static string ErrorSelectUnit {
+            get {
+                return ResourceManager.GetString("ErrorSelectUnit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Ошибка: {0}.
+        /// </summary>
+        public static string ErrorSupplyFailed {
+            get {
+                return ResourceManager.GetString("ErrorSupplyFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Фамилия должна быть от 2 до 100 символов..
         /// </summary>
         public static string ErrorSurnameLength {
             get {
@@ -1068,119 +1096,29 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Срок годности.
+        ///   Ищет локализованную строку, похожую на Ошибка: пользователь не авторизован!.
         /// </summary>
-        public static string ExpiryDateColumnHeader {
+        public static string ErrorUserNotAuthorized {
             get {
-                return ResourceManager.GetString("ExpiryDateColumnHeader", resourceCulture);
+                return ResourceManager.GetString("ErrorUserNotAuthorized", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на История_отгрузок_{0}.csv.
+        ///   Ищет локализованную строку, похожую на Ошибка: {0}.
         /// </summary>
-        public static string ExportFileName {
+        public static string ErrorWithDetails {
             get {
-                return ResourceManager.GetString("ExportFileName", resourceCulture);
+                return ResourceManager.GetString("ErrorWithDetails", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Артикул.
+        ///   Ищет локализованную строку, похожую на Импорт данных поставки из JSON файла.
         /// </summary>
-        public static string ExportHeaderArticle {
+        public static string ImportSupplyTitle {
             get {
-                return ResourceManager.GetString("ExportHeaderArticle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Дата.
-        /// </summary>
-        public static string ExportHeaderDate {
-            get {
-                return ResourceManager.GetString("ExportHeaderDate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Название.
-        /// </summary>
-        public static string ExportHeaderName {
-            get {
-                return ResourceManager.GetString("ExportHeaderName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на №.
-        /// </summary>
-        public static string ExportHeaderNumber {
-            get {
-                return ResourceManager.GetString("ExportHeaderNumber", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Цена.
-        /// </summary>
-        public static string ExportHeaderPrice {
-            get {
-                return ResourceManager.GetString("ExportHeaderPrice", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Прибыль.
-        /// </summary>
-        public static string ExportHeaderProfit {
-            get {
-                return ResourceManager.GetString("ExportHeaderProfit", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Кол-во.
-        /// </summary>
-        public static string ExportHeaderQuantity {
-            get {
-                return ResourceManager.GetString("ExportHeaderQuantity", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Получатель.
-        /// </summary>
-        public static string ExportHeaderRecipient {
-            get {
-                return ResourceManager.GetString("ExportHeaderRecipient", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Кладовщик.
-        /// </summary>
-        public static string ExportHeaderStorekeeper {
-            get {
-                return ResourceManager.GetString("ExportHeaderStorekeeper", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Сумма.
-        /// </summary>
-        public static string ExportHeaderSum {
-            get {
-                return ResourceManager.GetString("ExportHeaderSum", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Экспорт успешно завершен!\nФайл сохранен: {0}.
-        /// </summary>
-        public static string ExportSuccess {
-            get {
-                return ResourceManager.GetString("ExportSuccess", resourceCulture);
+                return ResourceManager.GetString("ImportSupplyTitle", resourceCulture);
             }
         }
         
@@ -1203,6 +1141,24 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Нет данных за выбранный период.
+        /// </summary>
+        public static string InfoNoDataForPeriod {
+            get {
+                return ResourceManager.GetString("InfoNoDataForPeriod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Нет позиций для отображения.
+        /// </summary>
+        public static string InfoNoPositionsToDisplay {
+            get {
+                return ResourceManager.GetString("InfoNoPositionsToDisplay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Нет товаров в наличии для отгрузки!.
         /// </summary>
         public static string InfoNoProductsForShipment {
@@ -1212,12 +1168,29 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Нет доступных получателей!
-        ///Обратитесь к администратору для добавления компаний..
+        ///   Ищет локализованную строку, похожую на Нет доступных получателей!\nОбратитесь к администратору для добавления компаний..
         /// </summary>
         public static string InfoNoRecipientsAvailable {
             get {
                 return ResourceManager.GetString("InfoNoRecipientsAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Используются сохранённые курсы валют (интернет недоступен).
+        /// </summary>
+        public static string InfoUsingCachedCurrencies {
+            get {
+                return ResourceManager.GetString("InfoUsingCachedCurrencies", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на JSON files (*.json)|*.json|All files (*.*)|*.*.
+        /// </summary>
+        public static string JsonFileFilter {
+            get {
+                return ResourceManager.GetString("JsonFileFilter", resourceCulture);
             }
         }
         
@@ -1227,69 +1200,6 @@ namespace AutomechanicsProject.Properties {
         public static string LoadingCurrencies {
             get {
                 return ResourceManager.GetString("LoadingCurrencies", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Открыта форма администратора для {0}.
-        /// </summary>
-        public static string LogAdminFormOpened {
-            get {
-                return ResourceManager.GetString("LogAdminFormOpened", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Ошибка авторизации.
-        /// </summary>
-        public static string LogAuthError {
-            get {
-                return ResourceManager.GetString("LogAuthError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Пользователь {0} не имеет назначенной роли.
-        /// </summary>
-        public static string LogNoRoleAssigned {
-            get {
-                return ResourceManager.GetString("LogNoRoleAssigned", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Пароль для пользователя {0} был хеширован.
-        /// </summary>
-        public static string LogPasswordHashed {
-            get {
-                return ResourceManager.GetString("LogPasswordHashed", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Открыта форма кладовщика для {0}.
-        /// </summary>
-        public static string LogStorekeeperFormOpened {
-            get {
-                return ResourceManager.GetString("LogStorekeeperFormOpened", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Н/Д.
-        /// </summary>
-        public static string NA {
-            get {
-                return ResourceManager.GetString("NA", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Название.
-        /// </summary>
-        public static string NameColumnHeader {
-            get {
-                return ResourceManager.GetString("NameColumnHeader", resourceCulture);
             }
         }
         
@@ -1312,24 +1222,6 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Нет данных для экспорта.
-        /// </summary>
-        public static string NoDataToExport {
-            get {
-                return ResourceManager.GetString("NoDataToExport", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Не указан.
-        /// </summary>
-        public static string NotSpecified {
-            get {
-                return ResourceManager.GetString("NotSpecified", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Ищет локализованную строку, похожую на Пожалуйста, выберите валюту.
         /// </summary>
         public static string PleaseSelectCurrency {
@@ -1339,19 +1231,7 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Цена ({0}).
-        /// </summary>
-        public static string PriceColumnHeader {
-            get {
-                return ResourceManager.GetString("PriceColumnHeader", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Товар &quot;{0}&quot; уже добавлен в список.
-        ///Текущее количество: {1} {2}
-        ///
-        ///Заменить количество новым значением?.
+        ///   Ищет локализованную строку, похожую на Товар &quot;{0}&quot; уже добавлен в список.\nТекущее количество: {1} {2}\n\nЗаменить количество новым значением?.
         /// </summary>
         public static string ProductAlreadyInList {
             get {
@@ -1383,15 +1263,6 @@ namespace AutomechanicsProject.Properties {
         public static string ProductPriceWatermark {
             get {
                 return ResourceManager.GetString("ProductPriceWatermark", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Цена закупки (₽).
-        /// </summary>
-        public static string PurchasePriceColumnHeader {
-            get {
-                return ResourceManager.GetString("PurchasePriceColumnHeader", resourceCulture);
             }
         }
         
@@ -1522,20 +1393,11 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Отгрузка успешно оформлена.
+        ///   Ищет локализованную строку, похожую на Сохранение....
         /// </summary>
-        public static string ShipmentSuccess {
+        public static string StatusSaving {
             get {
-                return ResourceManager.GetString("ShipmentSuccess", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Кладовщик вошёл в StorekeeperForm.
-        /// </summary>
-        public static string StorekeeperFormLoaded {
-            get {
-                return ResourceManager.GetString("StorekeeperFormLoaded", resourceCulture);
+                return ResourceManager.GetString("StatusSaving", resourceCulture);
             }
         }
         
@@ -1545,6 +1407,15 @@ namespace AutomechanicsProject.Properties {
         public static string StorekeeperRoleName {
             get {
                 return ResourceManager.GetString("StorekeeperRoleName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Списано {0} просроченных товаров..
+        /// </summary>
+        public static string SuccessAutoWriteOffMessage {
+            get {
+                return ResourceManager.GetString("SuccessAutoWriteOffMessage", resourceCulture);
             }
         }
         
@@ -1585,11 +1456,20 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Категория &quot;{0}&quot; успешно переименована в &quot;{1}&quot;!.
+        ///   Ищет локализованную строку, похожую на Данные успешно экспортированы в файл: {0}.
         /// </summary>
-        public static string SuccessCategoryUpdated {
+        public static string SuccessExportFormat {
             get {
-                return ResourceManager.GetString("SuccessCategoryUpdated", resourceCulture);
+                return ResourceManager.GetString("SuccessExportFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Успешно импортировано {0} товаров!.
+        /// </summary>
+        public static string SuccessImportFormat {
+            get {
+                return ResourceManager.GetString("SuccessImportFormat", resourceCulture);
             }
         }
         
@@ -1630,21 +1510,7 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Регистрация успешна! Добро пожаловать, {0}!.
-        /// </summary>
-        public static string SuccessRegistration {
-            get {
-                return ResourceManager.GetString("SuccessRegistration", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Регистрация успешна!
-        ///
-        ///Логин: {0}
-        ///ФИО: {1}
-        ///
-        ///Теперь вы можете войти в систему..
+        ///   Ищет локализованную строку, похожую на Регистрация успешна!\n\nЛогин: {0}\nФИО: {1}\n\nТеперь вы можете войти в систему..
         /// </summary>
         public static string SuccessRegistrationWithDetails {
             get {
@@ -1653,11 +1519,7 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Отгрузка успешно оформлена!
-        ///
-        ///Получатель: {0}
-        ///Количество позиций: {1}
-        ///Общая сумма: {2:C2}.
+        ///   Ищет локализованную строку, похожую на Отгрузка успешно оформлена!\n\nПолучатель: {0}\nКоличество позиций: {1}\nОбщая сумма: {2:C2}.
         /// </summary>
         public static string SuccessShipmentCreatedWithDetails {
             get {
@@ -1666,11 +1528,29 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Форма поставок в разработке.
+        ///   Ищет локализованную строку, похожую на Поставка оформлена!\n\nНомер: {0}\nДата: {1}\nТоваров в поставке: {2}\nОбщая сумма: {3}.
         /// </summary>
-        public static string SupplyFormInDevelopment {
+        public static string SuccessSupplyFormat {
             get {
-                return ResourceManager.GetString("SupplyFormInDevelopment", resourceCulture);
+                return ResourceManager.GetString("SuccessSupplyFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Оформлена.
+        /// </summary>
+        public static string SupplyStatusCompleted {
+            get {
+                return ResourceManager.GetString("SupplyStatusCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Автоматическое списание.
+        /// </summary>
+        public static string TitleAutoWriteOff {
+            get {
+                return ResourceManager.GetString("TitleAutoWriteOff", resourceCulture);
             }
         }
         
@@ -1747,15 +1627,6 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Ед. измерения.
-        /// </summary>
-        public static string UnitColumnHeader {
-            get {
-                return ResourceManager.GetString("UnitColumnHeader", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Ищет локализованную строку, похожую на Выберите единицу измерения.
         /// </summary>
         public static string UnitSelectWatermark {
@@ -1765,11 +1636,11 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Пользователь вышел из системы.
+        ///   Ищет локализованную строку, похожую на Не указан.
         /// </summary>
-        public static string UserLogout {
+        public static string UnknownSupplier {
             get {
-                return ResourceManager.GetString("UserLogout", resourceCulture);
+                return ResourceManager.GetString("UnknownSupplier", resourceCulture);
             }
         }
         
@@ -1779,15 +1650,6 @@ namespace AutomechanicsProject.Properties {
         public static string WarningShipmentsWithoutItems {
             get {
                 return ResourceManager.GetString("WarningShipmentsWithoutItems", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Списание.
-        /// </summary>
-        public static string WriteOff {
-            get {
-                return ResourceManager.GetString("WriteOff", resourceCulture);
             }
         }
     }

@@ -4,6 +4,7 @@ using AutomechanicsProject.Properties;
 using System;
 using System.Linq;
 using System.Windows.Forms;
+using AutomechanicsProject.Classes.Dtos;
 
 namespace AutomechanicsProject.Formes
 {
@@ -20,7 +21,8 @@ namespace AutomechanicsProject.Formes
         public AddProduct()
         {
             InitializeComponent();
-            db = new DateBase();
+            db = DbContextManager.GetContext();
+            DbContextManager.AddReference();
             TextBoxHelper.SetupWatermarkTextBox(textBoxArt, Resources.ProductArticleWatermark);
             TextBoxHelper.SetupWatermarkTextBox(textBoxName, Resources.ProductNameWatermark);
             TextBoxHelper.SetupWatermarkTextBox(textBoxPrice, Resources.ProductPriceWatermark);
@@ -39,11 +41,17 @@ namespace AutomechanicsProject.Formes
             {
                 var categories = db.Categories
                     .OrderBy(c => c.Name)
-                    .Select(c => new { c.Id, c.Name })
+                    .Select(c => new CategoryComboBoxDto
+                    {
+                        Id = c.Id,
+                        DisplayName = c.Name,
+                        Name = c.Name,
+                        ProductsCount = 0
+                    })
                     .ToList();
 
                 comboBoxCategory.DataSource = categories;
-                comboBoxCategory.DisplayMember = "Name";
+                comboBoxCategory.DisplayMember = "DisplayName";
                 comboBoxCategory.ValueMember = "Id";
 
                 if (comboBoxCategory.Items.Count > 0)
@@ -68,11 +76,12 @@ namespace AutomechanicsProject.Formes
             {
                 var units = db.Units
                     .OrderBy(u => u.Name)
-                    .Select(u => new
+                    .Select(u => new UnitComboBoxDto 
                     {
-                        u.Id,
+                        Id = u.Id,
                         DisplayName = $"{u.Name} ({u.ShortName})",
-                        u.ShortName
+                        ShortName = u.ShortName,
+                        Name = u.Name
                     })
                     .ToList();
 
@@ -88,7 +97,7 @@ namespace AutomechanicsProject.Formes
             catch (Exception ex)
             {
                 Program.LogError("Ошибка при загрузке единиц измерения", ex);
-                MessageBox.Show("Не удалось загрузить список единиц измерения",
+                MessageBox.Show(Resources.ErrorLoadUnits,
                     Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -124,21 +133,26 @@ namespace AutomechanicsProject.Formes
 
             try
             {
-                var categoryId = (Guid)((dynamic)comboBoxCategory.SelectedItem).Id;
-                var unitId = (Guid)((dynamic)comboBoxUnit.SelectedItem).Id;  
+                var selectedCategory = (CategoryComboBoxDto)comboBoxCategory.SelectedItem;
+                var selectedUnit = (UnitComboBoxDto)comboBoxUnit.SelectedItem;
                 var product = new Product
                 {
                     Id = Guid.NewGuid(),
                     Article = textBoxArt.Text.Trim(),
                     Name = textBoxName.Text.Trim(),
-                    CategoryId = categoryId,
-                    UnitId = unitId, 
+                    CategoryId = selectedCategory.Id, 
+                    UnitId = selectedUnit.Id,
                     Price = price,
-                    Balance = 0
+                    Balance = 0,
+                    ExpiryDate = radioButtonHasExpiry.Checked ? DateTime.Today.AddYears(1) : (DateTime?)null
                 };
 
                 db.Products.Add(product);
                 db.SaveChanges();
+
+                string expiryMessage = radioButtonHasExpiry.Checked
+                    ? "Срок годности: есть"
+                    : "Срок годности: нет";
 
                 Program.LogInfo($"Товар '{product.Article} - {product.Name}' успешно добавлен");
                 MessageBox.Show(Resources.SuccessProductAdded, Resources.TitleSuccess,
@@ -151,6 +165,14 @@ namespace AutomechanicsProject.Formes
                 FormHelper.HandleException(Resources.ErrorAddProduct, ex);
             }
         }
+
+        /// <summary>
+        /// Обработчик изменения выбора срока годности
+        /// </summary>
+        private void RadioButtonExpiry_CheckedChanged(object sender, EventArgs e)
+        {
+        }
+
 
         /// <summary>
         /// Выполняет валидацию обязательных полей формы
@@ -186,6 +208,15 @@ namespace AutomechanicsProject.Formes
             }
             DialogResult = DialogResult.Cancel;
             Close();
+        }
+
+        /// <summary>
+        /// Освобождает ресурсы контекста базы данных при закрытии формы
+        /// </summary>
+        protected override void OnFormClosed(FormClosedEventArgs e)
+        {
+            base.OnFormClosed(e);
+            DbContextManager.ReleaseReference();
         }
     }
 }

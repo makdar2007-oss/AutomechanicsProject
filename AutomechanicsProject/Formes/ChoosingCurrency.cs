@@ -1,10 +1,14 @@
-﻿using System;
+﻿using AutomechanicsProject.Classes;
+using AutomechanicsProject.Classes.Dtos;
+using AutomechanicsProject.Helpers;
+using AutomechanicsProject.Properties;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net.Http;
 using System.Text.Json;
+using System.Threading.Tasks;
 using System.Windows.Forms;
-using AutomechanicsProject.Classes;
-using AutomechanicsProject.Properties;
 
 namespace AutomechanicsProject.Formes
 {
@@ -13,28 +17,16 @@ namespace AutomechanicsProject.Formes
     /// </summary>
     public partial class ChoosingCurrency : Form
     {
+        private static string CacheFilePath => Path.Combine(
+       Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+       "AutomechanicsProject",
+       "currency_cache.json");
         private List<CurrencyInfo> currencies;
         private Dictionary<string, decimal> exchangeRates;
         private string selectedCurrencyCode;
-
-        /// <summary>
-        /// Код выбранной валюты (по умолчанию RUB)
-        /// </summary>
         public static string SelectedCurrencyCode = "RUB";
-
-        /// <summary>
-        /// Текущий курс обмена относительно рубля
-        /// </summary>
         public static decimal CurrentExchangeRate = 1m;
-
-        /// <summary>
-        /// Название выбранной валюты
-        /// </summary>
         public static string SelectedCurrencyName = "Российский рубль";
-
-        /// <summary>
-        /// Инициализирует новый экземпляр формы выбора валюты
-        /// </summary>
         public ChoosingCurrency()
         {
             InitializeComponent();
@@ -59,6 +51,43 @@ namespace AutomechanicsProject.Formes
                 comboBoxCurrency.Enabled = false;
                 buttonChoose.Enabled = false;
 
+                bool apiSuccess = await TryLoadFromApi();
+
+                if (!apiSuccess)
+                {
+                    if (LoadFromCache())
+                    {
+                        Program.LogInfo("Загружены сохранённые курсы валют");
+                        MessageBox.Show(Resources.InfoUsingCachedCurrencies, Resources.TitleInformation,
+                            MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    else
+                    {
+                        LoadFallbackRates();
+                        Program.LogWarning("Нет сохранённых курсов, используются резервные");
+                    }
+                }
+
+                PopulateCurrencyComboBox();
+            }
+            catch (Exception ex)
+            {
+                Program.LogError("Ошибка при загрузке курсов валют", ex);
+
+                if (!LoadFromCache())
+                    LoadFallbackRates();
+
+                PopulateCurrencyComboBox();
+            }
+        }
+
+        /// <summary>
+        /// Асинхронно пытается загрузить курсы валют из внешнего API
+        /// </summary>
+        private async Task<bool> TryLoadFromApi()
+        {
+            try
+            {
                 using (HttpClient client = new HttpClient())
                 {
                     client.Timeout = TimeSpan.FromSeconds(10);
@@ -73,26 +102,73 @@ namespace AutomechanicsProject.Formes
                         if (rateResponse != null && rateResponse.Rates != null && rateResponse.Rates.Count > 0)
                         {
                             exchangeRates = rateResponse.Rates;
-                            PopulateCurrencyComboBox();
-                            return;
+                            SaveToCache(exchangeRates);
+                            return true;
                         }
                     }
-
-                    Program.LogWarning($"Не удалось загрузить курсы валют из API. Используются резервные курсы.");
-                    LoadFallbackRates();
-                    PopulateCurrencyComboBox();
                 }
             }
             catch (Exception ex)
             {
-                Program.LogError($"Ошибка при загрузке курсов валют.", ex);
-                MessageBox.Show(string.Format(Resources.ErrorLoadCurrencies, ex.Message),
-                    Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                LoadFallbackRates();
-                PopulateCurrencyComboBox();
+                Program.LogError("Ошибка API при загрузке курсов", ex);
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Сохраняет курсы валют в файл кэша
+        /// </summary>
+        private void SaveToCache(Dictionary<string, decimal> rates)
+        {
+            try
+            {
+                var directory = Path.GetDirectoryName(CacheFilePath);
+                if (!Directory.Exists(directory))
+                    Directory.CreateDirectory(directory);
+
+                var cache = new
+                {
+                    ExchangeRates = rates,
+                    SelectedCurrency = SelectedCurrencyCode,
+                    LastUpdate = DateTime.Now
+                };
+
+                var json = JsonSerializer.Serialize(cache);
+                File.WriteAllText(CacheFilePath, json);
+            }
+            catch (Exception ex)
+            {
+                Program.LogError("Ошибка сохранения курсов валют в кэш", ex);
             }
         }
 
+        /// <summary>
+        /// Работа с кэшем
+        /// </summary>
+        /// <returns></returns>
+        private bool LoadFromCache()
+        {
+            try
+            {
+                if (File.Exists(CacheFilePath))
+                {
+                    var json = File.ReadAllText(CacheFilePath);
+                    var cache = JsonSerializer.Deserialize<Dictionary<string, object>>(json);
+
+                    if (cache != null && cache.ContainsKey("ExchangeRates"))
+                    {
+                        var ratesJson = JsonSerializer.Serialize(cache["ExchangeRates"]);
+                        exchangeRates = JsonSerializer.Deserialize<Dictionary<string, decimal>>(ratesJson);
+                        return exchangeRates != null && exchangeRates.Count > 0;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Program.LogError("Ошибка загрузки кэша курсов валют", ex);
+            }
+            return false;
+        }
         /// <summary>
         /// Загружает резервные курсы валют при недоступности API
         /// </summary>
@@ -196,6 +272,9 @@ namespace AutomechanicsProject.Formes
                 CurrentExchangeRate = selected.Rate;
                 SelectedCurrencyName = GetCurrencyName(selected.Code);
 
+                if (exchangeRates != null)
+                    SaveToCache(exchangeRates);
+
                 DialogResult result = MessageBox.Show(
                     string.Format(Resources.CurrencyChangeConfirm,
                         GetCurrencyName(oldCurrency),
@@ -212,6 +291,12 @@ namespace AutomechanicsProject.Formes
                     this.DialogResult = DialogResult.OK;
                     this.Close();
                 }
+                else
+                {
+                    SelectedCurrencyCode = oldCurrency;
+                    CurrentExchangeRate = oldRate;
+                    SelectedCurrencyName = GetCurrencyName(oldCurrency);
+                }
             }
             else
             {
@@ -219,7 +304,6 @@ namespace AutomechanicsProject.Formes
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
-
         /// <summary>
         /// Обработчик нажатия кнопки отмены
         /// </summary>

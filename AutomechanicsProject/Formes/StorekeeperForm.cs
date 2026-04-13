@@ -4,6 +4,7 @@ using AutomechanicsProject.Properties;
 using System;
 using System.Linq;
 using System.Windows.Forms;
+using AutomechanicsProject.Classes.Dtos;
 
 namespace AutomechanicsProject.Formes
 {
@@ -20,12 +21,13 @@ namespace AutomechanicsProject.Formes
         public StorekeeperForm()
         {
             InitializeComponent();
-            db = new DateBase();
+            db = DbContextManager.GetContext();
+            DbContextManager.AddReference();
+            AutoWriteOffExpiredProducts();
 
             TextBoxHelper.SetupWatermarkTextBox(textBoxSearch, Resources.SearchWatermark);
 
             buttonCurrency.Click += ButtonCurrency_Click;
-            buttonSupply.Click += ButtonSupply_Click;
             buttonShipment.Click += ButtonShipment_Click;
             buttonExit.Click += ButtonExit_Click;
             textBoxSearch.TextChanged += TextBoxSearch_TextChanged;
@@ -75,6 +77,70 @@ namespace AutomechanicsProject.Formes
         }
 
         /// <summary>
+        /// Автоматически списывает товары с истекшим сроком годности
+        /// </summary>
+        private void AutoWriteOffExpiredProducts()
+        {
+            try
+            {
+                var today = DateTime.Today;
+
+                var expiredProducts = db.Products
+                    .Where(p => p.ExpiryDate.HasValue
+                        && p.ExpiryDate.Value < today
+                        && p.Balance > 0)
+                    .ToList();
+
+                if (!expiredProducts.Any()) return;
+
+                Guid writeOffUserId = new Guid("4adf792a-247b-435d-a15e-37314224c761");
+                Guid writeOffAddressId = new Guid("dc40ff88-af12-4841-b101-9da423f7f777");
+
+                foreach (var product in expiredProducts)
+                {
+                    var shipment = new Shipment
+                    {
+                        Id = Guid.NewGuid(),
+                        Date = DateTime.Now,
+                        UserId = writeOffAddressId,
+                        CreatedByUserId = writeOffUserId
+                    };
+
+                    db.Shipments.Add(shipment);
+                    db.SaveChanges();
+
+                    var shipmentItem = new ShipmentItem
+                    {
+                        ShipmentId = shipment.Id,
+                        Product = product,
+                        Article = product.Article,
+                        ProductName = product.Name,
+                        Quantity = -product.Balance,
+                        Price = product.Price
+                    };
+
+                    db.ShipmentItems.Add(shipmentItem);
+                    product.Balance = 0;
+                }
+
+                db.SaveChanges();
+                RefreshProductList();
+
+                MessageBox.Show(string.Format(Resources.SuccessAutoWriteOffMessage, expiredProducts.Count),
+                    Resources.TitleAutoWriteOff, MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                string error = ex.Message;
+                if (ex.InnerException != null)
+                    error += ex.InnerException.Message;
+
+                MessageBox.Show(string.Format(Resources.ErrorWithDetails, error), Resources.TitleError,
+                     MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
         /// Обработчик нажатия кнопки "Выбор валюты"
         /// Открывает форму выбора валюты и обновляет список товаров
         /// </summary>
@@ -95,25 +161,6 @@ namespace AutomechanicsProject.Formes
             {
                 Program.LogError("Ошибка при открытии формы выбора валюты", ex);
                 MessageBox.Show(Resources.ErrorOpenCurrencyForm, Resources.TitleError,
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        /// <summary>
-        /// Обработчик нажатия кнопки "Поставка"
-        /// Открывает форму добавления поставки
-        /// </summary>
-        private void ButtonSupply_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                MessageBox.Show(Resources.SupplyFormInDevelopment, Resources.TitleInformation,
-                     MessageBoxButtons.OK, MessageBoxIcon.Information); 
-            }
-            catch (Exception ex)
-            {
-                Program.LogError("Ошибка при открытии формы поставки", ex);
-                MessageBox.Show(Resources.ErrorOpenSupplyForm, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -183,6 +230,7 @@ namespace AutomechanicsProject.Formes
                 var normalizedSearch = NormalizeSearch(searchText);
 
                 var query = db.Products
+                    .Where(p => p.Balance > 0)
                     .Select(p => new
                     {
                         p.Id,
@@ -359,6 +407,24 @@ namespace AutomechanicsProject.Formes
                 toolStripTextBoxStorekeeper.Text = "Ошибка";
                 Program.LogError("Ошибка при загрузке формы кладовщика", ex);
             }
+        }
+
+        /// <summary>
+        /// Освобождает ресурсы контекста базы данных при закрытии формы
+        /// </summary>
+        protected override void OnFormClosed(FormClosedEventArgs e)
+        {
+            base.OnFormClosed(e);
+            DbContextManager.ReleaseReference();
+        }
+
+        /// <summary>
+        /// Обработчик нажатия кнопки поставки
+        /// </summary>
+        private void buttonSupply_Click_1(object sender, EventArgs e)
+        {
+            CreateSupply supplyForm = new CreateSupply();
+            supplyForm.ShowDialog();
         }
     }
 }

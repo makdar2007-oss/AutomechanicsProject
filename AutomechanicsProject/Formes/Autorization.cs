@@ -7,6 +7,7 @@ using System;
 using System.Linq;
 using System.Windows.Forms;
 using System.Drawing;
+using AutomechanicsProject.Classes.Dtos;
 
 namespace AutomechanicsProject
 {
@@ -119,7 +120,7 @@ namespace AutomechanicsProject
                         {
                             user.Password = PasswordHelper.HashPassword(textBoxPassword.Text);
                             db.SaveChanges();
-                            Program.LogInfo(string.Format($"Пароль для пользователя {user.Login} был хеширован"));
+                            Program.LogInfo($"Пароль для пользователя {user.Login} был хеширован");
                         }
                     }
                     if (!isValid)

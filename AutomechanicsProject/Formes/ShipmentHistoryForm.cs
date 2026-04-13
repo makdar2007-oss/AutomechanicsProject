@@ -6,6 +6,7 @@ using System.Linq;
 using System.Windows.Forms;
 using System.IO;
 using System.Text;
+using AutomechanicsProject.Classes.Dtos;
 
 namespace AutomechanicsProject.Formes
 {
@@ -22,7 +23,8 @@ namespace AutomechanicsProject.Formes
         public ShipmentHistoryForm()
         {
             InitializeComponent();
-            db = new DateBase();
+            db = DbContextManager.GetContext();
+            DbContextManager.AddReference();
         }
 
         /// <summary>
@@ -137,95 +139,20 @@ namespace AutomechanicsProject.Formes
         }
 
         /// <summary>
-        /// Экспортирует данные истории в CSV файл
-        /// </summary>
-        private void ExportToCsv()
-        {
-            try
-            {
-                if (dataGridViewHistory.Rows.Count == 0)
-                {
-                    MessageBox.Show(Resources.NoDataToExport, Resources.TitleWarning,
-                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-
-                using (SaveFileDialog saveFileDialog = new SaveFileDialog())
-                {
-                    saveFileDialog.Filter = Resources.CsvFileFilter;
-                    saveFileDialog.DefaultExt = "csv";
-                    saveFileDialog.FileName = string.Format(Resources.ExportFileName, DateTime.Now.ToString("yyyyMMdd_HHmmss"));
-                    saveFileDialog.Title = Resources.SaveCsvFileTitle;
-
-                    if (saveFileDialog.ShowDialog() == DialogResult.OK)
-                    {
-                        StringBuilder csvContent = new StringBuilder();
-                        csvContent.AppendLine("\uFEFF");
-
-                        string[] headers = {
-                            "№",
-                            "Артикул",
-                            "Название",
-                            "Кол-во",
-                            "Цена",
-                            "Прибыль",
-                            "Сумма",
-                            "Получатель",
-                            "Кладовщик",
-                            "Дата"
-                        };
-                        csvContent.AppendLine(string.Join(";", headers));
-
-                        foreach (DataGridViewRow row in dataGridViewHistory.Rows)
-                        {
-                            if (!row.IsNewRow)
-                            {
-                                string[] rowData = new string[headers.Length];
-                                for (int i = 0; i < headers.Length; i++)
-                                {
-                                    var cellValue = row.Cells[i].Value;
-                                    var cellString = cellValue?.ToString() ?? "";
-
-                                    if (cellString.Contains("\""))
-                                        cellString = cellString.Replace("\"", "\"\"");
-                                    if (cellString.Contains(";") || cellString.Contains("\n"))
-                                        cellString = $"\"{cellString}\"";
-
-                                    rowData[i] = cellString;
-                                }
-                                csvContent.AppendLine(string.Join(";", rowData));
-                            }
-                        }
-
-                        File.WriteAllText(saveFileDialog.FileName, csvContent.ToString(), Encoding.UTF8);
-
-                        MessageBox.Show(string.Format(Resources.ExportSuccess, saveFileDialog.FileName),
-                            Resources.TitleSuccess, MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Program.LogError("Ошибка при экспорте данных.", ex);
-                MessageBox.Show(string.Format(Resources.ErrorExportToCsvWithMessage, ex.Message),
-                    Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        /// <summary>
-        /// Обработчик нажатия кнопки экспорта
-        /// </summary>
-        private void buttonExport_Click(object sender, EventArgs e)
-        {
-            ExportToCsv();
-        }
-
-        /// <summary>
         /// Обработчик нажатия кнопки применения фильтра
         /// </summary>
         private void buttonApplyFilter_Click(object sender, EventArgs e)
         {
             LoadShipmentHistory();
+        }
+
+        /// <summary>
+        /// Освобождает ресурсы контекста базы данных при закрытии формы
+        /// </summary>
+        protected override void OnFormClosed(FormClosedEventArgs e)
+        {
+            base.OnFormClosed(e);
+            DbContextManager.ReleaseReference();
         }
     }
 }

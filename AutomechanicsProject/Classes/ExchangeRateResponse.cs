@@ -1,15 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Text.Json.Serialization;
 
 namespace AutomechanicsProject.Classes
 {
     internal class ExchangeRateResponse
     {
-        public string Base { get; set; }
+        [JsonPropertyName("result")]
+        public string Result { get; set; }
+
+        [JsonPropertyName("provider")]
+        public string Provider { get; set; }
+
+        [JsonPropertyName("base_code")]
+        public string BaseCode { get; set; } 
+
+        [JsonPropertyName("rates")]
         public Dictionary<string, decimal> Rates { get; set; }
-        public string Date { get; set; }
+
+        [JsonPropertyName("time_last_update_unix")]
+        public long TimeLastUpdateUnix { get; set; }
+
+        [JsonPropertyName("time_next_update_unix")]
+        public long TimeNextUpdateUnix { get; set; }
     }
 }
