@@ -1,5 +1,6 @@
 ﻿using AutomechanicsProject.Classes;
 using AutomechanicsProject.Dtos.UI;
+using AutomechanicsProject.Helpers;
 using AutomechanicsProject.Properties;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -28,9 +29,6 @@ namespace AutomechanicsProject.Formes
         public CreateSupply()
         {
             InitializeComponent();
-            dateTimePickerExpiry.ShowCheckBox = true;
-            dateTimePickerExpiry.Checked = false;
-            dateTimePickerExpiry.MinDate = DateTime.Now.Date;
             DbContextManager.AddReference();
             LoadProductsFromDatabase();
             LoadSuppliersFromDatabase();
@@ -116,7 +114,7 @@ namespace AutomechanicsProject.Formes
             {
                 isUpdatingText = true;
                 var selectedProduct = (ProductComboDto)comboBoxProduct.SelectedItem;
-                comboBoxProduct.Text = $"{selectedProduct.Article} - {selectedProduct.Name}";
+                comboBoxProduct.Text = FormatHelper.FormatProductShort(selectedProduct.Article, selectedProduct.Name); 
                 comboBoxProduct.SelectionStart = 0;
                 comboBoxProduct.SelectionLength = 0;
                 isUpdatingText = false;
@@ -141,7 +139,7 @@ namespace AutomechanicsProject.Formes
                 e.SuppressKeyPress = true;
                 isUpdatingText = true;
                 var selectedProduct = (ProductComboDto)comboBoxProduct.SelectedItem;
-                comboBoxProduct.Text = $"{selectedProduct.Article} - {selectedProduct.Name}";
+                comboBoxProduct.Text = FormatHelper.FormatProductShort(selectedProduct.Article, selectedProduct.Name); 
                 comboBoxProduct.SelectionStart = 0;
                 comboBoxProduct.SelectionLength = 0;
                 isUpdatingText = false;

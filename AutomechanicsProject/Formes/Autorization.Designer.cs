@@ -139,6 +139,7 @@
             this.textBoxPassword.Size = new System.Drawing.Size(561, 54);
             this.textBoxPassword.TabIndex = 4;
             this.textBoxPassword.Text = "Введите пароль";
+            this.textBoxPassword.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TextBox_KeyDown);
             // 
             // textBoxLogin
             // 
@@ -150,6 +151,7 @@
             this.textBoxLogin.Size = new System.Drawing.Size(561, 54);
             this.textBoxLogin.TabIndex = 3;
             this.textBoxLogin.Text = "Введите логин";
+            this.textBoxLogin.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TextBox_KeyDown);
             // 
             // Autorization
             // 

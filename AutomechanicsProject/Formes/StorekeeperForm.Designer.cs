@@ -76,6 +76,7 @@
             this.buttonExit.TabIndex = 3;
             this.buttonExit.Text = "Выйти";
             this.buttonExit.UseVisualStyleBackColor = false;
+            this.buttonExit.Click += new System.EventHandler(this.ButtonExit_Click);
             // 
             // panelSearch
             // 
@@ -106,6 +107,7 @@
             this.buttonCurrency.TabIndex = 5;
             this.buttonCurrency.Text = "Выбор валюты";
             this.buttonCurrency.UseVisualStyleBackColor = false;
+            this.buttonCurrency.Click += new System.EventHandler(this.ButtonCurrency_Click);
             // 
             // buttonSupply
             // 
@@ -139,6 +141,7 @@
             this.buttonShipment.TabIndex = 4;
             this.buttonShipment.Text = "Оформить отгрузку";
             this.buttonShipment.UseVisualStyleBackColor = false;
+            this.buttonShipment.Click += new System.EventHandler(this.ButtonShipment_Click);
             // 
             // textBoxSearch
             // 
@@ -149,6 +152,8 @@
             this.textBoxSearch.Size = new System.Drawing.Size(200, 30);
             this.textBoxSearch.TabIndex = 2;
             this.textBoxSearch.Text = "Поиск:";
+            this.textBoxSearch.TextChanged += new System.EventHandler(this.TextBoxSearch_TextChanged);
+
             // 
             // panelData
             // 
@@ -181,6 +186,7 @@
             this.dataGridViewStore.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridViewStore.Size = new System.Drawing.Size(882, 628);
             this.dataGridViewStore.TabIndex = 1;
+            this.dataGridViewStore.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.DataGridViewStore_DataBindingComplete);
             // 
             // menuStripStorekeeper
             // 

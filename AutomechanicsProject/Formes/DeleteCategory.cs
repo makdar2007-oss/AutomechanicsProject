@@ -20,7 +20,6 @@ namespace AutomechanicsProject.Formes
             InitializeComponent();
             db = DbContextManager.GetContext();
             DbContextManager.AddReference();
-            Load += DeleteCategory_Load;
         }
 
         /// <summary>
@@ -111,7 +110,11 @@ namespace AutomechanicsProject.Formes
                     MessageBoxButtons.YesNo,
                     products.Any() ? MessageBoxIcon.Warning : MessageBoxIcon.Question);
 
-                if (result != DialogResult.Yes) return;
+                if (result != DialogResult.Yes)
+                {
+                    return;
+                }
+
                 if (products.Any())
                 {
                     db.Products.RemoveRange(products);

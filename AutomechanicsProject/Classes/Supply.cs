@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace AutomechanicsProject.Classes
 {
     /// <summary>
-    /// Представляет поставку товаров (входящую накладную)
+    /// Представляет поставку товаров
     /// </summary>
     [Table("supply")]
     public class Supply

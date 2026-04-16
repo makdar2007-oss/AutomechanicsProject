@@ -30,8 +30,7 @@ namespace AutomechanicsProject.Formes
         /// </summary>
         private void buttonAdd_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(textBoxAddCategory.Text) ||
-                textBoxAddCategory.Text == Resources.CategoryAddWatermark)
+            if (Validation.IsWatermark(textBoxAddCategory.Text, Resources.CategoryAddWatermark))
             {
                 MessageBox.Show(Resources.ErrorFillCategory, Resources.TitleWarning,
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);

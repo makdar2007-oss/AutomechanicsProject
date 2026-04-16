@@ -3,7 +3,7 @@
 namespace AutomechanicsProject.ViewModels
 {
     /// <summary>
-    /// Для ComboBox 
+    /// Для выпадающего списка 
     /// </summary>
     public class ProductComboViewModel
     {

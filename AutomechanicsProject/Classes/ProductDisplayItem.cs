@@ -3,7 +3,7 @@
 namespace AutomechanicsProject.Classes
 {
     /// <summary>
-    /// Вспомогательный класс для отображения товара в комбобоксе
+    /// Для отображения товара в комбобоксе
     /// </summary>
     public class ProductDisplayItem
     {

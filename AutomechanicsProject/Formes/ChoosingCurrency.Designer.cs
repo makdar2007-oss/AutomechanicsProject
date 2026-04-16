@@ -42,7 +42,7 @@
             // 
             // textBoxCurrency
             // 
-            this.textBoxCurrency.BackColor = System.Drawing.SystemColors.Window;
+            this.textBoxCurrency.BackColor = System.Drawing.SystemColors.ControlLight; 
             this.textBoxCurrency.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.textBoxCurrency.Location = new System.Drawing.Point(199, 43);
             this.textBoxCurrency.Margin = new System.Windows.Forms.Padding(2);
@@ -53,6 +53,7 @@
             this.textBoxCurrency.TabIndex = 0;
             this.textBoxCurrency.Text = "Выбор валюты";
             this.textBoxCurrency.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.textBoxCurrency.TabStop = false;
             // 
             // comboBoxCurrency
             // 

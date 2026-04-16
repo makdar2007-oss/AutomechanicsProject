@@ -153,7 +153,6 @@
             this.radioButtonNoExpiry.TabIndex = 1;
             this.radioButtonNoExpiry.TabStop = true;
             this.radioButtonNoExpiry.Text = "Нет срока";
-            this.radioButtonNoExpiry.CheckedChanged += new System.EventHandler(this.RadioButtonExpiry_CheckedChanged);
             // 
             // radioButtonHasExpiry
             // 
@@ -164,7 +163,6 @@
             this.radioButtonHasExpiry.Size = new System.Drawing.Size(114, 24);
             this.radioButtonHasExpiry.TabIndex = 0;
             this.radioButtonHasExpiry.Text = "Есть срок";
-            this.radioButtonHasExpiry.CheckedChanged += new System.EventHandler(this.RadioButtonExpiry_CheckedChanged);
             // 
             // buttonCancel
             // 

@@ -15,7 +15,7 @@ namespace AutomechanicsProject.Classes
         private static bool _isDisposing = false;
 
         /// <summary>
-        /// Получить общий контекст базы данных (один на всё приложение)
+        /// Получить один общий контекст базы данных 
         /// </summary>
         public static DateBase GetContext()
         {
@@ -31,11 +31,9 @@ namespace AutomechanicsProject.Classes
                 {
                     _context = new DateBase();
                     _context.Database.EnsureCreated();
-                    // Отключаем автоматическое отслеживание для повышения производительности
                     _context.ChangeTracker.QueryTrackingBehavior = Microsoft.EntityFrameworkCore.QueryTrackingBehavior.TrackAll;
                 }
 
-                // Проверяем, жив ли контекст
                 try
                 {
                     if (_context.Database.CanConnect() == false)
@@ -56,7 +54,7 @@ namespace AutomechanicsProject.Classes
         }
 
         /// <summary>
-        /// Увеличить счетчик ссылок (вызывать при открытии формы)
+        /// Увеличить счетчик ссылок 
         /// </summary>
         public static void AddReference()
         {
@@ -64,19 +62,15 @@ namespace AutomechanicsProject.Classes
         }
 
         /// <summary>
-        /// Уменьшить счетчик ссылок (вызывать при закрытии формы)
+        /// Уменьшить счетчик ссылок 
         /// </summary>
         public static void ReleaseReference()
         {
             int newCount = Interlocked.Decrement(ref _referenceCount);
-
-            // НЕ УНИЧТОЖАЕМ КОНТЕКСТ!
-            // Контекст живёт всё приложение
-            // Только при ForceDispose он уничтожается
         }
 
         /// <summary>
-        /// Принудительное освобождение контекста (при закрытии приложения)
+        /// Принудительное освобождение контекста 
         /// </summary>
         public static void ForceDispose()
         {

@@ -42,7 +42,10 @@ namespace AutomechanicsProject.Formes
         {
             try
             {
-                if (!productId.HasValue) return;
+                if (!productId.HasValue)
+                {
+                    return;
+                }
 
                 var product = db.Products
                     .Include(p => p.Category)
@@ -68,7 +71,10 @@ namespace AutomechanicsProject.Formes
         /// </summary>
         private Product FindProductByArticle(string article)
         {
-            if (string.IsNullOrWhiteSpace(article)) return null;
+            if (string.IsNullOrWhiteSpace(article))
+            {
+                return null;
+            }
 
             return db.Products
                 .Include(p => p.Category)
@@ -104,7 +110,10 @@ namespace AutomechanicsProject.Formes
                     return;
                 }
 
-                if (!ConfirmDelete(product)) return;
+                if (!ConfirmDelete(product))
+                {
+                    return;
+                }
 
                 db.Products.Remove(product);
                 db.SaveChanges();
@@ -174,7 +183,10 @@ namespace AutomechanicsProject.Formes
                     MessageBoxButtons.YesNo,
                     MessageBoxIcon.Question);
 
-                if (result != DialogResult.Yes) return;
+                if (result != DialogResult.Yes)
+                {
+                    return;
+                }
             }
 
             DialogResult = DialogResult.Cancel;

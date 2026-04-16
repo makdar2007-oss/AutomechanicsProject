@@ -42,8 +42,6 @@ namespace AutomechanicsProject.Formes
             availableProducts = new List<Product>();
 
             TextBoxHelper.SetupWatermarkTextBox(textBoxUnit, Resources.ShipmentQuantityWatermark);
-            comboBoxProduct.DropDownStyle = ComboBoxStyle.DropDown;
-            comboBoxRecipient1.DropDownStyle = ComboBoxStyle.DropDownList;
 
             SetupSearchableComboBox();
             UpdateDisplay();
@@ -82,21 +80,19 @@ namespace AutomechanicsProject.Formes
             try
             {
                 var selectedProduct = db.Products.FirstOrDefault(p => p.Id == productId);
-                if (selectedProduct == null) return;
+                if (selectedProduct == null)
+                {
+                    return;
+                }
 
                 var productsWithSameName = db.Products
                     .Where(p => p.Name == selectedProduct.Name && p.Balance > 0)
                     .Select(p => new
                     {
                         ProductId = p.Id,
-                        DisplayText = p.ExpiryDate.HasValue
-                            ? $"Срок: {p.ExpiryDate.Value:dd.MM.yyyy} (остаток: {p.Balance})"
-                            : $"Без срока (остаток: {p.Balance})",
-                        ExpiryDate = p.ExpiryDate,
-                        Balance = p.Balance,
-                        Price = p.Price
+                        DisplayText = FormatHelper.FormatExpiryDateDisplay(p.ExpiryDate, p.Balance),
+                        
                     })
-                    .OrderBy(p => p.ExpiryDate)
                     .ToList();
 
                 if (productsWithSameName.Count >= 1)
@@ -131,8 +127,7 @@ namespace AutomechanicsProject.Formes
                 isUpdatingText = true;
 
                 var selectedProduct = (ProductComboViewModel)comboBoxProduct.SelectedItem;
-                comboBoxProduct.Text = $"{selectedProduct.Article} - {selectedProduct.Name}";
-
+                comboBoxProduct.Text = FormatHelper.FormatProductShort(selectedProduct.Article, selectedProduct.Name);
                 comboBoxProduct.SelectionStart = 0;
                 comboBoxProduct.SelectionLength = 0;
 
@@ -161,7 +156,7 @@ namespace AutomechanicsProject.Formes
                 isUpdatingText = true;
 
                 var selectedProduct = (ProductComboViewModel)comboBoxProduct.SelectedItem;
-                comboBoxProduct.Text = $"{selectedProduct.Article} - {selectedProduct.Name}";
+                comboBoxProduct.Text = FormatHelper.FormatProductShort(selectedProduct.Article, selectedProduct.Name); 
                 comboBoxProduct.SelectionStart = 0;
                 comboBoxProduct.SelectionLength = 0;
 
@@ -292,7 +287,11 @@ namespace AutomechanicsProject.Formes
     .Select(g => new ProductComboViewModel
     {
         Id = g.First().Id,
-        Text = $"{g.First().Article} - {g.Key} (остаток: {g.Sum(x => x.Balance)} {g.First().UnitName})",
+        Text = FormatHelper.FormatProductWithBalance(
+    g.First().Article,
+    g.Key,
+    g.Sum(x => x.Balance),
+    g.First().UnitName),
         Article = g.First().Article,
         Name = g.Key,
         Price = g.First().Price,
@@ -468,6 +467,7 @@ namespace AutomechanicsProject.Formes
                 productToShip.Unit?.Name ?? "шт"
             );
         }
+        
         /// <summary>
         /// Очищает выпадающий список сроков годности
         /// </summary>
@@ -609,7 +609,10 @@ namespace AutomechanicsProject.Formes
                 return;
             }
 
-            if (!IsRecipientSelected()) return;
+            if (!IsRecipientSelected())
+            {
+                return;
+            }
 
             var selectedRecipient = (ComboItemDto)comboBoxRecipient1.SelectedItem;
             var recipientName = selectedRecipient.Text;
@@ -621,7 +624,10 @@ namespace AutomechanicsProject.Formes
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question);
 
-            if (confirmResult != DialogResult.Yes) return;
+            if (confirmResult != DialogResult.Yes)
+            {
+                return;
+            }
 
             try
             {
@@ -695,7 +701,10 @@ namespace AutomechanicsProject.Formes
                     MessageBoxButtons.YesNo,
                     MessageBoxIcon.Question);
 
-                if (result != DialogResult.Yes) return;
+                if (result != DialogResult.Yes)
+                {
+                    return;
+                }
             }
 
             DialogResult = DialogResult.Cancel;
@@ -715,7 +724,10 @@ namespace AutomechanicsProject.Formes
         /// </summary>
         private void RemoveSelectedItem()
         {
-            if (dataGridViewShipment.CurrentRow?.DataBoundItem == null) return;
+            if (dataGridViewShipment.CurrentRow?.DataBoundItem == null)
+            {
+                return;
+            }
 
             var selectedItem = (ShipmentViewModel)dataGridViewShipment.CurrentRow.DataBoundItem;
             var productName = selectedItem.Name;

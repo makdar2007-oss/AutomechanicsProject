@@ -48,13 +48,13 @@ namespace AutomechanicsProject.Classes
         public DateTime? ExpiryDate { get; set; }
 
         /// <summary>
-        /// Наименование товара (для истории)
+        /// Наименование товара 
         /// </summary>
         [Column("product_name")]
         public string ProductName { get; set; }
 
         /// <summary>
-        /// Артикул товара (для истории)
+        /// Артикул товара 
         /// </summary>
         [Column("article")]
         public string Article { get; set; }
@@ -66,7 +66,7 @@ namespace AutomechanicsProject.Classes
         public Guid? SupplierId { get; set; }
 
         /// <summary>
-        /// Наименование поставщика (для истории)
+        /// Наименование поставщика 
         /// </summary>
         [Column("supplier_name")]
         public string SupplierName { get; set; }

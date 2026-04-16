@@ -30,12 +30,6 @@ namespace AutomechanicsProject.Formes
 
             TextBoxHelper.SetupWatermarkTextBox(textBoxSearch, Resources.SearchWatermark);
 
-            buttonCurrency.Click += ButtonCurrency_Click;
-            buttonShipment.Click += ButtonShipment_Click;
-            buttonExit.Click += ButtonExit_Click;
-            textBoxSearch.TextChanged += TextBoxSearch_TextChanged;
-            dataGridViewStore.DataBindingComplete += DataGridViewStore_DataBindingComplete;
-
             LoadProducts();
         }
 
@@ -94,7 +88,10 @@ namespace AutomechanicsProject.Formes
                         && p.Balance > 0)
                     .ToList();
 
-                if (!expiredProducts.Any()) return;
+                if (!expiredProducts.Any())
+                {
+                    return;
+                }
 
                 Guid writeOffUserId = new Guid("4adf792a-247b-435d-a15e-37314224c761");
                 Guid writeOffAddressId = new Guid("dc40ff88-af12-4841-b101-9da423f7f777");
@@ -297,7 +294,10 @@ namespace AutomechanicsProject.Formes
         {
             try
             {
-                if (originalPrice <= 0) return 0;
+                if (originalPrice <= 0)
+                {
+                    return 0;
+                }
 
                 return ChoosingCurrency.ConvertPrice(originalPrice);
             }

@@ -25,7 +25,6 @@ namespace AutomechanicsProject.Formes
             InitializeComponent();
             db = DbContextManager.GetContext();
             DbContextManager.AddReference();
-            Load += EditCategory_Load;
         }
 
         /// <summary>
@@ -184,7 +183,10 @@ namespace AutomechanicsProject.Formes
                     MessageBoxButtons.YesNo,
                     MessageBoxIcon.Question);
 
-                if (result != DialogResult.Yes) return;
+                if (result != DialogResult.Yes)
+                {
+                    return;
+                }
             }
 
             DialogResult = DialogResult.Cancel;

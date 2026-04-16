@@ -134,6 +134,7 @@
             this.Name = "EditCategory";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Редактировать категорию";
+            this.Load += new System.EventHandler(this.EditCategory_Load);
             this.panelEditCategory.ResumeLayout(false);
             this.panelEditCategory.PerformLayout();
             this.ResumeLayout(false);

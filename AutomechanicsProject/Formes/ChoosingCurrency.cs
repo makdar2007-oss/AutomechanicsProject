@@ -27,15 +27,10 @@ namespace AutomechanicsProject.Formes
         public static string SelectedCurrencyCode = "RUB";
         public static decimal CurrentExchangeRate = 1m;
         public static string SelectedCurrencyName = "Российский рубль";
+
         public ChoosingCurrency()
         {
             InitializeComponent();
-
-            this.textBoxCurrency.ReadOnly = true;
-            this.textBoxCurrency.TabStop = false;
-            this.textBoxCurrency.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.comboBoxCurrency.DropDownStyle = ComboBoxStyle.DropDownList;
-
             LoadCurrenciesAsync();
         }
 

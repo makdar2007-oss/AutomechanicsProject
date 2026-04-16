@@ -3,7 +3,7 @@
 namespace AutomechanicsProject.Dtos.UI
 {
     /// <summary>
-    /// DTO для выпадающего списка товаров (с доп. информацией)
+    /// DTO для выпадающего списка товаров
     /// </summary>
     public class ProductComboDto
     {

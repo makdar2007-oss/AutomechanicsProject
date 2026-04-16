@@ -1,12 +1,14 @@
 ﻿using AutomechanicsProject.Classes;
-using AutomechanicsProject.Dtos;
 using AutomechanicsProject.Dtos.Service;
 using AutomechanicsProject.Helpers;
+using AutomechanicsProject.Mappers;
 using AutomechanicsProject.Properties;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
+using System.Runtime.Remoting.Contexts;
 using System.Windows.Forms;
 
 namespace AutomechanicsProject.Formes
@@ -34,14 +36,7 @@ namespace AutomechanicsProject.Formes
 
             RefreshProductList();
 
-            ProductToolStripMenuItem.Click += (s, e) => OpenAddProductForm();
-            CategoryToolStripMenuItem.Click += (s, e) => OpenAddCategoryForm();
-            ProductToolStripMenuItem1.Click += (s, e) => OpenEditProductForm();
-            CategoryToolStripMenuItem1.Click += (s, e) => OpenEditCategoryForm();
-            ProductToolStripMenuItem2.Click += (s, e) => OpenDeleteProductForm();
-            CategoryToolStripMenuItem2.Click += (s, e) => OpenDeleteCategoryForm();
-
-            dataGridViewMainForm.DataBindingComplete += DataGridViewMainForm_DataBindingComplete;
+            dataGridViewMainForm.DataBindingComplete += DataGridViewStore_DataBindingComplete;
         }
 
         /// <summary>
@@ -82,7 +77,10 @@ namespace AutomechanicsProject.Formes
                         && p.Balance > 0)
                     .ToList();
 
-                if (!expiredProducts.Any()) return;
+                if (!expiredProducts.Any())
+                {
+                    return;
+                }
 
                 Guid writeOffUserId = new Guid("4adf792a-247b-435d-a15e-37314224c761");
                 Guid writeOffAddressId = new Guid("dc40ff88-af12-4841-b101-9da423f7f777");
@@ -183,6 +181,8 @@ namespace AutomechanicsProject.Formes
                 dataGridViewMainForm.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
                 dataGridViewMainForm.MultiSelect = false;
 
+
+
                 RefreshProductList();
             }
             catch (Exception ex)
@@ -208,6 +208,54 @@ namespace AutomechanicsProject.Formes
                 MessageBox.Show(Resources.ErrorLogout, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        // <summary>
+        /// Обработчик нажатия на пункт меню "Добавить товар"
+        /// </summary>
+        private void ProductToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenAddProductForm();
+        }
+
+        /// <summary>
+        /// Обработчик нажатия на пункт меню "Добавить категорию"
+        /// </summary>
+        private void CategoryToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenAddCategoryForm();
+        }
+
+        /// <summary>
+        /// Обработчик нажатия на пункт меню "Редактировать товар"
+        /// </summary>
+        private void ProductToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            OpenEditProductForm();
+        }
+
+        /// <summary>
+        /// Обработчик нажатия на пункт меню "Редактировать категорию"
+        /// </summary>
+        private void CategoryToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            OpenEditCategoryForm();
+        }
+
+        /// <summary>
+        /// Обработчик нажатия на пункт меню "Удалить товар"
+        /// </summary>
+        private void ProductToolStripMenuItem2_Click(object sender, EventArgs e)
+        {
+            OpenDeleteProductForm();
+        }
+
+        /// <summary>
+        /// Обработчик нажатия на пункт меню "Удалить категорию"
+        /// </summary>
+        private void CategoryToolStripMenuItem2_Click(object sender, EventArgs e)
+        {
+            OpenDeleteCategoryForm();
         }
 
         /// <summary>
@@ -387,7 +435,7 @@ namespace AutomechanicsProject.Formes
                     }
                 }
 
-                if (!string.IsNullOrWhiteSpace(searchText) && searchText != Resources.SearchWatermark)
+                if (!Validation.IsWatermark(searchText, Resources.SearchWatermark))
                 {
                     searchText = searchText.ToLower();
                     productList = productList
@@ -399,20 +447,20 @@ namespace AutomechanicsProject.Formes
 
                 var displayData = productList.Select(p => new
                 {
-                    p.Article,
-                    p.Name,
-                    p.CategoryName,
-                    p.UnitName,
-                    p.ExpiryDate,
-                    p.Balance,
-                    p.PurchasePrice,
-                    p.RequiresDiscount,
-                    p.IsExpired,
-                    Price = ChoosingCurrency.ConvertPrice(p.Price)
+                    Артикул = p.Article,
+                    Название = p.Name,
+                    Категория = p.CategoryName,
+                    ЕдИзмерения = p.UnitName,
+                    СрокГодности = p.ExpiryDate,
+                    Остаток = p.Balance,
+                    Закупка = p.Price,
+                    ТребуетСкидки = p.RequiresDiscount,
+                    Просрочен = p.IsExpired,
+                    Цена = ChoosingCurrency.ConvertPrice(p.PurchasePrice)
                 }).ToList();
 
                 dataGridViewMainForm.DataSource = displayData;
-                FormatDataGridViewColumns();
+                GridViewHelper.ConfigureProductColumns(dataGridViewMainForm, ChoosingCurrency.SelectedCurrencyCode);
             }
             catch (Exception ex)
             {
@@ -420,75 +468,15 @@ namespace AutomechanicsProject.Formes
                 MessageBox.Show(Resources.ErrorLoadProductsList, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-        }        /// <summary>
-                 /// Настраивает форматирование колонок DataGridView
-                 /// </summary>
-        private void FormatDataGridViewColumns()
-        {
-            try
-            {
-                string[] columnOrder = {
-                    "Артикул", "Название", "Категория", "ЕдИзмерения",
-                    "СрокГодности", "Цена", "ЦенаЗакупки", "Остаток"
-                };
-
-                for (int i = 0; i < columnOrder.Length; i++)
-                {
-                    if (dataGridViewMainForm.Columns[columnOrder[i]] != null)
-                    {
-                        dataGridViewMainForm.Columns[columnOrder[i]].DisplayIndex = i;
-                    }
-                }
-
-                if (dataGridViewMainForm.Columns["ТребуетСкидки"] != null)
-                    dataGridViewMainForm.Columns["ТребуетСкидки"].Visible = false;
-                if (dataGridViewMainForm.Columns["Просрочен"] != null)
-                    dataGridViewMainForm.Columns["Просрочен"].Visible = false;
-
-                if (dataGridViewMainForm.Columns["Цена"] != null)
-                {
-                    dataGridViewMainForm.Columns["Цена"].DefaultCellStyle.Format = "F2";
-                    dataGridViewMainForm.Columns["Цена"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-                    dataGridViewMainForm.Columns["Цена"].HeaderText = $"Цена ({ChoosingCurrency.SelectedCurrencyCode})";
-                }
-
-                if (dataGridViewMainForm.Columns["ЦенаЗакупки"] != null)
-                {
-                    dataGridViewMainForm.Columns["ЦенаЗакупки"].HeaderText = "Цена закупки (₽)";
-                    dataGridViewMainForm.Columns["ЦенаЗакупки"].DefaultCellStyle.Format = "F2";
-                    dataGridViewMainForm.Columns["ЦенаЗакупки"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-                }
-
-                if (dataGridViewMainForm.Columns["СрокГодности"] != null)
-                {
-                    dataGridViewMainForm.Columns["СрокГодности"].HeaderText = "Срок годности";
-                    dataGridViewMainForm.Columns["СрокГодности"].DefaultCellStyle.Format = "dd.MM.yyyy";
-                    dataGridViewMainForm.Columns["СрокГодности"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-                }
-
-                if (dataGridViewMainForm.Columns["ЕдИзмерения"] != null)
-                {
-                    dataGridViewMainForm.Columns["ЕдИзмерения"].HeaderText = "Ед. измерения";
-                }
-
-                if (dataGridViewMainForm.Columns["Остаток"] != null)
-                {
-                    dataGridViewMainForm.Columns["Остаток"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-                }
-            }
-            catch (Exception ex)
-            {
-                Program.LogError("Ошибка при форматировании колонок таблицы", ex);
-                MessageBox.Show(Resources.ErrorFormatColumnsMessage, Resources.TitleError,
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
         }
 
         /// <summary>
         /// Обработчик завершения привязки данных для подсветки строк
         /// </summary>
-        private void DataGridViewMainForm_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
+        private void DataGridViewStore_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
         {
+            var today = DateTime.Today;
+
             foreach (DataGridViewRow row in dataGridViewMainForm.Rows)
             {
                 if (row.DataBoundItem == null) continue;
@@ -496,42 +484,38 @@ namespace AutomechanicsProject.Formes
                 try
                 {
                     var dataItem = row.DataBoundItem;
-                    var requiresDiscount = (bool)dataItem.GetType().GetProperty("ТребуетСкидки")?.GetValue(dataItem);
-                    var isExpired = (bool)dataItem.GetType().GetProperty("Просрочен")?.GetValue(dataItem);
 
-                    if (isExpired)
+                    var expiryDateProp = dataItem.GetType().GetProperty("СрокГодности");
+                    if (expiryDateProp == null) continue;
+
+                    var expiryDate = expiryDateProp.GetValue(dataItem) as DateTime?;
+
+                    if (expiryDate.HasValue)
                     {
-                        row.DefaultCellStyle.BackColor = System.Drawing.Color.DarkRed;
-                        row.DefaultCellStyle.ForeColor = System.Drawing.Color.White;
-                    }
-                    else if (requiresDiscount)
-                    {
-                        row.DefaultCellStyle.BackColor = System.Drawing.Color.LightCoral;
+                        if (expiryDate.Value < today)
+                        {
+                            row.DefaultCellStyle.BackColor = System.Drawing.Color.DarkRed;
+                            row.DefaultCellStyle.ForeColor = System.Drawing.Color.White;
+                        }
+                        else if ((expiryDate.Value - today).Days <= 30)
+                        {
+                            row.DefaultCellStyle.BackColor = System.Drawing.Color.LightCoral;
+                        }
                     }
                 }
                 catch (Exception ex)
                 {
-                    Program.LogError("Ошибка при подсветке строки в DataGridView", ex);
-                    MessageBox.Show(Resources.ErrorHighlightRow, Resources.TitleError,
-                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    Program.LogError("Ошибка при подсветке строки", ex);
                 }
             }
         }
-
         /// <summary>
         /// Обработчик изменения текста в поле поиска
         /// </summary>
         private void TextBoxSearch_TextChanged(object sender, EventArgs e)
         {
             var searchText = textBoxSearch.Text;
-            if (searchText == Resources.SearchWatermark || string.IsNullOrWhiteSpace(searchText))
-            {
-                LoadProducts("");
-            }
-            else
-            {
-                LoadProducts(searchText);
-            }
+            LoadProducts(Validation.IsWatermark(searchText, Resources.SearchWatermark) ? "" : searchText);
         }
 
         /// <summary>
@@ -558,21 +542,21 @@ namespace AutomechanicsProject.Formes
         }
 
         /// <summary>
-        /// Освобождает ресурсы контекста базы данных при закрытии формы
-        /// </summary>
-        protected override void OnFormClosed(FormClosedEventArgs e)
-        {
-            base.OnFormClosed(e);
-            DbContextManager.ReleaseReference();
-        }
-
-        /// <summary>
         /// Открытие формы отчета
         /// </summary>
         private void buttonReport_Click(object sender, EventArgs e)
         {
             ReportForm reportForm = new ReportForm();
             reportForm.ShowDialog();
+        }
+
+        /// <summary>
+        /// Освобождает ресурсы контекста базы данных при закрытии формы
+        /// </summary>
+        protected override void OnFormClosed(FormClosedEventArgs e)
+        {
+            base.OnFormClosed(e);
+            DbContextManager.ReleaseReference();
         }
     }
 }

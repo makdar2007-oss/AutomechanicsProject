@@ -2,6 +2,9 @@
 
 namespace AutomechanicsProject.Classes
 {
+    /// <summary>
+    /// Управление валютой и конвертация цен
+    /// </summary>
     public static class CurrencyManager
     {
         public static string SelectedCurrency { get; private set; } = "RUB";
@@ -16,7 +19,9 @@ namespace AutomechanicsProject.Classes
         public static decimal ConvertPrice(decimal priceInRub)
         {
             if (SelectedCurrency == "RUB")
+            {
                 return priceInRub;
+            }
 
             return priceInRub * CurrentRate;
         }
@@ -24,7 +29,9 @@ namespace AutomechanicsProject.Classes
         public static decimal ConvertPriceToRub(decimal priceInCurrency, string currencyCode, decimal rate)
         {
             if (currencyCode == "RUB")
+            {
                 return priceInCurrency;
+            }
 
             return priceInCurrency / rate;
         }

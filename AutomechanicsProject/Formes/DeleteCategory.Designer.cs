@@ -103,6 +103,7 @@
             this.Text = "Удалить категорию";
             this.panelDelete.ResumeLayout(false);
             this.panelDelete.PerformLayout();
+            this.Load += new System.EventHandler(this.DeleteCategory_Load);
             this.ResumeLayout(false);
 
         }

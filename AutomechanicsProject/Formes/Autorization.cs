@@ -24,9 +24,6 @@ namespace AutomechanicsProject
             InitializeComponent();
             TextBoxHelper.SetupWatermarkTextBox(textBoxLogin, Resources.AuthLoginWatermark);
             TextBoxHelper.SetupPasswordTextBox(textBoxPassword, Resources.AuthPasswordWatermark);
-
-            textBoxLogin.KeyDown += TextBox_KeyDown;
-            textBoxPassword.KeyDown += TextBox_KeyDown;
         }
 
         /// <summary>
@@ -39,15 +36,6 @@ namespace AutomechanicsProject
                 e.SuppressKeyPress = true;
                 BtnLoginClick(sender, e);
             }
-        }
-
-        /// <summary>
-        /// Сбрасывает подсветку полей ввода
-        /// </summary>
-        private void ResetHighlights()
-        {
-            textBoxLogin.BackColor = Color.White;
-            textBoxPassword.BackColor = Color.White;
         }
 
         /// <summary>
@@ -85,8 +73,7 @@ namespace AutomechanicsProject
         /// </summary>
         private void BtnLoginClick(object sender, EventArgs e)
         {
-            ResetHighlights();
-            if (!ValidateFields())
+            Validation.ResetHighlights(textBoxLogin, textBoxPassword); if (!ValidateFields())
             {
                 MessageBox.Show(Resources.ErrorFillFields, Resources.TitleWarning,
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);

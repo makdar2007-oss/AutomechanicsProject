@@ -222,12 +222,14 @@
             // 
             this.ProductToolStripMenuItem.Name = "ProductToolStripMenuItem";
             this.ProductToolStripMenuItem.Size = new System.Drawing.Size(193, 28);
+            this.ProductToolStripMenuItem.Click += new System.EventHandler(this.ProductToolStripMenuItem_Click);
             this.ProductToolStripMenuItem.Text = "Товар";
             // 
             // CategoryToolStripMenuItem
             // 
             this.CategoryToolStripMenuItem.Name = "CategoryToolStripMenuItem";
             this.CategoryToolStripMenuItem.Size = new System.Drawing.Size(193, 28);
+            this.CategoryToolStripMenuItem.Click += new System.EventHandler(this.CategoryToolStripMenuItem_Click);
             this.CategoryToolStripMenuItem.Text = "Категорию";
             // 
             // toolStripComboBox2
@@ -243,12 +245,14 @@
             // 
             this.ProductToolStripMenuItem1.Name = "ProductToolStripMenuItem1";
             this.ProductToolStripMenuItem1.Size = new System.Drawing.Size(193, 28);
+            this.ProductToolStripMenuItem1.Click += new System.EventHandler(this.ProductToolStripMenuItem1_Click);
             this.ProductToolStripMenuItem1.Text = "Товар";
             // 
             // CategoryToolStripMenuItem1
             // 
             this.CategoryToolStripMenuItem1.Name = "CategoryToolStripMenuItem1";
             this.CategoryToolStripMenuItem1.Size = new System.Drawing.Size(193, 28);
+            this.CategoryToolStripMenuItem1.Click += new System.EventHandler(this.CategoryToolStripMenuItem1_Click);
             this.CategoryToolStripMenuItem1.Text = "Категорию";
             // 
             // toolStripComboBox3
@@ -264,12 +268,14 @@
             // 
             this.ProductToolStripMenuItem2.Name = "ProductToolStripMenuItem2";
             this.ProductToolStripMenuItem2.Size = new System.Drawing.Size(193, 28);
+            this.ProductToolStripMenuItem2.Click += new System.EventHandler(this.ProductToolStripMenuItem2_Click);
             this.ProductToolStripMenuItem2.Text = "Товар";
             // 
             // CategoryToolStripMenuItem2
             // 
             this.CategoryToolStripMenuItem2.Name = "CategoryToolStripMenuItem2";
             this.CategoryToolStripMenuItem2.Size = new System.Drawing.Size(193, 28);
+            this.CategoryToolStripMenuItem2.Click += new System.EventHandler(this.CategoryToolStripMenuItem2_Click);
             this.CategoryToolStripMenuItem2.Text = "Категорию";
             // 
             // toolStripTextBoxAdmin

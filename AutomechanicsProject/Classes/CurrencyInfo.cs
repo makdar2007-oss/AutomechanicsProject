@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace AutomechanicsProject.Classes
 {
+    /// <summary>
+    /// Информация о валюте
+    /// </summary>
     internal class CurrencyInfo
     {
         public string Code { get; set; }

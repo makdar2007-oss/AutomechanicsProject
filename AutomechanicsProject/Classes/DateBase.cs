@@ -5,7 +5,7 @@ using System;
 namespace AutomechanicsProject.Classes
 {
     /// <summary>
-    /// Контекст базы данных для работы с автомеханикой
+    /// Контекст базы данных для работы с приложением
     /// Предоставляет доступ к сущностям и методы для работы с данными
     /// </summary>
     public class DateBase : DbContext
@@ -31,7 +31,6 @@ namespace AutomechanicsProject.Classes
         {
             modelBuilder.HasPostgresExtension("uuid-ossp");
 
-            // Настройка таблицы Role
             modelBuilder.Entity<Role>(entity =>
             {
                 entity.ToTable("role");
@@ -49,7 +48,6 @@ namespace AutomechanicsProject.Classes
                 entity.HasIndex(e => e.Position).IsUnique();
             });
 
-            // Настройка таблицы Users
             modelBuilder.Entity<Users>(entity =>
             {
                 entity.ToTable("users");
@@ -98,7 +96,6 @@ namespace AutomechanicsProject.Classes
                 entity.Ignore(u => u.FullName);
             });
 
-            // Настройка таблицы Unit
             modelBuilder.Entity<Unit>(entity =>
             {
                 entity.ToTable("unit");
@@ -121,7 +118,6 @@ namespace AutomechanicsProject.Classes
                 entity.HasIndex(e => e.Name).IsUnique();
             });
 
-            // Настройка таблицы Category
             modelBuilder.Entity<Category>(entity =>
             {
                 entity.ToTable("category");
@@ -139,7 +135,6 @@ namespace AutomechanicsProject.Classes
                 entity.HasIndex(e => e.Name).IsUnique();
             });
 
-            // Настройка таблицы Product
             modelBuilder.Entity<Product>(entity =>
             {
                 entity.ToTable("product");
@@ -188,7 +183,6 @@ namespace AutomechanicsProject.Classes
                     .OnDelete(DeleteBehavior.Restrict);
             });
 
-            // Настройка таблицы Address
             modelBuilder.Entity<Address>(entity =>
             {
                 entity.ToTable("address");
@@ -204,7 +198,6 @@ namespace AutomechanicsProject.Classes
                     .HasMaxLength(255);
             });
 
-            // Настройка таблицы Shipment
             modelBuilder.Entity<Shipment>(entity =>
             {
                 entity.ToTable("shipment");
@@ -242,7 +235,6 @@ namespace AutomechanicsProject.Classes
                     .OnDelete(DeleteBehavior.Restrict);
             });
 
-            // Настройка таблицы ShipmentPositions
             modelBuilder.Entity<ShipmentItem>(entity =>
             {
                 entity.ToTable("shipment_positions");

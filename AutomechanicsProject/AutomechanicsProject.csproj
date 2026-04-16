@@ -285,9 +285,14 @@
     <Compile Include="Formes\ReportForm.Designer.cs">
       <DependentUpon>ReportForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\ComboBoxHelper.cs" />
+    <Compile Include="Helpers\ControlHelper.cs" />
     <Compile Include="Helpers\CurrencyStorage.cs" />
-    <Compile Include="Helpers\DataGridViewHelper.cs" />
+    <Compile Include="Helpers\GridViewHelper.cs" />
+    <Compile Include="Helpers\DateTimeHelper.cs" />
+    <Compile Include="Helpers\FormatHelper.cs" />
     <Compile Include="Helpers\FormHelper.cs" />
+    <Compile Include="Helpers\ParseHelper.cs" />
     <Compile Include="Helpers\PasswordHasher.cs" />
     <Compile Include="Helpers\TextBoxHelper.cs" />
     <Compile Include="Classes\User.cs" />

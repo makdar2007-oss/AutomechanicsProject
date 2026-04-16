@@ -1,7 +1,7 @@
 ﻿namespace AutomechanicsProject.ViewModels
 {
     /// <summary>
-    /// ViewModel для отображения отгрузки
+    /// для отображения отгрузки
     /// </summary>
     public class ShipmentViewModel
     {

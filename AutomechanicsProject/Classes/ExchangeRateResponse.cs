@@ -4,6 +4,10 @@ using System.Text.Json.Serialization;
 
 namespace AutomechanicsProject.Classes
 {
+    /// <summary>
+    /// Представляет ответ от API обменных курсов
+    /// Используется для десериализации JSON-ответа
+    /// </summary>
     internal class ExchangeRateResponse
     {
         [JsonPropertyName("result")]

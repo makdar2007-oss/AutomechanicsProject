@@ -247,4 +247,21 @@ public static class Validation
             }
         }
     }
+
+    /// <summary>
+    /// Проверяет, что выбран элемент в ComboBox
+    /// </summary>
+    public static bool IsComboBoxSelected(ComboBox comboBox)
+    {
+        return comboBox.SelectedItem != null;
+    }
+
+    /// <summary>
+    /// Проверяет, что поле заполнено 
+    /// </summary>
+    public static bool IsFieldFilled(string text, string watermark)
+    {
+        return !IsWatermark(text, watermark);
+    }
+
 }

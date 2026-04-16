@@ -177,6 +177,7 @@
             this.comboBoxProduct.Name = "comboBoxProduct";
             this.comboBoxProduct.Size = new System.Drawing.Size(308, 30);
             this.comboBoxProduct.TabIndex = 3;
+            this.comboBoxProduct.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDown;
             // 
             // textBoxUnit
             // 

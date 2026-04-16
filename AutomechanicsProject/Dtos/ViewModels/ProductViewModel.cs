@@ -3,7 +3,7 @@
 namespace AutomechanicsProject.ViewModels
 {
     /// <summary>
-    /// ViewModel для отображения товара в таблице
+    /// для отображения товара в таблице
     /// </summary>
     public class ProductViewModel
     {

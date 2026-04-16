@@ -1,5 +1,6 @@
 ﻿using AutomechanicsProject.Classes;
 using AutomechanicsProject.Dtos.Service;
+using AutomechanicsProject.Mappers;
 using AutomechanicsProject.Dtos.UI;
 using AutomechanicsProject.Helpers;
 using AutomechanicsProject.Properties;
@@ -39,23 +40,7 @@ namespace AutomechanicsProject.Formes
         {
             try
             {
-                var categories = db.Categories
-                    .OrderBy(c => c.Name)
-                    .Select(c => new ComboItemDto
-                    {
-                        Id = c.Id,
-                        Text = c.Name,
-                    })
-                    .ToList();
-
-                comboBoxCategory.DataSource = categories;
-                comboBoxCategory.DisplayMember = "Text";
-                comboBoxCategory.ValueMember = "Id";
-
-                if (comboBoxCategory.Items.Count > 0)
-                {
-                    comboBoxCategory.SelectedIndex = -1;
-                }
+                ComboBoxHelper.LoadCategories(comboBoxCategory, db);
             }
             catch (Exception ex)
             {
@@ -104,7 +89,10 @@ namespace AutomechanicsProject.Formes
         /// </summary>
         private void ButtonAdd_Click(object sender, EventArgs e)
         {
-            if (!ValidateFields()) return;
+            if (!ValidateFields())
+            {
+                return;
+            }
 
             if (!Validation.ValidatePrice(textBoxPrice.Text, out var price))
             {
@@ -113,14 +101,14 @@ namespace AutomechanicsProject.Formes
                 return;
             }
 
-            if (comboBoxCategory.SelectedItem == null)
+            if (!ComboBoxHelper.IsSelected(comboBoxCategory))
             {
                 MessageBox.Show(Resources.ErrorSelectCategory, Resources.TitleWarning,
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            if (comboBoxUnit.SelectedItem == null)
+            if (!ComboBoxHelper.IsSelected(comboBoxCategory))
             {
                 MessageBox.Show(Resources.UnitSelectWatermark, Resources.TitleWarning,
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -129,10 +117,9 @@ namespace AutomechanicsProject.Formes
 
             try
             {
-                var selectedCategory = (ComboItemDto)comboBoxCategory.SelectedItem;
-                var selectedUnit = (ComboItemDto)comboBoxUnit.SelectedItem;
+                var selectedCategory = ComboBoxHelper.GetSelectedItem(comboBoxCategory);
+                var selectedUnit = ComboBoxHelper.GetSelectedItem(comboBoxUnit);
 
-                // Используем новый DTO
                 var createDto = new CreateProductDto
                 {
                     Article = textBoxArt.Text.Trim(),
@@ -160,13 +147,6 @@ namespace AutomechanicsProject.Formes
                 FormHelper.HandleException(Resources.ErrorAddProduct, ex);
             }
         }
-        /// <summary>
-        /// Обработчик изменения выбора срока годности
-        /// </summary>
-        private void RadioButtonExpiry_CheckedChanged(object sender, EventArgs e)
-        {
-        }
-
 
         /// <summary>
         /// Выполняет валидацию обязательных полей формы

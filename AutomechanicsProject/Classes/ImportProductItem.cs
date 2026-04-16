@@ -1,5 +1,9 @@
 ﻿namespace AutomechanicsProject.Classes
 {
+    /// <summary>
+    /// Представляет элемент товара для импорта из внешнего источника данных
+    /// Используется при массовом добавлении товаров в базу данных
+    /// </summary>
     public class ImportProductItem
     {
         public string Article { get; set; }

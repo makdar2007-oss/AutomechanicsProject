@@ -38,14 +38,21 @@ namespace AutomechanicsProject.Formes
 
             TextBoxHelper.SetupWatermarkComboBox(comboBoxUnit, Resources.UnitSelectWatermark);
 
+            SubscribeToChanges();
+            LoadUnits();
+            LoadProductData();
+        }
+
+        /// <summary>
+        /// Обработчики изменения полей
+        /// </summary>
+        private void SubscribeToChanges()
+        {
             textBoxArt.TextChanged += (s, e) => hasChanges = true;
             textBoxName.TextChanged += (s, e) => hasChanges = true;
             textBoxCategory.TextChanged += (s, e) => hasChanges = true;
-            comboBoxUnit.SelectedIndexChanged += (s, e) => hasChanges = true;  // Изменено
+            comboBoxUnit.SelectedIndexChanged += (s, e) => hasChanges = true;
             textBoxPrice.TextChanged += (s, e) => hasChanges = true;
-
-            LoadUnits();
-            LoadProductData();
         }
 
         /// <summary>
@@ -211,7 +218,10 @@ namespace AutomechanicsProject.Formes
                     MessageBoxButtons.YesNo,
                     MessageBoxIcon.Question);
 
-                if (result != DialogResult.Yes) return;
+                if (result != DialogResult.Yes)
+                {
+                    return;
+                }
             }
             DialogResult = DialogResult.Cancel;
             Close();
