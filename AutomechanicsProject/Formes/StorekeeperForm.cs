@@ -5,7 +5,9 @@ using System;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using System.Windows.Forms;
-using AutomechanicsProject.Classes.Dtos;
+using AutomechanicsProject.Dtos;
+using AutomechanicsProject.Dtos.Service; 
+using AutomechanicsProject.Mappers;
 
 namespace AutomechanicsProject.Formes
 {
@@ -223,7 +225,6 @@ namespace AutomechanicsProject.Formes
         /// <summary>
         /// Загружает список товаров из базы данных с учётом поискового запроса
         /// </summary>
-        // В StorekeeperForm замените LoadProducts на этот код (скопирован из AdminForm)
         private void LoadProducts(string searchText = "")
         {
             try

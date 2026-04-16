@@ -1,11 +1,11 @@
 ﻿using AutomechanicsProject.Classes;
+using AutomechanicsProject.Dtos.Service;
+using AutomechanicsProject.Dtos.UI;
 using AutomechanicsProject.Helpers;
 using AutomechanicsProject.Properties;
 using System;
 using System.Linq;
 using System.Windows.Forms;
-using AutomechanicsProject.Classes.Dtos;
-
 namespace AutomechanicsProject.Formes
 {
     /// <summary>
@@ -41,17 +41,15 @@ namespace AutomechanicsProject.Formes
             {
                 var categories = db.Categories
                     .OrderBy(c => c.Name)
-                    .Select(c => new CategoryComboBoxDto
+                    .Select(c => new ComboItemDto
                     {
                         Id = c.Id,
-                        DisplayName = c.Name,
-                        Name = c.Name,
-                        ProductsCount = 0
+                        Text = c.Name,
                     })
                     .ToList();
 
                 comboBoxCategory.DataSource = categories;
-                comboBoxCategory.DisplayMember = "DisplayName";
+                comboBoxCategory.DisplayMember = "Text";
                 comboBoxCategory.ValueMember = "Id";
 
                 if (comboBoxCategory.Items.Count > 0)
@@ -76,17 +74,15 @@ namespace AutomechanicsProject.Formes
             {
                 var units = db.Units
                     .OrderBy(u => u.Name)
-                    .Select(u => new UnitComboBoxDto
+                    .Select(u => new ComboItemDto
                     {
                         Id = u.Id,
-                        DisplayName = $"{u.Name} ({u.ShortName})",
-                        ShortName = u.ShortName,
-                        Name = u.Name
+                        Text = $"{u.Name} ({u.ShortName})"
                     })
                     .ToList();
 
                 comboBoxUnit.DataSource = units;
-                comboBoxUnit.DisplayMember = "DisplayName";
+                comboBoxUnit.DisplayMember = "Text";
                 comboBoxUnit.ValueMember = "Id";
 
                 if (comboBoxUnit.Items.Count > 0)
@@ -133,30 +129,29 @@ namespace AutomechanicsProject.Formes
 
             try
             {
-                var selectedCategory = (CategoryComboBoxDto)comboBoxCategory.SelectedItem;
-                var selectedUnit = (UnitComboBoxDto)comboBoxUnit.SelectedItem;
-                var product = new Product
+                var selectedCategory = (ComboItemDto)comboBoxCategory.SelectedItem;
+                var selectedUnit = (ComboItemDto)comboBoxUnit.SelectedItem;
+
+                // Используем новый DTO
+                var createDto = new CreateProductDto
                 {
-                    Id = Guid.NewGuid(),
                     Article = textBoxArt.Text.Trim(),
                     Name = textBoxName.Text.Trim(),
                     CategoryId = selectedCategory.Id,
                     UnitId = selectedUnit.Id,
                     Price = price,
-                    Balance = 0,
-                    ExpiryDate = radioButtonHasExpiry.Checked ? DateTime.Today.AddYears(1) : (DateTime?)null
+                    HasExpiryDate = radioButtonHasExpiry.Checked
                 };
+
+                var product = ProductMapper.ToEntity(createDto);
 
                 db.Products.Add(product);
                 db.SaveChanges();
 
-                string expiryMessage = radioButtonHasExpiry.Checked
-                    ? "Срок годности: есть"
-                    : "Срок годности: нет";
-
                 Program.LogInfo($"Товар '{product.Article} - {product.Name}' успешно добавлен");
                 MessageBox.Show(Resources.SuccessProductAdded, Resources.TitleSuccess,
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
+
                 DialogResult = DialogResult.OK;
                 Close();
             }
@@ -165,7 +160,6 @@ namespace AutomechanicsProject.Formes
                 FormHelper.HandleException(Resources.ErrorAddProduct, ex);
             }
         }
-
         /// <summary>
         /// Обработчик изменения выбора срока годности
         /// </summary>

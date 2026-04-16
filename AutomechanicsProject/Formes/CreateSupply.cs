@@ -1,5 +1,5 @@
 ﻿using AutomechanicsProject.Classes;
-using AutomechanicsProject.Classes.Dtos;
+using AutomechanicsProject.Dtos.UI;
 using AutomechanicsProject.Properties;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -19,9 +19,9 @@ namespace AutomechanicsProject.Formes
         private List<SupplyPosition> positions = new List<SupplyPosition>();
         private string currentCurrency = "RUB";
         private List<ProductDisplayItem> cachedProducts;
-        private List<Supplier> cachedSuppliers;
+        private List<ComboItemDto> cachedSuppliers;
         private ToolTip productToolTip;
-        private List<ProductComboBoxDto> allProductsForSearch;
+        private List<ProductComboDto> allProductsForSearch;
         private bool isClearingText = false;
         private bool isUpdatingText = false;
 
@@ -52,28 +52,31 @@ namespace AutomechanicsProject.Formes
 
             comboBoxProduct.SelectedIndexChanged += OnProductSelectedChanged;
 
-            var productToolTip = new ToolTip();
+            productToolTip = new ToolTip();  
 
             comboBoxProduct.MouseHover += (s, e) =>
             {
-                if (comboBoxProduct.SelectedItem is ProductDisplayItem product)
+                if (comboBoxProduct.SelectedItem is ProductComboDto selectedProductDto)
                 {
-                    var tooltipText = $"Артикул: {product.Article}\nНаименование: {product.Name}\nОстаток: {product.Balance} шт.";
-                    if (!product.HasExpiryDate)
+                    var product = cachedProducts.FirstOrDefault(p => p.Id == selectedProductDto.Id);
+                    if (product != null)
                     {
-                        tooltipText += $" {Resources.WarningNoProductExpiryDate}";
+                        var tooltipText = $"Артикул: {product.Article}\nНаименование: {product.Name}\nОстаток: {product.Balance} шт.";
+                        if (!product.HasExpiryDate)
+                        {
+                            tooltipText += $" {Resources.WarningNoProductExpiryDate}";
+                        }
+                        else
+                        {
+                            tooltipText += $"\nСрок годности товара: {product.ProductExpiryDate.Value.ToShortDateString()}";
+                        }
+                        productToolTip.Show(tooltipText, comboBoxProduct, 5, comboBoxProduct.Height, 3000);
                     }
-                    else
-                    {
-                        tooltipText += $"Срок годности товара: {product.ProductExpiryDate.Value.ToShortDateString()}";
-                    }
-                    productToolTip.Show(tooltipText, comboBoxProduct, 5, comboBoxProduct.Height, 3000);
                 }
             };
 
             comboBoxProduct.DropDownClosed += (s, e) => productToolTip.Hide(comboBoxProduct);
         }
-
         /// <summary>
         /// Обработчик изменения выбранного товара
         /// </summary>
@@ -81,7 +84,7 @@ namespace AutomechanicsProject.Formes
         {
             if (comboBoxProduct.SelectedItem != null)
             {
-                var selectedProductDto = (ProductComboBoxDto)comboBoxProduct.SelectedItem;
+                var selectedProductDto = (ProductComboDto)comboBoxProduct.SelectedItem;
                 var selectedProduct = cachedProducts.FirstOrDefault(p => p.Id == selectedProductDto.Id);
 
                 if (selectedProduct != null)
@@ -112,7 +115,7 @@ namespace AutomechanicsProject.Formes
             if (comboBoxProduct.SelectedItem != null)
             {
                 isUpdatingText = true;
-                var selectedProduct = (ProductComboBoxDto)comboBoxProduct.SelectedItem;
+                var selectedProduct = (ProductComboDto)comboBoxProduct.SelectedItem;
                 comboBoxProduct.Text = $"{selectedProduct.Article} - {selectedProduct.Name}";
                 comboBoxProduct.SelectionStart = 0;
                 comboBoxProduct.SelectionLength = 0;
@@ -137,7 +140,7 @@ namespace AutomechanicsProject.Formes
             {
                 e.SuppressKeyPress = true;
                 isUpdatingText = true;
-                var selectedProduct = (ProductComboBoxDto)comboBoxProduct.SelectedItem;
+                var selectedProduct = (ProductComboDto)comboBoxProduct.SelectedItem;
                 comboBoxProduct.Text = $"{selectedProduct.Article} - {selectedProduct.Name}";
                 comboBoxProduct.SelectionStart = 0;
                 comboBoxProduct.SelectionLength = 0;
@@ -194,7 +197,7 @@ namespace AutomechanicsProject.Formes
             string currentText = comboBoxProduct.Text;
 
             comboBoxProduct.DataSource = null;
-            comboBoxProduct.DisplayMember = "DisplayName";
+            comboBoxProduct.DisplayMember = "Text";
             comboBoxProduct.ValueMember = "Id";
             comboBoxProduct.DataSource = filteredProducts;
 
@@ -210,7 +213,7 @@ namespace AutomechanicsProject.Formes
             if (allProductsForSearch != null && allProductsForSearch.Any())
             {
                 comboBoxProduct.DataSource = null;
-                comboBoxProduct.DisplayMember = "DisplayName";
+                comboBoxProduct.DisplayMember = "Text";
                 comboBoxProduct.ValueMember = "Id";
                 comboBoxProduct.DataSource = allProductsForSearch;
             }
@@ -268,21 +271,21 @@ namespace AutomechanicsProject.Formes
                     .ToList();
 
                 allProductsForSearch = cachedProducts
-                    .Select(p => new ProductComboBoxDto
+                    .Select(p => new ProductComboDto
                     {
                         Id = p.Id,
                         Article = p.Article,
                         Name = p.Name,
-                        DisplayName = $"{p.Article} - {p.Name} (остаток: {p.Balance} шт.)",
+                        Text = $"{p.Article} - {p.Name} (остаток: {p.Balance} шт.)",
                         Balance = p.Balance
                     })
                     .ToList();
 
-                if (cachedProducts != null && cachedProducts.Count > 0)
+                if (allProductsForSearch != null && allProductsForSearch.Count > 0)
                 {
-                    comboBoxProduct.DisplayMember = "DisplayName";
+                    comboBoxProduct.DisplayMember = "Text";
                     comboBoxProduct.ValueMember = "Id";
-                    comboBoxProduct.DataSource = cachedProducts;
+                    comboBoxProduct.DataSource = allProductsForSearch;
                     comboBoxProduct.SelectedIndex = -1;
                 }
                 else
@@ -308,14 +311,21 @@ namespace AutomechanicsProject.Formes
             {
                 var db = DbContextManager.GetContext();
 
-                cachedSuppliers = db.Suppliers
-                    .OrderBy(s => s.Name)
-                    .AsNoTracking()
-                    .ToList();
+                var suppliers = db.Suppliers
+             .OrderBy(s => s.Name)
+             .Select(s => new ComboItemDto
+             {
+                 Id = s.Id,
+                 Text = s.Name
+             })
+             .AsNoTracking()
+             .ToList();
+
+                cachedSuppliers = suppliers;
 
                 if (cachedSuppliers != null && cachedSuppliers.Count > 0)
                 {
-                    comboBoxSupplier.DisplayMember = "Name";
+                    comboBoxSupplier.DisplayMember = "Text";
                     comboBoxSupplier.ValueMember = "Id";
                     comboBoxSupplier.DataSource = cachedSuppliers;
                     comboBoxSupplier.SelectedIndex = -1;
@@ -347,7 +357,7 @@ namespace AutomechanicsProject.Formes
                 return false;
             }
 
-            var selectedProductDto = (ProductComboBoxDto)comboBoxProduct.SelectedItem;
+            var selectedProductDto = (ProductComboDto)comboBoxProduct.SelectedItem;
             var selectedProduct = cachedProducts.FirstOrDefault(p => p.Id == selectedProductDto.Id);
 
             if (!int.TryParse(textBoxQuantity.Text, out int quantity) || quantity <= 0)
@@ -455,11 +465,11 @@ namespace AutomechanicsProject.Formes
             if (!ValidateInputs())
                 return;
 
-            var selectedProductDto = (ProductComboBoxDto)comboBoxProduct.SelectedItem;
+            var selectedProductDto = (ProductComboDto)comboBoxProduct.SelectedItem;
             var selectedItem = cachedProducts.FirstOrDefault(p => p.Id == selectedProductDto.Id);
-            Supplier selectedSupplier = (Supplier)comboBoxSupplier.SelectedItem;
+            var selectedSupplier = (ComboItemDto)comboBoxSupplier.SelectedItem;
             int quantity = int.Parse(textBoxQuantity.Text);
-            decimal price = decimal.Parse(textBoxPrice.Text.Replace('.', ','));
+            var price = decimal.Parse(textBoxPrice.Text.Replace('.', ','));
 
             DateTime? supplyExpiryDate = null;
             if (selectedItem.HasExpiryDate)
@@ -477,7 +487,7 @@ namespace AutomechanicsProject.Formes
                 Price = price,
                 SupplyId = Guid.Empty,
                 SupplierId = selectedSupplier.Id,
-                SupplierName = selectedSupplier.Name,
+                SupplierName = selectedSupplier.Text,
                 ExpiryDate = supplyExpiryDate
             };
 
@@ -489,7 +499,7 @@ namespace AutomechanicsProject.Formes
                 position.Quantity,
                 $"{position.Price:N2} RUB",
                 $"{position.Quantity * position.Price:N2} RUB",
-                selectedSupplier.Name,
+                selectedSupplier.Text,
                 position.ExpiryDate?.ToShortDateString() ?? "");
 
             UpdateTotalAmount();
@@ -546,7 +556,7 @@ namespace AutomechanicsProject.Formes
                             }
 
                             var supplier = cachedSuppliers
-                                .FirstOrDefault(s => s.Name.Equals(item.SupplierName, StringComparison.OrdinalIgnoreCase));
+                                .FirstOrDefault(s => s.Text.Equals(item.SupplierName, StringComparison.OrdinalIgnoreCase));
 
                             if (supplier == null && cachedSuppliers.Count > 0)
                                 supplier = cachedSuppliers[0];
@@ -574,7 +584,7 @@ namespace AutomechanicsProject.Formes
                                 Price = item.Price,
                                 SupplyId = Guid.Empty,
                                 SupplierId = supplier?.Id,
-                                SupplierName = supplier?.Name,
+                                SupplierName = supplier?.Text,
                                 ExpiryDate = expiryDate
                             };
 
@@ -586,7 +596,7 @@ namespace AutomechanicsProject.Formes
                                 position.Quantity,
                                 $"{position.Price:N2} {currentCurrency}",
                                 $"{position.Quantity * position.Price:N2} {currentCurrency}",
-                                supplier?.Name ?? Resources.UnknownSupplier,
+                                supplier?.Text ?? Resources.UnknownSupplier,
                                 position.ExpiryDate?.ToShortDateString() ?? ""
                             );
 

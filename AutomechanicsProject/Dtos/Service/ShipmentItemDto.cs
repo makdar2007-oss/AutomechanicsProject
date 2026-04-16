@@ -1,9 +1,9 @@
 ﻿using System;
 
-namespace AutomechanicsProject.Dtos
+namespace AutomechanicsProject.Dtos.Service
 {
     /// <summary>
-    /// DTO позиции отгрузки для сервиса
+    /// DTO позиции отгрузки
     /// </summary>
     public class ShipmentItemDto
     {

@@ -244,15 +244,23 @@
     <Compile Include="Classes\Supply.cs" />
     <Compile Include="Classes\SupplyPosition.cs" />
     <Compile Include="Classes\Unit.cs" />
-    <Compile Include="Dtos\CategoryComboBoxDto.cs" />
-    <Compile Include="Dtos\ProductBatchDto.cs" />
-    <Compile Include="Dtos\ProductComboBoxDto.cs" />
-    <Compile Include="Dtos\ProductDisplayDto.cs" />
-    <Compile Include="Dtos\RecipientComboBoxDto.cs" />
-    <Compile Include="Dtos\ShipmentDisplayItem.cs" />
-    <Compile Include="Dtos\ShipmentItemDto.cs" />
-    <Compile Include="Dtos\ShipmentResultDto.cs" />
-    <Compile Include="Dtos\UnitComboBoxDto.cs" />
+    <Compile Include="Dtos\Mappers\CategoryMapper.cs" />
+    <Compile Include="Dtos\Mappers\ProductMapper.cs" />
+    <Compile Include="Dtos\Service\CategoryDto.cs" />
+    <Compile Include="Dtos\Service\CreateProductDto.cs" />
+    <Compile Include="Dtos\Service\ProductBatchDto.cs" />
+    <Compile Include="Dtos\Service\ProductDto.cs" />
+    <Compile Include="Dtos\Service\ProductListDto.cs" />
+    <Compile Include="Dtos\Service\RecipientDto.cs" />
+    <Compile Include="Dtos\Service\ShipmentItemDto.cs" />
+    <Compile Include="Dtos\Service\ShipmentResultDto.cs" />
+    <Compile Include="Dtos\Service\UnitDto.cs" />
+    <Compile Include="Dtos\Service\UpdateProductDto.cs" />
+    <Compile Include="Dtos\UI\ComboItemDto.cs" />
+    <Compile Include="Dtos\UI\ProductComboDto.cs" />
+    <Compile Include="Dtos\ViewModels\ProductComboViewModel.cs" />
+    <Compile Include="Dtos\ViewModels\ProductViewModel.cs" />
+    <Compile Include="Dtos\ViewModels\ShipmentModel.cs" />
     <Compile Include="Formes\ChoosingCurrency.cs">
       <SubType>Form</SubType>
     </Compile>

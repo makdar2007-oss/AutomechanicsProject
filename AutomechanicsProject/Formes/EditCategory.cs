@@ -5,8 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Windows.Forms;
-using AutomechanicsProject.Classes.Dtos;
-
+using AutomechanicsProject.Dtos.UI;
 namespace AutomechanicsProject.Formes
 
 {
@@ -55,16 +54,14 @@ namespace AutomechanicsProject.Formes
             {
                 var categories = db.Categories
                     .OrderBy(c => c.Name)
-                    .Select(c => new CategoryComboBoxDto
+                    .Select(c => new ComboItemDto
                     {
                         Id = c.Id,
-                        DisplayName = $"{c.Name} (товаров: {db.Products.Count(p => p.CategoryId == c.Id)})",
-                        Name = c.Name,
-                        ProductsCount = db.Products.Count(p => p.CategoryId == c.Id)
+                        Text = $"{c.Name} (товаров: {db.Products.Count(p => p.CategoryId == c.Id)})"
                     })
                     .ToList();
 
-                comboBoxCategory.DisplayMember = "DisplayName";
+                comboBoxCategory.DisplayMember = "Text";
                 comboBoxCategory.ValueMember = "Id";
                 comboBoxCategory.DataSource = categories;
 
@@ -90,7 +87,7 @@ namespace AutomechanicsProject.Formes
         {
             if (comboBoxCategory.SelectedItem != null)
             {
-                var selectedItem = (CategoryComboBoxDto)comboBoxCategory.SelectedItem;
+                var selectedItem = (ComboItemDto)comboBoxCategory.SelectedItem;
                 var categoryId = selectedItem.Id;
 
                 selectedCategory = db.Categories

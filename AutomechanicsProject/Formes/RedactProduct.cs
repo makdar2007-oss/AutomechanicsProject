@@ -1,4 +1,5 @@
 ﻿using AutomechanicsProject.Classes;
+using AutomechanicsProject.Dtos.UI;
 using AutomechanicsProject.Helpers;
 using AutomechanicsProject.Properties;
 using Microsoft.EntityFrameworkCore;
@@ -6,7 +7,7 @@ using System;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using AutomechanicsProject.Classes.Dtos;
+using AutomechanicsProject.Dtos;
 
 namespace AutomechanicsProject.Formes
 {
@@ -56,17 +57,15 @@ namespace AutomechanicsProject.Formes
             {
                 var units = db.Units
                     .OrderBy(u => u.Name)
-                    .Select(u => new UnitComboBoxDto
+                    .Select(u => new ComboItemDto
                     {
                         Id = u.Id,
-                        DisplayName = $"{u.Name} ({u.ShortName})",
-                        ShortName = u.ShortName,
-                        Name = u.Name
+                        Text = $"{u.Name} ({u.ShortName})"
                     })
                     .ToList();
 
                 comboBoxUnit.DataSource = units;
-                comboBoxUnit.DisplayMember = "DisplayName";
+                comboBoxUnit.DisplayMember = "Text";
                 comboBoxUnit.ValueMember = "Id";
 
                 if (comboBoxUnit.Items.Count > 0)
@@ -112,7 +111,7 @@ namespace AutomechanicsProject.Formes
                 {
                     for (int i = 0; i < comboBoxUnit.Items.Count; i++)
                     {
-                        var item = (UnitComboBoxDto)comboBoxUnit.Items[i];
+                        var item = (ComboItemDto)comboBoxUnit.Items[i];
                         if (item.Id == currentProduct.UnitId)
                         {
                             comboBoxUnit.SelectedIndex = i;
@@ -176,7 +175,7 @@ namespace AutomechanicsProject.Formes
                 }
                 currentProduct.CategoryId = category.Id;
 
-                var selectedUnit = (UnitComboBoxDto)comboBoxUnit.SelectedItem;
+                var selectedUnit = (ComboItemDto)comboBoxUnit.SelectedItem;
                 currentProduct.UnitId = selectedUnit.Id;
 
                 currentProduct.Price = price;

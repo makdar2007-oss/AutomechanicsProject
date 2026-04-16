@@ -7,7 +7,7 @@ using System;
 using System.Linq;
 using System.Windows.Forms;
 using System.Drawing;
-using AutomechanicsProject.Classes.Dtos;
+using AutomechanicsProject.Dtos;
 
 namespace AutomechanicsProject
 {

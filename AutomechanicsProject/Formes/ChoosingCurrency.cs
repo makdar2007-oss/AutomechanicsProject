@@ -1,5 +1,5 @@
 ﻿using AutomechanicsProject.Classes;
-using AutomechanicsProject.Classes.Dtos;
+using AutomechanicsProject.Dtos;
 using AutomechanicsProject.Helpers;
 using AutomechanicsProject.Properties;
 using System;

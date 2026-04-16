@@ -4,7 +4,9 @@ using AutomechanicsProject.Properties;
 using System;
 using System.Linq;
 using System.Windows.Forms;
-using AutomechanicsProject.Classes.Dtos;
+using AutomechanicsProject.Dtos;
+using AutomechanicsProject.Dtos.Service;
+using AutomechanicsProject.Mappers;
 
 namespace AutomechanicsProject.Formes
 {

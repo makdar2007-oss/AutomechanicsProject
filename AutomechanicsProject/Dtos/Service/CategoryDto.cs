@@ -1,11 +1,13 @@
 ﻿using System;
 
-namespace AutomechanicsProject.Classes.Dtos  
+namespace AutomechanicsProject.Dtos.Service
 {
-    public class CategoryComboBoxDto
+    /// <summary>
+    /// DTO для категории
+    /// </summary>
+    public class CategoryDto
     {
         public Guid Id { get; set; }
-        public string DisplayName { get; set; }
         public string Name { get; set; }
         public int ProductsCount { get; set; }
     }

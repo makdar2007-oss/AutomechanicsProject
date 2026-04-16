@@ -1,8 +1,9 @@
 ﻿using AutomechanicsProject.Classes;
-using AutomechanicsProject.Classes.Dtos;
 using AutomechanicsProject.Dtos;
+using AutomechanicsProject.Dtos.UI;
 using AutomechanicsProject.Helpers;
 using AutomechanicsProject.Properties;
+using AutomechanicsProject.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -21,7 +22,7 @@ namespace AutomechanicsProject.Formes
         private List<ShipmentItem> shipmentItems;
         private decimal totalAmount;
         private int totalItemsCount;
-        private List<ProductComboBoxDto> allProducts;
+        private List<ProductComboViewModel> allProducts;
         private bool isClearingText = false;
         private bool isUpdatingText = false;
         private List<Product> availableProducts;
@@ -37,7 +38,7 @@ namespace AutomechanicsProject.Formes
             shipmentItems = new List<ShipmentItem>();
             totalAmount = 0;
             totalItemsCount = 0;
-            allProducts = new List<ProductComboBoxDto>();
+            allProducts = new List<ProductComboViewModel>();
             availableProducts = new List<Product>();
 
             TextBoxHelper.SetupWatermarkTextBox(textBoxUnit, Resources.ShipmentQuantityWatermark);
@@ -129,7 +130,7 @@ namespace AutomechanicsProject.Formes
             {
                 isUpdatingText = true;
 
-                var selectedProduct = (ProductComboBoxDto)comboBoxProduct.SelectedItem;
+                var selectedProduct = (ProductComboViewModel)comboBoxProduct.SelectedItem;
                 comboBoxProduct.Text = $"{selectedProduct.Article} - {selectedProduct.Name}";
 
                 comboBoxProduct.SelectionStart = 0;
@@ -159,7 +160,7 @@ namespace AutomechanicsProject.Formes
                 e.SuppressKeyPress = true;
                 isUpdatingText = true;
 
-                var selectedProduct = (ProductComboBoxDto)comboBoxProduct.SelectedItem;
+                var selectedProduct = (ProductComboViewModel)comboBoxProduct.SelectedItem;
                 comboBoxProduct.Text = $"{selectedProduct.Article} - {selectedProduct.Name}";
                 comboBoxProduct.SelectionStart = 0;
                 comboBoxProduct.SelectionLength = 0;
@@ -202,7 +203,7 @@ namespace AutomechanicsProject.Formes
             string currentText = comboBoxProduct.Text;
 
             comboBoxProduct.DataSource = null;
-            comboBoxProduct.DisplayMember = "DisplayName";
+            comboBoxProduct.DisplayMember = "Text";
             comboBoxProduct.ValueMember = "Id";
             comboBoxProduct.DataSource = filteredProducts;
 
@@ -259,7 +260,7 @@ namespace AutomechanicsProject.Formes
             if (allProducts.Any())
             {
                 comboBoxProduct.DataSource = null;
-                comboBoxProduct.DisplayMember = "DisplayName";
+                comboBoxProduct.DisplayMember = "Text";
                 comboBoxProduct.ValueMember = "Id";
                 comboBoxProduct.DataSource = allProducts;
             }
@@ -268,12 +269,10 @@ namespace AutomechanicsProject.Formes
         /// <summary>
         /// Загружает все товары
         /// </summary>
-
         private void LoadProducts()
         {
             try
             {
-                // Загружаем все товары с остатком > 0
                 var productsList = db.Products
                     .Where(p => p.Balance > 0)
                     .Select(p => new
@@ -288,24 +287,20 @@ namespace AutomechanicsProject.Formes
                     })
                     .ToList();
 
-                // Группируем по названию и суммируем остатки
                 var products = productsList
-                    .GroupBy(p => p.Name)
-                    .Select(g => new ProductComboBoxDto
-                    {
-                        Id = g.First().Id,
-                        DisplayName = $"{g.First().Article} - {g.Key} (остаток: {g.Sum(x => x.Balance)} {g.First().UnitName})",
-                        ShortName = $"{g.First().Article} - {g.Key}",
-                        Article = g.First().Article,
-                        Name = g.Key,
-                        PurchaseCost = g.First().Price,
-                        SellingPrice = g.First().Price * 2,
-                        Balance = g.Sum(x => x.Balance),
-                        UnitName = g.First().UnitName,
-                        UnitId = g.First().UnitId
-                    })
-                    .OrderBy(p => p.Name)
-                    .ToList();
+    .GroupBy(p => p.Name)
+    .Select(g => new ProductComboViewModel
+    {
+        Id = g.First().Id,
+        Text = $"{g.First().Article} - {g.Key} (остаток: {g.Sum(x => x.Balance)} {g.First().UnitName})",
+        Article = g.First().Article,
+        Name = g.Key,
+        Price = g.First().Price,
+        Balance = g.Sum(x => x.Balance),
+        UnitName = g.First().UnitName,
+        UnitId = g.First().UnitId
+    })
+    .ToList();
 
                 allProducts = products;
                 LoadAllProductsToComboBox();
@@ -322,24 +317,26 @@ namespace AutomechanicsProject.Formes
                 MessageBox.Show(Resources.ErrorLoadProducts, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-        }        /// <summary>
-                 /// Загружает список получателей 
-                 /// </summary>
+        }        
+
+        /// <summary>
+        /// Загружает список получателей 
+        /// </summary>
         private void LoadRecipients()
         {
             try
             {
                 var recipients = db.Addresses
-                    .Where(a => a.CompanyName != null && a.CompanyName.Trim() != "" && a.CompanyName.Trim() != "-")
-                    .OrderBy(a => a.CompanyName)
-                    .Select(a => new RecipientComboBoxDto
-                    {
-                        Id = a.Id,
-                        CompanyName = a.CompanyName
-                    })
-                    .ToList();
+    .Where(a => a.CompanyName != null && a.CompanyName.Trim() != "" && a.CompanyName.Trim() != "-")
+    .OrderBy(a => a.CompanyName)
+    .Select(a => new ComboItemDto
+    {
+        Id = a.Id,
+        Text = a.CompanyName
+    })
+    .ToList();
 
-                comboBoxRecipient1.DisplayMember = "CompanyName";
+                comboBoxRecipient1.DisplayMember = "Text";     
                 comboBoxRecipient1.ValueMember = "Id";
                 comboBoxRecipient1.DataSource = recipients;
 
@@ -407,7 +404,6 @@ namespace AutomechanicsProject.Formes
                 return false;
             }
 
-            // Если выбран конкретный срок годности
             if (comboBoxExpiry.Enabled && comboBoxExpiry.SelectedItem != null)
             {
                 dynamic selectedExpiry = comboBoxExpiry.SelectedItem;
@@ -426,7 +422,6 @@ namespace AutomechanicsProject.Formes
                         return false;
                     }
 
-                    // Уменьшаем остаток в выбранной партии
                     productWithExpiry.Balance -= quantity;
                     db.SaveChanges();
 
@@ -442,8 +437,7 @@ namespace AutomechanicsProject.Formes
                 }
             }
 
-            // Если срок не выбран - берем первую доступную партию
-            var selectedProduct = (ProductComboBoxDto)comboBoxProduct.SelectedItem;
+            var selectedProduct = (ProductComboViewModel)comboBoxProduct.SelectedItem;
             var productToShip = db.Products.FirstOrDefault(p => p.Name == selectedProduct.Name && p.Balance > 0);
 
             if (productToShip == null)
@@ -461,7 +455,6 @@ namespace AutomechanicsProject.Formes
                 return false;
             }
 
-            // Уменьшаем остаток
             productToShip.Balance -= quantity;
             db.SaveChanges();
 
@@ -545,8 +538,8 @@ namespace AutomechanicsProject.Formes
             var recipientName = "Не выбран";
             if (comboBoxRecipient1.SelectedItem != null)
             {
-                var selectedRecipient = (RecipientComboBoxDto)comboBoxRecipient1.SelectedItem;
-                recipientName = selectedRecipient.CompanyName;
+                var selectedRecipient = (ComboItemDto)comboBoxRecipient1.SelectedItem;
+                recipientName = selectedRecipient.Text;
             }
 
             var displayList = shipmentItems.Select(item =>
@@ -560,15 +553,15 @@ namespace AutomechanicsProject.Formes
                 totalProfit += profit;
                 totalItemsCount += item.Quantity;
 
-                return new ShipmentDisplayItem
+                return new ShipmentViewModel
                 {
-                    Артикул = item.Article,
-                    Название = item.ProductName,
-                    Количество = item.Quantity,
-                    Цена = item.PurchasePrice,
-                    Прибыль = profit,
-                    Сумма = itemTotal,
-                    Кому = recipientName
+                    Article = item.Article,
+                    Name = item.ProductName,
+                    Quantity = item.Quantity,
+                    Price = item.PurchasePrice,
+                    Profit = profit,
+                    Total = itemTotal,
+                    RecipientName = recipientName
                 };
             }).ToList();
 
@@ -618,9 +611,9 @@ namespace AutomechanicsProject.Formes
 
             if (!IsRecipientSelected()) return;
 
-            var selectedRecipient = (RecipientComboBoxDto)comboBoxRecipient1.SelectedItem;
-            var recipientName = selectedRecipient.CompanyName;
-            var recipientId = (Guid)selectedRecipient.Id;
+            var selectedRecipient = (ComboItemDto)comboBoxRecipient1.SelectedItem;
+            var recipientName = selectedRecipient.Text;
+            var recipientId = selectedRecipient.Id;
 
             var confirmResult = MessageBox.Show(
                 string.Format(Resources.ConfirmShipment, recipientName, shipmentItems.Count, totalAmount),
@@ -724,7 +717,8 @@ namespace AutomechanicsProject.Formes
         {
             if (dataGridViewShipment.CurrentRow?.DataBoundItem == null) return;
 
-            var selectedItem = (ShipmentDisplayItem)dataGridViewShipment.CurrentRow.DataBoundItem; var productName = (string)selectedItem.Название;
+            var selectedItem = (ShipmentViewModel)dataGridViewShipment.CurrentRow.DataBoundItem;
+            var productName = selectedItem.Name;
 
             var result = MessageBox.Show(
                 string.Format(Resources.ConfirmRemoveShipmentItem, productName),
@@ -748,6 +742,7 @@ namespace AutomechanicsProject.Formes
         protected override void OnFormClosed(FormClosedEventArgs e)
         {
             base.OnFormClosed(e);
+            DbContextManager.ReleaseReference();
         }
     }
 }

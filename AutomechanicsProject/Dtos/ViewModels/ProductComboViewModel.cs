@@ -1,16 +1,17 @@
 ﻿using System;
 
-namespace AutomechanicsProject.Classes.Dtos  
+namespace AutomechanicsProject.ViewModels
 {
-    public class ProductComboBoxDto
+    /// <summary>
+    /// Для ComboBox 
+    /// </summary>
+    public class ProductComboViewModel
     {
         public Guid Id { get; set; }
-        public string DisplayName { get; set; }
-        public string ShortName { get; set; }
+        public string Text { get; set; }
         public string Article { get; set; }
         public string Name { get; set; }
-        public decimal PurchaseCost { get; set; }
-        public decimal SellingPrice { get; set; }
+        public decimal Price { get; set; }
         public int Balance { get; set; }
         public string UnitName { get; set; }
         public Guid UnitId { get; set; }

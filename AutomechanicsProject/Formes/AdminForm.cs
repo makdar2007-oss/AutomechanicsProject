@@ -1,11 +1,13 @@
 ﻿using AutomechanicsProject.Classes;
+using AutomechanicsProject.Dtos;
+using AutomechanicsProject.Dtos.Service;
 using AutomechanicsProject.Helpers;
 using AutomechanicsProject.Properties;
+using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
-using AutomechanicsProject.Classes.Dtos;
-using Microsoft.EntityFrameworkCore;
 
 namespace AutomechanicsProject.Formes
 {
@@ -367,64 +369,60 @@ namespace AutomechanicsProject.Formes
                     .Include(p => p.Category)
                     .Include(p => p.Unit)
                     .Where(p => p.Balance > 0)
-                    .Select(p => new
-                    {
-                        p.Id,
-                        p.Article,
-                        p.Name,
-                        CategoryName = p.Category.Name,
-                        UnitName = p.Unit.Name,
-                        p.ExpiryDate,
-                        p.Price,
-                        p.PurchasePrice,
-                        p.Balance
-                    })
-                    .ToList();  
+                    .ToList();
 
-                var query = products
-                    .GroupBy(p => p.Name)
-                    .Select(g => new
+                var productList = new List<ProductListItemDto>();
+
+                foreach (var product in products)
+                {
+                    var existingItem = productList.FirstOrDefault(p => p.Name == product.Name);
+                    if (existingItem != null)
                     {
-                        Артикул = g.First().Article,
-                        Название = g.Key,
-                        Категория = g.First().CategoryName,
-                        ЕдИзмерения = g.First().UnitName,
-                        СрокГодности = g.Where(x => x.ExpiryDate.HasValue)
-                                        .OrderBy(x => x.ExpiryDate)
-                                        .Select(x => x.ExpiryDate)
-                                        .FirstOrDefault(),
-                        Остаток = g.Sum(x => x.Balance),
-                        ЦенаЗакупки = g.First().Price,
-                        ТребуетСкидки = g.Where(x => x.ExpiryDate.HasValue)
-                                        .Any(x => x.ExpiryDate.Value > today &&
-                                                 (x.ExpiryDate.Value - today).Days <= 30),
-                        Просрочен = g.Where(x => x.ExpiryDate.HasValue)
-                                     .Any(x => x.ExpiryDate.Value < today),
-                        Цена = ChoosingCurrency.ConvertPrice(g.First().PurchasePrice)
-                    });
+                        existingItem.Balance += product.Balance;
+                    }
+                    else
+                    {
+                        var item = ProductMapper.ToListItemDto(product);
+                        productList.Add(item);
+                    }
+                }
 
                 if (!string.IsNullOrWhiteSpace(searchText) && searchText != Resources.SearchWatermark)
                 {
                     searchText = searchText.ToLower();
-                    query = query.Where(p =>
-                        p.Артикул.ToLower().Contains(searchText) ||
-                        p.Название.ToLower().Contains(searchText) ||
-                        p.Категория.ToLower().Contains(searchText));
+                    productList = productList
+                        .Where(p => p.Article.ToLower().Contains(searchText) ||
+                                   p.Name.ToLower().Contains(searchText) ||
+                                   p.CategoryName.ToLower().Contains(searchText))
+                        .ToList();
                 }
 
-                dataGridViewMainForm.DataSource = query.ToList();
+                var displayData = productList.Select(p => new
+                {
+                    p.Article,
+                    p.Name,
+                    p.CategoryName,
+                    p.UnitName,
+                    p.ExpiryDate,
+                    p.Balance,
+                    p.PurchasePrice,
+                    p.RequiresDiscount,
+                    p.IsExpired,
+                    Price = ChoosingCurrency.ConvertPrice(p.Price)
+                }).ToList();
+
+                dataGridViewMainForm.DataSource = displayData;
                 FormatDataGridViewColumns();
             }
             catch (Exception ex)
             {
                 Program.LogError("Ошибка при загрузке товаров.", ex);
                 MessageBox.Show(Resources.ErrorLoadProductsList, Resources.TitleError,
-                     MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-        }
-        /// <summary>
-        /// Настраивает форматирование колонок DataGridView
-        /// </summary>
+        }        /// <summary>
+                 /// Настраивает форматирование колонок DataGridView
+                 /// </summary>
         private void FormatDataGridViewColumns()
         {
             try
