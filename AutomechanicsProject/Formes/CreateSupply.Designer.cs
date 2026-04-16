@@ -265,7 +265,7 @@
             // comboBoxProduct
             // 
             this.comboBoxProduct.DropDownHeight = 150;
-            this.comboBoxProduct.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxProduct.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDown;
             this.comboBoxProduct.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.comboBoxProduct.FormattingEnabled = true;
             this.comboBoxProduct.IntegralHeight = false;

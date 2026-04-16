@@ -596,6 +596,24 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Срок годности в поставке не может превышать срок годности товара ({0}).
+        /// </summary>
+        public static string ErrorExpiryDateExceedsProduct {
+            get {
+                return ResourceManager.GetString("ErrorExpiryDateExceedsProduct", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Для этого товара требуется указать срок годности в поставке.
+        /// </summary>
+        public static string ErrorExpiryDateRequired {
+            get {
+                return ResourceManager.GetString("ErrorExpiryDateRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Ошибка при экспорте данных: {0}.
         /// </summary>
         public static string ErrorExportToCsvWithMessage {
@@ -882,6 +900,15 @@ namespace AutomechanicsProject.Properties {
         public static string ErrorNoDataToExport {
             get {
                 return ResourceManager.GetString("ErrorNoDataToExport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на У выбранного товара нет срока годности. Поле даты должно быть пустым..
+        /// </summary>
+        public static string ErrorNoExpiryDateAllowed {
+            get {
+                return ResourceManager.GetString("ErrorNoExpiryDateAllowed", resourceCulture);
             }
         }
         
@@ -1693,6 +1720,15 @@ namespace AutomechanicsProject.Properties {
         public static string UnknownSupplier {
             get {
                 return ResourceManager.GetString("UnknownSupplier", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на У выбранного товара нет срока годности. Дата поставки не требуется..
+        /// </summary>
+        public static string WarningNoProductExpiryDate {
+            get {
+                return ResourceManager.GetString("WarningNoProductExpiryDate", resourceCulture);
             }
         }
         

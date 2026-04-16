@@ -1,12 +1,13 @@
 ﻿using AutomechanicsProject.Classes;
+using AutomechanicsProject.Classes.Dtos;
 using AutomechanicsProject.Properties;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Microsoft.EntityFrameworkCore;
 
 namespace AutomechanicsProject.Formes
 {
@@ -20,10 +21,16 @@ namespace AutomechanicsProject.Formes
         private List<ProductDisplayItem> cachedProducts;
         private List<Supplier> cachedSuppliers;
         private ToolTip productToolTip;
+        private List<ProductComboBoxDto> allProductsForSearch;
+        private bool isClearingText = false;
+        private bool isUpdatingText = false;
 
         public CreateSupply()
         {
             InitializeComponent();
+            dateTimePickerExpiry.ShowCheckBox = true;
+            dateTimePickerExpiry.Checked = false;
+            dateTimePickerExpiry.MinDate = DateTime.Now.Date;
             DbContextManager.AddReference();
             LoadProductsFromDatabase();
             LoadSuppliersFromDatabase();
@@ -48,6 +55,12 @@ namespace AutomechanicsProject.Formes
 
             textBoxQuantity.KeyPress += ValidateNumberInput;
             textBoxPrice.KeyPress += ValidateDecimalInput;
+            comboBoxProduct.TextUpdate += ComboBoxProduct_TextUpdate;
+            comboBoxProduct.DropDown += ComboBoxProduct_DropDown;
+            comboBoxProduct.KeyDown += ComboBoxProduct_KeyDown;
+            comboBoxProduct.SelectionChangeCommitted += ComboBoxProduct_SelectionChangeCommitted;
+
+            comboBoxProduct.SelectedIndexChanged += OnProductSelectedChanged;
 
             var productToolTip = new ToolTip();
 
@@ -55,13 +68,162 @@ namespace AutomechanicsProject.Formes
             {
                 if (comboBoxProduct.SelectedItem is ProductDisplayItem product)
                 {
-                    productToolTip.Show(
-                        $"Артикул: {product.Article}\nНаименование: {product.Name}\nОстаток: {product.Balance} шт.",
-                        comboBoxProduct, 5, comboBoxProduct.Height, 3000);
+                    var tooltipText = $"Артикул: {product.Article}\nНаименование: {product.Name}\nОстаток: {product.Balance} шт.";
+                    if (!product.HasExpiryDate)
+                    {
+                        tooltipText += $" {Resources.WarningNoProductExpiryDate}";
+                    }
+                    else
+                    {
+                        tooltipText += $"Срок годности товара: {product.ProductExpiryDate.Value.ToShortDateString()}";
+                    }
+                    productToolTip.Show(tooltipText, comboBoxProduct, 5, comboBoxProduct.Height, 3000);
                 }
             };
 
             comboBoxProduct.DropDownClosed += (s, e) => productToolTip.Hide(comboBoxProduct);
+        }
+
+        /// <summary>
+        /// Обработчик изменения выбранного товара
+        /// </summary>
+        private void OnProductSelectedChanged(object sender, EventArgs e)
+        {
+            if (comboBoxProduct.SelectedItem != null)
+            {
+                var selectedProductDto = (ProductComboBoxDto)comboBoxProduct.SelectedItem;
+                var selectedProduct = cachedProducts.FirstOrDefault(p => p.Id == selectedProductDto.Id);
+
+                if (selectedProduct != null)
+                {
+                    if (!selectedProduct.HasExpiryDate)
+                    {
+                        dateTimePickerExpiry.Enabled = false;
+                        dateTimePickerExpiry.Checked = false;
+                    }
+                    else
+                    {
+                        dateTimePickerExpiry.Enabled = true;
+                        dateTimePickerExpiry.Checked = true;
+                    }
+                }
+            }
+            else
+            {
+                dateTimePickerExpiry.Enabled = true;
+                dateTimePickerExpiry.Checked = true;
+            }
+        }
+        /// <summary>
+        /// Обработчик выбора товара из списка
+        /// </summary>
+        private void ComboBoxProduct_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            if (comboBoxProduct.SelectedItem != null)
+            {
+                isUpdatingText = true;
+                var selectedProduct = (ProductComboBoxDto)comboBoxProduct.SelectedItem;
+                comboBoxProduct.Text = $"{selectedProduct.Article} - {selectedProduct.Name}";
+                comboBoxProduct.SelectionStart = 0;
+                comboBoxProduct.SelectionLength = 0;
+                isUpdatingText = false;
+            }
+        }
+
+        /// <summary>
+        /// Обработчик нажатия клавиш в выпадающем списке
+        /// </summary>
+        private void ComboBoxProduct_KeyDown(object sender, KeyEventArgs e)
+        {
+            if ((e.KeyCode == Keys.Back || e.KeyCode == Keys.Delete) && string.IsNullOrEmpty(comboBoxProduct.Text))
+            {
+                isClearingText = true;
+                LoadAllProductsToComboBox();
+                comboBoxProduct.Text = "";
+                comboBoxProduct.SelectedIndex = -1;
+                isClearingText = false;
+            }
+            else if (e.KeyCode == Keys.Enter && comboBoxProduct.SelectedItem != null)
+            {
+                e.SuppressKeyPress = true;
+                isUpdatingText = true;
+                var selectedProduct = (ProductComboBoxDto)comboBoxProduct.SelectedItem;
+                comboBoxProduct.Text = $"{selectedProduct.Article} - {selectedProduct.Name}";
+                comboBoxProduct.SelectionStart = 0;
+                comboBoxProduct.SelectionLength = 0;
+                isUpdatingText = false;
+            }
+        }
+
+        /// <summary>
+        /// Обработчик раскрытия выпадающего списка
+        /// </summary>
+        private void ComboBoxProduct_DropDown(object sender, EventArgs e)
+        {
+            string searchText = comboBoxProduct.Text;
+            if (!string.IsNullOrWhiteSpace(searchText))
+            {
+                FilterProducts(searchText);
+            }
+        }
+
+        /// <summary>
+        /// Обработчик изменения текста в выпадающем списке
+        /// </summary>
+        private void ComboBoxProduct_TextUpdate(object sender, EventArgs e)
+        {
+            if (isClearingText || isUpdatingText)
+                return;
+
+            string searchText = comboBoxProduct.Text;
+
+            if (string.IsNullOrWhiteSpace(searchText))
+            {
+                LoadAllProductsToComboBox();
+                comboBoxProduct.Text = "";
+                return;
+            }
+
+            FilterProducts(searchText);
+            comboBoxProduct.DroppedDown = true;
+        }
+
+        /// <summary>
+        /// Фильтрует товары и показывает все совпадения
+        /// </summary>
+        private void FilterProducts(string searchText)
+        {
+            if (isClearingText || isUpdatingText)
+                return;
+
+            var filteredProducts = allProductsForSearch
+                .Where(p => p.Name.ToLower().Contains(searchText.ToLower()) ||
+                           p.Article.ToLower().Contains(searchText.ToLower()))
+                .ToList();
+
+            string currentText = comboBoxProduct.Text;
+
+            comboBoxProduct.DataSource = null;
+            comboBoxProduct.DisplayMember = "DisplayName";
+            comboBoxProduct.ValueMember = "Id";
+            comboBoxProduct.DataSource = filteredProducts;
+
+            comboBoxProduct.Text = currentText;
+            comboBoxProduct.SelectionStart = comboBoxProduct.Text.Length;
+        }
+
+        /// <summary>
+        /// Загружает все товары в комбобокс
+        /// </summary>
+        private void LoadAllProductsToComboBox()
+        {
+            if (allProductsForSearch != null && allProductsForSearch.Any())
+            {
+                comboBoxProduct.DataSource = null;
+                comboBoxProduct.DisplayMember = "DisplayName";
+                comboBoxProduct.ValueMember = "Id";
+                comboBoxProduct.DataSource = allProductsForSearch;
+            }
         }
 
         /// <summary>
@@ -109,9 +271,21 @@ namespace AutomechanicsProject.Formes
                         Article = p.Article,
                         Name = p.Name,
                         Balance = p.Balance,
-                        IsActive = p.Balance > 0
+                        IsActive = p.Balance > 0,
+                        ProductExpiryDate = p.ExpiryDate
                     })
                     .AsNoTracking()
+                    .ToList();
+
+                allProductsForSearch = cachedProducts
+                    .Select(p => new ProductComboBoxDto
+                    {
+                        Id = p.Id,
+                        Article = p.Article,
+                        Name = p.Name,
+                        DisplayName = $"{p.Article} - {p.Name} (остаток: {p.Balance} шт.)",
+                        Balance = p.Balance
+                    })
                     .ToList();
 
                 if (cachedProducts != null && cachedProducts.Count > 0)
@@ -194,6 +368,9 @@ namespace AutomechanicsProject.Formes
                 return false;
             }
 
+            var selectedProductDto = (ProductComboBoxDto)comboBoxProduct.SelectedItem;
+            var selectedProduct = cachedProducts.FirstOrDefault(p => p.Id == selectedProductDto.Id);
+
             if (!int.TryParse(textBoxQuantity.Text, out int quantity) || quantity <= 0)
             {
                 MessageBox.Show(Resources.ErrorEnterValidQuantity, Resources.TitleWarning,
@@ -216,6 +393,36 @@ namespace AutomechanicsProject.Formes
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 comboBoxSupplier.Focus();
                 return false;
+            }
+
+            if (selectedProduct.HasExpiryDate)
+            {
+                if (!dateTimePickerExpiry.Checked || dateTimePickerExpiry.Value < DateTime.Now.Date)
+                {
+                    MessageBox.Show(Resources.ErrorExpiryDateRequired, Resources.TitleWarning,
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    dateTimePickerExpiry.Focus();
+                    return false;
+                }
+
+                if (dateTimePickerExpiry.Value > selectedProduct.ProductExpiryDate.Value)
+                {
+                    MessageBox.Show(string.Format(Resources.ErrorExpiryDateExceedsProduct,
+                        selectedProduct.ProductExpiryDate.Value.ToShortDateString()),
+                        Resources.TitleWarning,
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    dateTimePickerExpiry.Focus();
+                    return false;
+                }
+            }
+            else
+            {
+                if (dateTimePickerExpiry.Checked)
+                {
+                    MessageBox.Show(Resources.ErrorNoExpiryDateAllowed, Resources.TitleWarning,
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return false;
+                }
             }
 
             return true;
@@ -269,10 +476,17 @@ namespace AutomechanicsProject.Formes
             if (!ValidateInputs())
                 return;
 
-            var selectedItem = (ProductDisplayItem)comboBoxProduct.SelectedItem;
+            var selectedProductDto = (ProductComboBoxDto)comboBoxProduct.SelectedItem;
+            var selectedItem = cachedProducts.FirstOrDefault(p => p.Id == selectedProductDto.Id);
             Supplier selectedSupplier = (Supplier)comboBoxSupplier.SelectedItem;
             int quantity = int.Parse(textBoxQuantity.Text);
             decimal price = decimal.Parse(textBoxPrice.Text.Replace('.', ','));
+
+            DateTime? supplyExpiryDate = null;
+            if (selectedItem.HasExpiryDate)
+            {
+                supplyExpiryDate = dateTimePickerExpiry.Value;
+            }
 
             SupplyPosition position = new SupplyPosition
             {
@@ -285,7 +499,7 @@ namespace AutomechanicsProject.Formes
                 SupplyId = Guid.Empty,
                 SupplierId = selectedSupplier.Id,
                 SupplierName = selectedSupplier.Name,
-                ExpiryDate = dateTimePickerExpiry.Value
+                ExpiryDate = supplyExpiryDate
             };
 
             positions.Add(position);
@@ -302,7 +516,6 @@ namespace AutomechanicsProject.Formes
             UpdateTotalAmount();
             ClearInputFields();
         }
-
         /// <summary>
         /// Импортирует данные поставки из JSON файла
         /// </summary>
@@ -337,8 +550,8 @@ namespace AutomechanicsProject.Formes
                                 comboBoxCurrency.SelectedIndex = index;
                         }
 
-                        int importedCount = 0;
-                        int notFoundCount = 0;
+                        var importedCount = 0;
+                        var notFoundCount = 0;
                         List<string> notFoundArticles = new List<string>();
 
                         foreach (var item in importData.Products)
@@ -358,17 +571,19 @@ namespace AutomechanicsProject.Formes
 
                             if (supplier == null && cachedSuppliers.Count > 0)
                                 supplier = cachedSuppliers[0];
-
                             DateTime? expiryDate = null;
-                            if (!string.IsNullOrEmpty(item.ExpiryDate))
+                            if (product.HasExpiryDate)  
                             {
-                                if (DateTime.TryParse(item.ExpiryDate, out DateTime parsedDate))
+                                if (!string.IsNullOrEmpty(item.ExpiryDate))
                                 {
-                                    expiryDate = parsedDate;
+                                    if (DateTime.TryParse(item.ExpiryDate, out DateTime parsedDate))
+                                    {
+                                        expiryDate = parsedDate;
+                                    }
                                 }
+                                if (expiryDate == null)
+                                    expiryDate = dateTimePickerExpiry.Value;
                             }
-                            if (expiryDate == null)
-                                expiryDate = dateTimePickerExpiry.Value;
 
                             SupplyPosition position = new SupplyPosition
                             {

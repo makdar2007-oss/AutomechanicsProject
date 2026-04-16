@@ -159,6 +159,15 @@
   </data>
 
 	<!-- Сообщения ошибок -->
+	<data name="ErrorExpiryDateRequired" xml:space="preserve">
+    <value>Для этого товара требуется указать срок годности в поставке</value>
+</data>
+	<data name="ErrorExpiryDateExceedsProduct" xml:space="preserve">
+    <value>Срок годности в поставке не может превышать срок годности товара ({0})</value>
+</data>
+	<data name="ErrorNoExpiryDateAllowed" xml:space="preserve">
+    <value>У выбранного товара нет срока годности. Поле даты должно быть пустым.</value>
+</data>
 	<data name="ErrorAddCategory" xml:space="preserve">
     <value>Не удалось добавить категорию. Попробуйте позже.</value>
   </data>
@@ -494,6 +503,9 @@
 	<data name="WarningShipmentsWithoutItems" xml:space="preserve">
     <value>Найдено {0} отгрузок, но ни одна не содержит позиций!</value>
   </data>
+	<data name="WarningNoProductExpiryDate" xml:space="preserve">
+    <value>У выбранного товара нет срока годности. Дата поставки не требуется.</value>
+</data>
 
 	<!-- Успешные сообщения -->
 	<data name="SuccessAutoWriteOffMessage" xml:space="preserve">
