@@ -265,7 +265,6 @@
             // comboBoxProduct
             // 
             this.comboBoxProduct.DropDownHeight = 150;
-            this.comboBoxProduct.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDown;
             this.comboBoxProduct.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.comboBoxProduct.FormattingEnabled = true;
             this.comboBoxProduct.IntegralHeight = false;
@@ -301,13 +300,11 @@
             // comboBoxCurrency
             // 
             this.comboBoxCurrency.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxCurrency.Enabled = false;
             this.comboBoxCurrency.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.comboBoxCurrency.FormattingEnabled = true;
             this.comboBoxCurrency.Items.AddRange(new object[] {
-            "RUB",
-            "USD",
-            "EUR",
-            "CNY"});
+            "RUB"});
             this.comboBoxCurrency.Location = new System.Drawing.Point(32, 336);
             this.comboBoxCurrency.Margin = new System.Windows.Forms.Padding(2);
             this.comboBoxCurrency.Name = "comboBoxCurrency";
@@ -370,9 +367,9 @@
             this.labelCurrency.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.labelCurrency.Location = new System.Drawing.Point(28, 314);
             this.labelCurrency.Name = "labelCurrency";
-            this.labelCurrency.Size = new System.Drawing.Size(234, 20);
+            this.labelCurrency.Size = new System.Drawing.Size(149, 20);
             this.labelCurrency.TabIndex = 10;
-            this.labelCurrency.Text = "Выберите валюту закупки:";
+            this.labelCurrency.Text = "Валюта закупки:";
             // 
             // labelPrice
             // 
@@ -405,7 +402,6 @@
             this.Name = "CreateSupply";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Формирование поставки";
-            this.Load += new System.EventHandler(this.CreateSupply_Load);
             this.panelSupply.ResumeLayout(false);
             this.panelSupply.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewSupply)).EndInit();

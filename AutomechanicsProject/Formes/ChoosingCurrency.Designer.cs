@@ -58,6 +58,7 @@
             // 
             this.comboBoxCurrency.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxCurrency.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.comboBoxCurrency.DropDownHeight = 200;
             this.comboBoxCurrency.FormattingEnabled = true;
             this.comboBoxCurrency.Location = new System.Drawing.Point(83, 135);
             this.comboBoxCurrency.Margin = new System.Windows.Forms.Padding(2);

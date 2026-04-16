@@ -43,16 +43,6 @@ namespace AutomechanicsProject.Formes
         /// </summary>
         private void SetupEvents()
         {
-            comboBoxCurrency.SelectedIndexChanged += (s, e) =>
-            {
-                if (comboBoxCurrency.SelectedItem != null)
-                {
-                    currentCurrency = comboBoxCurrency.SelectedItem.ToString();
-                    UpdateTotalAmount();
-                    UpdatePricesInGrid();
-                }
-            };
-
             textBoxQuantity.KeyPress += ValidateNumberInput;
             textBoxPrice.KeyPress += ValidateDecimalInput;
             comboBoxProduct.TextUpdate += ComboBoxProduct_TextUpdate;
@@ -345,17 +335,6 @@ namespace AutomechanicsProject.Formes
         }
 
         /// <summary>
-        /// Обработчик события загрузки формы
-        /// </summary>
-        private void CreateSupply_Load(object sender, EventArgs e)
-        {
-            if (comboBoxCurrency.Items.Count > 0 && comboBoxCurrency.SelectedIndex == -1)
-            {
-                comboBoxCurrency.SelectedIndex = 0;
-            }
-        }
-
-        /// <summary>
         /// Проверяет корректность заполнения всех обязательных полей
         /// </summary>
         private bool ValidateInputs()
@@ -444,7 +423,7 @@ namespace AutomechanicsProject.Formes
         private void UpdateTotalAmount()
         {
             decimal total = positions.Sum(p => p.Quantity * p.Price);
-            labelTotalValue.Text = $"{total:N2} {currentCurrency}";
+            labelTotalValue.Text = $"{total:N2} RUB";
         }
 
         /// <summary>
@@ -508,8 +487,8 @@ namespace AutomechanicsProject.Formes
                 position.Article,
                 position.ProductName,
                 position.Quantity,
-                $"{position.Price:N2} {currentCurrency}",
-                $"{position.Quantity * position.Price:N2} {currentCurrency}",
+                $"{position.Price:N2} RUB",
+                $"{position.Quantity * position.Price:N2} RUB",
                 selectedSupplier.Name,
                 position.ExpiryDate?.ToShortDateString() ?? "");
 
@@ -798,5 +777,7 @@ namespace AutomechanicsProject.Formes
             DbContextManager.ReleaseReference();
             base.OnFormClosed(e);
         }
+
+        
     }
 }
