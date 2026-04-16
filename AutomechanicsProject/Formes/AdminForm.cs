@@ -223,7 +223,7 @@ namespace AutomechanicsProject.Formes
             }
             catch (Exception ex)
             {
-                Program.LogError("Ошибка при открытии формы истории", ex); 
+                Program.LogError("Ошибка при открытии формы истории", ex);
                 MessageBox.Show(Resources.ErrorOpenHistory, Resources.TitleError,
                      MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -363,40 +363,44 @@ namespace AutomechanicsProject.Formes
             {
                 var today = DateTime.Today;
 
-                var query = db.Products
+                var products = db.Products
+                    .Include(p => p.Category)
+                    .Include(p => p.Unit)
                     .Where(p => p.Balance > 0)
                     .Select(p => new
                     {
+                        p.Id,
                         p.Article,
                         p.Name,
                         CategoryName = p.Category.Name,
                         UnitName = p.Unit.Name,
                         p.ExpiryDate,
                         p.Price,
+                        p.PurchasePrice,
                         p.Balance
                     })
-                    .AsEnumerable()
-                    .Select(p => new
-                    {
-                        Артикул = p.Article,
-                        Название = p.Name,
-                        Категория = p.CategoryName,
-                        ЕдИзмерения = p.UnitName,
-                        СрокГодности = p.ExpiryDate,
-                        Остаток = p.Balance,
-                        ЦенаЗакупки = p.Price,
-                        ТребуетСкидки = p.ExpiryDate.HasValue &&
-               p.ExpiryDate.Value > today &&
-               (p.ExpiryDate.Value - today).Days <= 30,
+                    .ToList();  
 
-                        Просрочен = p.ExpiryDate.HasValue && p.ExpiryDate.Value < today,
-                        Цена = ChoosingCurrency.ConvertPrice(
-                            p.ExpiryDate.HasValue &&
-                            p.ExpiryDate.Value > today &&
-                            (p.ExpiryDate.Value - today).Days <= 30
-                                ? p.Price * 2 * 0.9m
-                                : p.Price * 2
-                        )
+                var query = products
+                    .GroupBy(p => p.Name)
+                    .Select(g => new
+                    {
+                        Артикул = g.First().Article,
+                        Название = g.Key,
+                        Категория = g.First().CategoryName,
+                        ЕдИзмерения = g.First().UnitName,
+                        СрокГодности = g.Where(x => x.ExpiryDate.HasValue)
+                                        .OrderBy(x => x.ExpiryDate)
+                                        .Select(x => x.ExpiryDate)
+                                        .FirstOrDefault(),
+                        Остаток = g.Sum(x => x.Balance),
+                        ЦенаЗакупки = g.First().Price,
+                        ТребуетСкидки = g.Where(x => x.ExpiryDate.HasValue)
+                                        .Any(x => x.ExpiryDate.Value > today &&
+                                                 (x.ExpiryDate.Value - today).Days <= 30),
+                        Просрочен = g.Where(x => x.ExpiryDate.HasValue)
+                                     .Any(x => x.ExpiryDate.Value < today),
+                        Цена = ChoosingCurrency.ConvertPrice(g.First().PurchasePrice)
                     });
 
                 if (!string.IsNullOrWhiteSpace(searchText) && searchText != Resources.SearchWatermark)
@@ -418,7 +422,6 @@ namespace AutomechanicsProject.Formes
                      MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
         /// <summary>
         /// Настраивает форматирование колонок DataGridView
         /// </summary>

@@ -145,7 +145,6 @@ namespace AutomechanicsProject.Formes
         /// <summary>
         /// Работа с кэшем
         /// </summary>
-        /// <returns></returns>
         private bool LoadFromCache()
         {
             try

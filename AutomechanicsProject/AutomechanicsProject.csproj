@@ -245,9 +245,13 @@
     <Compile Include="Classes\SupplyPosition.cs" />
     <Compile Include="Classes\Unit.cs" />
     <Compile Include="Dtos\CategoryComboBoxDto.cs" />
+    <Compile Include="Dtos\ProductBatchDto.cs" />
     <Compile Include="Dtos\ProductComboBoxDto.cs" />
+    <Compile Include="Dtos\ProductDisplayDto.cs" />
     <Compile Include="Dtos\RecipientComboBoxDto.cs" />
     <Compile Include="Dtos\ShipmentDisplayItem.cs" />
+    <Compile Include="Dtos\ShipmentItemDto.cs" />
+    <Compile Include="Dtos\ShipmentResultDto.cs" />
     <Compile Include="Dtos\UnitComboBoxDto.cs" />
     <Compile Include="Formes\ChoosingCurrency.cs">
       <SubType>Form</SubType>
@@ -274,6 +278,7 @@
       <DependentUpon>ReportForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Helpers\CurrencyStorage.cs" />
+    <Compile Include="Helpers\DataGridViewHelper.cs" />
     <Compile Include="Helpers\FormHelper.cs" />
     <Compile Include="Helpers\PasswordHasher.cs" />
     <Compile Include="Helpers\TextBoxHelper.cs" />
@@ -415,6 +420,7 @@
     <None Include="Shipment History\История_отгрузок_20260409_011659.csv" />
     <None Include="Shipment History\История_отгрузок_20260409_163554.csv" />
     <None Include="Shipment History\Отчет_20260412_025940.csv" />
+    <None Include="Supply\Supply1.json" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -426,6 +432,7 @@
   <ItemGroup>
     <Content Include="Images\photo_2026-03-02_20-14-38.jpg" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

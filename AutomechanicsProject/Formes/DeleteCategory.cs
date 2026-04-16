@@ -39,7 +39,7 @@ namespace AutomechanicsProject.Formes
             {
                 var categories = db.Categories
                     .OrderBy(c => c.Name)
-                    .Select(c => new CategoryComboBoxDto  
+                    .Select(c => new CategoryComboBoxDto
                     {
                         Id = c.Id,
                         DisplayName = $"{c.Name} (товаров: {db.Products.Count(p => p.CategoryId == c.Id)})",

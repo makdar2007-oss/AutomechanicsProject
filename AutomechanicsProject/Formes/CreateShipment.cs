@@ -83,44 +83,35 @@ namespace AutomechanicsProject.Formes
                 var selectedProduct = db.Products.FirstOrDefault(p => p.Id == productId);
                 if (selectedProduct == null) return;
 
-                var productsWithSameArticle = db.Products
-                    .Where(p => p.Article == selectedProduct.Article && p.Balance > 0)
-                    .ToList();
-
-                if (productsWithSameArticle.Count <= 1)
-                {
-                    comboBoxExpiry.Enabled = false;
-                    comboBoxExpiry.DataSource = null;
-                    comboBoxExpiry.Items.Clear();
-                    return;
-                }
-
-                var expiryDates = productsWithSameArticle
+                var productsWithSameName = db.Products
+                    .Where(p => p.Name == selectedProduct.Name && p.Balance > 0)
                     .Select(p => new
                     {
                         ProductId = p.Id,
                         DisplayText = p.ExpiryDate.HasValue
                             ? $"Срок: {p.ExpiryDate.Value:dd.MM.yyyy} (остаток: {p.Balance})"
-                            : "Без срока (остаток: {p.Balance})",
+                            : $"Без срока (остаток: {p.Balance})",
                         ExpiryDate = p.ExpiryDate,
                         Balance = p.Balance,
                         Price = p.Price
                     })
-                    .Distinct()
+                    .OrderBy(p => p.ExpiryDate)
                     .ToList();
 
-                if (expiryDates.Any())
+                if (productsWithSameName.Count >= 1)
                 {
-                    comboBoxExpiry.Enabled = true;
+                    comboBoxExpiry.Enabled = productsWithSameName.Count > 1;
                     comboBoxExpiry.DisplayMember = "DisplayText";
                     comboBoxExpiry.ValueMember = "ProductId";
-                    comboBoxExpiry.DataSource = expiryDates;
-                    comboBoxExpiry.SelectedIndex = 0;
+                    comboBoxExpiry.DataSource = productsWithSameName;
+                    if (productsWithSameName.Any())
+                        comboBoxExpiry.SelectedIndex = 0;
                 }
                 else
                 {
                     comboBoxExpiry.Enabled = false;
                     comboBoxExpiry.DataSource = null;
+                    comboBoxExpiry.Items.Clear();
                 }
             }
             catch (Exception ex)
@@ -129,7 +120,6 @@ namespace AutomechanicsProject.Formes
                 comboBoxExpiry.Enabled = false;
             }
         }
-
         /// <summary>
         /// Обработчик выбора товара из списка
         /// </summary>
@@ -139,8 +129,8 @@ namespace AutomechanicsProject.Formes
             {
                 isUpdatingText = true;
 
-                var selectedProduct = (ProductComboBoxDto)comboBoxProduct.SelectedItem;  
-                comboBoxProduct.Text = $"{selectedProduct.Article} - {selectedProduct.Name}";  
+                var selectedProduct = (ProductComboBoxDto)comboBoxProduct.SelectedItem;
+                comboBoxProduct.Text = $"{selectedProduct.Article} - {selectedProduct.Name}";
 
                 comboBoxProduct.SelectionStart = 0;
                 comboBoxProduct.SelectionLength = 0;
@@ -148,7 +138,7 @@ namespace AutomechanicsProject.Formes
                 isUpdatingText = false;
 
                 var productId = selectedProduct.Id;
-                LoadExpiryDatesForProduct(productId);  
+                LoadExpiryDatesForProduct(productId);
             }
         }
 
@@ -283,22 +273,36 @@ namespace AutomechanicsProject.Formes
         {
             try
             {
-                var products = db.Products
-                    .Include(p => p.Category)
-                    .Include(p => p.Unit)
+                // Загружаем все товары с остатком > 0
+                var productsList = db.Products
                     .Where(p => p.Balance > 0)
-                    .Select(p => new ProductComboBoxDto  
+                    .Select(p => new
                     {
-                        Id = p.Id,
-                        DisplayName = $"{p.Article} - {p.Name} (остаток: {p.Balance} {p.Unit.Name})",
-                        ShortName = $"{p.Article} - {p.Name}",
-                        Article = p.Article,
-                        Name = p.Name,
-                        PurchaseCost = p.Price,
-                        SellingPrice = p.Price * 2,
-                        Balance = p.Balance,
+                        p.Id,
+                        p.Article,
+                        p.Name,
+                        p.Balance,
+                        p.Price,
                         UnitName = p.Unit != null ? p.Unit.Name : "шт",
-                        UnitId = p.UnitId
+                        p.UnitId
+                    })
+                    .ToList();
+
+                // Группируем по названию и суммируем остатки
+                var products = productsList
+                    .GroupBy(p => p.Name)
+                    .Select(g => new ProductComboBoxDto
+                    {
+                        Id = g.First().Id,
+                        DisplayName = $"{g.First().Article} - {g.Key} (остаток: {g.Sum(x => x.Balance)} {g.First().UnitName})",
+                        ShortName = $"{g.First().Article} - {g.Key}",
+                        Article = g.First().Article,
+                        Name = g.Key,
+                        PurchaseCost = g.First().Price,
+                        SellingPrice = g.First().Price * 2,
+                        Balance = g.Sum(x => x.Balance),
+                        UnitName = g.First().UnitName,
+                        UnitId = g.First().UnitId
                     })
                     .OrderBy(p => p.Name)
                     .ToList();
@@ -318,11 +322,9 @@ namespace AutomechanicsProject.Formes
                 MessageBox.Show(Resources.ErrorLoadProducts, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-        }
-
-        /// <summary>
-        /// Загружает список получателей 
-        /// </summary>
+        }        /// <summary>
+                 /// Загружает список получателей 
+                 /// </summary>
         private void LoadRecipients()
         {
             try
@@ -330,7 +332,7 @@ namespace AutomechanicsProject.Formes
                 var recipients = db.Addresses
                     .Where(a => a.CompanyName != null && a.CompanyName.Trim() != "" && a.CompanyName.Trim() != "-")
                     .OrderBy(a => a.CompanyName)
-                    .Select(a => new RecipientComboBoxDto  
+                    .Select(a => new RecipientComboBoxDto
                     {
                         Id = a.Id,
                         CompanyName = a.CompanyName
@@ -405,12 +407,12 @@ namespace AutomechanicsProject.Formes
                 return false;
             }
 
-            var selectedProduct = (ProductComboBoxDto)comboBoxProduct.SelectedItem;
-
+            // Если выбран конкретный срок годности
             if (comboBoxExpiry.Enabled && comboBoxExpiry.SelectedItem != null)
             {
-                var selectedExpiryProduct = (Product)comboBoxExpiry.SelectedItem;
-                var actualProductId = selectedExpiryProduct.Id;
+                dynamic selectedExpiry = comboBoxExpiry.SelectedItem;
+                Guid actualProductId = selectedExpiry.ProductId;
+
                 var productWithExpiry = db.Products.FirstOrDefault(p => p.Id == actualProductId);
 
                 if (productWithExpiry != null)
@@ -424,6 +426,10 @@ namespace AutomechanicsProject.Formes
                         return false;
                     }
 
+                    // Уменьшаем остаток в выбранной партии
+                    productWithExpiry.Balance -= quantity;
+                    db.SaveChanges();
+
                     return AddOrUpdateShipmentItem(
                         productWithExpiry.Id,
                         productWithExpiry.Name,
@@ -436,26 +442,39 @@ namespace AutomechanicsProject.Formes
                 }
             }
 
-            if (quantity > selectedProduct.Balance)
+            // Если срок не выбран - берем первую доступную партию
+            var selectedProduct = (ProductComboBoxDto)comboBoxProduct.SelectedItem;
+            var productToShip = db.Products.FirstOrDefault(p => p.Name == selectedProduct.Name && p.Balance > 0);
+
+            if (productToShip == null)
+            {
+                MessageBox.Show(Resources.ErrorSelectProduct, Resources.TitleWarning);
+                return false;
+            }
+
+            if (quantity > productToShip.Balance)
             {
                 MessageBox.Show(string.Format(Resources.ErrorInsufficientStockWithDetails,
-                    selectedProduct.Balance, selectedProduct.UnitName),
+                    productToShip.Balance, productToShip.Unit?.Name ?? "шт"),
                     Resources.TitleWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 textBoxUnit.Focus();
                 return false;
             }
 
+            // Уменьшаем остаток
+            productToShip.Balance -= quantity;
+            db.SaveChanges();
+
             return AddOrUpdateShipmentItem(
-                selectedProduct.Id,
-                selectedProduct.Name,
-                selectedProduct.Article,
+                productToShip.Id,
+                productToShip.Name,
+                productToShip.Article,
                 quantity,
-                selectedProduct.PurchaseCost,
-                selectedProduct.SellingPrice,
-                selectedProduct.UnitName
+                productToShip.Price,
+                productToShip.Price * 2,
+                productToShip.Unit?.Name ?? "шт"
             );
         }
-
         /// <summary>
         /// Очищает выпадающий список сроков годности
         /// </summary>

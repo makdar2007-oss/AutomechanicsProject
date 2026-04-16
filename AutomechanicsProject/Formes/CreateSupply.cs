@@ -282,7 +282,10 @@ namespace AutomechanicsProject.Formes
                 Article = selectedItem.Article,
                 Quantity = quantity,
                 Price = price,
-                SupplyId = Guid.Empty
+                SupplyId = Guid.Empty,
+                SupplierId = selectedSupplier.Id,
+                SupplierName = selectedSupplier.Name,
+                ExpiryDate = dateTimePickerExpiry.Value
             };
 
             positions.Add(position);
@@ -294,8 +297,7 @@ namespace AutomechanicsProject.Formes
                 $"{position.Price:N2} {currentCurrency}",
                 $"{position.Quantity * position.Price:N2} {currentCurrency}",
                 selectedSupplier.Name,
-                dateTimePickerExpiry.Value.ToShortDateString()
-            );
+                position.ExpiryDate?.ToShortDateString() ?? "");
 
             UpdateTotalAmount();
             ClearInputFields();
@@ -357,6 +359,17 @@ namespace AutomechanicsProject.Formes
                             if (supplier == null && cachedSuppliers.Count > 0)
                                 supplier = cachedSuppliers[0];
 
+                            DateTime? expiryDate = null;
+                            if (!string.IsNullOrEmpty(item.ExpiryDate))
+                            {
+                                if (DateTime.TryParse(item.ExpiryDate, out DateTime parsedDate))
+                                {
+                                    expiryDate = parsedDate;
+                                }
+                            }
+                            if (expiryDate == null)
+                                expiryDate = dateTimePickerExpiry.Value;
+
                             SupplyPosition position = new SupplyPosition
                             {
                                 Id = Guid.NewGuid(),
@@ -365,7 +378,10 @@ namespace AutomechanicsProject.Formes
                                 Article = product.Article,
                                 Quantity = item.Quantity,
                                 Price = item.Price,
-                                SupplyId = Guid.Empty
+                                SupplyId = Guid.Empty,
+                                SupplierId = supplier?.Id,
+                                SupplierName = supplier?.Name,
+                                ExpiryDate = expiryDate
                             };
 
                             positions.Add(position);
@@ -377,7 +393,7 @@ namespace AutomechanicsProject.Formes
                                 $"{position.Price:N2} {currentCurrency}",
                                 $"{position.Quantity * position.Price:N2} {currentCurrency}",
                                 supplier?.Name ?? Resources.UnknownSupplier,
-                                !string.IsNullOrEmpty(item.ExpiryDate) ? item.ExpiryDate : dateTimePickerExpiry.Value.ToShortDateString()
+                                position.ExpiryDate?.ToShortDateString() ?? ""
                             );
 
                             importedCount++;
@@ -404,8 +420,8 @@ namespace AutomechanicsProject.Formes
             }
         }
 
-        /// <summary>
-        /// Отменяет создание поставки и закрывает форму
+        /// <summary>         
+        /// Отменяет создание поставки и закрывает форму         
         /// </summary>
         private void ButtonCancel_Click(object sender, EventArgs e)
         {
@@ -439,13 +455,6 @@ namespace AutomechanicsProject.Formes
                 return;
             }
 
-            if (comboBoxSupplier.SelectedItem == null)
-            {
-                MessageBox.Show(Resources.ErrorSelectSupplier, Resources.TitleWarning,
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
             DialogResult confirmResult = MessageBox.Show(
                 string.Format(Resources.ConfirmSupplyFormat, labelTotalValue.Text),
                 Resources.TitleConfirmation,
@@ -465,7 +474,6 @@ namespace AutomechanicsProject.Formes
                     {
                         try
                         {
-                            Supplier selectedSupplier = (Supplier)comboBoxSupplier.SelectedItem;
                             Guid currentUserId = GetCurrentUserId();
 
                             Supply supply = new Supply
@@ -473,7 +481,6 @@ namespace AutomechanicsProject.Formes
                                 Id = Guid.NewGuid(),
                                 OrderNumber = GenerateOrderNumber(),
                                 DateCreated = DateTime.Now,
-                                SupplierId = selectedSupplier.Id,
                                 UserId = currentUserId,
                                 Status = Resources.SupplyStatusCompleted,
                                 TotalAmount = positions.Sum(p => p.Quantity * p.Price)
@@ -491,7 +498,10 @@ namespace AutomechanicsProject.Formes
                                     Quantity = pos.Quantity,
                                     Price = pos.Price,
                                     ProductName = pos.ProductName,
-                                    Article = pos.Article
+                                    Article = pos.Article,
+                                    SupplierId = pos.SupplierId,
+                                    SupplierName = pos.SupplierName,
+                                    ExpiryDate = pos.ExpiryDate
                                 });
 
                                 var product = await db.Products.FindAsync(pos.ProductId);
@@ -503,6 +513,8 @@ namespace AutomechanicsProject.Formes
                                     {
                                         product.Price = pos.Price;
                                     }
+
+
                                 }
                             }
 

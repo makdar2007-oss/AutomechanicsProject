@@ -43,7 +43,7 @@ namespace AutomechanicsProject.Formes
             comboBoxUnit.SelectedIndexChanged += (s, e) => hasChanges = true;  // Изменено
             textBoxPrice.TextChanged += (s, e) => hasChanges = true;
 
-            LoadUnits();  
+            LoadUnits();
             LoadProductData();
         }
 
@@ -56,7 +56,7 @@ namespace AutomechanicsProject.Formes
             {
                 var units = db.Units
                     .OrderBy(u => u.Name)
-                    .Select(u => new UnitComboBoxDto 
+                    .Select(u => new UnitComboBoxDto
                     {
                         Id = u.Id,
                         DisplayName = $"{u.Name} ({u.ShortName})",
@@ -91,7 +91,7 @@ namespace AutomechanicsProject.Formes
             {
                 currentProduct = db.Products
                     .Include(p => p.Category)
-                    .Include(p => p.Unit)  
+                    .Include(p => p.Unit)
                     .FirstOrDefault(p => p.Id == productId);
 
                 if (currentProduct == null)
@@ -176,7 +176,7 @@ namespace AutomechanicsProject.Formes
                 }
                 currentProduct.CategoryId = category.Id;
 
-                var selectedUnit = (UnitComboBoxDto)comboBoxUnit.SelectedItem; 
+                var selectedUnit = (UnitComboBoxDto)comboBoxUnit.SelectedItem;
                 currentProduct.UnitId = selectedUnit.Id;
 
                 currentProduct.Price = price;

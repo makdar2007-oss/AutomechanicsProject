@@ -42,6 +42,12 @@ namespace AutomechanicsProject.Classes
         public decimal Price { get; set; }
 
         /// <summary>
+        /// Срок годности
+        /// </summary>
+        [Column("expiry_date")]
+        public DateTime? ExpiryDate { get; set; }
+
+        /// <summary>
         /// Наименование товара (для истории)
         /// </summary>
         [Column("product_name")]
@@ -54,6 +60,18 @@ namespace AutomechanicsProject.Classes
         public string Article { get; set; }
 
         /// <summary>
+        /// Идентификатор поставщика
+        /// </summary>
+        [Column("supplier_id")]
+        public Guid? SupplierId { get; set; }
+
+        /// <summary>
+        /// Наименование поставщика (для истории)
+        /// </summary>
+        [Column("supplier_name")]
+        public string SupplierName { get; set; }
+
+        /// <summary>
         /// Товар (навигационное свойство)
         /// </summary>
         [ForeignKey("ProductId")]
@@ -64,5 +82,11 @@ namespace AutomechanicsProject.Classes
         /// </summary>
         [ForeignKey("SupplyId")]
         public virtual Supply Supply { get; set; }
+
+        /// <summary>
+        /// Поставщик (навигационное свойство)
+        /// </summary>
+        [ForeignKey("SupplierId")]
+        public virtual Supplier Supplier { get; set; }
     }
 }

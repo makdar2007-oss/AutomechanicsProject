@@ -76,7 +76,7 @@ namespace AutomechanicsProject.Formes
             {
                 var units = db.Units
                     .OrderBy(u => u.Name)
-                    .Select(u => new UnitComboBoxDto 
+                    .Select(u => new UnitComboBoxDto
                     {
                         Id = u.Id,
                         DisplayName = $"{u.Name} ({u.ShortName})",
@@ -140,7 +140,7 @@ namespace AutomechanicsProject.Formes
                     Id = Guid.NewGuid(),
                     Article = textBoxArt.Text.Trim(),
                     Name = textBoxName.Text.Trim(),
-                    CategoryId = selectedCategory.Id, 
+                    CategoryId = selectedCategory.Id,
                     UnitId = selectedUnit.Id,
                     Price = price,
                     Balance = 0,
@@ -199,7 +199,7 @@ namespace AutomechanicsProject.Formes
             var hasInput = !((textBoxArt.Text == Resources.ProductArticleWatermark || string.IsNullOrWhiteSpace(textBoxArt.Text)) &&
                    (textBoxName.Text == Resources.ProductNameWatermark || string.IsNullOrWhiteSpace(textBoxName.Text)) &&
                    (comboBoxCategory.Text == Resources.CategorySelectWatermark || string.IsNullOrWhiteSpace(comboBoxCategory.Text)) &&
-                   (comboBoxUnit.Text == Resources.UnitSelectWatermark || string.IsNullOrWhiteSpace(comboBoxUnit.Text)) &&  
+                   (comboBoxUnit.Text == Resources.UnitSelectWatermark || string.IsNullOrWhiteSpace(comboBoxUnit.Text)) &&
                    (textBoxPrice.Text == Resources.ProductPriceWatermark || string.IsNullOrWhiteSpace(textBoxPrice.Text)));
 
             if (hasInput && !FormHelper.ShowCancelConfirmation(Resources.ConfirmCancelAddProduct))

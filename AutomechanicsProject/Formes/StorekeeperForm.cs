@@ -3,6 +3,7 @@ using AutomechanicsProject.Helpers;
 using AutomechanicsProject.Properties;
 using System;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using System.Windows.Forms;
 using AutomechanicsProject.Classes.Dtos;
 
@@ -222,50 +223,87 @@ namespace AutomechanicsProject.Formes
         /// <summary>
         /// Загружает список товаров из базы данных с учётом поискового запроса
         /// </summary>
+        // В StorekeeperForm замените LoadProducts на этот код (скопирован из AdminForm)
         private void LoadProducts(string searchText = "")
         {
             try
             {
                 var today = DateTime.Today;
-                var normalizedSearch = NormalizeSearch(searchText);
 
-                var query = db.Products
+                var products = db.Products
+                    .Include(p => p.Category)
+                    .Include(p => p.Unit)
                     .Where(p => p.Balance > 0)
                     .Select(p => new
                     {
                         p.Id,
-                        Артикул = p.Article,
-                        Название = p.Name,
-                        Категория = p.Category.Name,
-                        ЕдИзмерения = p.Unit.Name,
-                        СрокГодности = p.ExpiryDate,
-                        Цена = ChoosingCurrency.ConvertPrice(p.Price * 2),
-                        ЦенаЗакупки = p.Price,
-                        Остаток = p.Balance,
-                        ТребуетСкидки = p.ExpiryDate.HasValue &&
-                            p.ExpiryDate.Value > today &&
-                            (p.ExpiryDate.Value - today).Days <= 30,
-                        Просрочен = p.ExpiryDate.HasValue && p.ExpiryDate.Value < today
+                        p.Article,
+                        p.Name,
+                        CategoryName = p.Category.Name,
+                        UnitName = p.Unit.Name,
+                        p.ExpiryDate,
+                        p.Price,
+                        p.PurchasePrice,
+                        p.Balance
+                    })
+                    .ToList();
+
+                var query = products
+                    .GroupBy(p => p.Name)
+                    .Select(g => new
+                    {
+                        Артикул = g.First().Article,
+                        Название = g.Key,
+                        Категория = g.First().CategoryName,
+                        ЕдИзмерения = g.First().UnitName,
+                        СрокГодности = g.Where(x => x.ExpiryDate.HasValue)
+                                        .OrderBy(x => x.ExpiryDate)
+                                        .Select(x => x.ExpiryDate)
+                                        .FirstOrDefault(),
+                        Остаток = g.Sum(x => x.Balance),
+                        ЦенаЗакупки = g.First().Price,
+                        ТребуетСкидки = g.Where(x => x.ExpiryDate.HasValue)
+                                        .Any(x => x.ExpiryDate.Value > today &&
+                                                 (x.ExpiryDate.Value - today).Days <= 30),
+                        Просрочен = g.Where(x => x.ExpiryDate.HasValue)
+                                     .Any(x => x.ExpiryDate.Value < today),
+                        Цена = ChoosingCurrency.ConvertPrice(g.First().PurchasePrice) 
                     });
 
-                if (!string.IsNullOrEmpty(normalizedSearch))
+                if (!string.IsNullOrWhiteSpace(searchText) && searchText != Resources.SearchWatermark)
                 {
+                    searchText = searchText.ToLower();
                     query = query.Where(p =>
-                        p.Артикул.ToLower().Contains(normalizedSearch) ||
-                        p.Название.ToLower().Contains(normalizedSearch) ||
-                        p.Категория.ToLower().Contains(normalizedSearch));
+                        p.Артикул.ToLower().Contains(searchText) ||
+                        p.Название.ToLower().Contains(searchText) ||
+                        p.Категория.ToLower().Contains(searchText));
                 }
 
-                var products = query.ToList();
-                dataGridViewStore.DataSource = products;
-                ConfigureGrid();
-                FormatDateColumn();
+                dataGridViewStore.DataSource = query.ToList();
+                ConfigureGrid(); 
             }
             catch (Exception ex)
             {
-                Program.LogError("Ошибка при загрузке товаров", ex);
+                Program.LogError("Ошибка при загрузке товаров.", ex);
                 MessageBox.Show(Resources.ErrorLoadProductsList, Resources.TitleError,
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                     MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        /// <summary>
+        /// Конвертируем цену
+        /// </summary>
+        private decimal ConvertPriceSafely(decimal originalPrice)
+        {
+            try
+            {
+                if (originalPrice <= 0) return 0;
+
+                return ChoosingCurrency.ConvertPrice(originalPrice);
+            }
+            catch (Exception ex)
+            {
+                Program.LogError($"Ошибка конвертации цены {originalPrice}", ex);
+                return originalPrice; 
             }
         }
 

@@ -99,7 +99,7 @@ namespace AutomechanicsProject.Formes
                             Цена = item.Price,
                             Прибыль = 0m,
                             Сумма = item.Price * item.Quantity,
-                            Получатель = supply.Supplier?.Name ?? "Не указан",
+                            Получатель = item.SupplierName ?? "Не указан",
                             Кладовщик = supply.User?.FullName ?? "Не указан",
                             Дата = supply.DateCreated.ToString("dd.MM.yyyy HH:mm")
                         });

@@ -85,19 +85,19 @@
 
 	<!-- Подтверждающие сообщения -->
 	<data name="ConfirmCancelAddProduct" xml:space="preserve">
-    <value>Вы уверены, что хотите отменить добавление товара?\nВсе введенные данные будут потеряны.</value>
+    <value>Вы уверены, что хотите отменить добавление товара?&#xD;&#xA;&#xD;&#xA;Все введенные данные будут потеряны.</value>
   </data>
 	<data name="ConfirmCancelDelete" xml:space="preserve">
     <value>Вы уверены, что хотите отменить удаление?</value>
   </data>
 	<data name="ConfirmCancelEdit" xml:space="preserve">
-    <value>У вас есть несохраненные изменения.\nВы действительно хотите отменить редактирование?</value>
+    <value>У вас есть несохраненные изменения.&#xD;&#xA;&#xD;&#xA;Вы действительно хотите отменить редактирование?</value>
   </data>
 	<data name="ConfirmCancelEditWithDetails" xml:space="preserve">
-    <value>У вас есть несохраненные изменения.\n\nВы действительно хотите отменить редактирование?</value>
+    <value>У вас есть несохраненные изменения.&#xD;&#xA;&#xD;&#xA;Вы действительно хотите отменить редактирование?</value>
   </data>
 	<data name="ConfirmCancelShipment" xml:space="preserve">
-    <value>У вас есть добавленные товары в списке отгрузки.\nВы действительно хотите отменить создание отгрузки?</value>
+    <value>У вас есть добавленные товары в списке отгрузки.&#xD;&#xA;&#xD;&#xA;Вы действительно хотите отменить создание отгрузки?</value>
   </data>
 	<data name="ConfirmCancelSupply" xml:space="preserve">
     <value>Отменить поставку? Все данные будут потеряны.</value>
@@ -106,19 +106,19 @@
     <value>Вы действительно хотите удалить категорию "{0}"?</value>
   </data>
 	<data name="ConfirmDeleteCategoryWithProducts" xml:space="preserve">
-    <value>В категории "{0}" находится {1} товаров.\n\nВы уверены, что хотите удалить категорию и все товары в ней?\nЭто действие нельзя отменить.</value>
+    <value>В категории "{0}" находится {1} товаров.&#xD;&#xA;&#xD;&#xA;Вы уверены, что хотите удалить категорию и все товары в ней?&#xD;&#xA;Это действие нельзя отменить.</value>
   </data>
 	<data name="ConfirmDeleteProduct" xml:space="preserve">
-    <value>Вы действительно хотите удалить товар?\n\nАртикул: {0}\nНазвание: {1}\nКатегория: {2}\nЦена: {3:F2}\nОстаток: {4} {5}\n\nЭто действие нельзя отменить!</value>
+    <value>Вы действительно хотите удалить товар?&#xD;&#xA;&#xD;&#xA;Артикул: {0}&#xD;&#xA;Название: {1}&#xD;&#xA;Категория: {2}&#xD;&#xA;Цена: {3:F2}&#xD;&#xA;Остаток: {4} {5}&#xD;&#xA;&#xD;&#xA;Это действие нельзя отменить!</value>
   </data>
 	<data name="ConfirmRemoveShipmentItem" xml:space="preserve">
     <value>Удалить товар "{0}" из списка отгрузки?</value>
   </data>
 	<data name="ConfirmShipment" xml:space="preserve">
-    <value>Подтвердить отгрузку?\n\nПолучатель: {0}\nКоличество позиций: {1}\nОбщая сумма: {2:C2}</value>
+    <value>Подтвердить отгрузку?&#xD;&#xA;&#xD;&#xA;Получатель: {0}&#xD;&#xA;Количество позиций: {1}&#xD;&#xA;Общая сумма: {2:C2}</value>
   </data>
 	<data name="ConfirmSupplyFormat" xml:space="preserve">
-    <value>Подтвердить поставку?\n\nОбщая сумма: {0}</value>
+    <value>Подтвердить поставку?&#xD;&#xA;Общая сумма: {0}</value>
   </data>
 
 	<!-- Валюта -->
@@ -126,7 +126,7 @@
     <value>Белорусский рубль</value>
   </data>
 	<data name="CurrencyChangeConfirm" xml:space="preserve">
-    <value>Валюта изменена с {0} на {1}\n\tКурс: 1 RUB = {2:F4} {3} \n\nВсе цены (кроме закупочных) будут пересчитаны в {4}.\nПродолжить?</value>
+    <value>Валюта изменена с {0} на {1}&#xD;&#xA;Курс: 1 RUB = {2:F4} {3} &#xD;&#xA;&#xD;&#xA;Все цены (кроме закупочных) будут пересчитаны в {4}.&#xD;&#xA;Продолжить?</value>
   </data>
 	<data name="CurrencyChangeTitle" xml:space="preserve">
     <value>Изменение валюты</value>
@@ -172,7 +172,7 @@
     <value>Неверный логин или пароль!</value>
   </data>
 	<data name="ErrorCannotDeleteCategoryWithShipments" xml:space="preserve">
-    <value>Невозможно удалить категорию, так как некоторые товары используются в отгрузках.\nСначала удалите связанные отгрузки.</value>
+    <value>Невозможно удалить категорию, так как некоторые товары используются в отгрузках.&#xD;&#xA;Сначала удалите связанные отгрузки.</value>
   </data>
 	<data name="ErrorCategoryExists" xml:space="preserve">
     <value>Категория с таким названием уже существует!</value>
@@ -181,7 +181,7 @@
     <value>Категория не найдена в базе данных!</value>
   </data>
 	<data name="ErrorCreateShipment" xml:space="preserve">
-    <value>Не удалось оформить отгрузку.\n\nОшибка: {0}</value>
+    <value>Не удалось оформить отгрузку.&#xD;&#xA;&#xD;&#xA;Ошибка: {0}</value>
   </data>
 	<data name="ErrorDeleteCategory" xml:space="preserve">
     <value>Не удалось удалить категорию. Попробуйте позже.</value>
@@ -220,7 +220,7 @@
     <value>Заполните все обязательные поля!</value>
   </data>
 	<data name="ErrorFixFormErrors" xml:space="preserve">
-    <value>Пожалуйста, исправьте ошибки в форме.\nПоля, выделенные розовым, заполнены неверно.</value>
+    <value>Пожалуйста, исправьте ошибки в форме.&#xD;&#xA;Поля, выделенные розовым, заполнены неверно.</value>
   </data>
 	<data name="ErrorFormatColumnsMessage" xml:space="preserve">
     <value>Ошибка при отображении таблицы. Некоторые колонки могут быть отображены некорректно.</value>
@@ -238,7 +238,7 @@
     <value>Не найдено в каталоге</value>
   </data>
 	<data name="ErrorInsufficientStockWithDetails" xml:space="preserve">
-    <value>Недостаточно товара на складе!\nДоступно: {0} {1}</value>
+    <value>Недостаточно товара на складе!&#xD;&#xA;Доступно: {0} {1}</value>
   </data>
 	<data name="ErrorLoadCategories" xml:space="preserve">
     <value>Не удалось загрузить категории</value>
@@ -325,7 +325,7 @@
     <value>Ошибка при регистрации. Попробуйте позже.</value>
   </data>
 	<data name="ErrorRoleNotFound" xml:space="preserve">
-    <value>Ошибка: роль 'Кладовщик' не найдена!\nОбратитесь к администратору.</value>
+    <value>Ошибка: роль 'Кладовщик' не найдена!&#xD;&#xA;Обратитесь к администратору.</value>
   </data>
 	<data name="ErrorSelectCategory" xml:space="preserve">
     <value>Выберите категорию!</value>
@@ -369,7 +369,6 @@
 	<data name="ErrorInvalidSurname" xml:space="preserve">
     <value>Фамилия должна содержать только русские буквы, дефис и пробел.</value>
   </data>
-
 	<data name="ErrorEnterName" xml:space="preserve">
     <value>Введите имя</value>
   </data>
@@ -379,14 +378,12 @@
 	<data name="ErrorNameLength" xml:space="preserve">
     <value>Имя должно быть от 2 до 100 символов.</value>
   </data>
-
 	<data name="ErrorInvalidLastname" xml:space="preserve">
     <value>Отчество должно содержать только русские буквы, дефис и пробел.</value>
   </data>
 	<data name="ErrorLastnameLength" xml:space="preserve">
     <value>Отчество должно быть от 2 до 100 символов.</value>
   </data>
-
 	<data name="ErrorEnterLogin" xml:space="preserve">
     <value>Введите логин</value>
   </data>
@@ -396,7 +393,6 @@
 	<data name="ErrorLoginLength" xml:space="preserve">
     <value>Логин должен быть от 3 до 20 символов.</value>
   </data>
-
 	<data name="ErrorEnterPassword" xml:space="preserve">
     <value>Введите пароль</value>
   </data>
@@ -409,7 +405,6 @@
 	<data name="ErrorPasswordMismatch" xml:space="preserve">
     <value>Пароли не совпадают!</value>
   </data>
-
 	<data name="ErrorGeneric" xml:space="preserve">
     <value>Произошла ошибка. Попробуйте позже.</value>
   </data>
@@ -434,7 +429,7 @@
     <value>Нет товаров в наличии для отгрузки!</value>
   </data>
 	<data name="InfoNoRecipientsAvailable" xml:space="preserve">
-    <value>Нет доступных получателей!\nОбратитесь к администратору для добавления компаний.</value>
+    <value>Нет доступных получателей!&#xD;&#xA;Обратитесь к администратору для добавления компаний.</value>
   </data>
 	<data name="InfoUsingCachedCurrencies" xml:space="preserve">
     <value>Используются сохранённые курсы валют (интернет недоступен)</value>
@@ -467,7 +462,7 @@
     <value>Пожалуйста, выберите валюту</value>
   </data>
 	<data name="ProductAlreadyInList" xml:space="preserve">
-    <value>Товар "{0}" уже добавлен в список.\nТекущее количество: {1} {2}\n\nЗаменить количество новым значением?</value>
+    <value>Товар "{0}" уже добавлен в список.&#xD;&#xA;Текущее количество: {1} {2}&#xD;&#xA;&#xD;&#xA;Заменить количество новым значением?</value>
   </data>
 	<data name="SelectCategoryForDelete" xml:space="preserve">
     <value>Выберите категорию для удаления</value>
@@ -535,13 +530,13 @@
     <value>Товар успешно обновлен!</value>
   </data>
 	<data name="SuccessRegistrationWithDetails" xml:space="preserve">
-    <value>Регистрация успешна!\n\nЛогин: {0}\nФИО: {1}\n\nТеперь вы можете войти в систему.</value>
+    <value>Регистрация успешна!&#xD;&#xA;&#xD;&#xA;Логин: {0}&#xD;&#xA;ФИО: {1}&#xD;&#xA;&#xD;&#xA;Теперь вы можете войти в систему.</value>
   </data>
 	<data name="SuccessShipmentCreatedWithDetails" xml:space="preserve">
-    <value>Отгрузка успешно оформлена!\n\nПолучатель: {0}\nКоличество позиций: {1}\nОбщая сумма: {2:C2}</value>
+    <value>Отгрузка успешно оформлена!&#xD;&#xA;&#xD;&#xA;Получатель: {0}&#xD;&#xA;Количество позиций: {1}&#xD;&#xA;Общая сумма: {2:C2}</value>
   </data>
 	<data name="SuccessSupplyFormat" xml:space="preserve">
-    <value>Поставка оформлена!\n\nНомер: {0}\nДата: {1}\nТоваров в поставке: {2}\nОбщая сумма: {3}</value>
+    <value>Поставка оформлена!&#xD;&#xA;&#xD;&#xA;Номер: {0}&#xD;&#xA;Дата: {1}&#xD;&#xA;Товаров в поставке: {2}&#xD;&#xA;Общая сумма: {3}</value>
   </data>
 
 	<!-- Названия -->

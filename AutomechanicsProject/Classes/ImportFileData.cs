@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using AutomechanicsProject.Classes;
+using System.Collections.Generic;
 
-namespace AutomechanicsProject.Classes
+/// <summary>
+/// Класс для десериализации JSON файла импорта
+/// </summary>
+public class ImportFileData
 {
-    public class ImportFileData
-    {
-        public List<ImportProductItem> Products { get; set; }
-        public string Currency { get; set; }
-        public string OrderNumber { get; set; }
-    }
+    public string Currency { get; set; }
+    public List<ImportProductItem> Products { get; set; }
 }
