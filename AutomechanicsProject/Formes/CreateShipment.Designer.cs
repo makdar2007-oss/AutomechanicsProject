@@ -1,4 +1,6 @@
-﻿namespace AutomechanicsProject.Formes
+﻿using System.Windows.Forms;
+
+namespace AutomechanicsProject.Formes
 {
     partial class CreateShipment
     {

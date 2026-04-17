@@ -287,6 +287,7 @@
     </Compile>
     <Compile Include="Helpers\ComboBoxHelper.cs" />
     <Compile Include="Helpers\ControlHelper.cs" />
+    <Compile Include="Helpers\CurrencyHelper.cs" />
     <Compile Include="Helpers\CurrencyStorage.cs" />
     <Compile Include="Helpers\GridViewHelper.cs" />
     <Compile Include="Helpers\DateTimeHelper.cs" />
@@ -294,6 +295,7 @@
     <Compile Include="Helpers\FormHelper.cs" />
     <Compile Include="Helpers\ParseHelper.cs" />
     <Compile Include="Helpers\PasswordHasher.cs" />
+    <Compile Include="Helpers\SearchableComboBoxHelper.cs" />
     <Compile Include="Helpers\TextBoxHelper.cs" />
     <Compile Include="Classes\User.cs" />
     <Compile Include="Formes\AddProduct.cs">
@@ -365,6 +367,7 @@
     <Compile Include="Helpers\Validation.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service\ExpiredProductsService.cs" />
     <EmbeddedResource Include="Formes\AddCategory.resx">
       <DependentUpon>AddCategory.cs</DependentUpon>
     </EmbeddedResource>

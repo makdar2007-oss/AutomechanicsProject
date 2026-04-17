@@ -9,7 +9,7 @@ namespace AutomechanicsProject.Classes
     /// <summary>
     /// Информация о валюте
     /// </summary>
-    internal class CurrencyInfo
+    public class CurrencyInfo
     {
         public string Code { get; set; }
         public decimal Rate { get; set; }

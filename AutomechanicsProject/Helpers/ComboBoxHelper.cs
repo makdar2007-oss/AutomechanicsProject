@@ -10,12 +10,12 @@ using System.Windows.Forms;
 namespace AutomechanicsProject.Helpers
 {
     /// <summary>
-    /// Вспомогательный класс для работы с ComboBox
+    /// Вспомогательный класс для работы с выпадающим списком
     /// </summary>
     public static class ComboBoxHelper
     {
         /// <summary>
-        /// Привязывает данные к ComboBox
+        /// Привязывает данные 
         /// </summary>
         public static void Bind<T>(ComboBox comboBox, List<T> data, string displayMember = "Text", string valueMember = "Id")
         {
@@ -27,7 +27,7 @@ namespace AutomechanicsProject.Helpers
         }
 
         /// <summary>
-        /// Загружает категории в ComboBox
+        /// Загружает категории 
         /// </summary>
         public static void LoadCategories(ComboBox comboBox, DateBase db, bool showProductCount = false)
         {
@@ -46,7 +46,7 @@ namespace AutomechanicsProject.Helpers
         }
 
         /// <summary>
-        /// Загружает единицы измерения в ComboBox
+        /// Загружает единицы измерения 
         /// </summary>
         public static void LoadUnits(ComboBox comboBox, DateBase db)
         {
@@ -63,7 +63,7 @@ namespace AutomechanicsProject.Helpers
         }
 
         /// <summary>
-        /// Загружает поставщиков в ComboBox
+        /// Загружает поставщиков 
         /// </summary>
         public static void LoadSuppliers(ComboBox comboBox, DateBase db)
         {
@@ -80,7 +80,7 @@ namespace AutomechanicsProject.Helpers
         }
 
         /// <summary>
-        /// Загружает получателей в ComboBox
+        /// Загружает получателей 
         /// </summary>
         public static void LoadRecipients(ComboBox comboBox, DateBase db)
         {
@@ -129,7 +129,7 @@ namespace AutomechanicsProject.Helpers
         }
 
         /// <summary>
-        /// Проверяет, выбран ли элемент в ComboBox
+        /// Проверяет, выбран ли элемент 
         /// </summary>
         public static bool IsSelected(ComboBox comboBox)
         {
@@ -137,7 +137,7 @@ namespace AutomechanicsProject.Helpers
         }
 
         /// <summary>
-        /// Очищает выбранный элемент в ComboBox
+        /// Очищает выбранный элемент
         /// </summary>
         public static void ClearSelection(ComboBox comboBox)
         {

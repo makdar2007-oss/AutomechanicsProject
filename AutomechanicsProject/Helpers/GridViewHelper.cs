@@ -164,6 +164,7 @@ namespace AutomechanicsProject.Helpers
             if (grid.Columns[columnName] != null)
             {
                 grid.Columns[columnName].DefaultCellStyle.Format = "F2";
+                grid.Columns[columnName].DefaultCellStyle.FormatProvider = System.Globalization.CultureInfo.GetCultureInfo("ru-RU");
                 grid.Columns[columnName].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
                 grid.Columns[columnName].HeaderText = $"Цена ({currencyCode})";
             }

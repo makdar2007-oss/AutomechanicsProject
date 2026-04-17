@@ -479,6 +479,15 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Нельзя изменить валюту после добавления позиций в поставку..
+        /// </summary>
+        public static string ErrorCurrencyFixed {
+            get {
+                return ResourceManager.GetString("ErrorCurrencyFixed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Не удалось удалить категорию. Попробуйте позже..
         /// </summary>
         public static string ErrorDeleteCategory {

@@ -82,10 +82,10 @@ namespace AutomechanicsProject.Mappers
                 Name = dto.Name,
                 CategoryId = dto.CategoryId,
                 UnitId = dto.UnitId,
-                PurchasePrice = dto.Price,
+                PurchasePrice = 0,
                 Price = dto.Price,
-                Balance = 0,
-                ExpiryDate = dto.HasExpiryDate ? DateTime.Today.AddYears(1) : (DateTime?)null
+                ExpiryDate = null,  
+                BatchNumber = null
             };
         }
 

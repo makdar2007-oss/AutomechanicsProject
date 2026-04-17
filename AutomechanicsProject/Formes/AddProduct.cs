@@ -57,32 +57,15 @@ namespace AutomechanicsProject.Formes
         {
             try
             {
-                var units = db.Units
-                    .OrderBy(u => u.Name)
-                    .Select(u => new ComboItemDto
-                    {
-                        Id = u.Id,
-                        Text = $"{u.Name} ({u.ShortName})"
-                    })
-                    .ToList();
-
-                comboBoxUnit.DataSource = units;
-                comboBoxUnit.DisplayMember = "Text";
-                comboBoxUnit.ValueMember = "Id";
-
-                if (comboBoxUnit.Items.Count > 0)
-                {
-                    comboBoxUnit.SelectedIndex = -1;
-                }
+                ComboBoxHelper.LoadUnits(comboBoxUnit, db);
             }
             catch (Exception ex)
             {
                 Program.LogError("Ошибка при загрузке единиц измерения", ex);
-                MessageBox.Show(Resources.ErrorLoadUnits,
-                    Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(Resources.ErrorLoadUnits, Resources.TitleError,
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
         /// <summary>
         /// Обработчик нажатия кнопки "Добавить"
         /// Сохранение нового товара в базу данных

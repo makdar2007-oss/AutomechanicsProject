@@ -1,4 +1,5 @@
 ﻿using AutomechanicsProject.Classes;
+using AutomechanicsProject.ViewModels;
 using AutomechanicsProject.Dtos.UI;
 using AutomechanicsProject.Helpers;
 using AutomechanicsProject.Properties;
@@ -19,204 +20,110 @@ namespace AutomechanicsProject.Formes
     {
         private List<SupplyPosition> positions = new List<SupplyPosition>();
         private string currentCurrency = "RUB";
+        private decimal currentCurrencyRate = 1.0m;
+        private bool isCurrencyFixed = false;
+        private List<CurrencyInfo> currencies;
         private List<ProductDisplayItem> cachedProducts;
         private List<ComboItemDto> cachedSuppliers;
         private ToolTip productToolTip;
-        private List<ProductComboDto> allProductsForSearch;
-        private bool isClearingText = false;
-        private bool isUpdatingText = false;
+        private List<ProductComboViewModel> allProductsForSearch;
+        private SearchableComboBoxHelper.ComboBoxState comboBoxState;
 
         public CreateSupply()
         {
             InitializeComponent();
             DbContextManager.AddReference();
+        }
+
+        /// <summary>
+        /// Обработчик загрузки формы
+        /// </summary>
+        private void CreateSupply_Load(object sender, EventArgs e)
+        {
             LoadProductsFromDatabase();
+            LoadCurrencies();
             LoadSuppliersFromDatabase();
-            SetupEvents();
 
+            comboBoxProduct.Text = "";
+            comboBoxProduct.SelectedIndex = -1;
         }
 
         /// <summary>
-        /// Настраивает обработчики событий для элементов управления
+        /// Настраивает выпадающий список для поиска по товарам
         /// </summary>
-        private void SetupEvents()
+        private void SetupSearchableComboBox()
         {
-            textBoxQuantity.KeyPress += ValidateNumberInput;
-            textBoxPrice.KeyPress += ValidateDecimalInput;
-            comboBoxProduct.TextUpdate += ComboBoxProduct_TextUpdate;
-            comboBoxProduct.DropDown += ComboBoxProduct_DropDown;
-            comboBoxProduct.KeyDown += ComboBoxProduct_KeyDown;
-            comboBoxProduct.SelectionChangeCommitted += ComboBoxProduct_SelectionChangeCommitted;
+            comboBoxState = new SearchableComboBoxHelper.ComboBoxState();
 
-            comboBoxProduct.SelectedIndexChanged += OnProductSelectedChanged;
+            SearchableComboBoxHelper.SetupProductSearchComboBox(
+                comboBoxProduct,
+                comboBoxState,
+                allProductsForSearch,
+                OnProductSelected
+            );
+        }
 
-            productToolTip = new ToolTip();  
+        private void OnProductSelected(ProductComboViewModel selectedProduct)
+        {
+            var product = cachedProducts.FirstOrDefault(p => p.Id == selectedProduct.Id);
+            bool hasExpiryDate = product?.HasExpiryDate == true;
 
-            comboBoxProduct.MouseHover += (s, e) =>
+            dateTimePickerExpiry.Enabled = hasExpiryDate;
+            dateTimePickerExpiry.Checked = hasExpiryDate;
+        }
+
+        /// <summary>
+        /// Загружает список валют в выпадающий список
+        /// </summary>
+        private void LoadCurrencies()
+        {
+            currencies = CurrencyHelper.GetCurrencies();
+
+            comboBoxCurrency.DataSource = currencies;
+            comboBoxCurrency.DisplayMember = "DisplayText";
+            comboBoxCurrency.ValueMember = "Code";
+
+            comboBoxCurrency.SelectedIndex = 0;
+            currentCurrency = "RUB";
+
+            comboBoxCurrency.SelectedIndexChanged += ComboBoxCurrency_SelectedIndexChanged;
+        }
+
+        /// <summary>
+        /// Обработчик изменения выбранной валюты
+        /// </summary>
+        private void ComboBoxCurrency_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (isCurrencyFixed && positions.Count > 0)
             {
-                if (comboBoxProduct.SelectedItem is ProductComboDto selectedProductDto)
+                var previousCurrency = currencies.FirstOrDefault(c => c.Code == currentCurrency);
+                if (previousCurrency != null)
                 {
-                    var product = cachedProducts.FirstOrDefault(p => p.Id == selectedProductDto.Id);
-                    if (product != null)
-                    {
-                        var tooltipText = $"Артикул: {product.Article}\nНаименование: {product.Name}\nОстаток: {product.Balance} шт.";
-                        if (!product.HasExpiryDate)
-                        {
-                            tooltipText += $" {Resources.WarningNoProductExpiryDate}";
-                        }
-                        else
-                        {
-                            tooltipText += $"\nСрок годности товара: {product.ProductExpiryDate.Value.ToShortDateString()}";
-                        }
-                        productToolTip.Show(tooltipText, comboBoxProduct, 5, comboBoxProduct.Height, 3000);
-                    }
+                    comboBoxCurrency.SelectedItem = previousCurrency;
                 }
-            };
+                MessageBox.Show(Resources.ErrorCurrencyFixed, Resources.TitleWarning,
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
-            comboBoxProduct.DropDownClosed += (s, e) => productToolTip.Hide(comboBoxProduct);
-        }
-        /// <summary>
-        /// Обработчик изменения выбранного товара
-        /// </summary>
-        private void OnProductSelectedChanged(object sender, EventArgs e)
-        {
-            if (comboBoxProduct.SelectedItem != null)
+            var selectedCurrency = comboBoxCurrency.SelectedItem as CurrencyInfo;
+            if (selectedCurrency == null) return;
+
+            try
             {
-                var selectedProductDto = (ProductComboDto)comboBoxProduct.SelectedItem;
-                var selectedProduct = cachedProducts.FirstOrDefault(p => p.Id == selectedProductDto.Id);
-
-                if (selectedProduct != null)
+                if (positions.Count == 0)
                 {
-                    if (!selectedProduct.HasExpiryDate)
-                    {
-                        dateTimePickerExpiry.Enabled = false;
-                        dateTimePickerExpiry.Checked = false;
-                    }
-                    else
-                    {
-                        dateTimePickerExpiry.Enabled = true;
-                        dateTimePickerExpiry.Checked = true;
-                    }
+                    currentCurrency = selectedCurrency.Code;
+                    currentCurrencyRate = selectedCurrency.Rate;
                 }
+                UpdatePricesInGrid();
+                UpdateTotalAmount();
             }
-            else
+            catch (Exception ex)
             {
-                dateTimePickerExpiry.Enabled = true;
-                dateTimePickerExpiry.Checked = true;
+                Program.LogError("Ошибка при смене валюты", ex);
             }
         }
-        /// <summary>
-        /// Обработчик выбора товара из списка
-        /// </summary>
-        private void ComboBoxProduct_SelectionChangeCommitted(object sender, EventArgs e)
-        {
-            if (comboBoxProduct.SelectedItem != null)
-            {
-                isUpdatingText = true;
-                var selectedProduct = (ProductComboDto)comboBoxProduct.SelectedItem;
-                comboBoxProduct.Text = FormatHelper.FormatProductShort(selectedProduct.Article, selectedProduct.Name); 
-                comboBoxProduct.SelectionStart = 0;
-                comboBoxProduct.SelectionLength = 0;
-                isUpdatingText = false;
-            }
-        }
-
-        /// <summary>
-        /// Обработчик нажатия клавиш в выпадающем списке
-        /// </summary>
-        private void ComboBoxProduct_KeyDown(object sender, KeyEventArgs e)
-        {
-            if ((e.KeyCode == Keys.Back || e.KeyCode == Keys.Delete) && string.IsNullOrEmpty(comboBoxProduct.Text))
-            {
-                isClearingText = true;
-                LoadAllProductsToComboBox();
-                comboBoxProduct.Text = "";
-                comboBoxProduct.SelectedIndex = -1;
-                isClearingText = false;
-            }
-            else if (e.KeyCode == Keys.Enter && comboBoxProduct.SelectedItem != null)
-            {
-                e.SuppressKeyPress = true;
-                isUpdatingText = true;
-                var selectedProduct = (ProductComboDto)comboBoxProduct.SelectedItem;
-                comboBoxProduct.Text = FormatHelper.FormatProductShort(selectedProduct.Article, selectedProduct.Name); 
-                comboBoxProduct.SelectionStart = 0;
-                comboBoxProduct.SelectionLength = 0;
-                isUpdatingText = false;
-            }
-        }
-
-        /// <summary>
-        /// Обработчик раскрытия выпадающего списка
-        /// </summary>
-        private void ComboBoxProduct_DropDown(object sender, EventArgs e)
-        {
-            string searchText = comboBoxProduct.Text;
-            if (!string.IsNullOrWhiteSpace(searchText))
-            {
-                FilterProducts(searchText);
-            }
-        }
-
-        /// <summary>
-        /// Обработчик изменения текста в выпадающем списке
-        /// </summary>
-        private void ComboBoxProduct_TextUpdate(object sender, EventArgs e)
-        {
-            if (isClearingText || isUpdatingText)
-                return;
-
-            string searchText = comboBoxProduct.Text;
-
-            if (string.IsNullOrWhiteSpace(searchText))
-            {
-                LoadAllProductsToComboBox();
-                comboBoxProduct.Text = "";
-                return;
-            }
-
-            FilterProducts(searchText);
-            comboBoxProduct.DroppedDown = true;
-        }
-
-        /// <summary>
-        /// Фильтрует товары и показывает все совпадения
-        /// </summary>
-        private void FilterProducts(string searchText)
-        {
-            if (isClearingText || isUpdatingText)
-                return;
-
-            var filteredProducts = allProductsForSearch
-                .Where(p => p.Name.ToLower().Contains(searchText.ToLower()) ||
-                           p.Article.ToLower().Contains(searchText.ToLower()))
-                .ToList();
-
-            string currentText = comboBoxProduct.Text;
-
-            comboBoxProduct.DataSource = null;
-            comboBoxProduct.DisplayMember = "Text";
-            comboBoxProduct.ValueMember = "Id";
-            comboBoxProduct.DataSource = filteredProducts;
-
-            comboBoxProduct.Text = currentText;
-            comboBoxProduct.SelectionStart = comboBoxProduct.Text.Length;
-        }
-
-        /// <summary>
-        /// Загружает все товары в комбобокс
-        /// </summary>
-        private void LoadAllProductsToComboBox()
-        {
-            if (allProductsForSearch != null && allProductsForSearch.Any())
-            {
-                comboBoxProduct.DataSource = null;
-                comboBoxProduct.DisplayMember = "Text";
-                comboBoxProduct.ValueMember = "Id";
-                comboBoxProduct.DataSource = allProductsForSearch;
-            }
-        }
-
         /// <summary>
         /// Проверяет, что ввод в поле количества содержит только цифры
         /// </summary>
@@ -269,7 +176,7 @@ namespace AutomechanicsProject.Formes
                     .ToList();
 
                 allProductsForSearch = cachedProducts
-                    .Select(p => new ProductComboDto
+                    .Select(p => new ProductComboViewModel
                     {
                         Id = p.Id,
                         Article = p.Article,
@@ -281,10 +188,7 @@ namespace AutomechanicsProject.Formes
 
                 if (allProductsForSearch != null && allProductsForSearch.Count > 0)
                 {
-                    comboBoxProduct.DisplayMember = "Text";
-                    comboBoxProduct.ValueMember = "Id";
-                    comboBoxProduct.DataSource = allProductsForSearch;
-                    comboBoxProduct.SelectedIndex = -1;
+                    SetupSearchableComboBox();
                 }
                 else
                 {
@@ -299,7 +203,6 @@ namespace AutomechanicsProject.Formes
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
         /// <summary>
         /// Загружает список поставщиков из базы данных для выбора в комбобоксе
         /// </summary>
@@ -355,7 +258,7 @@ namespace AutomechanicsProject.Formes
                 return false;
             }
 
-            var selectedProductDto = (ProductComboDto)comboBoxProduct.SelectedItem;
+            var selectedProductDto = (ProductComboViewModel)comboBoxProduct.SelectedItem;
             var selectedProduct = cachedProducts.FirstOrDefault(p => p.Id == selectedProductDto.Id);
 
             if (!int.TryParse(textBoxQuantity.Text, out int quantity) || quantity <= 0)
@@ -422,7 +325,11 @@ namespace AutomechanicsProject.Formes
         {
             textBoxQuantity.Clear();
             textBoxPrice.Clear();
-            comboBoxProduct.SelectedIndex = -1;
+
+            if (comboBoxState != null)
+            {
+                SearchableComboBoxHelper.ClearAndReloadProducts(comboBoxProduct, comboBoxState);
+            }
         }
 
         /// <summary>
@@ -430,8 +337,20 @@ namespace AutomechanicsProject.Formes
         /// </summary>
         private void UpdateTotalAmount()
         {
-            decimal total = positions.Sum(p => p.Quantity * p.Price);
-            labelTotalValue.Text = $"{total:N2} RUB";
+            decimal totalInRUB = positions.Sum(p => p.Quantity * p.Price);
+
+            if (comboBoxCurrency.SelectedItem != null)
+            {
+                var selectedCurrency = comboBoxCurrency.SelectedItem as CurrencyInfo;
+                if (selectedCurrency != null)
+                {
+                    decimal displayTotal = CurrencyHelper.ConvertFromRUB(totalInRUB, selectedCurrency.Rate);
+                    labelTotalValue.Text = $"{displayTotal:N2} {selectedCurrency.Code}";
+                    return;
+                }
+            }
+
+            labelTotalValue.Text = $"{totalInRUB:N2} RUB";
         }
 
         /// <summary>
@@ -439,18 +358,39 @@ namespace AutomechanicsProject.Formes
         /// </summary>
         private void UpdatePricesInGrid()
         {
-            for (int i = 0; i < dataGridViewSupply.Rows.Count; i++)
-            {
-                if (dataGridViewSupply.Rows[i].Cells["colPrice"].Value != null)
-                {
-                    string priceStr = dataGridViewSupply.Rows[i].Cells["colPrice"].Value.ToString().Split(' ')[0];
-                    dataGridViewSupply.Rows[i].Cells["colPrice"].Value = $"{priceStr} {currentCurrency}";
+            if (comboBoxCurrency.SelectedItem == null || dataGridViewSupply.Rows.Count == 0 || positions.Count == 0)
+                return;
 
-                    if (dataGridViewSupply.Rows[i].Cells["colTotal"].Value != null)
-                    {
-                        string totalStr = dataGridViewSupply.Rows[i].Cells["colTotal"].Value.ToString().Split(' ')[0];
-                        dataGridViewSupply.Rows[i].Cells["colTotal"].Value = $"{totalStr} {currentCurrency}";
-                    }
+            var selectedCurrency = comboBoxCurrency.SelectedItem as CurrencyInfo;
+            if (selectedCurrency == null)
+                return;
+
+            decimal rate = selectedCurrency.Rate;
+            string currencyCode = selectedCurrency.Code;
+
+            int maxIndex = Math.Min(dataGridViewSupply.Rows.Count, positions.Count);
+
+            for (int i = 0; i < maxIndex; i++)
+            {
+                try
+                {
+                    var row = dataGridViewSupply.Rows[i];
+                    if (row.IsNewRow) continue;
+
+                    var position = positions[i];
+                    if (position == null) continue;
+
+                    decimal displayPrice = CurrencyHelper.ConvertFromRUB(position.Price, rate);
+
+                    if (row.Cells["colPrice"] != null)
+                        row.Cells["colPrice"].Value = $"{displayPrice:F2} {currencyCode}";
+
+                    if (row.Cells["colTotal"] != null)
+                        row.Cells["colTotal"].Value = $"{displayPrice * position.Quantity:F2} {currencyCode}";
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine($"Ошибка обновления строки {i}: {ex.Message}");
                 }
             }
         }
@@ -461,48 +401,73 @@ namespace AutomechanicsProject.Formes
         private void ButtonAddToList_Click(object sender, EventArgs e)
         {
             if (!ValidateInputs())
+            {
                 return;
+            }
 
-            var selectedProductDto = (ProductComboDto)comboBoxProduct.SelectedItem;
+            if (positions.Count == 0 && !isCurrencyFixed)
+            {
+                var firstCurrency = comboBoxCurrency.SelectedItem as CurrencyInfo;
+                if (firstCurrency != null)
+                {
+                    currentCurrency = firstCurrency.Code;
+                    currentCurrencyRate = firstCurrency.Rate;
+                    isCurrencyFixed = true;
+
+                    comboBoxCurrency.Enabled = false;
+                    comboBoxCurrency.BackColor = System.Drawing.SystemColors.ControlLight;
+                }
+            }
+
+            var selectedProductDto = (ProductComboViewModel)comboBoxProduct.SelectedItem;
             var selectedItem = cachedProducts.FirstOrDefault(p => p.Id == selectedProductDto.Id);
             var selectedSupplier = (ComboItemDto)comboBoxSupplier.SelectedItem;
             int quantity = int.Parse(textBoxQuantity.Text);
-            var price = decimal.Parse(textBoxPrice.Text.Replace('.', ','));
+            var priceInSelectedCurrency = decimal.Parse(textBoxPrice.Text.Replace('.', ','));
+
+            var selectedCurrency = (CurrencyInfo)comboBoxCurrency.SelectedItem;
+            decimal rate = selectedCurrency.Rate;
+            string currencyCode = selectedCurrency.Code;
+
+            decimal priceInRUB = CurrencyHelper.ConvertToRUB(priceInSelectedCurrency, rate);
 
             DateTime? supplyExpiryDate = null;
+
             if (selectedItem.HasExpiryDate)
             {
                 supplyExpiryDate = dateTimePickerExpiry.Value;
             }
 
-            SupplyPosition position = new SupplyPosition
+            var position = new SupplyPosition
             {
                 Id = Guid.NewGuid(),
                 ProductId = selectedItem.Id,
                 ProductName = selectedItem.Name,
                 Article = selectedItem.Article,
                 Quantity = quantity,
-                Price = price,
-                SupplyId = Guid.Empty,
+                Price = priceInRUB,  
                 SupplierId = selectedSupplier.Id,
                 SupplierName = selectedSupplier.Text,
-                ExpiryDate = supplyExpiryDate
+                ExpiryDate = selectedItem.HasExpiryDate ? dateTimePickerExpiry.Value : (DateTime?)null
             };
 
             positions.Add(position);
+
+            decimal displayPrice = CurrencyHelper.ConvertFromRUB(priceInRUB, rate);
 
             dataGridViewSupply.Rows.Add(
                 position.Article,
                 position.ProductName,
                 position.Quantity,
-                $"{position.Price:N2} RUB",
-                $"{position.Quantity * position.Price:N2} RUB",
+                $"{displayPrice:F2} {currencyCode}",
+                $"{displayPrice * position.Quantity:F2} {currencyCode}",
                 selectedSupplier.Text,
                 position.ExpiryDate?.ToShortDateString() ?? "");
 
             UpdateTotalAmount();
             ClearInputFields();
         }
+        
         /// <summary>
         /// Импортирует данные поставки из JSON файла
         /// </summary>
@@ -601,6 +566,20 @@ namespace AutomechanicsProject.Formes
                             importedCount++;
                         }
 
+                        if (importedCount > 0 && !isCurrencyFixed)
+                        {
+                            var importedCurrency = comboBoxCurrency.SelectedItem as CurrencyInfo;
+                            if (importedCurrency != null)
+                            {
+                                currentCurrency = importedCurrency.Code;
+                                currentCurrencyRate = importedCurrency.Rate;
+                                isCurrencyFixed = true;
+
+                                comboBoxCurrency.Enabled = false;
+                                comboBoxCurrency.BackColor = System.Drawing.SystemColors.ControlLight;
+                            }
+                        }
+
                         UpdateTotalAmount();
 
                         string warningMessage = notFoundCount > 0
@@ -622,6 +601,25 @@ namespace AutomechanicsProject.Formes
             }
         }
 
+        /// <summary>
+        /// Сброс состояния
+        /// </summary>
+        private void ResetSupplyState()
+        {
+            positions.Clear();
+            dataGridViewSupply.Rows.Clear();
+            isCurrencyFixed = false;
+            currentCurrency = "RUB";
+            currentCurrencyRate = 1.0m;
+
+            comboBoxCurrency.Enabled = true;
+            comboBoxCurrency.BackColor = System.Drawing.SystemColors.Window;
+
+            var defaultCurrency = currencies.FirstOrDefault(c => c.Code == "RUB");
+            if (defaultCurrency != null)
+                comboBoxCurrency.SelectedItem = defaultCurrency;
+        }
+
         /// <summary>         
         /// Отменяет создание поставки и закрывает форму         
         /// </summary>
@@ -634,12 +632,14 @@ namespace AutomechanicsProject.Formes
 
                 if (result == DialogResult.Yes)
                 {
+                    ResetSupplyState();
                     this.DialogResult = DialogResult.Cancel;
                     this.Close();
                 }
             }
             else
             {
+                ResetSupplyState();
                 this.DialogResult = DialogResult.Cancel;
                 this.Close();
             }
@@ -657,8 +657,21 @@ namespace AutomechanicsProject.Formes
                 return;
             }
 
+            decimal totalInRUB = positions.Sum(p => p.Quantity * p.Price);
+            string displayTotalText;
+
+            if (currentCurrency != "RUB" && currentCurrencyRate != 1.0m)
+            {
+                decimal displayTotal = CurrencyHelper.ConvertFromRUB(totalInRUB, currentCurrencyRate);
+                displayTotalText = $"{displayTotal:N2} {currentCurrency}";
+            }
+            else
+            {
+                displayTotalText = $"{totalInRUB:N2} RUB";
+            }
+
             DialogResult confirmResult = MessageBox.Show(
-                string.Format(Resources.ConfirmSupplyFormat, labelTotalValue.Text),
+                string.Format(Resources.ConfirmSupplyFormat, displayTotalText),
                 Resources.TitleConfirmation,
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question);
@@ -672,27 +685,26 @@ namespace AutomechanicsProject.Formes
                 {
                     var db = DbContextManager.GetContext();
 
+                    Supply supply = new Supply
+                    {
+                        Id = Guid.NewGuid(),
+                        OrderNumber = GenerateOrderNumber(),
+                        DateCreated = DateTime.Now,
+                        UserId = GetCurrentUserId(),
+                        Status = Resources.SupplyStatusCompleted,
+                        TotalAmount = totalInRUB
+                    };
+
                     using (var transaction = await db.Database.BeginTransactionAsync())
                     {
                         try
                         {
-                            Guid currentUserId = GetCurrentUserId();
-
-                            Supply supply = new Supply
-                            {
-                                Id = Guid.NewGuid(),
-                                OrderNumber = GenerateOrderNumber(),
-                                DateCreated = DateTime.Now,
-                                UserId = currentUserId,
-                                Status = Resources.SupplyStatusCompleted,
-                                TotalAmount = positions.Sum(p => p.Quantity * p.Price)
-                            };
                             db.Supplies.Add(supply);
                             await db.SaveChangesAsync();
 
                             foreach (var pos in positions)
                             {
-                                db.SupplyPositions.Add(new SupplyPosition
+                                var supplyPosition = new SupplyPosition
                                 {
                                     Id = Guid.NewGuid(),
                                     SupplyId = supply.Id,
@@ -704,33 +716,31 @@ namespace AutomechanicsProject.Formes
                                     SupplierId = pos.SupplierId,
                                     SupplierName = pos.SupplierName,
                                     ExpiryDate = pos.ExpiryDate
-                                });
+                                };
+                                db.SupplyPositions.Add(supplyPosition);
+                            }
+                            await db.SaveChangesAsync();
 
+                            foreach (var pos in positions)
+                            {
                                 var product = await db.Products.FindAsync(pos.ProductId);
                                 if (product != null)
                                 {
                                     product.Balance += pos.Quantity;
 
-                                    if (product.Price == 0 || pos.Price > 0)
+                                    product.Price = pos.Price;
+
+                                    if (pos.ExpiryDate.HasValue)
                                     {
-                                        product.Price = pos.Price;
+                                        product.ExpiryDate = pos.ExpiryDate;
                                     }
 
-
+                                    product.BatchNumber = $"Партия_{DateTime.Now:yyyyMM}";
                                 }
                             }
-
                             await db.SaveChangesAsync();
+
                             await transaction.CommitAsync();
-
-                            MessageBox.Show(
-                                string.Format(Resources.SuccessSupplyFormat, supply.OrderNumber, supply.DateCreated.ToString("dd.MM.yyyy HH:mm"), positions.Count, labelTotalValue.Text),
-                                Resources.TitleSuccess,
-                                MessageBoxButtons.OK,
-                                MessageBoxIcon.Information);
-
-                            this.DialogResult = DialogResult.OK;
-                            this.Close();
                         }
                         catch (Exception ex)
                         {
@@ -738,6 +748,15 @@ namespace AutomechanicsProject.Formes
                             throw;
                         }
                     }
+
+                    MessageBox.Show(
+                        string.Format(Resources.SuccessSupplyFormat, supply.OrderNumber, supply.DateCreated.ToString("dd.MM.yyyy HH:mm"), positions.Count, displayTotalText),
+                        Resources.TitleSuccess,
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
+
+                    this.DialogResult = DialogResult.OK;
+                    this.Close();
                 }
                 catch (Exception ex)
                 {
@@ -751,8 +770,8 @@ namespace AutomechanicsProject.Formes
                     buttonConfirmSupply.Text = Resources.ButtonConfirmSupply;
                 }
             }
-        }
-
+        }        
+        
         /// <summary>
         /// Генерирует уникальный номер заказа
         /// </summary>

@@ -159,6 +159,9 @@
   </data>
 
 	<!-- Сообщения ошибок -->
+	<data name="ErrorCurrencyFixed" xml:space="preserve">
+    <value>Нельзя изменить валюту после добавления позиций в поставку.</value>
+</data>
 	<data name="ErrorExpiryDateRequired" xml:space="preserve">
     <value>Для этого товара требуется указать срок годности в поставке</value>
 </data>

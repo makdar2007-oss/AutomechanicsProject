@@ -3,6 +3,7 @@ using AutomechanicsProject.Dtos.Service;
 using AutomechanicsProject.Helpers;
 using AutomechanicsProject.Mappers;
 using AutomechanicsProject.Properties;
+using AutomechanicsProject.Services;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -69,66 +70,30 @@ namespace AutomechanicsProject.Formes
         {
             try
             {
-                var today = DateTime.Today;
+                var count = ExpiredProductsService.AutoWriteOffExpiredProducts(db);
 
-                var expiredProducts = db.Products
-                    .Where(p => p.ExpiryDate.HasValue
-                        && p.ExpiryDate.Value < today
-                        && p.Balance > 0)
-                    .ToList();
-
-                if (!expiredProducts.Any())
+                if (count > 0)
                 {
-                    return;
+                    RefreshProductList(); 
+
+                    MessageBox.Show(
+                        string.Format(Resources.SuccessAutoWriteOffMessage, count),
+                        Resources.TitleAutoWriteOff,
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
                 }
-
-                Guid writeOffUserId = new Guid("4adf792a-247b-435d-a15e-37314224c761");
-                Guid writeOffAddressId = new Guid("dc40ff88-af12-4841-b101-9da423f7f777");
-
-                foreach (var product in expiredProducts)
-                {
-                    var shipment = new Shipment
-                    {
-                        Id = Guid.NewGuid(),
-                        Date = DateTime.Now,
-                        UserId = writeOffAddressId,
-                        CreatedByUserId = writeOffUserId
-                    };
-
-                    db.Shipments.Add(shipment);
-                    db.SaveChanges();
-
-                    var shipmentItem = new ShipmentItem
-                    {
-                        ShipmentId = shipment.Id,
-                        Product = product,
-                        Article = product.Article,
-                        ProductName = product.Name,
-                        Quantity = -product.Balance,
-                        Price = product.Price
-                    };
-
-                    db.ShipmentItems.Add(shipmentItem);
-                    product.Balance = 0;
-                }
-
-                db.SaveChanges();
-                RefreshProductList();
-
-                MessageBox.Show(string.Format(Resources.SuccessAutoWriteOffMessage, expiredProducts.Count),
-                      Resources.TitleAutoWriteOff, MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
-                string error = ex.Message;
-                if (ex.InnerException != null)
-                    error += ex.InnerException.Message;
+                MessageBox.Show(
+                    string.Format(Resources.ErrorWithDetails, ex.Message),
+                    Resources.TitleError,
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
 
-                MessageBox.Show(string.Format(Resources.ErrorWithDetails, error), Resources.TitleError,
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Program.LogError("Ошибка при списании товаров", ex);
             }
         }
-
         /// <summary>
         /// Обновляет список товаров с учетом текущего поискового запроса
         /// </summary>
@@ -414,6 +379,7 @@ namespace AutomechanicsProject.Formes
                 var today = DateTime.Today;
 
                 var products = db.Products
+                    .AsNoTracking()
                     .Include(p => p.Category)
                     .Include(p => p.Unit)
                     .Where(p => p.Balance > 0)
@@ -456,7 +422,7 @@ namespace AutomechanicsProject.Formes
                     Закупка = p.Price,
                     ТребуетСкидки = p.RequiresDiscount,
                     Просрочен = p.IsExpired,
-                    Цена = ChoosingCurrency.ConvertPrice(p.PurchasePrice)
+                    Цена = ChoosingCurrency.ConvertPrice(p.PurchasePrice).ToString("F2")
                 }).ToList();
 
                 dataGridViewMainForm.DataSource = displayData;
@@ -479,7 +445,10 @@ namespace AutomechanicsProject.Formes
 
             foreach (DataGridViewRow row in dataGridViewMainForm.Rows)
             {
-                if (row.DataBoundItem == null) continue;
+                if (row.DataBoundItem == null)
+                {
+                    continue;
+                }
 
                 try
                 {
@@ -492,7 +461,7 @@ namespace AutomechanicsProject.Formes
 
                     if (expiryDate.HasValue)
                     {
-                        if (expiryDate.Value < today)
+                        if (expiryDate.Value <= today)
                         {
                             row.DefaultCellStyle.BackColor = System.Drawing.Color.DarkRed;
                             row.DefaultCellStyle.ForeColor = System.Drawing.Color.White;
@@ -537,8 +506,13 @@ namespace AutomechanicsProject.Formes
         /// </summary>
         private void buttonSupply_Click(object sender, EventArgs e)
         {
-            CreateSupply supplyForm = new CreateSupply();
-            supplyForm.ShowDialog();
+            using (CreateSupply supplyForm = new CreateSupply())
+            {
+                if (supplyForm.ShowDialog() == DialogResult.OK)
+                {
+                    RefreshProductList(); 
+                }
+            }
         }
 
         /// <summary>

@@ -23,8 +23,7 @@ namespace AutomechanicsProject.Formes
         private decimal totalAmount;
         private int totalItemsCount;
         private List<ProductComboViewModel> allProducts;
-        private bool isClearingText = false;
-        private bool isUpdatingText = false;
+        private SearchableComboBoxHelper.ComboBoxState comboBoxState;
         private List<Product> availableProducts;
 
         /// <summary>
@@ -43,7 +42,6 @@ namespace AutomechanicsProject.Formes
 
             TextBoxHelper.SetupWatermarkTextBox(textBoxUnit, Resources.ShipmentQuantityWatermark);
 
-            SetupSearchableComboBox();
             UpdateDisplay();
         }
 
@@ -64,14 +62,36 @@ namespace AutomechanicsProject.Formes
         /// </summary>
         private void SetupSearchableComboBox()
         {
-            comboBoxProduct.DropDownHeight = 200;
-            comboBoxProduct.IntegralHeight = false;
-            comboBoxProduct.TextUpdate += ComboBoxProduct_TextUpdate;
-            comboBoxProduct.DropDown += ComboBoxProduct_DropDown;
-            comboBoxProduct.KeyDown += ComboBoxProduct_KeyDown;
-            comboBoxProduct.SelectionChangeCommitted += ComboBoxProduct_SelectionChangeCommitted;
+            comboBoxState = new SearchableComboBoxHelper.ComboBoxState();
+
+            var searchProducts = allProducts.Select(p => new ProductComboDto
+            {
+                Id = p.Id,
+                Article = p.Article,
+                Name = p.Name,
+                Text = p.Text,
+                Balance = p.Balance,
+                Price = p.Price,
+                UnitName = p.UnitName,
+                UnitId = p.UnitId
+            }).ToList();
+
+            SearchableComboBoxHelper.SetupProductSearchComboBox(
+                comboBoxProduct,
+                comboBoxState,
+                allProducts,
+                OnProductSelected
+            );
         }
 
+        /// <summary>
+        /// Обработчик выбора товара
+        /// </summary>
+        private void OnProductSelected(ProductComboViewModel selectedProduct)
+        {
+            LoadExpiryDatesForProduct(selectedProduct.Id);
+        }
+        
         /// <summary>
         /// Загружает доступные сроки годности для выбранного товара
         /// </summary>
@@ -117,149 +137,6 @@ namespace AutomechanicsProject.Formes
                 comboBoxExpiry.Enabled = false;
             }
         }
-        /// <summary>
-        /// Обработчик выбора товара из списка
-        /// </summary>
-        private void ComboBoxProduct_SelectionChangeCommitted(object sender, EventArgs e)
-        {
-            if (comboBoxProduct.SelectedItem != null)
-            {
-                isUpdatingText = true;
-
-                var selectedProduct = (ProductComboViewModel)comboBoxProduct.SelectedItem;
-                comboBoxProduct.Text = FormatHelper.FormatProductShort(selectedProduct.Article, selectedProduct.Name);
-                comboBoxProduct.SelectionStart = 0;
-                comboBoxProduct.SelectionLength = 0;
-
-                isUpdatingText = false;
-
-                var productId = selectedProduct.Id;
-                LoadExpiryDatesForProduct(productId);
-            }
-        }
-
-        /// <summary>
-        /// Обработчик нажатия клавиш в выпадающем списке
-        /// </summary>
-        private void ComboBoxProduct_KeyDown(object sender, KeyEventArgs e)
-        {
-            if ((e.KeyCode == Keys.Back || e.KeyCode == Keys.Delete) &&
-                string.IsNullOrEmpty(comboBoxProduct.Text))
-            {
-                isClearingText = true;
-                ClearComboBox();
-                isClearingText = false;
-            }
-            else if (e.KeyCode == Keys.Enter && comboBoxProduct.SelectedItem != null)
-            {
-                e.SuppressKeyPress = true;
-                isUpdatingText = true;
-
-                var selectedProduct = (ProductComboViewModel)comboBoxProduct.SelectedItem;
-                comboBoxProduct.Text = FormatHelper.FormatProductShort(selectedProduct.Article, selectedProduct.Name); 
-                comboBoxProduct.SelectionStart = 0;
-                comboBoxProduct.SelectionLength = 0;
-
-                isUpdatingText = false;
-            }
-        }
-
-        /// <summary>
-        /// Обработчик раскрытия выпадающего списка
-        /// </summary>
-        private void ComboBoxProduct_DropDown(object sender, EventArgs e)
-        {
-            string searchText = comboBoxProduct.Text;
-            if (!string.IsNullOrWhiteSpace(searchText))
-            {
-                FilterProducts(searchText);
-            }
-        }
-
-        /// <summary>
-        /// Фильтрует товары и показывает все совпадения
-        /// </summary>
-        private void FilterProducts(string searchText)
-        {
-            if (isClearingText || isUpdatingText)
-                return;
-
-            if (string.IsNullOrWhiteSpace(searchText))
-            {
-                ClearComboBox();
-                return;
-            }
-
-            var filteredProducts = allProducts
-                .Where(p => p.Name.ToLower().Contains(searchText.ToLower()) ||
-                           p.Article.ToLower().Contains(searchText.ToLower()))
-                .ToList();
-
-            string currentText = comboBoxProduct.Text;
-
-            comboBoxProduct.DataSource = null;
-            comboBoxProduct.DisplayMember = "Text";
-            comboBoxProduct.ValueMember = "Id";
-            comboBoxProduct.DataSource = filteredProducts;
-
-            comboBoxProduct.Text = currentText;
-            comboBoxProduct.SelectionStart = comboBoxProduct.Text.Length;
-        }
-
-        /// <summary>
-        /// Очищает выпадающий список
-        /// </summary>
-        private void ClearComboBox()
-        {
-            isClearingText = true;
-            LoadAllProductsToComboBox();
-            comboBoxProduct.Text = "";
-            comboBoxProduct.SelectedIndex = -1;
-            isClearingText = false;
-        }
-
-        /// <summary>
-        /// Обработчик изменения текста в выпадающем списке
-        /// </summary>
-        private void ComboBoxProduct_TextUpdate(object sender, EventArgs e)
-        {
-            if (isClearingText || isUpdatingText)
-                return;
-
-            string searchText = comboBoxProduct.Text;
-
-            if (string.IsNullOrWhiteSpace(searchText))
-            {
-                ClearComboBox();
-                return;
-            }
-
-            FilterProducts(searchText);
-
-            if (!string.IsNullOrWhiteSpace(searchText))
-            {
-                comboBoxProduct.DroppedDown = true;
-            }
-
-            if (comboBoxProduct.Items.Count > 0)
-            {
-                comboBoxProduct.DroppedDown = true;
-            }
-        }
-
-        /// <summary>
-        /// Загружает все товары доступные для отгрузки
-        /// </summary>
-        private void LoadAllProductsToComboBox()
-        {
-            if (allProducts.Any())
-            {
-                comboBoxProduct.DataSource = null;
-                comboBoxProduct.DisplayMember = "Text";
-                comboBoxProduct.ValueMember = "Id";
-                comboBoxProduct.DataSource = allProducts;
-            }
-        }
 
         /// <summary>
         /// Загружает все товары
@@ -282,27 +159,33 @@ namespace AutomechanicsProject.Formes
                     })
                     .ToList();
 
+               
+
                 var products = productsList
-    .GroupBy(p => p.Name)
-    .Select(g => new ProductComboViewModel
-    {
-        Id = g.First().Id,
-        Text = FormatHelper.FormatProductWithBalance(
-    g.First().Article,
-    g.Key,
-    g.Sum(x => x.Balance),
-    g.First().UnitName),
-        Article = g.First().Article,
-        Name = g.Key,
-        Price = g.First().Price,
-        Balance = g.Sum(x => x.Balance),
-        UnitName = g.First().UnitName,
-        UnitId = g.First().UnitId
-    })
-    .ToList();
+                    .GroupBy(p => p.Name)
+                    .Select(g => new ProductComboViewModel
+                    {
+                        Id = g.First().Id,
+                        Text = FormatHelper.FormatProductWithBalance(
+                            g.First().Article,
+                            g.Key,
+                            g.Sum(x => x.Balance),
+                            g.First().UnitName),
+                        Article = g.First().Article,
+                        Name = g.Key,
+                        Price = g.First().Price,
+                        Balance = g.Sum(x => x.Balance),
+                        UnitName = g.First().UnitName,
+                        UnitId = g.First().UnitId
+                    })
+                    .ToList();
 
                 allProducts = products;
-                LoadAllProductsToComboBox();
+
+                if (allProducts.Any())
+                {
+                    SetupSearchableComboBox();
+                }
 
                 if (products.Count == 0)
                 {
@@ -326,14 +209,14 @@ namespace AutomechanicsProject.Formes
             try
             {
                 var recipients = db.Addresses
-    .Where(a => a.CompanyName != null && a.CompanyName.Trim() != "" && a.CompanyName.Trim() != "-")
-    .OrderBy(a => a.CompanyName)
-    .Select(a => new ComboItemDto
-    {
-        Id = a.Id,
-        Text = a.CompanyName
-    })
-    .ToList();
+                     .Where(a => a.CompanyName != null && a.CompanyName.Trim() != "" && a.CompanyName.Trim() != "-")
+                     .OrderBy(a => a.CompanyName)
+                     .Select(a => new ComboItemDto
+                     {
+                         Id = a.Id,
+                         Text = a.CompanyName
+                     })
+                     .ToList();
 
                 comboBoxRecipient1.DisplayMember = "Text";     
                 comboBoxRecipient1.ValueMember = "Id";
@@ -521,7 +404,12 @@ namespace AutomechanicsProject.Formes
         {
             textBoxUnit.Text = Resources.ShipmentQuantityWatermark;
             textBoxUnit.ForeColor = Color.Gray;
-            ClearComboBox();
+
+            if (comboBoxState != null && allProducts.Any())
+            {
+                SearchableComboBoxHelper.ClearAndReloadProducts(comboBoxProduct, comboBoxState);
+            }
+
             ClearExpiryComboBox();
         }
 

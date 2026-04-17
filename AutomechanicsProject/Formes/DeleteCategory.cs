@@ -1,11 +1,12 @@
 ﻿using AutomechanicsProject.Classes;
-using AutomechanicsProject.Properties;
+using AutomechanicsProject.Dtos;
 using AutomechanicsProject.Dtos.UI;
+using AutomechanicsProject.Helpers;
+using AutomechanicsProject.Properties;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Windows.Forms;
-using AutomechanicsProject.Dtos;
 
 namespace AutomechanicsProject.Formes
 {
@@ -37,18 +38,7 @@ namespace AutomechanicsProject.Formes
         {
             try
             {
-                var categories = db.Categories
-                    .OrderBy(c => c.Name)
-                    .Select(c => new ComboItemDto
-                    {
-                        Id = c.Id,
-                        Text = $"{c.Name} (товаров: {db.Products.Count(p => p.CategoryId == c.Id)})"
-                    })
-                    .ToList();
-
-                comboBoxCategory.DisplayMember = "Text";
-                comboBoxCategory.ValueMember = "Id";
-                comboBoxCategory.DataSource = categories;
+                ComboBoxHelper.LoadCategories(comboBoxCategory, db, showProductCount: true);
 
                 var hasCategories = comboBoxCategory.Items.Count > 0;
                 comboBoxCategory.SelectedIndex = hasCategories ? -1 : -1;
