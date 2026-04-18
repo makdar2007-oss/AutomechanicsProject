@@ -10,23 +10,72 @@ namespace AutomechanicsProject.Classes
     /// </summary>
     public class DateBase : DbContext
     {
+        /// <summary>
+        /// Набор пользователей
+        /// </summary>
         public DbSet<Users> Users { get; set; }
+
+        /// <summary>
+        /// Набор категорий товаров
+        /// </summary>
         public DbSet<Category> Categories { get; set; }
+
+        /// <summary>
+        /// Набор товаров
+        /// </summary>
         public DbSet<Product> Products { get; set; }
+
+        /// <summary>
+        /// Набор отгрузок
+        /// </summary>
         public DbSet<Shipment> Shipments { get; set; }
+
+        /// <summary>
+        /// Набор позиций отгрузки
+        /// </summary>
         public DbSet<ShipmentItem> ShipmentItems { get; set; }
+
+        /// <summary>
+        /// Набор ролей пользователей
+        /// </summary>
         public DbSet<Role> Roles { get; set; }
+
+        /// <summary>
+        /// Набор адресов/контрагентов
+        /// </summary>
         public DbSet<Address> Addresses { get; set; }
+
+        /// <summary>
+        /// Набор единиц измерения
+        /// </summary>
         public DbSet<Unit> Units { get; set; }
+
+        /// <summary>
+        /// Набор поставщиков
+        /// </summary>
         public DbSet<Supplier> Suppliers { get; set; }
+
+        /// <summary>
+        /// Набор поставок
+        /// </summary>
         public DbSet<Supply> Supplies { get; set; }
+
+        /// <summary>
+        /// Набор позиций поставки.
+        /// </summary>
         public DbSet<SupplyPosition> SupplyPositions { get; set; }
 
+        /// <summary>
+        /// Настраивает подключение к базе данных.
+        /// </summary>
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseNpgsql("Host=localhost;Port=5433;Database=automechanics;Username=postgres;Password=1234");
         }
 
+        /// <summary>
+        /// Настраивает модели сущностей и связи между ними при создании базы данных.
+        /// </summary>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.HasPostgresExtension("uuid-ossp");

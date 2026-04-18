@@ -18,8 +18,9 @@ namespace AutomechanicsProject.Formes
     /// </summary>
     public partial class CreateSupply : Form
     {
+        private readonly DateBase _db;
         private List<SupplyPosition> positions = new List<SupplyPosition>();
-        private string currentCurrency = "RUB";
+        private string currentCurrency = CurrencyCodes.RUB;
         private decimal currentCurrencyRate = 1.0m;
         private bool isCurrencyFixed = false;
         private List<CurrencyInfo> currencies;
@@ -29,10 +30,10 @@ namespace AutomechanicsProject.Formes
         private List<ProductComboViewModel> allProductsForSearch;
         private SearchableComboBoxHelper.ComboBoxState comboBoxState;
 
-        public CreateSupply()
+        public CreateSupply(DateBase database)
         {
             InitializeComponent();
-            DbContextManager.AddReference();
+            _db = database ?? throw new ArgumentNullException(nameof(database));
         }
 
         /// <summary>
@@ -84,7 +85,7 @@ namespace AutomechanicsProject.Formes
             comboBoxCurrency.ValueMember = "Code";
 
             comboBoxCurrency.SelectedIndex = 0;
-            currentCurrency = "RUB";
+            currentCurrency = CurrencyCodes.RUB;
 
             comboBoxCurrency.SelectedIndexChanged += ComboBoxCurrency_SelectedIndexChanged;
         }
@@ -107,7 +108,10 @@ namespace AutomechanicsProject.Formes
             }
 
             var selectedCurrency = comboBoxCurrency.SelectedItem as CurrencyInfo;
-            if (selectedCurrency == null) return;
+            if (selectedCurrency == null)
+            {
+                return;
+            }
 
             try
             {
@@ -116,6 +120,7 @@ namespace AutomechanicsProject.Formes
                     currentCurrency = selectedCurrency.Code;
                     currentCurrencyRate = selectedCurrency.Rate;
                 }
+
                 UpdatePricesInGrid();
                 UpdateTotalAmount();
             }
@@ -124,6 +129,7 @@ namespace AutomechanicsProject.Formes
                 Program.LogError("Ошибка при смене валюты", ex);
             }
         }
+        
         /// <summary>
         /// Проверяет, что ввод в поле количества содержит только цифры
         /// </summary>
@@ -159,9 +165,7 @@ namespace AutomechanicsProject.Formes
         {
             try
             {
-                var db = DbContextManager.GetContext();
-
-                cachedProducts = db.Products
+                cachedProducts = _db.Products
                     .OrderBy(p => p.Name)
                     .Select(p => new ProductDisplayItem
                     {
@@ -210,9 +214,7 @@ namespace AutomechanicsProject.Formes
         {
             try
             {
-                var db = DbContextManager.GetContext();
-
-                var suppliers = db.Suppliers
+                var suppliers = _db.Suppliers
              .OrderBy(s => s.Name)
              .Select(s => new ComboItemDto
              {
@@ -359,11 +361,15 @@ namespace AutomechanicsProject.Formes
         private void UpdatePricesInGrid()
         {
             if (comboBoxCurrency.SelectedItem == null || dataGridViewSupply.Rows.Count == 0 || positions.Count == 0)
+            {
                 return;
+            }
 
             var selectedCurrency = comboBoxCurrency.SelectedItem as CurrencyInfo;
             if (selectedCurrency == null)
+            {
                 return;
+            }
 
             decimal rate = selectedCurrency.Rate;
             string currencyCode = selectedCurrency.Code;
@@ -375,18 +381,29 @@ namespace AutomechanicsProject.Formes
                 try
                 {
                     var row = dataGridViewSupply.Rows[i];
-                    if (row.IsNewRow) continue;
+                    if (row.IsNewRow)
+                    {
+                        continue;
+                    }
 
                     var position = positions[i];
-                    if (position == null) continue;
+                    if (position == null)
+                    {
+                        continue;
+                    }
 
                     decimal displayPrice = CurrencyHelper.ConvertFromRUB(position.Price, rate);
 
                     if (row.Cells["colPrice"] != null)
+                    {
                         row.Cells["colPrice"].Value = $"{displayPrice:F2} {currencyCode}";
 
+                    }
                     if (row.Cells["colTotal"] != null)
+                    {
                         row.Cells["colTotal"].Value = $"{displayPrice * position.Quantity:F2} {currencyCode}";
+
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -499,7 +516,9 @@ namespace AutomechanicsProject.Formes
                         {
                             int index = comboBoxCurrency.FindStringExact(importData.Currency);
                             if (index >= 0)
+                            {
                                 comboBoxCurrency.SelectedIndex = index;
+                            }
                         }
 
                         var importedCount = 0;
@@ -522,7 +541,9 @@ namespace AutomechanicsProject.Formes
                                 .FirstOrDefault(s => s.Text.Equals(item.SupplierName, StringComparison.OrdinalIgnoreCase));
 
                             if (supplier == null && cachedSuppliers.Count > 0)
+                            {
                                 supplier = cachedSuppliers[0];
+                            }
                             DateTime? expiryDate = null;
                             if (product.HasExpiryDate)  
                             {
@@ -534,7 +555,9 @@ namespace AutomechanicsProject.Formes
                                     }
                                 }
                                 if (expiryDate == null)
+                                {
                                     expiryDate = dateTimePickerExpiry.Value;
+                                }
                             }
 
                             SupplyPosition position = new SupplyPosition
@@ -609,15 +632,17 @@ namespace AutomechanicsProject.Formes
             positions.Clear();
             dataGridViewSupply.Rows.Clear();
             isCurrencyFixed = false;
-            currentCurrency = "RUB";
+            currentCurrency = CurrencyCodes.RUB;
             currentCurrencyRate = 1.0m;
 
             comboBoxCurrency.Enabled = true;
             comboBoxCurrency.BackColor = System.Drawing.SystemColors.Window;
 
-            var defaultCurrency = currencies.FirstOrDefault(c => c.Code == "RUB");
+            var defaultCurrency = currencies.FirstOrDefault(c => c.Code == CurrencyCodes.RUB);
             if (defaultCurrency != null)
+            {
                 comboBoxCurrency.SelectedItem = defaultCurrency;
+            }
         }
 
         /// <summary>         
@@ -683,8 +708,6 @@ namespace AutomechanicsProject.Formes
 
                 try
                 {
-                    var db = DbContextManager.GetContext();
-
                     Supply supply = new Supply
                     {
                         Id = Guid.NewGuid(),
@@ -695,12 +718,12 @@ namespace AutomechanicsProject.Formes
                         TotalAmount = totalInRUB
                     };
 
-                    using (var transaction = await db.Database.BeginTransactionAsync())
+                    using (var transaction = await _db.Database.BeginTransactionAsync())
                     {
                         try
                         {
-                            db.Supplies.Add(supply);
-                            await db.SaveChangesAsync();
+                            _db.Supplies.Add(supply);
+                            await _db.SaveChangesAsync();
 
                             foreach (var pos in positions)
                             {
@@ -717,13 +740,13 @@ namespace AutomechanicsProject.Formes
                                     SupplierName = pos.SupplierName,
                                     ExpiryDate = pos.ExpiryDate
                                 };
-                                db.SupplyPositions.Add(supplyPosition);
+                                _db.SupplyPositions.Add(supplyPosition);
                             }
-                            await db.SaveChangesAsync();
+                            await _db.SaveChangesAsync();
 
                             foreach (var pos in positions)
                             {
-                                var product = await db.Products.FindAsync(pos.ProductId);
+                                var product = await _db.Products.FindAsync(pos.ProductId);
                                 if (product != null)
                                 {
                                     product.Balance += pos.Quantity;
@@ -738,7 +761,7 @@ namespace AutomechanicsProject.Formes
                                     product.BatchNumber = $"Партия_{DateTime.Now:yyyyMM}";
                                 }
                             }
-                            await db.SaveChangesAsync();
+                            await _db.SaveChangesAsync();
 
                             await transaction.CommitAsync();
                         }
@@ -795,16 +818,5 @@ namespace AutomechanicsProject.Formes
 
             return Guid.Empty;
         }
-
-        /// <summary>
-        /// Обработчик закрытия формы - освобождает ресурсы контекста БД
-        /// </summary>
-        protected override void OnFormClosed(FormClosedEventArgs e)
-        {
-            DbContextManager.ReleaseReference();
-            base.OnFormClosed(e);
-        }
-
-        
     }
 }

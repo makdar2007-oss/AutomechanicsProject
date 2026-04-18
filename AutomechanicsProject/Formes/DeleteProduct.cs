@@ -15,26 +15,28 @@ namespace AutomechanicsProject.Formes
     /// </summary>
     public partial class DeleteProduct : Form
     {
-        private readonly DateBase db;
-        private readonly Guid? productId;
+        private readonly DateBase _db;
+        private readonly Guid? _productId;
+
         /// <summary>
         /// Инициализирует форму удаления товара (поиск по артикулу)
         /// </summary>
-        public DeleteProduct()
+        public DeleteProduct(DateBase database)
         {
             InitializeComponent();
-            db = DbContextManager.GetContext();
-            DbContextManager.AddReference();
+            _db = database ?? throw new ArgumentNullException(nameof(database));
             TextBoxHelper.SetupWatermarkTextBox(textBoxArt, Resources.DeleteArticleWatermark);
         }
+
         /// <summary>
         /// Инициализирует форму удаления товара по ID
         /// </summary>
-        public DeleteProduct(Guid id) : this()
+        public DeleteProduct(DateBase database, Guid id) : this(database)
         {
-            productId = id;
+            _productId = id;
             LoadProductById();
         }
+
         /// <summary>
         /// Загружает товар по ID и отображает информацию
         /// </summary>
@@ -42,14 +44,14 @@ namespace AutomechanicsProject.Formes
         {
             try
             {
-                if (!productId.HasValue)
+                if (!_productId.HasValue)
                 {
                     return;
                 }
 
-                var product = db.Products
+                var product = _db.Products
                     .Include(p => p.Category)
-                    .FirstOrDefault(p => p.Id == productId.Value);
+                    .FirstOrDefault(p => p.Id == _productId.Value);
 
                 if (product != null)
                 {
@@ -61,11 +63,12 @@ namespace AutomechanicsProject.Formes
             }
             catch (Exception ex)
             {
-                Program.LogError($"Ошибка при загрузке товара с ID {productId}", ex);
+                Program.LogError($"Ошибка при загрузке товара с ID {_productId}", ex);
                 MessageBox.Show(Resources.ErrorLoadProduct, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
         /// <summary>
         /// Находит товар по артикулу
         /// </summary>
@@ -76,10 +79,11 @@ namespace AutomechanicsProject.Formes
                 return null;
             }
 
-            return db.Products
+            return _db.Products
                 .Include(p => p.Category)
                 .FirstOrDefault(p => p.Article == article.Trim());
         }
+
         /// <summary>
         /// Обработчик нажатия кнопки "Удалить"
         /// </summary>
@@ -115,8 +119,8 @@ namespace AutomechanicsProject.Formes
                     return;
                 }
 
-                db.Products.Remove(product);
-                db.SaveChanges();
+                _db.Products.Remove(product);
+                _db.SaveChanges();
 
                 Program.LogInfo($"Товар '{product.Article} - {product.Name}' удален");
 
@@ -150,16 +154,18 @@ namespace AutomechanicsProject.Formes
 
             return result == DialogResult.Yes;
         }
+
         /// <summary>
         /// Проверка использования в отгрузках
         /// </summary>
         private bool HasShipments(Product product, out int count)
         {
-            count = db.ShipmentItems.Count(si => si.ProductId == product.Id);
+            count = _db.ShipmentItems.Count(si => si.ProductId == product.Id);
             return count > 0;
         }
+
         /// <summary>
-        ///Проверка валидности артикула
+        /// Проверка валидности артикула
         /// </summary>
         private bool IsArticleValid()
         {
@@ -174,7 +180,7 @@ namespace AutomechanicsProject.Formes
         {
             var hasInput = !string.IsNullOrWhiteSpace(textBoxArt.Text) &&
                            textBoxArt.Text != Resources.DeleteArticleWatermark &&
-                           !productId.HasValue;
+                           !_productId.HasValue;
             if (hasInput)
             {
                 var result = MessageBox.Show(
@@ -192,28 +198,20 @@ namespace AutomechanicsProject.Formes
             DialogResult = DialogResult.Cancel;
             Close();
         }
+
         /// <summary>
         /// Метод получения товара
         /// </summary>
         private Product GetProduct()
         {
-            if (productId.HasValue)
+            if (_productId.HasValue)
             {
-                return db.Products
+                return _db.Products
                     .Include(p => p.Category)
-                    .FirstOrDefault(p => p.Id == productId.Value);
+                    .FirstOrDefault(p => p.Id == _productId.Value);
             }
 
             return FindProductByArticle(textBoxArt.Text);
-        }
-
-        /// <summary>
-        /// Освобождает ресурсы контекста базы данных при закрытии формы
-        /// </summary>
-        protected override void OnFormClosed(FormClosedEventArgs e)
-        {
-            base.OnFormClosed(e);
-            DbContextManager.ReleaseReference();
         }
     }
 }

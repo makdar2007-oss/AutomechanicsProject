@@ -17,8 +17,9 @@ namespace AutomechanicsProject.Helpers
         public static void SetupWatermarkTextBox(TextBox textBox, string watermarkText)
         {
             if (string.IsNullOrEmpty(watermarkText))
+            {
                 return;
-
+            }
             textBox.Text = watermarkText;
             textBox.ForeColor = Color.Gray;
 
@@ -49,8 +50,9 @@ namespace AutomechanicsProject.Helpers
         public static void SetupPasswordTextBox(TextBox textBox, string watermarkText)
         {
             if (string.IsNullOrEmpty(watermarkText))
+            {
                 return;
-
+            }
             textBox.Text = watermarkText;
             textBox.ForeColor = Color.Gray;
             textBox.UseSystemPasswordChar = false;
@@ -82,7 +84,9 @@ namespace AutomechanicsProject.Helpers
         public static void SetupWatermarkComboBox(ComboBox comboBox, string watermarkText)
         {
             if (string.IsNullOrEmpty(watermarkText))
+            {
                 return;
+            }
 
             comboBox.Text = watermarkText;
             comboBox.ForeColor = Color.Gray;

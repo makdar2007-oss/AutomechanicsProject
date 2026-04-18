@@ -1,11 +1,11 @@
 ﻿using System;
 
-namespace AutomechanicsProject.Dtos.Service
+namespace AutomechanicsProject.Dtos
 {
     /// <summary>
-    /// DTO для партии товара 
+    /// DTO для отображения срока годности товара
     /// </summary>
-    public class ProductBatchDto
+    public class ExpiryItemDto
     {
         /// <summary>
         /// Идентификатор товара
@@ -13,9 +13,9 @@ namespace AutomechanicsProject.Dtos.Service
         public Guid ProductId { get; set; }
 
         /// <summary>
-        /// Номер партии товара
+        /// Текст для отображения в комбобоксе
         /// </summary>
-        public string BatchNumber { get; set; }
+        public string DisplayText { get; set; }
 
         /// <summary>
         /// Срок годности
@@ -23,13 +23,8 @@ namespace AutomechanicsProject.Dtos.Service
         public DateTime? ExpiryDate { get; set; }
 
         /// <summary>
-        /// Остаток товара 
+        /// Остаток товара
         /// </summary>
         public int Balance { get; set; }
-
-        /// <summary>
-        /// Цена 
-        /// </summary>
-        public decimal Price { get; set; }
     }
 }

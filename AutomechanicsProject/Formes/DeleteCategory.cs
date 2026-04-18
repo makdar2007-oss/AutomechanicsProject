@@ -15,12 +15,12 @@ namespace AutomechanicsProject.Formes
     /// </summary>
     public partial class DeleteCategory : Form
     {
-        private readonly DateBase db;
-        public DeleteCategory()
+        private readonly DateBase _db;
+
+        public DeleteCategory(DateBase database)
         {
             InitializeComponent();
-            db = DbContextManager.GetContext();
-            DbContextManager.AddReference();
+            _db = database ?? throw new ArgumentNullException(nameof(database));
         }
 
         /// <summary>
@@ -38,8 +38,18 @@ namespace AutomechanicsProject.Formes
         {
             try
             {
-                ComboBoxHelper.LoadCategories(comboBoxCategory, db, showProductCount: true);
-
+                var categories = _db.Categories
+                    .OrderBy(c => c.Name)
+                    .Select(c => new ComboItemDto
+                    {
+                        Id = c.Id,
+                        Text = $"{c.Name} (товаров: {_db.Products.Count(p => p.CategoryId == c.Id)})"
+                    })
+                    .ToList();
+                comboBoxCategory.DisplayMember = "Text";
+                comboBoxCategory.ValueMember = "Id";
+                comboBoxCategory.DataSource = categories;
+                comboBoxCategory.SelectedIndex = -1;
                 var hasCategories = comboBoxCategory.Items.Count > 0;
                 comboBoxCategory.SelectedIndex = hasCategories ? -1 : -1;
 
@@ -69,7 +79,7 @@ namespace AutomechanicsProject.Formes
             {
                 var selectedItem = (ComboItemDto)comboBoxCategory.SelectedItem;
                 var categoryId = selectedItem.Id;
-                var category = db.Categories
+                var category = _db.Categories
                     .FirstOrDefault(c => c.Id == categoryId);
 
                 if (category == null)
@@ -78,11 +88,11 @@ namespace AutomechanicsProject.Formes
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
-                var products = db.Products.Where(p => p.CategoryId == categoryId).ToList();
+                var products = _db.Products.Where(p => p.CategoryId == categoryId).ToList();
                 if (products.Any())
                 {
                     var productIds = products.Select(p => p.Id).ToList();
-                    var hasShipments = db.ShipmentItems.Any(si => productIds.Contains(si.ProductId));
+                    var hasShipments = _db.ShipmentItems.Any(si => productIds.Contains(si.ProductId));
 
                     if (hasShipments)
                     {
@@ -107,11 +117,11 @@ namespace AutomechanicsProject.Formes
 
                 if (products.Any())
                 {
-                    db.Products.RemoveRange(products);
+                    _db.Products.RemoveRange(products);
                     Program.LogInfo($"Удалено {products.Count} товаров из категории '{category.Name}'");
                 }
-                db.Categories.Remove(category);
-                db.SaveChanges();
+                _db.Categories.Remove(category);
+                _db.SaveChanges();
                 Program.LogInfo($"Категория '{category.Name}' успешно удалена");
 
                 var successMessage = products.Any()
@@ -138,15 +148,6 @@ namespace AutomechanicsProject.Formes
         {
             DialogResult = DialogResult.Cancel;
             Close();
-        }
-
-        /// <summary>
-        /// Освобождает ресурсы контекста базы данных при закрытии формы
-        /// </summary>
-        protected override void OnFormClosed(FormClosedEventArgs e)
-        {
-            base.OnFormClosed(e);
-            DbContextManager.ReleaseReference();
         }
     }
 }

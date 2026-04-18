@@ -7,6 +7,7 @@ using AutomechanicsProject.Properties;
 using System;
 using System.Linq;
 using System.Windows.Forms;
+
 namespace AutomechanicsProject.Formes
 {
     /// <summary>
@@ -14,23 +15,36 @@ namespace AutomechanicsProject.Formes
     /// </summary>
     public partial class AddProduct : Form
     {
-        private readonly DateBase db;
+        private readonly DateBase _db;
 
         /// <summary>
         /// Инициализирует новый экземпляр формы добавления товара
         /// </summary>
-        public AddProduct()
+        public AddProduct(DateBase database)
         {
             InitializeComponent();
-            db = DbContextManager.GetContext();
-            DbContextManager.AddReference();
-            TextBoxHelper.SetupWatermarkTextBox(textBoxArt, Resources.ProductArticleWatermark);
+            _db = database ?? throw new ArgumentNullException(nameof(database));
+            SetupWatermarks();
+            SetupReadOnlyFields();
+            LoadCategories();
+            LoadUnits();
+            GenerateAndSetArticle();
+        }
+
+        private void SetupWatermarks()
+        {
             TextBoxHelper.SetupWatermarkTextBox(textBoxName, Resources.ProductNameWatermark);
             TextBoxHelper.SetupWatermarkTextBox(textBoxPrice, Resources.ProductPriceWatermark);
             TextBoxHelper.SetupWatermarkComboBox(comboBoxCategory, Resources.CategorySelectWatermark);
             TextBoxHelper.SetupWatermarkComboBox(comboBoxUnit, Resources.UnitSelectWatermark);
-            LoadCategories();
-            LoadUnits();
+        }
+
+        /// <summary>
+        /// Устанавливает поле только для чтения
+        /// </summary>
+        private void SetupReadOnlyFields()
+        {
+            textBoxArt.ReadOnly = true;
         }
 
         /// <summary>
@@ -40,13 +54,24 @@ namespace AutomechanicsProject.Formes
         {
             try
             {
-                ComboBoxHelper.LoadCategories(comboBoxCategory, db);
+                var categories = _db.Categories
+                    .OrderBy(c => c.Name)
+                    .Select(c => new ComboItemDto
+                    {
+                        Id = c.Id,
+                        Text = c.Name
+                    })
+                    .ToList();
+                comboBoxCategory.DisplayMember = "Text";
+                comboBoxCategory.ValueMember = "Id";
+                comboBoxCategory.DataSource = categories;
+                comboBoxCategory.SelectedIndex = -1;
             }
             catch (Exception ex)
             {
                 Program.LogError("Ошибка при загрузке категорий в AddProduct", ex);
                 MessageBox.Show(Resources.ErrorLoadCategories, Resources.TitleError,
-                   MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -57,7 +82,18 @@ namespace AutomechanicsProject.Formes
         {
             try
             {
-                ComboBoxHelper.LoadUnits(comboBoxUnit, db);
+                var units = _db.Units
+                    .OrderBy(u => u.Name)
+                    .Select(u => new ComboItemDto
+                    {
+                        Id = u.Id,
+                        Text = $"{u.Name} ({u.ShortName})"
+                    })
+                    .ToList();
+                comboBoxUnit.DisplayMember = "Text";
+                comboBoxUnit.ValueMember = "Id";
+                comboBoxUnit.DataSource = units;
+                comboBoxUnit.SelectedIndex = -1;
             }
             catch (Exception ex)
             {
@@ -66,6 +102,7 @@ namespace AutomechanicsProject.Formes
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
         /// <summary>
         /// Обработчик нажатия кнопки "Добавить"
         /// Сохранение нового товара в базу данных
@@ -76,36 +113,78 @@ namespace AutomechanicsProject.Formes
             {
                 return;
             }
+            if (!ValidatePrice(out var price))
+            {
+                return;
+            }
+            if (!ValidateCategory())
+            {
+                return;
+            }
+            if (!ValidateUnit())
+            {
+                return;
+            }
 
-            if (!Validation.ValidatePrice(textBoxPrice.Text, out var price))
+            AddNewProduct(price);
+        }
+
+        /// <summary>
+        /// Проверка формата цены
+        /// </summary>
+        private bool ValidatePrice(out decimal price)
+        {
+            if (!Validation.ValidatePrice(textBoxPrice.Text, out price))
             {
                 MessageBox.Show(Resources.ErrorEnterCorrectPrice, Resources.TitleWarning,
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
+                return false;
             }
+            return true;
+        }
 
-            if (!ComboBoxHelper.IsSelected(comboBoxCategory))
+        /// <summary>
+        /// Проверка выбора категории
+        /// </summary>
+        private bool ValidateCategory()
+        {
+            if (comboBoxCategory.SelectedItem == null)
             {
                 MessageBox.Show(Resources.ErrorSelectCategory, Resources.TitleWarning,
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
+                return false;
             }
+            return true;
+        }
 
-            if (!ComboBoxHelper.IsSelected(comboBoxCategory))
+        /// <summary>
+        /// Проверка выбора ед измерения
+        /// </summary>
+        private bool ValidateUnit()
+        {
+            if (comboBoxUnit.SelectedItem == null)
             {
                 MessageBox.Show(Resources.UnitSelectWatermark, Resources.TitleWarning,
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
+                return false;
             }
+            return true;
+        }
 
+        /// <summary>
+        /// Добавление товара 
+        /// </summary>
+        private void AddNewProduct(decimal price)
+        {
             try
             {
-                var selectedCategory = ComboBoxHelper.GetSelectedItem(comboBoxCategory);
-                var selectedUnit = ComboBoxHelper.GetSelectedItem(comboBoxUnit);
+                var selectedCategory = (ComboItemDto)comboBoxCategory.SelectedItem;
+                var selectedUnit = (ComboItemDto)comboBoxUnit.SelectedItem;
+                var article = GenerateArticle();
 
                 var createDto = new CreateProductDto
                 {
-                    Article = textBoxArt.Text.Trim(),
+                    Article = article,
                     Name = textBoxName.Text.Trim(),
                     CategoryId = selectedCategory.Id,
                     UnitId = selectedUnit.Id,
@@ -115,8 +194,8 @@ namespace AutomechanicsProject.Formes
 
                 var product = ProductMapper.ToEntity(createDto);
 
-                db.Products.Add(product);
-                db.SaveChanges();
+                _db.Products.Add(product);
+                _db.SaveChanges();
 
                 Program.LogInfo($"Товар '{product.Article} - {product.Name}' успешно добавлен");
                 MessageBox.Show(Resources.SuccessProductAdded, Resources.TitleSuccess,
@@ -136,8 +215,7 @@ namespace AutomechanicsProject.Formes
         /// </summary>
         private bool ValidateFields()
         {
-            if (Validation.IsWatermark(textBoxArt.Text, Resources.ProductArticleWatermark) ||
-                Validation.IsWatermark(textBoxName.Text, Resources.ProductNameWatermark) ||
+            if (Validation.IsWatermark(textBoxName.Text, Resources.ProductNameWatermark) ||
                 Validation.IsWatermark(textBoxPrice.Text, Resources.ProductPriceWatermark))
             {
                 MessageBox.Show(Resources.ErrorFillFields, Resources.TitleWarning,
@@ -153,8 +231,7 @@ namespace AutomechanicsProject.Formes
         /// </summary>
         private void buttonCancel_Click(object sender, EventArgs e)
         {
-            var hasInput = !((textBoxArt.Text == Resources.ProductArticleWatermark || string.IsNullOrWhiteSpace(textBoxArt.Text)) &&
-                   (textBoxName.Text == Resources.ProductNameWatermark || string.IsNullOrWhiteSpace(textBoxName.Text)) &&
+            var hasInput = !((textBoxName.Text == Resources.ProductNameWatermark || string.IsNullOrWhiteSpace(textBoxName.Text)) &&
                    (comboBoxCategory.Text == Resources.CategorySelectWatermark || string.IsNullOrWhiteSpace(comboBoxCategory.Text)) &&
                    (comboBoxUnit.Text == Resources.UnitSelectWatermark || string.IsNullOrWhiteSpace(comboBoxUnit.Text)) &&
                    (textBoxPrice.Text == Resources.ProductPriceWatermark || string.IsNullOrWhiteSpace(textBoxPrice.Text)));
@@ -168,12 +245,42 @@ namespace AutomechanicsProject.Formes
         }
 
         /// <summary>
-        /// Освобождает ресурсы контекста базы данных при закрытии формы
+        /// Генерация артикула товара
         /// </summary>
-        protected override void OnFormClosed(FormClosedEventArgs e)
+        private string GenerateArticle()
         {
-            base.OnFormClosed(e);
-            DbContextManager.ReleaseReference();
+            var lastProduct = _db.Products
+                .OrderByDescending(p => p.Id)
+                .FirstOrDefault();
+
+            if (lastProduct != null && lastProduct.Article.StartsWith("ART-"))
+            {
+                string lastNumber = lastProduct.Article.Substring(4);
+                if (int.TryParse(lastNumber, out int num))
+                {
+                    return $"ART-{(num + 1):D4}";
+                }
+            }
+
+            return "ART-0001";
+        }
+
+        /// <summary>
+        /// Устанавливает сгенерированный артикул
+        /// </summary>
+        private void GenerateAndSetArticle()
+        {
+            try
+            {
+                string newArticle = GenerateArticle();
+                textBoxArt.Text = newArticle;
+                textBoxArt.ForeColor = System.Drawing.SystemColors.WindowText;
+            }
+            catch (Exception ex)
+            {
+                Program.LogError("Ошибка при генерации артикула", ex);
+                textBoxArt.Text = "Ошибка";
+            }
         }
     }
 }

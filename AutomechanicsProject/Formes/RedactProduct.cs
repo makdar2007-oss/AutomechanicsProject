@@ -24,23 +24,28 @@ namespace AutomechanicsProject.Formes
         /// <summary>
         /// Инициализирует новый экземпляр формы редактирования товара
         /// </summary>
-        public RedactProduct(Guid id)
+        public RedactProduct(DateBase database, Guid id)
         {
             InitializeComponent();
-            db = DbContextManager.GetContext();
-            DbContextManager.AddReference();
+            db = database ?? throw new ArgumentNullException(nameof(database));
             productId = id;
 
+            SetupWatermarks();
+            SubscribeToChanges();
+            LoadUnits();
+            LoadProductData();
+        }
+
+        /// <summary>
+        /// Настраивает водяные знаки для полей ввода
+        /// </summary>
+        private void SetupWatermarks()
+        {
             TextBoxHelper.SetupWatermarkTextBox(textBoxArt, Resources.EditArticleWatermark);
             TextBoxHelper.SetupWatermarkTextBox(textBoxName, Resources.EditNameWatermark);
             TextBoxHelper.SetupWatermarkTextBox(textBoxCategory, Resources.EditCategoryWatermark);
             TextBoxHelper.SetupWatermarkTextBox(textBoxPrice, Resources.EditPriceWatermark);
-
             TextBoxHelper.SetupWatermarkComboBox(comboBoxUnit, Resources.UnitSelectWatermark);
-
-            SubscribeToChanges();
-            LoadUnits();
-            LoadProductData();
         }
 
         /// <summary>
@@ -62,7 +67,18 @@ namespace AutomechanicsProject.Formes
         {
             try
             {
-                ComboBoxHelper.LoadUnits(comboBoxUnit, db);
+                var units = db.Units
+                    .OrderBy(u => u.Name)
+                    .Select(u => new ComboItemDto
+                    {
+                        Id = u.Id,
+                        Text = $"{u.Name} ({u.ShortName})"
+                    })
+                    .ToList();
+                comboBoxUnit.DisplayMember = "Text";
+                comboBoxUnit.ValueMember = "Id";
+                comboBoxUnit.DataSource = units;
+                comboBoxUnit.SelectedIndex = -1;
             }
             catch (Exception ex)
             {
@@ -208,15 +224,6 @@ namespace AutomechanicsProject.Formes
             }
             DialogResult = DialogResult.Cancel;
             Close();
-        }
-
-        /// <summary>
-        /// Освобождает ресурсы контекста базы данных при закрытии формы
-        /// </summary>
-        protected override void OnFormClosed(FormClosedEventArgs e)
-        {
-            base.OnFormClosed(e);
-            DbContextManager.ReleaseReference();
         }
     }
 }

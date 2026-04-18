@@ -110,7 +110,10 @@ namespace AutomechanicsProject.Helpers
         public static string FormatExpiryDateDisplay(DateTime? expiryDate, int balance)
         {
             if (expiryDate.HasValue)
+            {
                 return $"Срок: {expiryDate.Value:dd.MM.yyyy} (остаток: {balance})";
+
+            }
             return $"Без срока (остаток: {balance})";
         }
     }

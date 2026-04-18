@@ -11,8 +11,19 @@ namespace AutomechanicsProject.Classes
     /// </summary>
     public class CurrencyInfo
     {
+        /// <summary>
+        /// Получает или задаёт код валюты 
+        /// </summary>
         public string Code { get; set; }
+
+        /// <summary>
+        /// Получает или задаёт обменный курс валюты
+        /// </summary>
         public decimal Rate { get; set; }
+
+        /// <summary>
+        /// Получает или задаёт отображаемое название валюты
+        /// </summary>
         public string DisplayText { get; set; }
     }
 }

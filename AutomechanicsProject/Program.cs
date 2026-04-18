@@ -29,17 +29,14 @@ namespace AutomechanicsProject
 
             try
             {
-                Application.Run(new Autorization());
+                var db = new DateBase();
+                Application.Run(new Autorization(db));
             }
             catch (Exception ex)
             {
                 Log("Критическая ошибка при запуске приложения", ex);
                 MessageBox.Show("Произошла критическая ошибка. Приложение будет закрыто.",
                     "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            finally
-            {
-                DbContextManager.ForceDispose();
             }
         }
 
@@ -69,7 +66,6 @@ namespace AutomechanicsProject
             }
             catch { }
         }
-
 
         public static void LogInfo(string message) => Log(message, null, "INFO");
         public static void LogWarning(string message) => Log(message, null, "WARNING");

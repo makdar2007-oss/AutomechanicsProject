@@ -1,119 +1,63 @@
 ﻿using AutomechanicsProject;
 using AutomechanicsProject.Properties;
 using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
-/// <summary>
-/// Вспомогательный статический класс для работы с формами и диалоговыми окнами
-/// Предоставляет методы для проверки подтверждения действий и обработки ошибок
-/// </summary>
-public static class FormHelper
+namespace AutomechanicsProject.Helpers
 {
     /// <summary>
-    /// Проверяет, является ли текст подсказкой
+    /// Вспомогательный статический класс для работы с формами и диалоговыми окнами
     /// </summary>
-    public static bool IsWatermark(string text, string watermark) =>
-        string.IsNullOrWhiteSpace(text) || text == watermark;
-    /// <summary>
-    /// Отображает диалоговое окно подтверждения действия с вопросом
-    /// </summary>
-    public static bool ShowCancelConfirmation(string message) =>
-        MessageBox.Show(message, Resources.TitleConfirmation,
-            MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes;
-    /// <summary>
-    /// Обрабатывает исключение: логирует ошибку и отображает сообщение пользователю
-    /// </summary>
-    public static void HandleException(string message, Exception ex, IWin32Window owner = null)
+    public static class FormHelper
     {
-        Program.LogError(message, ex);
-        MessageBox.Show(Resources.ErrorGeneric, Resources.TitleError,
-            MessageBoxButtons.OK, MessageBoxIcon.Error);
-    }
+        /// <summary>
+        /// Проверяет, является ли текст подсказкой
+        /// </summary>
+        public static bool IsWatermark(string text, string watermark) =>
+            string.IsNullOrWhiteSpace(text) || text == watermark;
 
-    /// <summary>
-    /// Асинхронное отображение формы с загрузкой данных
-    /// </summary>
-    public static async Task<TResult> ShowFormAsync<TForm, TResult>(
-        Func<TForm> formFactory,
-        Func<TForm, Task> loadDataAsync,
-        IWin32Window owner = null) where TForm : Form
-    {
-        using (var form = formFactory())
+        /// <summary>
+        /// Отображает диалоговое окно подтверждения действия с вопросом
+        /// </summary>
+        public static bool ShowCancelConfirmation(string message) =>
+            MessageBox.Show(message, Resources.TitleConfirmation,
+                MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes;
+
+        /// <summary>
+        /// Обрабатывает исключение: логирует ошибку и отображает сообщение пользователю
+        /// </summary>
+        public static void HandleException(string message, Exception ex, IWin32Window owner = null)
         {
-            try
-            {
-                form.Cursor = Cursors.WaitCursor;
-                await loadDataAsync(form);
-                form.Cursor = Cursors.Default;
-
-                return (TResult)(object)form.ShowDialog(owner);
-            }
-            catch (Exception ex)
-            {
-                Program.LogError($"Ошибка при открытии формы {typeof(TForm).Name}", ex);
-                MessageBox.Show(Resources.ErrorGeneric, Resources.TitleError,
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return default;
-            }
-            finally
-            {
-                form.Cursor = Cursors.Default;
-            }
+            Program.LogError(message, ex);
+            MessageBox.Show(Resources.ErrorGeneric, Resources.TitleError,
+                MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
-    }
 
-    /// <summary>
-    /// Безопасное выполнение асинхронной операции с обработкой ошибок
-    /// </summary>
-    public static async Task<bool> ExecuteSafeAsync(
-        Func<Task> action,
-        string errorMessage,
-        IWin32Window owner = null)
-    {
-        try
+        /// <summary>
+        /// Открыть форму как диалог
+        /// </summary>
+        public static void OpenDialog(Form form)
         {
-            await action();
-            return true;
+            if (form == null) return;
+            form.ShowDialog();
         }
-        catch (Exception ex)
+
+        /// <summary>
+        /// Открыть форму с владельцем
+        /// </summary>
+        public static void OpenDialog(Form form, IWin32Window owner)
         {
-            Program.LogError(errorMessage, ex);
-            MessageBox.Show(owner, $"{errorMessage}\n{ex.Message}",
-                Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
-            return false;
+            if (form == null) return;
+            form.ShowDialog(owner);
         }
-    }
 
-    /// <summary>
-    /// Универсальная загрузка ComboBox
-    /// </summary>
-    public static async Task LoadComboBoxAsync<T>(
-        ComboBox comboBox,
-        Func<Task<List<T>>> loadDataAsync,
-        string displayMember = null,
-        string valueMember = null)
-    {
-        comboBox.Cursor = Cursors.WaitCursor;
-        comboBox.Enabled = false;
-
-        try
+        /// <summary>
+        /// Открыть форму и вернуть результат
+        /// </summary>
+        public static DialogResult OpenDialogWithResult(Form form)
         {
-            var data = await loadDataAsync();
-            comboBox.DataSource = data;
-
-            if (!string.IsNullOrEmpty(displayMember))
-                comboBox.DisplayMember = displayMember;
-            if (!string.IsNullOrEmpty(valueMember))
-                comboBox.ValueMember = valueMember;
-
-            comboBox.SelectedIndex = -1;
-        }
-        finally
-        {
-            comboBox.Cursor = Cursors.Default;
-            comboBox.Enabled = true;
+            if (form == null) return DialogResult.None;
+            return form.ShowDialog();
         }
     }
 }

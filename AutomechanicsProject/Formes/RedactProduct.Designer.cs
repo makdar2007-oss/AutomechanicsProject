@@ -149,6 +149,7 @@ namespace AutomechanicsProject.Formes
             this.textBoxArt.Size = new System.Drawing.Size(400, 30);
             this.textBoxArt.TabIndex = 1;
             this.textBoxArt.Text = "Артикул";
+            this.textBoxArt.ReadOnly = true;
             this.textBoxArt.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // labelRedact

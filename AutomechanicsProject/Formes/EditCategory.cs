@@ -14,17 +14,16 @@ namespace AutomechanicsProject.Formes
     /// </summary>
     public partial class EditCategory : Form
     {
-        private readonly DateBase db;
+        private readonly DateBase _db;
         private Category selectedCategory;
 
         /// <summary>
         /// Инициализирует новый экземпляр формы редактирования категории
         /// </summary>
-        public EditCategory()
+        public EditCategory(DateBase database)
         {
             InitializeComponent();
-            db = DbContextManager.GetContext();
-            DbContextManager.AddReference();
+            _db = database ?? throw new ArgumentNullException(nameof(database));
         }
 
         /// <summary>
@@ -51,12 +50,12 @@ namespace AutomechanicsProject.Formes
         {
             try
             {
-                var categories = db.Categories
+                var categories = _db.Categories
                     .OrderBy(c => c.Name)
                     .Select(c => new ComboItemDto
                     {
                         Id = c.Id,
-                        Text = $"{c.Name} (товаров: {db.Products.Count(p => p.CategoryId == c.Id)})"
+                        Text = $"{c.Name} (товаров: {_db.Products.Count(p => p.CategoryId == c.Id)})"
                     })
                     .ToList();
 
@@ -89,7 +88,7 @@ namespace AutomechanicsProject.Formes
                 var selectedItem = (ComboItemDto)comboBoxCategory.SelectedItem;
                 var categoryId = selectedItem.Id;
 
-                selectedCategory = db.Categories
+                selectedCategory = _db.Categories
                     .FirstOrDefault(c => c.Id == categoryId);
 
                 if (selectedCategory != null)
@@ -140,7 +139,7 @@ namespace AutomechanicsProject.Formes
 
             try
             {
-                var categoryExists = db.Categories
+                var categoryExists = _db.Categories
                     .Any(c => c.Name == newName && c.Id != selectedCategory.Id);
 
                 if (categoryExists)
@@ -152,7 +151,7 @@ namespace AutomechanicsProject.Formes
 
                 var oldName = selectedCategory.Name;
                 selectedCategory.Name = newName;
-                db.SaveChanges();
+                _db.SaveChanges();
 
                 Program.LogInfo($"Категория '{oldName}' переименована в '{newName}'");
                 MessageBox.Show(string.Format(Resources.SuccessCategoryRenamed, oldName, newName),
@@ -191,14 +190,6 @@ namespace AutomechanicsProject.Formes
 
             DialogResult = DialogResult.Cancel;
             Close();
-        }
-        /// <summary>
-        /// Освобождает ресурсы контекста базы данных при закрытии формы
-        /// </summary>
-        protected override void OnFormClosed(FormClosedEventArgs e)
-        {
-            base.OnFormClosed(e);
-            DbContextManager.ReleaseReference();
         }
     }
 }

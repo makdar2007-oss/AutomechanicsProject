@@ -1,6 +1,6 @@
 ﻿using AutomechanicsProject.Classes;
 using AutomechanicsProject.Dtos;
-using AutomechanicsProject.Dtos.Service; 
+using AutomechanicsProject.Dtos.Service;
 using AutomechanicsProject.Helpers;
 using AutomechanicsProject.Mappers;
 using AutomechanicsProject.Properties;
@@ -22,11 +22,10 @@ namespace AutomechanicsProject.Formes
         /// <summary>
         /// Инициализирует новый экземпляр формы кладовщика
         /// </summary>
-        public StorekeeperForm()
+        public StorekeeperForm(DateBase database)
         {
             InitializeComponent();
-            db = DbContextManager.GetContext();
-            DbContextManager.AddReference();
+            db = database ?? throw new ArgumentNullException(nameof(database));
             AutoWriteOffExpiredProducts();
 
             TextBoxHelper.SetupWatermarkTextBox(textBoxSearch, Resources.SearchWatermark);
@@ -43,14 +42,20 @@ namespace AutomechanicsProject.Formes
 
             foreach (DataGridViewRow row in dataGridViewStore.Rows)
             {
-                if (row.DataBoundItem == null) continue;
+                if (row.DataBoundItem == null)
+                {
+                    continue;
+                }
 
                 try
                 {
                     var dataItem = row.DataBoundItem;
 
                     var expiryDateProp = dataItem.GetType().GetProperty("СрокГодности");
-                    if (expiryDateProp == null) continue;
+                    if (expiryDateProp == null)
+                    {
+                        continue;
+                    }
 
                     var expiryDate = expiryDateProp.GetValue(dataItem) as DateTime?;
 
@@ -139,7 +144,7 @@ namespace AutomechanicsProject.Formes
         {
             try
             {
-                using (var shipmentForm = new CreateShipment())
+                using (var shipmentForm = new CreateShipment(db))
                 {
                     if (shipmentForm.ShowDialog() == DialogResult.OK)
                     {
@@ -166,8 +171,10 @@ namespace AutomechanicsProject.Formes
             {
                 Program.LogInfo("Пользователь вышел из системы");
                 this.Close();
-                var loginForm = new Autorization();
-                loginForm.ShowDialog();
+
+                var loginForm = new Autorization(db);
+                loginForm.ShowDialog(); loginForm.ShowDialog();
+                
             }
             catch (Exception ex)
             {
@@ -224,14 +231,14 @@ namespace AutomechanicsProject.Formes
                                         .OrderBy(x => x.ExpiryDate)
                                         .Select(x => x.ExpiryDate)
                                         .FirstOrDefault(),
-                        Остаток = g.Sum(x => x.Balance),
                         ЦенаЗакупки = g.First().Price,
+                        Остаток = g.Sum(x => x.Balance),
                         ТребуетСкидки = g.Where(x => x.ExpiryDate.HasValue)
                                         .Any(x => x.ExpiryDate.Value > today &&
                                                  (x.ExpiryDate.Value - today).Days <= 30),
                         Просрочен = g.Where(x => x.ExpiryDate.HasValue)
                                      .Any(x => x.ExpiryDate.Value < today),
-                        Цена = ChoosingCurrency.ConvertPrice(g.First().PurchasePrice) 
+                        Цена = ChoosingCurrency.ConvertPrice(g.First().PurchasePrice)
                     });
 
                 if (!string.IsNullOrWhiteSpace(searchText) && searchText != Resources.SearchWatermark)
@@ -244,7 +251,8 @@ namespace AutomechanicsProject.Formes
                 }
 
                 dataGridViewStore.DataSource = query.ToList();
-                ConfigureGrid(); 
+                ConfigureGrid();
+                FormatDateColumn();
             }
             catch (Exception ex)
             {
@@ -253,6 +261,7 @@ namespace AutomechanicsProject.Formes
                      MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
         /// <summary>
         /// Конвертируем цену
         /// </summary>
@@ -270,7 +279,7 @@ namespace AutomechanicsProject.Formes
             catch (Exception ex)
             {
                 Program.LogError($"Ошибка конвертации цены {originalPrice}", ex);
-                return originalPrice; 
+                return originalPrice;
             }
         }
 
@@ -280,37 +289,61 @@ namespace AutomechanicsProject.Formes
         private void ConfigureGrid()
         {
             if (dataGridViewStore.Columns.Contains("Id"))
+            {
                 dataGridViewStore.Columns["Id"].Visible = false;
+            }
 
             if (dataGridViewStore.Columns.Contains("ТребуетСкидки"))
+            {
                 dataGridViewStore.Columns["ТребуетСкидки"].Visible = false;
+            }
             if (dataGridViewStore.Columns.Contains("Просрочен"))
+            {
                 dataGridViewStore.Columns["Просрочен"].Visible = false;
+            }
 
             if (dataGridViewStore.Columns["Артикул"] != null)
+            {
                 dataGridViewStore.Columns["Артикул"].HeaderText = "Артикул";
+            }
 
             if (dataGridViewStore.Columns["Название"] != null)
+            {
                 dataGridViewStore.Columns["Название"].HeaderText = "Наименование";
+            }
 
             if (dataGridViewStore.Columns["Категория"] != null)
+            {
                 dataGridViewStore.Columns["Категория"].HeaderText = "Категория";
+            }
 
             if (dataGridViewStore.Columns["ЕдИзмерения"] != null)
+            {
                 dataGridViewStore.Columns["ЕдИзмерения"].HeaderText = "Ед. изм.";
 
+            }
             if (dataGridViewStore.Columns["СрокГодности"] != null)
+            {
                 dataGridViewStore.Columns["СрокГодности"].HeaderText = "Срок годности";
+            }
+            ;
 
             if (dataGridViewStore.Columns["Цена"] != null)
+            {
                 dataGridViewStore.Columns["Цена"].HeaderText = $"Цена ({ChoosingCurrency.SelectedCurrencyCode})";
+            }
 
             if (dataGridViewStore.Columns["ЦенаЗакупки"] != null)
+            {
                 dataGridViewStore.Columns["ЦенаЗакупки"].HeaderText = "Цена закупки";
 
+            }
+
             if (dataGridViewStore.Columns["Остаток"] != null)
+            {
                 dataGridViewStore.Columns["Остаток"].HeaderText = "Остаток";
 
+            }
             SetColumnOrder();
         }
 
@@ -415,24 +448,15 @@ namespace AutomechanicsProject.Formes
         }
 
         /// <summary>
-        /// Освобождает ресурсы контекста базы данных при закрытии формы
-        /// </summary>
-        protected override void OnFormClosed(FormClosedEventArgs e)
-        {
-            base.OnFormClosed(e);
-            DbContextManager.ReleaseReference();
-        }
-
-        /// <summary>
         /// Обработчик нажатия кнопки поставки
         /// </summary>
         private void buttonSupply_Click_1(object sender, EventArgs e)
         {
-            using (CreateSupply supplyForm = new CreateSupply())
+            using (CreateSupply supplyForm = new CreateSupply(db))
             {
                 if (supplyForm.ShowDialog() == DialogResult.OK)
                 {
-                    RefreshProductList(); 
+                    RefreshProductList();
                 }
             }
         }

@@ -16,12 +16,15 @@ namespace AutomechanicsProject.Formes
     /// </summary>
     public partial class Registration : Form
     {
+        private readonly DateBase _db;
+
         /// <summary>
         /// Инициализирует новый экземпляр формы регистрации
         /// </summary>
-        public Registration()
+        public Registration(DateBase database)
         {
             InitializeComponent();
+            _db = database ?? throw new ArgumentNullException(nameof(database));
             TextBoxHelper.SetupWatermarkTextBox(textBoxSurname, Resources.RegSurnameWatermark);
             TextBoxHelper.SetupWatermarkTextBox(textBoxName, Resources.RegNameWatermark);
             TextBoxHelper.SetupWatermarkTextBox(textBoxLastname, Resources.RegLastnameWatermark);
@@ -182,45 +185,42 @@ namespace AutomechanicsProject.Formes
             }
             try
             {
-                using (var db = new DateBase())
+                var login = textBoxLogin.Text.Trim();
+
+                var storekeeperRole = _db.Roles
+                    .FirstOrDefault(r => r.Position == "Кладовщик");
+                if (storekeeperRole == null)
                 {
-                    var login = textBoxLogin.Text.Trim();
-
-                    var storekeeperRole = db.Roles
-                        .FirstOrDefault(r => r.Position == "Кладовщик");
-                    if (storekeeperRole == null)
-                    {
-                        MessageBox.Show(Resources.ErrorRoleNotFound,
-                            Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return;
-                    }
-                    if (db.Users.Any(u => u.Login == login))
-                    {
-                        textBoxLogin.BackColor = Color.LightPink;
-                        ShowErrorMessage(Resources.ErrorUserExists);
-                        return;
-                    }
-                    var hashedPassword = PasswordHelper.HashPassword(textBoxPassword.Text);
-                    var newUser = new Users
-                    {
-                        Id = Guid.NewGuid(),
-                        Surname = textBoxSurname.Text.Trim(),
-                        Name = textBoxName.Text.Trim(),
-                        Lastname = Validation.IsWatermark(textBoxLastname.Text, Resources.RegLastnameWatermark)
-                            ? null
-                            : textBoxLastname.Text.Trim(),
-                        Login = login,
-                        Password = hashedPassword,
-                        RoleId = storekeeperRole.Id
-                    };
-                    db.Users.Add(newUser);
-                    db.SaveChanges();
-                    Program.LogInfo($"Зарегистрирован новый пользователь: {newUser.Login} - {newUser.FullName}");
-                    MessageBox.Show(string.Format(Resources.SuccessRegistrationWithDetails, login, newUser.FullName),
-                        Resources.TitleSuccess, MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                    OpenAuthorization();
+                    MessageBox.Show(Resources.ErrorRoleNotFound,
+                        Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
                 }
+                if (_db.Users.Any(u => u.Login == login))
+                {
+                    textBoxLogin.BackColor = Color.LightPink;
+                    ShowErrorMessage(Resources.ErrorUserExists);
+                    return;
+                }
+                var hashedPassword = PasswordHelper.HashPassword(textBoxPassword.Text);
+                var newUser = new Users
+                {
+                    Id = Guid.NewGuid(),
+                    Surname = textBoxSurname.Text.Trim(),
+                    Name = textBoxName.Text.Trim(),
+                    Lastname = Validation.IsWatermark(textBoxLastname.Text, Resources.RegLastnameWatermark)
+                        ? null
+                        : textBoxLastname.Text.Trim(),
+                    Login = login,
+                    Password = hashedPassword,
+                    RoleId = storekeeperRole.Id
+                };
+                _db.Users.Add(newUser);
+                _db.SaveChanges();
+                Program.LogInfo($"Зарегистрирован новый пользователь: {newUser.Login} - {newUser.FullName}");
+                MessageBox.Show(string.Format(Resources.SuccessRegistrationWithDetails, login, newUser.FullName),
+                    Resources.TitleSuccess, MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                OpenAuthorization();
             }
             catch (Exception ex)
             {
@@ -228,15 +228,16 @@ namespace AutomechanicsProject.Formes
                 MessageBox.Show(Resources.ErrorRegistration, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-        }
+        }        
+        
         /// <summary>
         /// Открывает форму авторизации и закрывает текущую форму
         /// </summary>
         private void OpenAuthorization()
         {
-            var authForm = new Autorization();
+            var authForm = new Autorization(_db);
             authForm.Show();
-            this.Close();
+            Close();
         }
         /// <summary>
         /// Обработчик нажатия кнопки Уже есть аккаунт? Войти

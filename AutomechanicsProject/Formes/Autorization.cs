@@ -16,12 +16,15 @@ namespace AutomechanicsProject
     /// </summary>
     public partial class Autorization : Form
     {
+        private readonly DateBase _db;
+
         /// <summary>
         /// Инициализирует новый экземпляр формы авторизации
         /// </summary>
-        public Autorization()
+        public Autorization(DateBase database)
         {
             InitializeComponent();
+            _db = database ?? throw new ArgumentNullException(nameof(database));
             TextBoxHelper.SetupWatermarkTextBox(textBoxLogin, Resources.AuthLoginWatermark);
             TextBoxHelper.SetupPasswordTextBox(textBoxPassword, Resources.AuthPasswordWatermark);
         }
@@ -63,7 +66,8 @@ namespace AutomechanicsProject
         /// </summary>
         private void linkRegisterClick(object sender, EventArgs e)
         {
-            new Registration().Show();
+            new Registration(_db).Show();
+
             Hide();
         }
 
@@ -73,7 +77,10 @@ namespace AutomechanicsProject
         /// </summary>
         private void BtnLoginClick(object sender, EventArgs e)
         {
-            Validation.ResetHighlights(textBoxLogin, textBoxPassword); if (!ValidateFields())
+            textBoxLogin.BackColor = SystemColors.Window;
+            textBoxPassword.BackColor = SystemColors.Window;
+
+            if (!ValidateFields())
             {
                 MessageBox.Show(Resources.ErrorFillFields, Resources.TitleWarning,
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -81,45 +88,42 @@ namespace AutomechanicsProject
             }
             try
             {
-                using (var db = new DateBase())
+                var user = _db.Users
+                    .Include(u => u.Role)
+                    .FirstOrDefault(u => u.Login == textBoxLogin.Text);
+
+                if (user == null)
                 {
-                    var user = db.Users
-                        .Include(u => u.Role)
-                        .FirstOrDefault(u => u.Login == textBoxLogin.Text);
-
-                    if (user == null)
-                    {
-                        textBoxLogin.BackColor = Color.LightPink;
-                        MessageBox.Show(Resources.ErrorAuthInvalid, Resources.TitleWarning,
-                            MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        return;
-                    }
-
-                    bool isValid = false;
-                    if (user.Password.StartsWith("$2"))
-                    {
-                        isValid = PasswordHelper.VerifyPassword(textBoxPassword.Text, user.Password);
-                    }
-                    else
-                    {
-                        isValid = (textBoxPassword.Text == user.Password);
-                        if (isValid)
-                        {
-                            user.Password = PasswordHelper.HashPassword(textBoxPassword.Text);
-                            db.SaveChanges();
-                            Program.LogInfo($"Пароль для пользователя {user.Login} был хеширован");
-                        }
-                    }
-                    if (!isValid)
-                    {
-                        textBoxPassword.BackColor = Color.LightPink;
-                        MessageBox.Show(Resources.ErrorAuthInvalid, Resources.TitleWarning,
-                            MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        return;
-                    }
-                    Program.CurrentUser = user;
-                    OpenMainForm(user);
+                    textBoxLogin.BackColor = Color.LightPink;
+                    MessageBox.Show(Resources.ErrorAuthInvalid, Resources.TitleWarning,
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
                 }
+
+                bool isValid = false;
+                if (user.Password.StartsWith("$2"))
+                {
+                    isValid = PasswordHelper.VerifyPassword(textBoxPassword.Text, user.Password);
+                }
+                else
+                {
+                    isValid = (textBoxPassword.Text == user.Password);
+                    if (isValid)
+                    {
+                        user.Password = PasswordHelper.HashPassword(textBoxPassword.Text);
+                        _db.SaveChanges();
+                        Program.LogInfo($"Пароль для пользователя {user.Login} был хеширован");
+                    }
+                }
+                if (!isValid)
+                {
+                    textBoxPassword.BackColor = Color.LightPink;
+                    MessageBox.Show(Resources.ErrorAuthInvalid, Resources.TitleWarning,
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                Program.CurrentUser = user;
+                OpenMainForm(user);
             }
             catch (Exception ex)
             {
@@ -140,11 +144,11 @@ namespace AutomechanicsProject
                 switch (user.Role.Type)
                 {
                     case RoleType.Administrator:
-                        nextForm = new AdminForm();
+                        nextForm = new AdminForm(_db);
                         Program.LogInfo(string.Format("Открыта форма администратора для {0}", user.FullName));
                         break;
                     case RoleType.Storekeeper:
-                        nextForm = new StorekeeperForm();
+                            nextForm = new StorekeeperForm(_db);
                         Program.LogInfo(string.Format("Открыта форма кладовщика для {0}", user.FullName));
                         break;
                 }

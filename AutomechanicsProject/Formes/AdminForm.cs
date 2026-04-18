@@ -20,23 +20,36 @@ namespace AutomechanicsProject.Formes
     /// </summary>
     public partial class AdminForm : Form
     {
-        private readonly DateBase db;
+        private readonly DateBase _db;
 
         /// <summary>
         /// Инициализирует новый экземпляр формы администратора
         /// </summary>
-        public AdminForm()
+        public AdminForm(DateBase database)
         {
             InitializeComponent();
-            db = DbContextManager.GetContext();
-            DbContextManager.AddReference();
+            _db = database ?? throw new ArgumentNullException(nameof(database));
 
-            TextBoxHelper.SetupWatermarkTextBox(textBoxSearch, Resources.SearchWatermark);
+            SetupWatermarks();
+            SetupDataGridView();
 
             AutoWriteOffExpiredProducts();
-
             RefreshProductList();
+        }
 
+        /// <summary>
+        /// Устанавливает водяные знаки
+        /// </summary>
+        private void SetupWatermarks()
+        {
+            TextBoxHelper.SetupWatermarkTextBox(textBoxSearch, Resources.SearchWatermark);
+        }
+
+        /// <summary>
+        /// Настройка таблицы
+        /// </summary>
+        private void SetupDataGridView()
+        {
             dataGridViewMainForm.DataBindingComplete += DataGridViewStore_DataBindingComplete;
         }
 
@@ -47,7 +60,7 @@ namespace AutomechanicsProject.Formes
         {
             try
             {
-                using (var editCategoryForm = new EditCategory())
+                using (var editCategoryForm = new EditCategory(_db))
                 {
                     if (editCategoryForm.ShowDialog() == DialogResult.OK)
                     {
@@ -70,11 +83,11 @@ namespace AutomechanicsProject.Formes
         {
             try
             {
-                var count = ExpiredProductsService.AutoWriteOffExpiredProducts(db);
+                var count = ExpiredProductsService.AutoWriteOffExpiredProducts(_db);
 
                 if (count > 0)
                 {
-                    RefreshProductList(); 
+                    RefreshProductList();
 
                     MessageBox.Show(
                         string.Format(Resources.SuccessAutoWriteOffMessage, count),
@@ -93,7 +106,8 @@ namespace AutomechanicsProject.Formes
 
                 Program.LogError("Ошибка при списании товаров", ex);
             }
-        }
+        }    
+        
         /// <summary>
         /// Обновляет список товаров с учетом текущего поискового запроса
         /// </summary>
@@ -111,6 +125,7 @@ namespace AutomechanicsProject.Formes
             {
                 return null;
             }
+
             try
             {
                 var selectedRow = dataGridViewMainForm.SelectedRows[0];
@@ -122,7 +137,7 @@ namespace AutomechanicsProject.Formes
 
                 if (!string.IsNullOrEmpty(article))
                 {
-                    return db.Products.FirstOrDefault(p => p.Article == article);
+                    return _db.Products.FirstOrDefault(p => p.Article == article);
                 }
             }
             catch (Exception ex)
@@ -164,9 +179,12 @@ namespace AutomechanicsProject.Formes
         {
             try
             {
-                this.Close();
-                var loginForm = new Autorization();
-                loginForm.ShowDialog();
+                Close();
+                using (var newDb = new DateBase())
+                {
+                    var loginForm = new Autorization(newDb);
+                    loginForm.ShowDialog();
+                }
             }
             catch (Exception)
             {
@@ -175,7 +193,7 @@ namespace AutomechanicsProject.Formes
             }
         }
 
-        // <summary>
+        /// <summary>
         /// Обработчик нажатия на пункт меню "Добавить товар"
         /// </summary>
         private void ProductToolStripMenuItem_Click(object sender, EventArgs e)
@@ -231,7 +249,7 @@ namespace AutomechanicsProject.Formes
         {
             try
             {
-                using (var historyForm = new ShipmentHistoryForm())
+                using (var historyForm = new ShipmentHistoryForm(_db))
                 {
                     historyForm.ShowDialog();
                 }
@@ -251,7 +269,7 @@ namespace AutomechanicsProject.Formes
         {
             try
             {
-                using (var addProductForm = new AddProduct())
+                using (var addProductForm = new AddProduct(_db))
                 {
                     if (addProductForm.ShowDialog() == DialogResult.OK)
                     {
@@ -274,7 +292,7 @@ namespace AutomechanicsProject.Formes
         {
             try
             {
-                using (var addCategoryForm = new AddCategory())
+                using (var addCategoryForm = new AddCategory(_db))
                 {
                     if (addCategoryForm.ShowDialog() == DialogResult.OK)
                     {
@@ -304,7 +322,7 @@ namespace AutomechanicsProject.Formes
             }
             try
             {
-                using (var editForm = new RedactProduct(product.Id))
+                using (var editForm = new RedactProduct(_db, product.Id))
                 {
                     if (editForm.ShowDialog() == DialogResult.OK)
                     {
@@ -332,7 +350,7 @@ namespace AutomechanicsProject.Formes
             }
             try
             {
-                using (var deleteForm = new DeleteProduct(product.Id))
+                using (var deleteForm = new DeleteProduct(_db, product.Id))
                 {
                     if (deleteForm.ShowDialog() == DialogResult.OK)
                     {
@@ -353,7 +371,7 @@ namespace AutomechanicsProject.Formes
         {
             try
             {
-                using (var deleteCategoryForm = new DeleteCategory())
+                using (var deleteCategoryForm = new DeleteCategory(_db))
                 {
                     if (deleteCategoryForm.ShowDialog() == DialogResult.OK)
                     {
@@ -378,7 +396,7 @@ namespace AutomechanicsProject.Formes
             {
                 var today = DateTime.Today;
 
-                var products = db.Products
+                var products = _db.Products
                     .AsNoTracking()
                     .Include(p => p.Category)
                     .Include(p => p.Unit)
@@ -455,7 +473,10 @@ namespace AutomechanicsProject.Formes
                     var dataItem = row.DataBoundItem;
 
                     var expiryDateProp = dataItem.GetType().GetProperty("СрокГодности");
-                    if (expiryDateProp == null) continue;
+                    if (expiryDateProp == null)
+                    {
+                        continue;
+                    }
 
                     var expiryDate = expiryDateProp.GetValue(dataItem) as DateTime?;
 
@@ -506,7 +527,7 @@ namespace AutomechanicsProject.Formes
         /// </summary>
         private void buttonSupply_Click(object sender, EventArgs e)
         {
-            using (CreateSupply supplyForm = new CreateSupply())
+            using (CreateSupply supplyForm = new CreateSupply(_db))
             {
                 if (supplyForm.ShowDialog() == DialogResult.OK)
                 {
@@ -520,17 +541,10 @@ namespace AutomechanicsProject.Formes
         /// </summary>
         private void buttonReport_Click(object sender, EventArgs e)
         {
-            ReportForm reportForm = new ReportForm();
-            reportForm.ShowDialog();
-        }
-
-        /// <summary>
-        /// Освобождает ресурсы контекста базы данных при закрытии формы
-        /// </summary>
-        protected override void OnFormClosed(FormClosedEventArgs e)
-        {
-            base.OnFormClosed(e);
-            DbContextManager.ReleaseReference();
+            using (var reportForm = new ReportForm(_db))
+            {
+                reportForm.ShowDialog();
+            }
         }
     }
 }

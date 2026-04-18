@@ -15,13 +15,20 @@ namespace AutomechanicsProject.Formes
     /// </summary>
     public partial class AddCategory : Form
     {
-        private readonly DateBase db;
+        private readonly DateBase _db;
 
-        public AddCategory()
+        public AddCategory(DateBase database)
         {
             InitializeComponent();
-            db = DbContextManager.GetContext();
-            DbContextManager.AddReference();
+            _db = database ?? throw new ArgumentNullException(nameof(database));
+            SetupWatermark();
+        }
+
+        /// <summary>
+        /// Установка водяного знака для текстового поля
+        /// </summary>
+        private void SetupWatermark()
+        {
             TextBoxHelper.SetupWatermarkTextBox(textBoxAddCategory, Resources.CategoryAddWatermark);
         }
 
@@ -30,43 +37,73 @@ namespace AutomechanicsProject.Formes
         /// </summary>
         private void buttonAdd_Click(object sender, EventArgs e)
         {
-            if (Validation.IsWatermark(textBoxAddCategory.Text, Resources.CategoryAddWatermark))
+            var categoryName = GetValidatedCategoryName();
+            if (categoryName == null)
             {
-                MessageBox.Show(Resources.ErrorFillCategory, Resources.TitleWarning,
+                return;
+            }
+
+            if (CategoryExists(categoryName))
+            {
+                MessageBox.Show(Resources.ErrorCategoryExists, Resources.TitleWarning,
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
+            AddNewCategory(categoryName);
+        }
+
+        /// <summary>
+        /// Проверяет название категории из текстового поля
+        /// </summary>
+        private string GetValidatedCategoryName()
+        {
+            if (Validation.IsWatermark(textBoxAddCategory.Text, Resources.CategoryAddWatermark))
+            {
+                MessageBox.Show(Resources.ErrorFillCategory, Resources.TitleWarning,
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return null;
+            }
+
+            return textBoxAddCategory.Text.Trim();
+        }
+
+        /// <summary>
+        /// Проверка на наличие категории с таким же названием
+        /// </summary>
+        private bool CategoryExists(string categoryName)
+        {
+            return _db.Categories.Any(c => c.Name.ToLower() == categoryName.ToLower());
+        }
+
+        /// <summary>
+        /// Создает и сохраняет новую категорию
+        /// </summary>
+        private void AddNewCategory(string categoryName)
+        {
             try
             {
-                var categoryName = textBoxAddCategory.Text.Trim();
-                var categoryExists = db.Categories.Any(c => c.Name.ToLower() == categoryName.ToLower());
-
-                if (categoryExists)
-                {
-                    MessageBox.Show(Resources.ErrorCategoryExists, Resources.TitleWarning,
-                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
                 var newCategory = new Category
                 {
                     Id = Guid.NewGuid(),
                     Name = categoryName
                 };
-                db.Categories.Add(newCategory);
-                db.SaveChanges();
+
+                _db.Categories.Add(newCategory);
+                _db.SaveChanges();
+
                 Program.LogInfo($"Категория '{categoryName}' успешно добавлена");
-                MessageBox.Show(string.Format(Resources.SuccessCategoryAdded, categoryName), Resources.TitleSuccess,
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(string.Format(Resources.SuccessCategoryAdded, categoryName),
+                    Resources.TitleSuccess, MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                 DialogResult = DialogResult.OK;
                 Close();
             }
             catch (Exception ex)
             {
-                Program.LogError($"Ошибка при добавлении категории '{textBoxAddCategory.Text}'", ex);
+                Program.LogError($"Ошибка при добавлении категории '{categoryName}'", ex);
                 MessageBox.Show(Resources.ErrorAddCategory, Resources.TitleError,
-                  MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -77,15 +114,6 @@ namespace AutomechanicsProject.Formes
         {
             DialogResult = DialogResult.Cancel;
             Close();
-        }
-
-        /// <summary>
-        /// Освобождает ресурсы контекста базы данных при закрытии формы
-        /// </summary>
-        protected override void OnFormClosed(FormClosedEventArgs e)
-        {
-            base.OnFormClosed(e);
-            DbContextManager.ReleaseReference();
         }
     }
 }

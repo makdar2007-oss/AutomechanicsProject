@@ -15,16 +15,15 @@ namespace AutomechanicsProject.Formes
     /// </summary>
     public partial class ShipmentHistoryForm : Form
     {
-        private readonly DateBase db;
+        private readonly DateBase _db;
 
         /// <summary>
         /// Инициализирует новый экземпляр формы истории отгрузок
         /// </summary>
-        public ShipmentHistoryForm()
+        public ShipmentHistoryForm(DateBase database)
         {
             InitializeComponent();
-            db = DbContextManager.GetContext();
-            DbContextManager.AddReference();
+            _db = database ?? throw new ArgumentNullException(nameof(database));
         }
 
         /// <summary>
@@ -48,7 +47,7 @@ namespace AutomechanicsProject.Formes
                 DateTime startDate = dateTimePickerFrom.Value.Date;
                 DateTime endDate = dateTimePickerTo.Value.Date.AddDays(1).AddSeconds(-1);
 
-                var shipments = db.Shipments
+                var shipments = _db.Shipments
                     .Include(s => s.User)
                     .Include(s => s.CreatedByUser)
                     .Include(s => s.Items)
@@ -144,15 +143,6 @@ namespace AutomechanicsProject.Formes
         private void buttonApplyFilter_Click(object sender, EventArgs e)
         {
             LoadShipmentHistory();
-        }
-
-        /// <summary>
-        /// Освобождает ресурсы контекста базы данных при закрытии формы
-        /// </summary>
-        protected override void OnFormClosed(FormClosedEventArgs e)
-        {
-            base.OnFormClosed(e);
-            DbContextManager.ReleaseReference();
         }
     }
 }

@@ -5,6 +5,9 @@ using System.Text.Json;
 
 namespace AutomechanicsProject.Helpers
 {
+    /// <summary>
+    /// Кэширует курсы валют в локальный JSON-файл
+    /// </summary>
     public static class CurrencyStorage
     {
         private static string FilePath => Path.Combine(
@@ -13,22 +16,20 @@ namespace AutomechanicsProject.Helpers
             "currency_cache.json"
         );
 
-        public class CurrencyCache
-        {
-            public Dictionary<string, decimal> ExchangeRates { get; set; }
-            public string LastSelectedCurrency { get; set; }
-            public DateTime LastUpdate { get; set; }
-        }
-
+        /// <summary>
+        /// Сохраняет курсы валют и выбранную валюту в файл
+        /// </summary>
         public static void SaveRates(Dictionary<string, decimal> rates, string selectedCurrency)
         {
             try
             {
                 var directory = Path.GetDirectoryName(FilePath);
                 if (!Directory.Exists(directory))
+                {
                     Directory.CreateDirectory(directory);
+                }
 
-                var cache = new CurrencyCache
+                var cache = new
                 {
                     ExchangeRates = rates,
                     LastSelectedCurrency = selectedCurrency,
@@ -44,18 +45,30 @@ namespace AutomechanicsProject.Helpers
             }
         }
 
-        public static CurrencyCache LoadRates()
+        /// <summary>
+        /// Загружает курсы валют из файла. Возвращает null, если кэш устарел (старше 24 часов) или файла нет
+        /// </summary>
+        public static (Dictionary<string, decimal> ExchangeRates, string LastSelectedCurrency, DateTime LastUpdate)? LoadRates()
         {
             try
             {
                 if (File.Exists(FilePath))
                 {
                     var json = File.ReadAllText(FilePath);
-                    var cache = JsonSerializer.Deserialize<CurrencyCache>(json);
+                    using (var doc = JsonDocument.Parse(json))
+                    {
+                        var root = doc.RootElement;
 
-                    // Проверяем актуальность (например, не старше 24 часов)
-                    if (cache != null && (DateTime.Now - cache.LastUpdate).TotalHours < 24)
-                        return cache;
+                        var rates = JsonSerializer.Deserialize<Dictionary<string, decimal>>(root.GetProperty("ExchangeRates").GetRawText());
+                        var selectedCurrency = root.GetProperty("LastSelectedCurrency").GetString();
+                        var lastUpdate = root.GetProperty("LastUpdate").GetDateTime();
+
+                        if (rates != null && selectedCurrency != null && (DateTime.Now - lastUpdate).TotalHours < 24)
+                        {
+                            return (rates, selectedCurrency, lastUpdate);
+
+                        }
+                    }
                 }
             }
             catch (Exception ex)

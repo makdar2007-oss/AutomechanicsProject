@@ -46,8 +46,11 @@ namespace AutomechanicsProject.Helpers
         {
             foreach (DataGridViewRow row in grid.Rows)
             {
-                if (row.DataBoundItem == null) continue;
+                if (row.DataBoundItem == null)
+                {
+                    continue;
 
+                }
                 try
                 {
                     var isExpired = GetBoolProperty(row.DataBoundItem, expiredPropertyName);
@@ -85,7 +88,10 @@ namespace AutomechanicsProject.Helpers
         {
             foreach (DataGridViewRow row in grid.Rows)
             {
-                if (row.DataBoundItem == null) continue;
+                if (row.DataBoundItem == null)
+                {
+                    continue;
+                }
 
                 try
                 {
@@ -146,7 +152,10 @@ namespace AutomechanicsProject.Helpers
             for (int i = 0; i < columnOrder.Length; i++)
             {
                 if (grid.Columns[columnOrder[i]] != null)
+                {
                     grid.Columns[columnOrder[i]].DisplayIndex = i;
+
+                }
             }
         }
 
@@ -155,7 +164,10 @@ namespace AutomechanicsProject.Helpers
             foreach (var columnName in columnNames)
             {
                 if (grid.Columns[columnName] != null)
+                {
                     grid.Columns[columnName].Visible = false;
+
+                }
             }
         }
 
@@ -177,7 +189,10 @@ namespace AutomechanicsProject.Helpers
                 grid.Columns[columnName].DefaultCellStyle.Format = "F2";
                 grid.Columns[columnName].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
                 if (!string.IsNullOrEmpty(headerText))
+                {
                     grid.Columns[columnName].HeaderText = headerText;
+
+                }
             }
         }
 
@@ -188,20 +203,29 @@ namespace AutomechanicsProject.Helpers
                 grid.Columns[columnName].DefaultCellStyle.Format = format;
                 grid.Columns[columnName].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
                 if (!string.IsNullOrEmpty(headerText))
+                {
                     grid.Columns[columnName].HeaderText = headerText;
+
+                }
             }
         }
 
         private static void ConfigureTextColumn(DataGridView grid, string columnName, string headerText = null)
         {
             if (grid.Columns[columnName] != null && !string.IsNullOrEmpty(headerText))
+            {
                 grid.Columns[columnName].HeaderText = headerText;
+
+            }
         }
 
         private static void ConfigureNumericColumn(DataGridView grid, string columnName)
         {
             if (grid.Columns[columnName] != null)
+            {
                 grid.Columns[columnName].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+
+            }
         }
 
         private static bool GetBoolProperty(object obj, string propertyName)

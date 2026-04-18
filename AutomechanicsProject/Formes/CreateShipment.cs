@@ -29,11 +29,10 @@ namespace AutomechanicsProject.Formes
         /// <summary>
         /// Инициализирует новый экземпляр формы создания отгрузки
         /// </summary>
-        public CreateShipment()
+        public CreateShipment(DateBase database)
         {
             InitializeComponent();
-            db = DbContextManager.GetContext();
-            DbContextManager.AddReference();
+            db = database ?? throw new ArgumentNullException(nameof(database));
             shipmentItems = new List<ShipmentItem>();
             totalAmount = 0;
             totalItemsCount = 0;
@@ -64,7 +63,7 @@ namespace AutomechanicsProject.Formes
         {
             comboBoxState = new SearchableComboBoxHelper.ComboBoxState();
 
-            var searchProducts = allProducts.Select(p => new ProductComboDto
+            var searchProducts = allProducts.Select(p => new ProductComboViewModel
             {
                 Id = p.Id,
                 Article = p.Article,
@@ -91,7 +90,7 @@ namespace AutomechanicsProject.Formes
         {
             LoadExpiryDatesForProduct(selectedProduct.Id);
         }
-        
+
         /// <summary>
         /// Загружает доступные сроки годности для выбранного товара
         /// </summary>
@@ -99,20 +98,26 @@ namespace AutomechanicsProject.Formes
         {
             try
             {
-                var selectedProduct = db.Products.FirstOrDefault(p => p.Id == productId);
+                var selectedProduct = db.Products
+                    .Include(p => p.Unit)
+                    .FirstOrDefault(p => p.Id == productId);
+
                 if (selectedProduct == null)
                 {
                     return;
                 }
 
                 var productsWithSameName = db.Products
+                    .Include(p => p.Unit)
                     .Where(p => p.Name == selectedProduct.Name && p.Balance > 0)
                     .Select(p => new
                     {
                         ProductId = p.Id,
                         DisplayText = FormatHelper.FormatExpiryDateDisplay(p.ExpiryDate, p.Balance),
-                        
+                        ExpiryDate = p.ExpiryDate,
+                        Balance = p.Balance
                     })
+                    .OrderBy(p => p.ExpiryDate)
                     .ToList();
 
                 if (productsWithSameName.Count >= 1)
@@ -122,7 +127,9 @@ namespace AutomechanicsProject.Formes
                     comboBoxExpiry.ValueMember = "ProductId";
                     comboBoxExpiry.DataSource = productsWithSameName;
                     if (productsWithSameName.Any())
+                    {
                         comboBoxExpiry.SelectedIndex = 0;
+                    }
                 }
                 else
                 {
@@ -158,8 +165,6 @@ namespace AutomechanicsProject.Formes
                         p.UnitId
                     })
                     .ToList();
-
-               
 
                 var products = productsList
                     .GroupBy(p => p.Name)
@@ -199,7 +204,7 @@ namespace AutomechanicsProject.Formes
                 MessageBox.Show(Resources.ErrorLoadProducts, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-        }        
+        }
 
         /// <summary>
         /// Загружает список получателей 
@@ -209,16 +214,16 @@ namespace AutomechanicsProject.Formes
             try
             {
                 var recipients = db.Addresses
-                     .Where(a => a.CompanyName != null && a.CompanyName.Trim() != "" && a.CompanyName.Trim() != "-")
-                     .OrderBy(a => a.CompanyName)
-                     .Select(a => new ComboItemDto
-                     {
-                         Id = a.Id,
-                         Text = a.CompanyName
-                     })
-                     .ToList();
+                    .Where(a => a.CompanyName != null && a.CompanyName.Trim() != "" && a.CompanyName.Trim() != "-")
+                    .OrderBy(a => a.CompanyName)
+                    .Select(a => new ComboItemDto
+                    {
+                        Id = a.Id,
+                        Text = a.CompanyName
+                    })
+                    .ToList();
 
-                comboBoxRecipient1.DisplayMember = "Text";     
+                comboBoxRecipient1.DisplayMember = "Text";
                 comboBoxRecipient1.ValueMember = "Id";
                 comboBoxRecipient1.DataSource = recipients;
 
@@ -288,7 +293,7 @@ namespace AutomechanicsProject.Formes
 
             if (comboBoxExpiry.Enabled && comboBoxExpiry.SelectedItem != null)
             {
-                dynamic selectedExpiry = comboBoxExpiry.SelectedItem;
+                var selectedExpiry = (ExpiryItemDto)comboBoxExpiry.SelectedItem; 
                 Guid actualProductId = selectedExpiry.ProductId;
 
                 var productWithExpiry = db.Products.FirstOrDefault(p => p.Id == actualProductId);
@@ -304,7 +309,6 @@ namespace AutomechanicsProject.Formes
                         return false;
                     }
 
-                    productWithExpiry.Balance -= quantity;
                     db.SaveChanges();
 
                     return AddOrUpdateShipmentItem(
@@ -337,7 +341,6 @@ namespace AutomechanicsProject.Formes
                 return false;
             }
 
-            productToShip.Balance -= quantity;
             db.SaveChanges();
 
             return AddOrUpdateShipmentItem(
@@ -350,7 +353,7 @@ namespace AutomechanicsProject.Formes
                 productToShip.Unit?.Name ?? "шт"
             );
         }
-        
+
         /// <summary>
         /// Очищает выпадающий список сроков годности
         /// </summary>
@@ -626,7 +629,10 @@ namespace AutomechanicsProject.Formes
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question);
 
-            if (result != DialogResult.Yes) return;
+            if (result != DialogResult.Yes)
+            {
+                return;
+            }
 
             var itemToRemove = shipmentItems.FirstOrDefault(i => i.ProductName == productName);
             if (itemToRemove != null)
@@ -634,15 +640,6 @@ namespace AutomechanicsProject.Formes
                 shipmentItems.Remove(itemToRemove);
                 RefreshShipmentList();
             }
-        }
-
-        /// <summary>
-        /// Освобождает ресурсы контекста базы данных при закрытии формы
-        /// </summary>
-        protected override void OnFormClosed(FormClosedEventArgs e)
-        {
-            base.OnFormClosed(e);
-            DbContextManager.ReleaseReference();
         }
     }
 }

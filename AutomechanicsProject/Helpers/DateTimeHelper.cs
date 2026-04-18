@@ -37,8 +37,10 @@ namespace AutomechanicsProject.Helpers
         public static bool IsExpiringSoon(DateTime? expiryDate, int daysThreshold = 30)
         {
             if (!expiryDate.HasValue)
+            {
                 return false;
 
+            }
             var daysLeft = (expiryDate.Value.Date - DateTime.Today).Days;
             return daysLeft > 0 && daysLeft <= daysThreshold;
         }
@@ -49,7 +51,10 @@ namespace AutomechanicsProject.Helpers
         public static int? DaysUntilExpiry(DateTime? expiryDate)
         {
             if (!expiryDate.HasValue)
+            {
                 return null;
+
+            }
 
             return (expiryDate.Value.Date - DateTime.Today).Days;
         }

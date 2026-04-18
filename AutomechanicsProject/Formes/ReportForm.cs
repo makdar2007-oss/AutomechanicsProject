@@ -14,15 +14,15 @@ namespace AutomechanicsProject.Formes
     /// </summary>
     public partial class ReportForm : Form
     {
-        private readonly DateBase db;
+        private readonly DateBase _db;
 
         /// <summary>
         /// Инициализирует новый экземпляр формы отчета
         /// </summary>
-        public ReportForm()
+        public ReportForm(DateBase database)
         {
             InitializeComponent();
-            db = new DateBase();
+            _db = database ?? throw new ArgumentNullException(nameof(database));
         }
 
         /// <summary>
@@ -47,7 +47,7 @@ namespace AutomechanicsProject.Formes
                 DateTime startDate = dateTimePickerFrom.Value.Date;
                 DateTime endDate = dateTimePickerTo.Value.Date.AddDays(1);
 
-                var shipments = db.Shipments
+                var shipments = _db.Shipments
                     .Include(s => s.User)
                     .Include(s => s.CreatedByUser)
                     .Include(s => s.Items)
@@ -55,14 +55,14 @@ namespace AutomechanicsProject.Formes
                     .OrderByDescending(s => s.Date)
                     .ToList();
 
-                var supplies = db.Supplies
+                var supplies = _db.Supplies
                     .Include(s => s.Supplier)
                     .Include(s => s.User)
                     .Include(s => s.Positions)
                     .Where(s => s.DateCreated.Date >= startDate && s.DateCreated.Date < endDate)
                     .ToList();
 
-                if (shipments.Count == 0 && supplies.Count == 0)  // ИЗМЕНИТЬ условие
+                if (shipments.Count == 0 && supplies.Count == 0)
                 {
                     dataGridViewReport.DataSource = null;
                     MessageBox.Show(Resources.InfoNoDataForPeriod, Resources.TitleInformation,
@@ -196,9 +196,13 @@ namespace AutomechanicsProject.Formes
                                     var cellString = cellValue?.ToString() ?? "";
 
                                     if (cellString.Contains("\""))
+                                    {
                                         cellString = cellString.Replace("\"", "\"\"");
+                                    }
                                     if (cellString.Contains(";") || cellString.Contains("\n"))
+                                    {
                                         cellString = $"\"{cellString}\"";
+                                    }
 
                                     rowData[i] = cellString;
                                 }

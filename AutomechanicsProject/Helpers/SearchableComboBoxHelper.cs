@@ -30,8 +30,14 @@ namespace AutomechanicsProject.Helpers
             List<ProductComboViewModel> allProducts,
             Action<ProductComboViewModel> onProductSelected = null)
         {
-            if (comboBox == null) return;
-            if (state == null) return;
+            if (comboBox == null)
+            {
+                return;
+            }
+            if (state == null)
+            {
+                return;
+            }
 
             state.AllProducts = allProducts;
 
@@ -54,10 +60,16 @@ namespace AutomechanicsProject.Helpers
         {
             var comboBox = sender as ComboBox;
             var tag = comboBox?.Tag;
-            if (tag == null) return;
+            if (tag == null)
+            {
+                return;
+            }
 
             var state = (ComboBoxState)tag.GetType().GetProperty("State")?.GetValue(tag);
-            if (state == null || state.IsClearingText || state.IsUpdatingText) return;
+            if (state == null || state.IsClearingText || state.IsUpdatingText)
+            {
+                return;
+            }
 
             var searchText = comboBox.Text;
             if (string.IsNullOrWhiteSpace(searchText))
@@ -85,7 +97,10 @@ namespace AutomechanicsProject.Helpers
         {
             var comboBox = sender as ComboBox;
             var tag = comboBox?.Tag;
-            if (tag == null) return;
+            if (tag == null)
+            {
+                return;
+            }
 
             var state = (ComboBoxState)tag.GetType().GetProperty("State")?.GetValue(tag);
             var searchText = comboBox.Text;
@@ -110,7 +125,10 @@ namespace AutomechanicsProject.Helpers
         {
             var comboBox = sender as ComboBox;
             var tag = comboBox?.Tag;
-            if (tag == null) return;
+            if (tag == null)
+            {
+                return;
+            }
 
             var state = (ComboBoxState)tag.GetType().GetProperty("State")?.GetValue(tag);
             var onSelected = (Action<ProductComboViewModel>)tag.GetType().GetProperty("OnSelected")?.GetValue(tag);
@@ -144,14 +162,23 @@ namespace AutomechanicsProject.Helpers
         /// </summary>
         public static void ClearAndReloadProducts(ComboBox comboBox, ComboBoxState state)
         {
-            if (comboBox == null) return;
-            if (state != null) state.IsClearingText = true;
+            if (comboBox == null)
+            {
+                return;
+            }
+            if (state != null)
+            {
+                state.IsClearingText = true;
+            }
 
             LoadProducts(comboBox, state.AllProducts);
             comboBox.Text = "";
             comboBox.SelectedIndex = -1;
 
-            if (state != null) state.IsClearingText = false;
+            if (state != null)
+            {
+                state.IsClearingText = false;
+            }
         }
     }
 }

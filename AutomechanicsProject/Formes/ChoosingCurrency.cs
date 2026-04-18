@@ -24,7 +24,7 @@ namespace AutomechanicsProject.Formes
         private List<CurrencyInfo> currencies;
         private Dictionary<string, decimal> exchangeRates;
         private string selectedCurrencyCode;
-        public static string SelectedCurrencyCode = "RUB";
+        public static string SelectedCurrencyCode = CurrencyCodes.RUB;
         public static decimal CurrentExchangeRate = 1m;
         public static string SelectedCurrencyName = "Российский рубль";
 
@@ -70,7 +70,9 @@ namespace AutomechanicsProject.Formes
                 Program.LogError("Ошибка при загрузке курсов валют", ex);
 
                 if (!LoadFromCache())
+                {
                     LoadFallbackRates();
+                }
 
                 PopulateCurrencyComboBox();
             }
@@ -119,7 +121,9 @@ namespace AutomechanicsProject.Formes
             {
                 var directory = Path.GetDirectoryName(CacheFilePath);
                 if (!Directory.Exists(directory))
+                {
                     Directory.CreateDirectory(directory);
+                }
 
                 var cache = new
                 {
@@ -220,7 +224,9 @@ namespace AutomechanicsProject.Formes
             }
 
             if (comboBoxCurrency.SelectedIndex == -1 && comboBoxCurrency.Items.Count > 0)
+            {
                 comboBoxCurrency.SelectedIndex = 0;
+            }
         }
 
         /// <summary>
@@ -267,7 +273,9 @@ namespace AutomechanicsProject.Formes
                 SelectedCurrencyName = GetCurrencyName(selected.Code);
 
                 if (exchangeRates != null)
+                {
                     SaveToCache(exchangeRates);
+                }
 
                 DialogResult result = MessageBox.Show(
                     string.Format(Resources.CurrencyChangeConfirm,
@@ -312,8 +320,10 @@ namespace AutomechanicsProject.Formes
         /// </summary>
         public static decimal ConvertPrice(decimal priceInRub)
         {
-            if (SelectedCurrencyCode == "RUB")
+            if (SelectedCurrencyCode == CurrencyCodes.RUB)
+            {
                 return priceInRub;
+            }
 
             return priceInRub * CurrentExchangeRate;
         }
