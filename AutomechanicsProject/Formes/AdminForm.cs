@@ -179,12 +179,14 @@ namespace AutomechanicsProject.Formes
         {
             try
             {
+                ChoosingCurrency.SelectedCurrencyCode = CurrencyCodes.RUB;
+                ChoosingCurrency.CurrentExchangeRate = 1m;
+                ChoosingCurrency.SelectedCurrencyName = "Российский рубль";
+                Program.LogInfo("Пользователь вышел из системы, валюта сброшена");
+
                 Close();
-                using (var newDb = new DateBase())
-                {
-                    var loginForm = new Autorization(newDb);
-                    loginForm.ShowDialog();
-                }
+                var loginForm = new Autorization(_db);
+                loginForm.ShowDialog();
             }
             catch (Exception)
             {

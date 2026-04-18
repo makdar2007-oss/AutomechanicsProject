@@ -45,6 +45,7 @@ namespace AutomechanicsProject.Formes
             LoadCurrencies();
             LoadSuppliersFromDatabase();
 
+
             comboBoxProduct.Text = "";
             comboBoxProduct.SelectedIndex = -1;
         }
