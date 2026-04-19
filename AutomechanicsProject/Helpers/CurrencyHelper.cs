@@ -145,17 +145,23 @@ namespace AutomechanicsProject.Helpers
         /// <summary>
         /// Конвертирует в рубли
         /// </summary>
-        public static decimal ConvertToRUB(decimal priceInCurrency, decimal rate)
+        public static decimal ConvertToRUB(decimal amount, decimal rate)
         {
-            return priceInCurrency / rate;
+            if (rate == 0)
+                return 0;
+
+            return amount / rate; // или твоя логика
         }
 
         /// <summary>
         /// Конвертирует из рублей
         /// </summary>
-        public static decimal ConvertFromRUB(decimal priceInRUB, decimal rate)
+        public static decimal ConvertFromRUB(decimal amount, decimal rate)
         {
-            return priceInRUB * rate;
+            if (rate == 0)
+                return 0;
+
+            return amount * rate;
         }
     }
 }
