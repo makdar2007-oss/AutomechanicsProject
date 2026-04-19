@@ -259,7 +259,7 @@ namespace AutomechanicsProject.Properties {
         ///   Ищет локализованную строку, похожую на Валюта изменена с {0} на {1}
         ///Курс: 1 RUB = {2:F4} {3} 
         ///
-        ///Все цены (кроме закупочных) будут пересчитаны в {4}.
+        ///Все цены будут пересчитаны в {4}.
         ///Продолжить?.
         /// </summary>
         public static string CurrencyChangeConfirm {
@@ -484,6 +484,15 @@ namespace AutomechanicsProject.Properties {
         public static string ErrorCurrencyFixed {
             get {
                 return ResourceManager.GetString("ErrorCurrencyFixed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Критическая ошибка при загрузке курсов валют.
+        /// </summary>
+        public static string ErrorCurrencyRatesLoad {
+            get {
+                return ResourceManager.GetString("ErrorCurrencyRatesLoad", resourceCulture);
             }
         }
         
@@ -1202,6 +1211,15 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Курсы валют успешно загружены.
+        /// </summary>
+        public static string InfoCurrencyRatesLoaded {
+            get {
+                return ResourceManager.GetString("InfoCurrencyRatesLoaded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на История отгрузок пуста.
         /// </summary>
         public static string InfoHistoryEmpty {
@@ -1733,6 +1751,24 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Ошибка загрузки курсов валют: {0}.
+        /// </summary>
+        public static string WarningCurrencyRatesFailed {
+            get {
+                return ResourceManager.GetString("WarningCurrencyRatesFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Не удалось загрузить актуальные курсы валют. Используются резервные значения..
+        /// </summary>
+        public static string WarningCurrencyRatesFallback {
+            get {
+                return ResourceManager.GetString("WarningCurrencyRatesFallback", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на У выбранного товара нет срока годности. Дата поставки не требуется..
         /// </summary>
         public static string WarningNoProductExpiryDate {
@@ -1747,6 +1783,15 @@ namespace AutomechanicsProject.Properties {
         public static string WarningShipmentsWithoutItems {
             get {
                 return ResourceManager.GetString("WarningShipmentsWithoutItems", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Используются сохранённые курсы валют (интернет недоступен).
+        /// </summary>
+        public static string WarningUsingCachedRates {
+            get {
+                return ResourceManager.GetString("WarningUsingCachedRates", resourceCulture);
             }
         }
     }

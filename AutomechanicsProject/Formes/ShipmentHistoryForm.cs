@@ -4,9 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Windows.Forms;
-using System.IO;
-using System.Text;
-using AutomechanicsProject.Dtos;
+using NLog;
 
 namespace AutomechanicsProject.Formes
 {
@@ -16,6 +14,7 @@ namespace AutomechanicsProject.Formes
     public partial class ShipmentHistoryForm : Form
     {
         private readonly DateBase _db;
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         /// <summary>
         /// Инициализирует новый экземпляр формы истории отгрузок
@@ -122,7 +121,7 @@ namespace AutomechanicsProject.Formes
             }
             catch (Exception ex)
             {
-                Program.LogError("Не удалось загрузить историю отгрузок.", ex);
+                logger.Error("Не удалось загрузить историю отгрузок");
                 MessageBox.Show(string.Format(Resources.ErrorLoadShipmentHistory, ex.Message),
                     Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }

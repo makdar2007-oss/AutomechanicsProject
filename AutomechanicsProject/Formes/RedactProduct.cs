@@ -3,11 +3,10 @@ using AutomechanicsProject.Dtos.UI;
 using AutomechanicsProject.Helpers;
 using AutomechanicsProject.Properties;
 using Microsoft.EntityFrameworkCore;
+using NLog;
 using System;
-using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using AutomechanicsProject.Dtos;
 
 namespace AutomechanicsProject.Formes
 {
@@ -20,6 +19,7 @@ namespace AutomechanicsProject.Formes
         private readonly Guid productId;
         private Product currentProduct;
         private bool hasChanges;
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         /// <summary>
         /// Инициализирует новый экземпляр формы редактирования товара
@@ -80,13 +80,14 @@ namespace AutomechanicsProject.Formes
                 comboBoxUnit.DataSource = units;
                 comboBoxUnit.SelectedIndex = -1;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Program.LogError("Ошибка при загрузке единиц измерения", ex);
+                logger.Error("Ошибка при загрузке единиц измерения");
                 MessageBox.Show(Resources.ErrorLoadUnits, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
         /// <summary>
         /// Загружает данные товара из базы данных и отображает их в полях формы
         /// </summary>
@@ -126,9 +127,9 @@ namespace AutomechanicsProject.Formes
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Program.LogError($"Ошибка при загрузке данных товара ID {productId}", ex);
+                logger.Error($"Ошибка при загрузке данных товара ID {productId}");
                 MessageBox.Show(Resources.ErrorLoadProductData, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -188,16 +189,16 @@ namespace AutomechanicsProject.Formes
 
                 db.SaveChanges();
 
-                Program.LogInfo($"Товар '{currentProduct.Article} - {currentProduct.Name}' обновлен");
+                logger.Info($"Товар '{currentProduct.Article} - {currentProduct.Name}' обновлен");
                 MessageBox.Show(Resources.SuccessProductUpdated, Resources.TitleSuccess,
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                 DialogResult = DialogResult.OK;
                 Close();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Program.LogError($"Ошибка при обновлении товара ID {productId}", ex);
+                logger.Error($"Ошибка при обновлении товара ID {productId}");
                 MessageBox.Show(Resources.ErrorUpdateProduct, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }

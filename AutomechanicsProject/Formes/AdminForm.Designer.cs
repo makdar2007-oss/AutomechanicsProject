@@ -31,6 +31,7 @@
             this.panelAdmin = new System.Windows.Forms.Panel();
             this.buttonExit = new System.Windows.Forms.Button();
             this.panelSearchHIstory = new System.Windows.Forms.Panel();
+            this.buttonReport = new System.Windows.Forms.Button();
             this.buttonCurrency = new System.Windows.Forms.Button();
             this.buttonSupply = new System.Windows.Forms.Button();
             this.buttonhistory = new System.Windows.Forms.Button();
@@ -48,7 +49,6 @@
             this.ProductToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.CategoryToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripTextBoxAdmin = new System.Windows.Forms.ToolStripTextBox();
-            this.buttonReport = new System.Windows.Forms.Button();
             this.panelAdmin.SuspendLayout();
             this.panelSearchHIstory.SuspendLayout();
             this.panelAdminData.SuspendLayout();
@@ -102,6 +102,19 @@
             this.panelSearchHIstory.Name = "panelSearchHIstory";
             this.panelSearchHIstory.Size = new System.Drawing.Size(882, 74);
             this.panelSearchHIstory.TabIndex = 6;
+            // 
+            // buttonReport
+            // 
+            this.buttonReport.AutoSize = true;
+            this.buttonReport.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.buttonReport.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.buttonReport.Location = new System.Drawing.Point(214, 19);
+            this.buttonReport.Name = "buttonReport";
+            this.buttonReport.Size = new System.Drawing.Size(83, 35);
+            this.buttonReport.TabIndex = 6;
+            this.buttonReport.Text = "Отчет";
+            this.buttonReport.UseVisualStyleBackColor = true;
+            this.buttonReport.Click += new System.EventHandler(this.buttonReport_Click);
             // 
             // buttonCurrency
             // 
@@ -222,15 +235,15 @@
             // 
             this.ProductToolStripMenuItem.Name = "ProductToolStripMenuItem";
             this.ProductToolStripMenuItem.Size = new System.Drawing.Size(193, 28);
-            this.ProductToolStripMenuItem.Click += new System.EventHandler(this.ProductToolStripMenuItem_Click);
             this.ProductToolStripMenuItem.Text = "Товар";
+            this.ProductToolStripMenuItem.Click += new System.EventHandler(this.ProductToolStripMenuItem_Click);
             // 
             // CategoryToolStripMenuItem
             // 
             this.CategoryToolStripMenuItem.Name = "CategoryToolStripMenuItem";
             this.CategoryToolStripMenuItem.Size = new System.Drawing.Size(193, 28);
-            this.CategoryToolStripMenuItem.Click += new System.EventHandler(this.CategoryToolStripMenuItem_Click);
             this.CategoryToolStripMenuItem.Text = "Категорию";
+            this.CategoryToolStripMenuItem.Click += new System.EventHandler(this.CategoryToolStripMenuItem_Click);
             // 
             // toolStripComboBox2
             // 
@@ -245,15 +258,15 @@
             // 
             this.ProductToolStripMenuItem1.Name = "ProductToolStripMenuItem1";
             this.ProductToolStripMenuItem1.Size = new System.Drawing.Size(193, 28);
-            this.ProductToolStripMenuItem1.Click += new System.EventHandler(this.ProductToolStripMenuItem1_Click);
             this.ProductToolStripMenuItem1.Text = "Товар";
+            this.ProductToolStripMenuItem1.Click += new System.EventHandler(this.ProductToolStripMenuItem1_Click);
             // 
             // CategoryToolStripMenuItem1
             // 
             this.CategoryToolStripMenuItem1.Name = "CategoryToolStripMenuItem1";
             this.CategoryToolStripMenuItem1.Size = new System.Drawing.Size(193, 28);
-            this.CategoryToolStripMenuItem1.Click += new System.EventHandler(this.CategoryToolStripMenuItem1_Click);
             this.CategoryToolStripMenuItem1.Text = "Категорию";
+            this.CategoryToolStripMenuItem1.Click += new System.EventHandler(this.CategoryToolStripMenuItem1_Click);
             // 
             // toolStripComboBox3
             // 
@@ -268,15 +281,15 @@
             // 
             this.ProductToolStripMenuItem2.Name = "ProductToolStripMenuItem2";
             this.ProductToolStripMenuItem2.Size = new System.Drawing.Size(193, 28);
-            this.ProductToolStripMenuItem2.Click += new System.EventHandler(this.ProductToolStripMenuItem2_Click);
             this.ProductToolStripMenuItem2.Text = "Товар";
+            this.ProductToolStripMenuItem2.Click += new System.EventHandler(this.ProductToolStripMenuItem2_Click);
             // 
             // CategoryToolStripMenuItem2
             // 
             this.CategoryToolStripMenuItem2.Name = "CategoryToolStripMenuItem2";
             this.CategoryToolStripMenuItem2.Size = new System.Drawing.Size(193, 28);
-            this.CategoryToolStripMenuItem2.Click += new System.EventHandler(this.CategoryToolStripMenuItem2_Click);
             this.CategoryToolStripMenuItem2.Text = "Категорию";
+            this.CategoryToolStripMenuItem2.Click += new System.EventHandler(this.CategoryToolStripMenuItem2_Click);
             // 
             // toolStripTextBoxAdmin
             // 
@@ -286,19 +299,6 @@
             this.toolStripTextBoxAdmin.ReadOnly = true;
             this.toolStripTextBoxAdmin.Size = new System.Drawing.Size(335, 28);
             this.toolStripTextBoxAdmin.Text = "Администратор";
-            // 
-            // buttonReport
-            // 
-            this.buttonReport.AutoSize = true;
-            this.buttonReport.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.buttonReport.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.buttonReport.Location = new System.Drawing.Point(214, 19);
-            this.buttonReport.Name = "buttonReport";
-            this.buttonReport.Size = new System.Drawing.Size(83, 35);
-            this.buttonReport.TabIndex = 6;
-            this.buttonReport.Text = "Отчет";
-            this.buttonReport.UseVisualStyleBackColor = true;
-            this.buttonReport.Click += new System.EventHandler(this.buttonReport_Click);
             // 
             // AdminForm
             // 

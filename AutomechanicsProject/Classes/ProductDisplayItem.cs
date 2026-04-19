@@ -40,7 +40,7 @@ namespace AutomechanicsProject.Classes
         /// <summary>
         /// Есть ли у товара срок годности
         /// </summary>
-        public bool HasExpiryDate => ProductExpiryDate.HasValue; 
+        public bool HasExpiryDate { get; set; }
 
         /// <summary>
         /// Отображает товар с учетом наличия и остатка 

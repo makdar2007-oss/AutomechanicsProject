@@ -3,11 +3,11 @@ using AutomechanicsProject.Formes;
 using AutomechanicsProject.Helpers;
 using AutomechanicsProject.Properties;
 using Microsoft.EntityFrameworkCore;
+using NLog;
 using System;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using System.Drawing;
-using AutomechanicsProject.Dtos;
 
 namespace AutomechanicsProject
 {
@@ -17,6 +17,7 @@ namespace AutomechanicsProject
     public partial class Autorization : Form
     {
         private readonly DateBase _db;
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         /// <summary>
         /// Инициализирует новый экземпляр формы авторизации
@@ -112,7 +113,7 @@ namespace AutomechanicsProject
                     {
                         user.Password = PasswordHelper.HashPassword(textBoxPassword.Text);
                         _db.SaveChanges();
-                        Program.LogInfo($"Пароль для пользователя {user.Login} был хеширован");
+                        logger.Info($"Пароль для польщователя {user.Login} был хеширован");
                     }
                 }
                 if (!isValid)
@@ -125,9 +126,9 @@ namespace AutomechanicsProject
                 Program.CurrentUser = user;
                 OpenMainForm(user);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Program.LogError("Ошибка авторизации", ex);
+                logger.Error("Ошибка авторизации");
                 MessageBox.Show(Resources.ErrorAuthFailed, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -145,11 +146,11 @@ namespace AutomechanicsProject
                 {
                     case RoleType.Administrator:
                         nextForm = new AdminForm(_db);
-                        Program.LogInfo(string.Format("Открыта форма администратора для {0}", user.FullName));
+                        logger.Info("Открыта форма администратора для {0}", user.FullName);
                         break;
                     case RoleType.Storekeeper:
                             nextForm = new StorekeeperForm(_db);
-                        Program.LogInfo(string.Format("Открыта форма кладовщика для {0}", user.FullName));
+                        logger.Info("Открыта форма кладовщика для {0}", user.FullName);
                         break;
                 }
             }
@@ -162,7 +163,7 @@ namespace AutomechanicsProject
             {
                 MessageBox.Show(Resources.ErrorNoAccess, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
-                Program.LogWarning(string.Format($"Пользователь {user.FullName} не имеет назначенной роли"));
+                logger.Warn($"Пользователь {user.FullName} не имеет назначенной роли");
             }
         }
     }

@@ -56,6 +56,10 @@ namespace AutomechanicsProject.Helpers
             LoadProducts(comboBox, allProducts);
         }
 
+
+        /// <summary>
+        /// Фильтрация списка товаров при вводе текста пользователем
+        /// </summary>
         private static void ComboBox_TextUpdate(object sender, EventArgs e)
         {
             var comboBox = sender as ComboBox;
@@ -93,6 +97,10 @@ namespace AutomechanicsProject.Helpers
             comboBox.DroppedDown = true;
         }
 
+
+        /// <summary>
+        /// Фильтрация списка при открытии выпадающего списка
+        /// </summary>
         private static void ComboBox_DropDown(object sender, EventArgs e)
         {
             var comboBox = sender as ComboBox;
@@ -121,6 +129,10 @@ namespace AutomechanicsProject.Helpers
             }
         }
 
+
+        /// <summary>
+        /// Фильтрация списка при отркытии выпадающего списка
+        /// </summary>
         private static void ComboBox_SelectionChangeCommitted(object sender, EventArgs e)
         {
             var comboBox = sender as ComboBox;

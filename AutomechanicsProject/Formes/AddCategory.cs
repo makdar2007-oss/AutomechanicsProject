@@ -4,9 +4,7 @@ using AutomechanicsProject.Properties;
 using System;
 using System.Linq;
 using System.Windows.Forms;
-using AutomechanicsProject.Dtos;
-using AutomechanicsProject.Dtos.Service;
-using AutomechanicsProject.Mappers;
+using NLog;
 
 namespace AutomechanicsProject.Formes
 {
@@ -16,6 +14,7 @@ namespace AutomechanicsProject.Formes
     public partial class AddCategory : Form
     {
         private readonly DateBase _db;
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         public AddCategory(DateBase database)
         {
@@ -92,16 +91,16 @@ namespace AutomechanicsProject.Formes
                 _db.Categories.Add(newCategory);
                 _db.SaveChanges();
 
-                Program.LogInfo($"Категория '{categoryName}' успешно добавлена");
+                logger.Info($"Категория '{categoryName}' успешно добавлена");
                 MessageBox.Show(string.Format(Resources.SuccessCategoryAdded, categoryName),
                     Resources.TitleSuccess, MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                 DialogResult = DialogResult.OK;
                 Close();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Program.LogError($"Ошибка при добавлении категории '{categoryName}'", ex);
+                logger.Error($"Ошибка при добавлении категори '{categoryName}'");
                 MessageBox.Show(Resources.ErrorAddCategory, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }

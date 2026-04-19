@@ -1,5 +1,6 @@
 ﻿using AutomechanicsProject;
 using AutomechanicsProject.Properties;
+using NLog;
 using System;
 using System.Windows.Forms;
 
@@ -10,6 +11,8 @@ namespace AutomechanicsProject.Helpers
     /// </summary>
     public static class FormHelper
     {
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
+
         /// <summary>
         /// Проверяет, является ли текст подсказкой
         /// </summary>
@@ -28,7 +31,7 @@ namespace AutomechanicsProject.Helpers
         /// </summary>
         public static void HandleException(string message, Exception ex, IWin32Window owner = null)
         {
-            Program.LogError(message, ex);
+            logger.Error(message, ex);
             MessageBox.Show(Resources.ErrorGeneric, Resources.TitleError,
                 MessageBoxButtons.OK, MessageBoxIcon.Error);
         }

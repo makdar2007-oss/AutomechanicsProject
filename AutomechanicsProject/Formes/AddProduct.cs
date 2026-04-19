@@ -7,6 +7,7 @@ using AutomechanicsProject.Properties;
 using System;
 using System.Linq;
 using System.Windows.Forms;
+using NLog;
 
 namespace AutomechanicsProject.Formes
 {
@@ -16,6 +17,7 @@ namespace AutomechanicsProject.Formes
     public partial class AddProduct : Form
     {
         private readonly DateBase _db;
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         /// <summary>
         /// Инициализирует новый экземпляр формы добавления товара
@@ -31,6 +33,9 @@ namespace AutomechanicsProject.Formes
             GenerateAndSetArticle();
         }
 
+        /// <summary>
+        /// Устанавливает название полей
+        /// </summary>
         private void SetupWatermarks()
         {
             TextBoxHelper.SetupWatermarkTextBox(textBoxName, Resources.ProductNameWatermark);
@@ -67,9 +72,9 @@ namespace AutomechanicsProject.Formes
                 comboBoxCategory.DataSource = categories;
                 comboBoxCategory.SelectedIndex = -1;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Program.LogError("Ошибка при загрузке категорий в AddProduct", ex);
+                Logger.Error("Ошибка при загрузке категорий в форму 'Редактирование категорий'");
                 MessageBox.Show(Resources.ErrorLoadCategories, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -95,9 +100,9 @@ namespace AutomechanicsProject.Formes
                 comboBoxUnit.DataSource = units;
                 comboBoxUnit.SelectedIndex = -1;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Program.LogError("Ошибка при загрузке единиц измерения", ex);
+                Logger.Error("Ошибка при загрузке единиц измерения");
                 MessageBox.Show(Resources.ErrorLoadUnits, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -197,7 +202,7 @@ namespace AutomechanicsProject.Formes
                 _db.Products.Add(product);
                 _db.SaveChanges();
 
-                Program.LogInfo($"Товар '{product.Article} - {product.Name}' успешно добавлен");
+                Logger.Info($"Товар '{product.Article} - {product.Name}' успешно добавлен");
                 MessageBox.Show(Resources.SuccessProductAdded, Resources.TitleSuccess,
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
 
@@ -276,9 +281,9 @@ namespace AutomechanicsProject.Formes
                 textBoxArt.Text = newArticle;
                 textBoxArt.ForeColor = System.Drawing.SystemColors.WindowText;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Program.LogError("Ошибка при генерации артикула", ex);
+                Logger.Error("Ошибка при генерации артикула");
                 textBoxArt.Text = "Ошибка";
             }
         }

@@ -1,11 +1,11 @@
 ﻿using AutomechanicsProject.Classes;
+using AutomechanicsProject.Dtos.UI;
 using AutomechanicsProject.Helpers;
 using AutomechanicsProject.Properties;
-using Microsoft.EntityFrameworkCore;
+using NLog;
 using System;
 using System.Linq;
 using System.Windows.Forms;
-using AutomechanicsProject.Dtos.UI;
 namespace AutomechanicsProject.Formes
 
 {
@@ -16,6 +16,7 @@ namespace AutomechanicsProject.Formes
     {
         private readonly DateBase _db;
         private Category selectedCategory;
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         /// <summary>
         /// Инициализирует новый экземпляр формы редактирования категории
@@ -71,9 +72,9 @@ namespace AutomechanicsProject.Formes
                 textBoxNewName.ForeColor = System.Drawing.Color.Gray;
                 selectedCategory = null;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Program.LogError("Ошибка при загрузке категорий в EditCategory", ex);
+                logger.Error("Ошибка при загрузке категорий в форму 'Редактирование категории'");
                 MessageBox.Show(Resources.ErrorLoadCategories, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -153,14 +154,14 @@ namespace AutomechanicsProject.Formes
                 selectedCategory.Name = newName;
                 _db.SaveChanges();
 
-                Program.LogInfo($"Категория '{oldName}' переименована в '{newName}'");
+                logger.Info($"Категория '{oldName}' переименована в '{newName}'");
                 MessageBox.Show(string.Format(Resources.SuccessCategoryRenamed, oldName, newName),
                     Resources.TitleSuccess, MessageBoxButtons.OK, MessageBoxIcon.Information);
                 LoadCategories();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Program.LogError($"Ошибка при редактировании категории ID {selectedCategory?.Id}", ex);
+                logger.Error($"Ошибка при редактировании категории");
                 MessageBox.Show(Resources.ErrorEditCategory, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }

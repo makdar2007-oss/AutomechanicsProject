@@ -1,14 +1,14 @@
 ﻿using AutomechanicsProject.Classes;
-using AutomechanicsProject.ViewModels;
 using AutomechanicsProject.Dtos.UI;
 using AutomechanicsProject.Helpers;
 using AutomechanicsProject.Properties;
+using AutomechanicsProject.ViewModels;
 using Microsoft.EntityFrameworkCore;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace AutomechanicsProject.Formes
@@ -19,6 +19,7 @@ namespace AutomechanicsProject.Formes
     public partial class CreateSupply : Form
     {
         private readonly DateBase _db;
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
         private List<SupplyPosition> positions = new List<SupplyPosition>();
         private string currentCurrency = CurrencyCodes.RUB;
         private decimal currentCurrencyRate = 1.0m;
@@ -26,7 +27,6 @@ namespace AutomechanicsProject.Formes
         private List<CurrencyInfo> currencies;
         private List<ProductDisplayItem> cachedProducts;
         private List<ComboItemDto> cachedSuppliers;
-        private ToolTip productToolTip;
         private List<ProductComboViewModel> allProductsForSearch;
         private SearchableComboBoxHelper.ComboBoxState comboBoxState;
 
@@ -44,6 +44,9 @@ namespace AutomechanicsProject.Formes
             LoadProductsFromDatabase();
             LoadCurrencies();
             LoadSuppliersFromDatabase();
+
+            comboBoxCurrency.SelectedIndexChanged += ComboBoxCurrency_SelectedIndexChanged;
+            Load += CreateSupply_Load;
 
 
             comboBoxProduct.Text = "";
@@ -65,6 +68,9 @@ namespace AutomechanicsProject.Formes
             );
         }
 
+        /// <summary>
+        /// Обрабатывает выбор товара в выпадающем списке
+        /// </summary>
         private void OnProductSelected(ProductComboViewModel selectedProduct)
         {
             var product = cachedProducts.FirstOrDefault(p => p.Id == selectedProduct.Id);
@@ -75,20 +81,53 @@ namespace AutomechanicsProject.Formes
         }
 
         /// <summary>
-        /// Загружает список валют в выпадающий список
+        /// Загружает список валют из API
         /// </summary>
-        private void LoadCurrencies()
+        private async void LoadCurrencies()
         {
-            currencies = CurrencyHelper.GetCurrencies();
+            try
+            {
+                comboBoxCurrency.Items.Clear();
+                comboBoxCurrency.Items.Add("Загрузка курсов...");
+                comboBoxCurrency.Enabled = false;
 
-            comboBoxCurrency.DataSource = currencies;
-            comboBoxCurrency.DisplayMember = "DisplayText";
-            comboBoxCurrency.ValueMember = "Code";
+                currencies = await CurrencyHelper.GetCurrenciesAsync();
 
-            comboBoxCurrency.SelectedIndex = 0;
-            currentCurrency = CurrencyCodes.RUB;
+                comboBoxCurrency.DataSource = currencies;
+                comboBoxCurrency.DisplayMember = "DisplayText";
+                comboBoxCurrency.ValueMember = "Code";
 
-            comboBoxCurrency.SelectedIndexChanged += ComboBoxCurrency_SelectedIndexChanged;
+                comboBoxCurrency.Enabled = true;
+
+                int rubIndex = currencies.FindIndex(c => c.Code == "RUB");
+                if (rubIndex >= 0)
+                {
+                    comboBoxCurrency.SelectedIndex = rubIndex;
+                }
+                else if (currencies.Count > 0)
+                {
+                    comboBoxCurrency.SelectedIndex = 0;
+                }
+
+                currentCurrency = CurrencyCodes.RUB;
+                currentCurrencyRate = 1.00m;
+            }
+            catch (Exception)
+            {
+                logger.Error("Ошибка загрузки валют из API");
+
+                currencies = CurrencyHelper.GetCurrencies();
+                comboBoxCurrency.DataSource = currencies;
+                comboBoxCurrency.DisplayMember = "DisplayText";
+                comboBoxCurrency.ValueMember = "Code";
+                comboBoxCurrency.Enabled = true;
+                comboBoxCurrency.SelectedIndex = 0;
+                currentCurrency = CurrencyCodes.RUB;
+                currentCurrencyRate = 1.00m;
+
+                MessageBox.Show(Resources.WarningCurrencyRatesFallback, Resources.TitleWarning,
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
         }
 
         /// <summary>
@@ -125,12 +164,12 @@ namespace AutomechanicsProject.Formes
                 UpdatePricesInGrid();
                 UpdateTotalAmount();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Program.LogError("Ошибка при смене валюты", ex);
+                logger.Error("Ошибка при смене валюты");
             }
         }
-        
+
         /// <summary>
         /// Проверяет, что ввод в поле количества содержит только цифры
         /// </summary>
@@ -201,13 +240,14 @@ namespace AutomechanicsProject.Formes
                         MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Program.LogError("Ошибка при загрузке товаров из БД", ex);
+                logger.Error("Ошибка при загрузке товаров из БД");
                 MessageBox.Show(Resources.ErrorLoadProducts, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
         /// <summary>
         /// Загружает список поставщиков из базы данных для выбора в комбобоксе
         /// </summary>
@@ -240,9 +280,9 @@ namespace AutomechanicsProject.Formes
                         MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Program.LogError("Ошибка при загрузке поставщиков из БД", ex);
+                logger.Error("Ошибка при загрузке поставщиков из БД");
                 MessageBox.Show(Resources.ErrorLoadSuppliers, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -408,7 +448,7 @@ namespace AutomechanicsProject.Formes
                 }
                 catch (Exception ex)
                 {
-                    System.Diagnostics.Debug.WriteLine($"Ошибка обновления строки {i}: {ex.Message}");
+                    logger.Debug($"Ошибка обновления строки {i}: {ex.Message}");
                 }
             }
         }
@@ -617,7 +657,7 @@ namespace AutomechanicsProject.Formes
                     }
                     catch (Exception ex)
                     {
-                        Program.LogError("Ошибка при импорте", ex);
+                        logger.Error("Ошибка при импорте");
                         MessageBox.Show(string.Format(Resources.ErrorImportFailed, ex.Message), Resources.TitleError,
                             MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
@@ -659,15 +699,15 @@ namespace AutomechanicsProject.Formes
                 if (result == DialogResult.Yes)
                 {
                     ResetSupplyState();
-                    this.DialogResult = DialogResult.Cancel;
-                    this.Close();
+                    DialogResult = DialogResult.Cancel;
+                    Close();
                 }
             }
             else
             {
                 ResetSupplyState();
-                this.DialogResult = DialogResult.Cancel;
-                this.Close();
+                DialogResult = DialogResult.Cancel;
+                Close();
             }
         }
 
@@ -716,7 +756,10 @@ namespace AutomechanicsProject.Formes
                         DateCreated = DateTime.Now,
                         UserId = GetCurrentUserId(),
                         Status = Resources.SupplyStatusCompleted,
-                        TotalAmount = totalInRUB
+                        TotalAmount = totalInRUB,
+                        CurrencyCode = currentCurrency,
+                        ExchangeRate = currentCurrencyRate,
+                        RateDate = DateTime.Now
                     };
 
                     using (var transaction = await _db.Database.BeginTransactionAsync())
@@ -766,7 +809,7 @@ namespace AutomechanicsProject.Formes
 
                             await transaction.CommitAsync();
                         }
-                        catch (Exception ex)
+                        catch (Exception)
                         {
                             await transaction.RollbackAsync();
                             throw;
@@ -784,7 +827,7 @@ namespace AutomechanicsProject.Formes
                 }
                 catch (Exception ex)
                 {
-                    Program.LogError("Ошибка при подтверждении поставки", ex);
+                    logger.Error("Ошибка при подтверждении поставки");
                     MessageBox.Show(string.Format(Resources.ErrorSupplyFailed, ex.Message), Resources.TitleError,
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }

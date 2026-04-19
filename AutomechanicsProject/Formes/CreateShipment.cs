@@ -5,6 +5,7 @@ using AutomechanicsProject.Helpers;
 using AutomechanicsProject.Properties;
 using AutomechanicsProject.ViewModels;
 using Microsoft.EntityFrameworkCore;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -13,6 +14,16 @@ using System.Windows.Forms;
 
 namespace AutomechanicsProject.Formes
 {
+    /// <summary>
+    /// Перечисление типов отгрузки
+    ///</summary>
+    public enum ShipmentTypeEnum
+    {
+        Отгрузка,
+        Списание,
+        Брак
+    }
+
     /// <summary>
     /// Форма для создания новой отгрузки товаров
     /// </summary>
@@ -25,6 +36,10 @@ namespace AutomechanicsProject.Formes
         private List<ProductComboViewModel> allProducts;
         private SearchableComboBoxHelper.ComboBoxState comboBoxState;
         private List<Product> availableProducts;
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
+        private static readonly Guid WriteOffUserId = Guid.Parse("4adf792a-247b-435d-a15e-37314224c761");
+        private static readonly Guid DefectUserId = Guid.Parse("fda70302-e336-4a5d-9783-eff33827adc8"); 
+        private ShipmentTypeEnum currentShipmentType = ShipmentTypeEnum.Отгрузка;
 
         /// <summary>
         /// Инициализирует новый экземпляр формы создания отгрузки
@@ -51,6 +66,8 @@ namespace AutomechanicsProject.Formes
         {
             LoadProducts();
             LoadRecipients();
+
+            comboBox1.SelectedIndexChanged += ComboBox1_SelectedIndexChanged;
 
             comboBoxProduct.Text = "";
             comboBoxProduct.SelectedIndex = -1;
@@ -91,6 +108,35 @@ namespace AutomechanicsProject.Formes
             LoadExpiryDatesForProduct(selectedProduct.Id);
         }
 
+        /// <summary>
+        /// Выбор типа отгрузки
+        /// </summary>
+        private void ComboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string selectedType = comboBox1.SelectedItem.ToString();
+
+            switch (selectedType)
+            {
+                case "Отгрузка":
+                    currentShipmentType = ShipmentTypeEnum.Отгрузка;
+                    comboBoxRecipient1.Enabled = true;
+                    comboBoxRecipient1.BackColor = System.Drawing.SystemColors.Window;
+                    break;
+                case "Списание":
+                    currentShipmentType = ShipmentTypeEnum.Списание;
+                    comboBoxRecipient1.Enabled = false;
+                    comboBoxRecipient1.BackColor = System.Drawing.SystemColors.ControlLight;
+                    comboBoxRecipient1.SelectedIndex = -1;
+                    break;
+                case "Брак":
+                    currentShipmentType = ShipmentTypeEnum.Брак;
+                    comboBoxRecipient1.Enabled = false;
+                    comboBoxRecipient1.BackColor = System.Drawing.SystemColors.ControlLight;
+                    comboBoxRecipient1.SelectedIndex = -1;
+                    break;
+            }
+        }
+        
         /// <summary>
         /// Загружает доступные сроки годности для выбранного товара
         /// </summary>
@@ -138,9 +184,9 @@ namespace AutomechanicsProject.Formes
                     comboBoxExpiry.Items.Clear();
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Program.LogError("Ошибка при загрузке сроков годности", ex);
+                logger.Error("Ошибка при загрузке сроков годности");
                 comboBoxExpiry.Enabled = false;
             }
         }
@@ -198,9 +244,9 @@ namespace AutomechanicsProject.Formes
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Program.LogError("Ошибка при загрузке товаров в CreateShipment", ex);
+                logger.Error("Ошибка при загрузке товаров в отгрузку");
                 MessageBox.Show(Resources.ErrorLoadProducts, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -240,9 +286,9 @@ namespace AutomechanicsProject.Formes
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Program.LogError("Ошибка при загрузке списка получателей", ex);
+                logger.Error("Ошибка при загрузке списка получателей");
                 MessageBox.Show(Resources.ErrorLoadRecipients, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -275,7 +321,7 @@ namespace AutomechanicsProject.Formes
                 return false;
             }
 
-            if (comboBoxRecipient1.SelectedItem == null)
+            if (currentShipmentType == ShipmentTypeEnum.Отгрузка && comboBoxRecipient1.SelectedItem == null)
             {
                 MessageBox.Show(Resources.ErrorSelectRecipient, Resources.TitleWarning,
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -426,11 +472,26 @@ namespace AutomechanicsProject.Formes
             decimal totalProfit = 0;
             decimal totalCost = 0;
 
-            var recipientName = "Не выбран";
-            if (comboBoxRecipient1.SelectedItem != null)
+            string recipientName;
+            switch (currentShipmentType)
             {
-                var selectedRecipient = (ComboItemDto)comboBoxRecipient1.SelectedItem;
-                recipientName = selectedRecipient.Text;
+                case ShipmentTypeEnum.Списание:
+                    recipientName = "Списание";
+                    break;
+                case ShipmentTypeEnum.Брак:
+                    recipientName = "Брак";
+                    break;
+                default:
+                    if (comboBoxRecipient1.SelectedItem != null)
+                    {
+                        var selectedRecipient = (ComboItemDto)comboBoxRecipient1.SelectedItem;
+                        recipientName = selectedRecipient.Text;
+                    }
+                    else
+                    {
+                        recipientName = "Не выбран";
+                    }
+                    break;
             }
 
             var displayList = shipmentItems.Select(item =>
@@ -474,21 +535,6 @@ namespace AutomechanicsProject.Formes
         }
 
         /// <summary>
-        /// Проверяет, выбран ли получатель
-        /// </summary>
-        private bool IsRecipientSelected()
-        {
-            if (comboBoxRecipient1.SelectedItem == null)
-            {
-                MessageBox.Show(Resources.ErrorSelectRecipient, Resources.TitleWarning,
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                comboBoxRecipient1.Focus();
-                return false;
-            }
-            return true;
-        }
-
-        /// <summary>
         /// Обработчик нажатия кнопки Подтвердить отгрузку
         /// </summary>
         private void ButtonShipment_Click(object sender, EventArgs e)
@@ -500,14 +546,35 @@ namespace AutomechanicsProject.Formes
                 return;
             }
 
-            if (!IsRecipientSelected())
-            {
-                return;
-            }
+            string recipientName;
+            Guid? recipientId = null;
+            decimal displayTotal;
 
-            var selectedRecipient = (ComboItemDto)comboBoxRecipient1.SelectedItem;
-            var recipientName = selectedRecipient.Text;
-            var recipientId = selectedRecipient.Id;
+            switch (currentShipmentType)
+            {
+                case ShipmentTypeEnum.Списание:
+                    recipientName = "Списание";
+                    recipientId = WriteOffUserId;
+                    displayTotal = -totalAmount;
+                    break;
+                case ShipmentTypeEnum.Брак:
+                    recipientName = "Брак";
+                    recipientId = DefectUserId;
+                    displayTotal = -totalAmount;
+                    break;
+                default:
+                    if (comboBoxRecipient1.SelectedItem == null)
+                    {
+                        MessageBox.Show(Resources.ErrorSelectRecipient, Resources.TitleWarning,
+                            MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+                    var selectedRecipient = (ComboItemDto)comboBoxRecipient1.SelectedItem;
+                    recipientName = selectedRecipient.Text;
+                    recipientId = selectedRecipient.Id;
+                    displayTotal = totalAmount;
+                    break;
+            }
 
             var confirmResult = MessageBox.Show(
                 string.Format(Resources.ConfirmShipment, recipientName, shipmentItems.Count, totalAmount),
@@ -528,9 +595,10 @@ namespace AutomechanicsProject.Formes
                     {
                         Id = Guid.NewGuid(),
                         Date = DateTime.Now,
-                        UserId = recipientId,
+                        UserId = recipientId ?? Guid.Empty,
                         CreatedByUserId = Program.CurrentUser?.Id ?? Guid.Empty,
-                        TotalAmount = totalAmount
+                        TotalAmount = totalAmount,
+                        ShipmentType = currentShipmentType.ToString()
                     };
 
                     db.Shipments.Add(shipment);
@@ -562,7 +630,7 @@ namespace AutomechanicsProject.Formes
                     db.SaveChanges();
                     transaction.Commit();
 
-                    Program.LogInfo($"Отгрузка успешно оформлена! Получатель: {recipientName}, Количество позиций: {shipmentItems.Count}, Общая сумма: {totalAmount:C2}");
+                    logger.Info($"Отгрузка успешно оформлена! Получатель: {recipientName}, Количество позиций: {shipmentItems.Count}, Общая сумма: {totalAmount:C2}");
 
                     MessageBox.Show(string.Format(Resources.SuccessShipmentCreatedWithDetails, recipientName, shipmentItems.Count, totalAmount),
                         Resources.TitleSuccess, MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -573,7 +641,7 @@ namespace AutomechanicsProject.Formes
             }
             catch (Exception ex)
             {
-                Program.LogError($"Не удалось оформить отгрузку.", ex);
+                logger.Error($"Не удалось оформить отгрузку");
                 MessageBox.Show(string.Format(Resources.ErrorCreateShipment, ex.Message),
                     Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }

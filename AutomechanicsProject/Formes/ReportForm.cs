@@ -1,6 +1,7 @@
 ﻿using AutomechanicsProject.Classes;
 using AutomechanicsProject.Properties;
 using Microsoft.EntityFrameworkCore;
+using NLog;
 using System;
 using System.IO;
 using System.Linq;
@@ -15,6 +16,7 @@ namespace AutomechanicsProject.Formes
     public partial class ReportForm : Form
     {
         private readonly DateBase _db;
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         /// <summary>
         /// Инициализирует новый экземпляр формы отчета
@@ -77,9 +79,13 @@ namespace AutomechanicsProject.Formes
                     {
                         Артикул = item.Article ?? "Н/Д",
                         Название = item.ProductName ?? "Н/Д",
-                        Количество = item.Quantity,
+                        Количество = (s.ShipmentType == "Списание" || s.ShipmentType == "Брак")
+                        ? -item.Quantity
+                        : item.Quantity,
                         Цена = item.Quantity >= 0 ? item.PurchasePrice : 0,
-                        Прибыль = item.Quantity >= 0 ? (item.PurchasePrice - item.Price) * item.Quantity : 0,
+                        Прибыль = s.ShipmentType == "Списание" || s.ShipmentType == "Брак"
+                        ? 0 
+                        : (item.PurchasePrice - item.Price) * item.Quantity,
                         Сумма = item.Quantity >= 0 ? item.PurchasePrice * item.Quantity : 0,
                         Получатель = item.Quantity < 0 ? "Списание" : (s.User?.CompanyName ?? "Не указан"),
                         Кладовщик = s.CreatedByUser?.FullName ?? "Не указан",
@@ -141,10 +147,12 @@ namespace AutomechanicsProject.Formes
             }
             catch (Exception ex)
             {
+                logger.Error("Ошибка загрузки отчета");
                 MessageBox.Show(string.Format(Resources.ErrorLoadReportFormat, ex.Message),
                     Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
         /// <summary>
         /// Обновляет итоговую информацию в нижней панели формы
         /// </summary>

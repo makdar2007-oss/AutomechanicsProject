@@ -43,6 +43,12 @@ namespace AutomechanicsProject.Classes
         public decimal TotalAmount { get; set; }
 
         /// <summary>
+        /// Тип отгрузки 
+        /// </summary>
+        [Column("shipment_type")]
+        public string ShipmentType { get; set; } = "Shipment";
+
+        /// <summary>
         /// Получатель (навигационное свойство)
         /// </summary>
         [ForeignKey("UserId")]

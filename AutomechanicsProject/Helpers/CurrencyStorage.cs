@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NLog;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
@@ -15,11 +16,13 @@ namespace AutomechanicsProject.Helpers
             "AutomechanicsProject",
             "currency_cache.json"
         );
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         /// <summary>
         /// Сохраняет курсы валют и выбранную валюту в файл
         /// </summary>
         public static void SaveRates(Dictionary<string, decimal> rates, string selectedCurrency)
+
         {
             try
             {
@@ -39,9 +42,9 @@ namespace AutomechanicsProject.Helpers
                 var json = JsonSerializer.Serialize(cache);
                 File.WriteAllText(FilePath, json);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Program.LogError("Ошибка сохранения курсов валют", ex);
+                logger.Error("Ошибка сохранения курсов валют");
             }
         }
 
@@ -71,9 +74,9 @@ namespace AutomechanicsProject.Helpers
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Program.LogError("Ошибка загрузки кэша курсов валют", ex);
+                logger.Error("Ошибка загрузки кэша курсов валют");
             }
             return null;
         }

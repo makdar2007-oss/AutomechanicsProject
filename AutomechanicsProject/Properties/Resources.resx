@@ -126,7 +126,7 @@
     <value>Белорусский рубль</value>
   </data>
 	<data name="CurrencyChangeConfirm" xml:space="preserve">
-    <value>Валюта изменена с {0} на {1}&#xD;&#xA;Курс: 1 RUB = {2:F4} {3} &#xD;&#xA;&#xD;&#xA;Все цены (кроме закупочных) будут пересчитаны в {4}.&#xD;&#xA;Продолжить?</value>
+    <value>Валюта изменена с {0} на {1}&#xD;&#xA;Курс: 1 RUB = {2:F4} {3} &#xD;&#xA;&#xD;&#xA;Все цены будут пересчитаны в {4}.&#xD;&#xA;Продолжить?</value>
   </data>
 	<data name="CurrencyChangeTitle" xml:space="preserve">
     <value>Изменение валюты</value>
@@ -420,6 +420,9 @@
 	<data name="ErrorGeneric" xml:space="preserve">
     <value>Произошла ошибка. Попробуйте позже.</value>
   </data>
+	<data name="ErrorCurrencyRatesLoad" xml:space="preserve">
+    <value>Критическая ошибка при загрузке курсов валют</value>
+</data>
 
 	<!-- Сообщения информации -->
 	<data name="CategoryNone" xml:space="preserve">
@@ -446,6 +449,9 @@
 	<data name="InfoUsingCachedCurrencies" xml:space="preserve">
     <value>Используются сохранённые курсы валют (интернет недоступен)</value>
   </data>
+	<data name="InfoCurrencyRatesLoaded" xml:space="preserve">
+    <value>Курсы валют успешно загружены</value>
+</data>
 
 	<!-- Файлы -->
 	<data name="JsonFileFilter" xml:space="preserve">
@@ -508,6 +514,15 @@
   </data>
 	<data name="WarningNoProductExpiryDate" xml:space="preserve">
     <value>У выбранного товара нет срока годности. Дата поставки не требуется.</value>
+</data>
+	<data name="WarningCurrencyRatesFallback" xml:space="preserve">
+    <value>Не удалось загрузить актуальные курсы валют. Используются резервные значения.</value>
+</data>
+	<data name="WarningCurrencyRatesFailed" xml:space="preserve">
+    <value>Ошибка загрузки курсов валют: {0}</value>
+</data>
+	<data name="WarningUsingCachedRates" xml:space="preserve">
+    <value>Используются сохранённые курсы валют (интернет недоступен)</value>
 </data>
 
 	<!-- Успешные сообщения -->

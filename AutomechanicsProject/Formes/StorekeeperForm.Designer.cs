@@ -153,7 +153,6 @@
             this.textBoxSearch.TabIndex = 2;
             this.textBoxSearch.Text = "Поиск:";
             this.textBoxSearch.TextChanged += new System.EventHandler(this.TextBoxSearch_TextChanged);
-
             // 
             // panelData
             // 
@@ -246,6 +245,6 @@
         private System.Windows.Forms.Button buttonExit;
         private System.Windows.Forms.ToolStripTextBox toolStripTextBoxStorekeeper;
         private System.Windows.Forms.Button buttonCurrency;   
-        private System.Windows.Forms.Button buttonSupply;     
+        private System.Windows.Forms.Button buttonSupply;
     }
 }

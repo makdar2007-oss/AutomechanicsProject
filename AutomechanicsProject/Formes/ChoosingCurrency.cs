@@ -1,7 +1,6 @@
 ﻿using AutomechanicsProject.Classes;
-using AutomechanicsProject.Dtos;
-using AutomechanicsProject.Helpers;
 using AutomechanicsProject.Properties;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -23,10 +22,10 @@ namespace AutomechanicsProject.Formes
        "currency_cache.json");
         private List<CurrencyInfo> currencies;
         private Dictionary<string, decimal> exchangeRates;
-        private string selectedCurrencyCode;
         public static string SelectedCurrencyCode = CurrencyCodes.RUB;
         public static decimal CurrentExchangeRate = 1m;
         public static string SelectedCurrencyName = "Российский рубль";
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         public ChoosingCurrency()
         {
@@ -52,22 +51,22 @@ namespace AutomechanicsProject.Formes
                 {
                     if (LoadFromCache())
                     {
-                        Program.LogInfo("Загружены сохранённые курсы валют");
+                        logger.Info("Загружены сохраненные курсы валют");
                         MessageBox.Show(Resources.InfoUsingCachedCurrencies, Resources.TitleInformation,
                             MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                     else
                     {
                         LoadFallbackRates();
-                        Program.LogWarning("Нет сохранённых курсов, используются резервные");
+                        logger.Warn("Нет сохраненныйх курсов, используются резервные");
                     }
                 }
 
                 PopulateCurrencyComboBox();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Program.LogError("Ошибка при загрузке курсов валют", ex);
+                logger.Error("Ошибка при загрузке курсов валют");
 
                 if (!LoadFromCache())
                 {
@@ -105,9 +104,9 @@ namespace AutomechanicsProject.Formes
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Program.LogError("Ошибка API при загрузке курсов", ex);
+                logger.Error("Ошибка API при загрузке курсов");
             }
             return false;
         }
@@ -135,9 +134,9 @@ namespace AutomechanicsProject.Formes
                 var json = JsonSerializer.Serialize(cache);
                 File.WriteAllText(CacheFilePath, json);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Program.LogError("Ошибка сохранения курсов валют в кэш", ex);
+                logger.Error("Ошибка сохранения валют в кэш");
             }
         }
 
@@ -161,9 +160,9 @@ namespace AutomechanicsProject.Formes
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Program.LogError("Ошибка загрузки кэша курсов валют", ex);
+                logger.Error("Ошибка загрузки кэша курсов валют");
             }
             return false;
         }
@@ -290,8 +289,8 @@ namespace AutomechanicsProject.Formes
 
                 if (result == DialogResult.Yes)
                 {
-                    this.DialogResult = DialogResult.OK;
-                    this.Close();
+                    DialogResult = DialogResult.OK;
+                    Close();
                 }
                 else
                 {
@@ -311,8 +310,8 @@ namespace AutomechanicsProject.Formes
         /// </summary>
         private void buttonCancel_Click(object sender, EventArgs e)
         {
-            this.DialogResult = DialogResult.Cancel;
-            this.Close();
+            DialogResult = DialogResult.Cancel;
+            Close();
         }
 
         /// <summary>

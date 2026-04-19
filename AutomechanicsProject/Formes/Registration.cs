@@ -1,12 +1,11 @@
 ﻿using AutomechanicsProject.Classes;
 using AutomechanicsProject.Helpers;
 using AutomechanicsProject.Properties;
-using Microsoft.EntityFrameworkCore;
+using NLog;
 using System;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using System.Drawing;
-using AutomechanicsProject.Dtos;
 
 
 namespace AutomechanicsProject.Formes
@@ -17,6 +16,7 @@ namespace AutomechanicsProject.Formes
     public partial class Registration : Form
     {
         private readonly DateBase _db;
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         /// <summary>
         /// Инициализирует новый экземпляр формы регистрации
@@ -150,6 +150,7 @@ namespace AutomechanicsProject.Formes
 
             return isValid;
         }
+
         /// <summary>
         /// Сбрасывает подсветку всех полей ввода к белому цвету
         /// </summary>
@@ -162,6 +163,7 @@ namespace AutomechanicsProject.Formes
             textBoxPassword.BackColor = Color.White;
             textBoxAgreePassword.BackColor = Color.White;
         }
+
         /// <summary>
         /// Отображает сообщение об ошибке пользователю
         /// </summary>
@@ -170,6 +172,7 @@ namespace AutomechanicsProject.Formes
             MessageBox.Show(message, Resources.TitleWarning,
                 MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
+
         /// <summary>
         /// Обработчик нажатия кнопки регистрации
         /// Выполняет регистрацию нового пользователя в системе
@@ -216,15 +219,16 @@ namespace AutomechanicsProject.Formes
                 };
                 _db.Users.Add(newUser);
                 _db.SaveChanges();
-                Program.LogInfo($"Зарегистрирован новый пользователь: {newUser.Login} - {newUser.FullName}");
+
+                logger.Info($"Зарегистрирован новый пользователь: {newUser.Login} - {newUser.FullName}");
                 MessageBox.Show(string.Format(Resources.SuccessRegistrationWithDetails, login, newUser.FullName),
                     Resources.TitleSuccess, MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                 OpenAuthorization();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Program.LogError("Ошибка регистрации", ex);
+                logger.Error("Ошибка регистрации");
                 MessageBox.Show(Resources.ErrorRegistration, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -239,6 +243,7 @@ namespace AutomechanicsProject.Formes
             authForm.Show();
             Close();
         }
+
         /// <summary>
         /// Обработчик нажатия кнопки Уже есть аккаунт? Войти
         /// </summary>
@@ -246,6 +251,7 @@ namespace AutomechanicsProject.Formes
         {
             OpenAuthorization();
         }
+
         /// <summary>
         /// Обработчик изменения текста в поле фамилии
         /// </summary>
@@ -268,6 +274,7 @@ namespace AutomechanicsProject.Formes
                 textBoxSurname.BackColor = Color.White;
             }
         }
+
         /// <summary>
         /// Обработчик изменения текста в поле имени
         /// </summary>
@@ -290,6 +297,7 @@ namespace AutomechanicsProject.Formes
                 textBoxName.BackColor = Color.White;
             }
         }
+
         /// <summary>
         /// Обработчик изменения текста в поле отчества
         /// </summary>
@@ -313,6 +321,7 @@ namespace AutomechanicsProject.Formes
                 textBoxLastname.BackColor = Color.White;
             }
         }
+
         /// <summary>
         /// Обработчик изменения текста в поле логина
         /// </summary>
@@ -335,6 +344,7 @@ namespace AutomechanicsProject.Formes
                 textBoxLogin.BackColor = Color.White;
             }
         }
+
         /// <summary>
         /// Обработчик изменения текста в поле пароля
         /// </summary>

@@ -35,7 +35,9 @@ namespace AutomechanicsProject.Services
                     Id = Guid.NewGuid(),
                     Date = DateTime.Now,
                     UserId = writeOffAddressId,
-                    CreatedByUserId = writeOffUserId
+                    CreatedByUserId = writeOffUserId,
+                    ShipmentType = "Списание",
+                    TotalAmount = -(product.PurchasePrice * product.Balance)
                 };
 
                 db.Shipments.Add(shipment);
@@ -48,7 +50,8 @@ namespace AutomechanicsProject.Services
                     Article = product.Article,
                     ProductName = product.Name,
                     Quantity = -product.Balance,
-                    Price = product.Price
+                    Price = product.Price,
+                    PurchasePrice = product.PurchasePrice
                 };
 
                 db.ShipmentItems.Add(shipmentItem);

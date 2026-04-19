@@ -1,9 +1,7 @@
 ﻿using AutomechanicsProject.Classes;
-using AutomechanicsProject.Dtos;
 using AutomechanicsProject.Dtos.UI;
-using AutomechanicsProject.Helpers;
 using AutomechanicsProject.Properties;
-using Microsoft.EntityFrameworkCore;
+using NLog;
 using System;
 using System.Linq;
 using System.Windows.Forms;
@@ -16,6 +14,7 @@ namespace AutomechanicsProject.Formes
     public partial class DeleteCategory : Form
     {
         private readonly DateBase _db;
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         public DeleteCategory(DateBase database)
         {
@@ -38,6 +37,8 @@ namespace AutomechanicsProject.Formes
         {
             try
             {
+                comboBoxCategory.DropDownStyle = ComboBoxStyle.DropDownList;
+
                 var categories = _db.Categories
                     .OrderBy(c => c.Name)
                     .Select(c => new ComboItemDto
@@ -56,9 +57,9 @@ namespace AutomechanicsProject.Formes
                 label1.Text = hasCategories ? Resources.SelectCategoryForDelete : Resources.NoCategoriesForDelete;
                 buttonDelete.Enabled = hasCategories;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Program.LogError("Ошибка при загрузке категорий в DeleteCategory", ex);
+                logger.Error("Ошибка при загрузке категорий в форму 'Удаление категории'");
                 MessageBox.Show(Resources.ErrorLoadCategories, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -118,11 +119,11 @@ namespace AutomechanicsProject.Formes
                 if (products.Any())
                 {
                     _db.Products.RemoveRange(products);
-                    Program.LogInfo($"Удалено {products.Count} товаров из категории '{category.Name}'");
+                    logger.Info($"Удалено {products.Count} товаров из категории '{category.Name}'");
                 }
                 _db.Categories.Remove(category);
                 _db.SaveChanges();
-                Program.LogInfo($"Категория '{category.Name}' успешно удалена");
+                logger.Info($"Категория '{category.Name}' успешно удалена");
 
                 var successMessage = products.Any()
                     ? string.Format(Resources.SuccessCategoryAndProductsDeleted, category.Name, products.Count)
@@ -133,9 +134,9 @@ namespace AutomechanicsProject.Formes
                 DialogResult = DialogResult.OK;
                 Close();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Program.LogError("Ошибка при удалении категории", ex);
+                logger.Error("Ошибка при удалении категории");
                 MessageBox.Show(Resources.ErrorDeleteCategory, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }

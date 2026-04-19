@@ -2,11 +2,11 @@
 using AutomechanicsProject.Helpers;
 using AutomechanicsProject.Properties;
 using Microsoft.EntityFrameworkCore;
+using NLog;
 using System;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using AutomechanicsProject.Dtos;
 
 namespace AutomechanicsProject.Formes
 {
@@ -17,6 +17,7 @@ namespace AutomechanicsProject.Formes
     {
         private readonly DateBase _db;
         private readonly Guid? _productId;
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         /// <summary>
         /// Инициализирует форму удаления товара (поиск по артикулу)
@@ -61,9 +62,9 @@ namespace AutomechanicsProject.Formes
                     labelDeleteProduct.Text = $"Удаление товара: \n{product.Article} - {product.Name}";
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Program.LogError($"Ошибка при загрузке товара с ID {_productId}", ex);
+                logger.Error($"Ошибка при загрузке товара с ID {_productId}");
                 MessageBox.Show(Resources.ErrorLoadProduct, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -122,7 +123,7 @@ namespace AutomechanicsProject.Formes
                 _db.Products.Remove(product);
                 _db.SaveChanges();
 
-                Program.LogInfo($"Товар '{product.Article} - {product.Name}' удален");
+                logger.Info($"Товар '{product.Article} - {product.Name}' удален");
 
                 MessageBox.Show(Resources.SuccessProductDeleted, Resources.TitleSuccess,
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -130,9 +131,9 @@ namespace AutomechanicsProject.Formes
                 DialogResult = DialogResult.OK;
                 Close();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Program.LogError("Ошибка при удалении товара", ex);
+                logger.Error("ошибка при удалении товара");
                 MessageBox.Show(Resources.ErrorDeleteProduct, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }

@@ -33,8 +33,8 @@
             this.labelPeriod = new System.Windows.Forms.Label();
             this.dateTimePickerFrom = new System.Windows.Forms.DateTimePicker();
             this.labelTo = new System.Windows.Forms.Label();
-            this.dateTimePickerTo = new System.Windows.Forms.DateTimePicker();
             this.buttonApplyFilter = new System.Windows.Forms.Button();
+            this.dateTimePickerTo = new System.Windows.Forms.DateTimePicker();
             this.textBoxHistory = new System.Windows.Forms.TextBox();
             this.panelHistory.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewHistory)).BeginInit();
@@ -64,7 +64,7 @@
             this.dataGridViewHistory.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.dataGridViewHistory.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewHistory.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridViewHistory.Location = new System.Drawing.Point(0, 96);
+            this.dataGridViewHistory.Location = new System.Drawing.Point(0, 80);
             this.dataGridViewHistory.Margin = new System.Windows.Forms.Padding(2);
             this.dataGridViewHistory.MultiSelect = false;
             this.dataGridViewHistory.Name = "dataGridViewHistory";
@@ -73,7 +73,7 @@
             this.dataGridViewHistory.RowHeadersWidth = 82;
             this.dataGridViewHistory.RowTemplate.Height = 33;
             this.dataGridViewHistory.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewHistory.Size = new System.Drawing.Size(836, 451);
+            this.dataGridViewHistory.Size = new System.Drawing.Size(836, 467);
             this.dataGridViewHistory.TabIndex = 1;
             // 
             // tableLayoutPanelTop
@@ -98,7 +98,7 @@
             this.tableLayoutPanelTop.Padding = new System.Windows.Forms.Padding(7, 3, 7, 3);
             this.tableLayoutPanelTop.RowCount = 1;
             this.tableLayoutPanelTop.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanelTop.Size = new System.Drawing.Size(836, 58);
+            this.tableLayoutPanelTop.Size = new System.Drawing.Size(836, 42);
             this.tableLayoutPanelTop.TabIndex = 2;
             // 
             // labelPeriod
@@ -106,7 +106,7 @@
             this.labelPeriod.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.labelPeriod.AutoSize = true;
             this.labelPeriod.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelPeriod.Location = new System.Drawing.Point(44, 19);
+            this.labelPeriod.Location = new System.Drawing.Point(44, 11);
             this.labelPeriod.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.labelPeriod.Name = "labelPeriod";
             this.labelPeriod.Size = new System.Drawing.Size(18, 20);
@@ -119,7 +119,7 @@
             this.dateTimePickerFrom.CustomFormat = "dd.MM.yyyy";
             this.dateTimePickerFrom.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.dateTimePickerFrom.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dateTimePickerFrom.Location = new System.Drawing.Point(66, 16);
+            this.dateTimePickerFrom.Location = new System.Drawing.Point(66, 8);
             this.dateTimePickerFrom.Margin = new System.Windows.Forms.Padding(2);
             this.dateTimePickerFrom.Name = "dateTimePickerFrom";
             this.dateTimePickerFrom.Size = new System.Drawing.Size(141, 26);
@@ -130,24 +130,12 @@
             this.labelTo.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.labelTo.AutoSize = true;
             this.labelTo.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelTo.Location = new System.Drawing.Point(225, 19);
+            this.labelTo.Location = new System.Drawing.Point(225, 11);
             this.labelTo.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.labelTo.Name = "labelTo";
             this.labelTo.Size = new System.Drawing.Size(29, 20);
             this.labelTo.TabIndex = 2;
             this.labelTo.Text = "по";
-            // 
-            // dateTimePickerTo
-            // 
-            this.dateTimePickerTo.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.dateTimePickerTo.CustomFormat = "dd.MM.yyyy";
-            this.dateTimePickerTo.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.dateTimePickerTo.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dateTimePickerTo.Location = new System.Drawing.Point(258, 16);
-            this.dateTimePickerTo.Margin = new System.Windows.Forms.Padding(2);
-            this.dateTimePickerTo.Name = "dateTimePickerTo";
-            this.dateTimePickerTo.Size = new System.Drawing.Size(147, 26);
-            this.dateTimePickerTo.TabIndex = 3;
             // 
             // buttonApplyFilter
             // 
@@ -162,11 +150,23 @@
             this.buttonApplyFilter.Location = new System.Drawing.Point(417, 5);
             this.buttonApplyFilter.Margin = new System.Windows.Forms.Padding(2);
             this.buttonApplyFilter.Name = "buttonApplyFilter";
-            this.buttonApplyFilter.Size = new System.Drawing.Size(135, 48);
+            this.buttonApplyFilter.Size = new System.Drawing.Size(137, 32);
             this.buttonApplyFilter.TabIndex = 4;
             this.buttonApplyFilter.Text = "Применить";
             this.buttonApplyFilter.UseVisualStyleBackColor = false;
             this.buttonApplyFilter.Click += new System.EventHandler(this.buttonApplyFilter_Click);
+            // 
+            // dateTimePickerTo
+            // 
+            this.dateTimePickerTo.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.dateTimePickerTo.CustomFormat = "dd.MM.yyyy";
+            this.dateTimePickerTo.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.dateTimePickerTo.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dateTimePickerTo.Location = new System.Drawing.Point(258, 8);
+            this.dateTimePickerTo.Margin = new System.Windows.Forms.Padding(2);
+            this.dateTimePickerTo.Name = "dateTimePickerTo";
+            this.dateTimePickerTo.Size = new System.Drawing.Size(147, 26);
+            this.dateTimePickerTo.TabIndex = 3;
             // 
             // textBoxHistory
             // 

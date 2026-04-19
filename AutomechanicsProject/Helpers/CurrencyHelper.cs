@@ -1,28 +1,149 @@
 ﻿using System.Collections.Generic;
+using System.Net.Http;
+using System.Text.Json;
+using System.Threading.Tasks;
 using AutomechanicsProject.Classes;
 
 namespace AutomechanicsProject.Helpers
 {
     public static class CurrencyHelper
     {
+        private static Dictionary<string, decimal> _cachedRates;
+        private static bool _isLoaded = false;
+
         /// <summary>
-        /// Возвращает список доступных валют для выбора
+        /// Возвращает список доступных валют (загружает из API)
+        /// </summary>
+        public static async Task<List<CurrencyInfo>> GetCurrenciesAsync()
+        {
+            var rates = await GetExchangeRatesAsync();
+            var currencies = new List<CurrencyInfo>();
+
+            foreach (var rate in rates)
+            {
+                currencies.Add(new CurrencyInfo
+                {
+                    Code = rate.Key,
+                    Rate = rate.Value,
+                    DisplayText = $"{rate.Key} - {GetCurrencyName(rate.Key)} (1 RUB = {rate.Value:F4} {rate.Key})"
+                });
+            }
+
+            return currencies;
+        }
+
+        /// <summary>
+        /// Получает курсы валют из API
+        /// </summary>
+        public static async Task<Dictionary<string, decimal>> GetExchangeRatesAsync()
+        {
+            if (_cachedRates != null && _isLoaded)
+                return _cachedRates;
+
+            try
+            {
+                using (HttpClient client = new HttpClient())
+                {
+                    client.Timeout = System.TimeSpan.FromSeconds(10);
+                    var response = await client.GetAsync("https://open.er-api.com/v6/latest/RUB");
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var json = await response.Content.ReadAsStringAsync();
+                        var data = JsonSerializer.Deserialize<Dictionary<string, object>>(json);
+
+                        if (data != null && data.ContainsKey("rates"))
+                        {
+                            var ratesJson = JsonSerializer.Serialize(data["rates"]);
+                            var rates = JsonSerializer.Deserialize<Dictionary<string, decimal>>(ratesJson);
+
+                            if (rates != null)
+                            {
+                                if (!rates.ContainsKey("RUB"))
+                                    rates["RUB"] = 1.00m;
+
+                                _cachedRates = rates;
+                                _isLoaded = true;
+                                return rates;
+                            }
+                        }
+                    }
+                }
+            }
+            catch { }
+
+            // Резервные курсы
+            return GetFallbackRates();
+        }
+
+        /// <summary>
+        /// Загружает валюты
         /// </summary>
         public static List<CurrencyInfo> GetCurrencies()
         {
-            return new List<CurrencyInfo>
+            return GetFallbackCurrencies();
+        }
+
+        /// <summary>
+        /// Возвращает фиксированный курс
+        /// </summary>
+        private static Dictionary<string, decimal> GetFallbackRates()
+        {
+            return new Dictionary<string, decimal>
             {
-                new CurrencyInfo { Code = "RUB", Rate = 1.00m, DisplayText = "RUB - Российский рубль" },
-                new CurrencyInfo { Code = "USD", Rate = 0.011m, DisplayText = "USD - Доллар США" },
-                new CurrencyInfo { Code = "EUR", Rate = 0.010m, DisplayText = "EUR - Евро" },
-                new CurrencyInfo { Code = "CNY", Rate = 0.079m, DisplayText = "CNY - Китайский юань" },
-                new CurrencyInfo { Code = "KZT", Rate = 4.90m, DisplayText = "KZT - Казахстанский тенге" },
-                new CurrencyInfo { Code = "BYN", Rate = 0.036m, DisplayText = "BYN - Белорусский рубль" }
+                { "RUB", 1.00m },
+                { "USD", 0.011m },
+                { "EUR", 0.010m },
+                { "CNY", 0.079m },
+                { "KZT", 4.90m },
+                { "BYN", 0.036m },
+                { "GBP", 0.0087m },
+                { "JPY", 1.63m }
             };
         }
 
         /// <summary>
-        /// Конвертация из выбранной валюты в рубли (для сохранения в БД)
+        /// Возвращает фксированные валюты
+        /// </summary>
+        private static List<CurrencyInfo> GetFallbackCurrencies()
+        {
+            var rates = GetFallbackRates();
+            var currencies = new List<CurrencyInfo>();
+
+            foreach (var rate in rates)
+            {
+                currencies.Add(new CurrencyInfo
+                {
+                    Code = rate.Key,
+                    Rate = rate.Value,
+                    DisplayText = $"{rate.Key} - {GetCurrencyName(rate.Key)}"
+                });
+            }
+
+            return currencies;
+        }
+
+        /// <summary>
+        /// Возвращает наименование валют
+        /// </summary>
+        private static string GetCurrencyName(string code)
+        {
+            switch (code)
+            {
+                case "RUB": return "Российский рубль";
+                case "USD": return "Доллар США";
+                case "EUR": return "Евро";
+                case "CNY": return "Китайский юань";
+                case "KZT": return "Казахстанский тенге";
+                case "BYN": return "Белорусский рубль";
+                case "GBP": return "Фунт стерлингов";
+                case "JPY": return "Японская иена";
+                default: return code;
+            }
+        }
+
+        /// <summary>
+        /// Конвертирует в рубли
         /// </summary>
         public static decimal ConvertToRUB(decimal priceInCurrency, decimal rate)
         {
@@ -30,7 +151,7 @@ namespace AutomechanicsProject.Helpers
         }
 
         /// <summary>
-        /// Конвертация из рублей в выбранную валюту (для отображения)
+        /// Конвертирует из рублей
         /// </summary>
         public static decimal ConvertFromRUB(decimal priceInRUB, decimal rate)
         {

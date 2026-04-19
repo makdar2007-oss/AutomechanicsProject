@@ -55,6 +55,24 @@ namespace AutomechanicsProject.Classes
         public decimal TotalAmount { get; set; }
 
         /// <summary>
+        /// Код валюты поставки (USD, EUR, RUB и т.д.)
+        /// </summary>
+        [Column("currency_code")]
+        public string CurrencyCode { get; set; } = "RUB";
+
+        /// <summary>
+        /// Курс обмена на момент поставки (1 RUB = X CurrencyCode)
+        /// </summary>
+        [Column("exchange_rate")]
+        public decimal ExchangeRate { get; set; } = 1.00m;
+
+        /// <summary>
+        /// Дата и время сохранения курса
+        /// </summary>
+        [Column("rate_date")]
+        public DateTime RateDate { get; set; }
+
+        /// <summary>
         /// Поставщик (навигационное свойство)
         /// </summary>
         [ForeignKey("SupplierId")]

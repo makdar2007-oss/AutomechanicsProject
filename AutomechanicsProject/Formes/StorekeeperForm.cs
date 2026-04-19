@@ -1,12 +1,13 @@
 ﻿using AutomechanicsProject.Classes;
-using AutomechanicsProject.Dtos;
 using AutomechanicsProject.Dtos.Service;
 using AutomechanicsProject.Helpers;
 using AutomechanicsProject.Mappers;
 using AutomechanicsProject.Properties;
 using AutomechanicsProject.Services;
 using Microsoft.EntityFrameworkCore;
+using NLog;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -18,6 +19,7 @@ namespace AutomechanicsProject.Formes
     public partial class StorekeeperForm : Form
     {
         private readonly DateBase db;
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         /// <summary>
         /// Инициализирует новый экземпляр формы кладовщика
@@ -72,9 +74,9 @@ namespace AutomechanicsProject.Formes
                         }
                     }
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
-                    Program.LogError("Ошибка при подсветке строки", ex);
+                    logger.Error("Ошибка при подсветке строки");
                 }
             }
         }
@@ -107,7 +109,7 @@ namespace AutomechanicsProject.Formes
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
 
-                Program.LogError("Ошибка при списании товаров", ex);
+                logger.Error("Ошибка при списании товаров", ex);
             }
         }
 
@@ -124,13 +126,13 @@ namespace AutomechanicsProject.Formes
                     if (currencyForm.ShowDialog() == DialogResult.OK)
                     {
                         RefreshProductList();
-                        Program.LogInfo("Валюта изменена");
+                        logger.Info("Валюта изменена");
                     }
                 }
             }
             catch (Exception ex)
             {
-                Program.LogError("Ошибка при открытии формы выбора валюты", ex);
+                logger.Error("Ошибка при открытии формы выбора валюты", ex);
                 MessageBox.Show(Resources.ErrorOpenCurrencyForm, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -149,13 +151,13 @@ namespace AutomechanicsProject.Formes
                     if (shipmentForm.ShowDialog() == DialogResult.OK)
                     {
                         RefreshProductList();
-                        Program.LogInfo("Отгрузка успешно оформлена");
+                        logger.Info("Отгрузка успешно оформлена");
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Program.LogError("Ошибка при открытии формы отгрузки", ex);
+                logger.Error("Ошибка при открытии формы отгрузки");
                 MessageBox.Show(Resources.ErrorOpenShipmentForm, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -172,18 +174,17 @@ namespace AutomechanicsProject.Formes
                 ChoosingCurrency.SelectedCurrencyCode = CurrencyCodes.RUB;
                 ChoosingCurrency.CurrentExchangeRate = 1m;
                 ChoosingCurrency.SelectedCurrencyName = "Российский рубль";
-                Program.LogInfo("Пользователь вышел из системы, валюта сброшена");
+                logger.Info("Пользователь вышел из системы, валюта сброшена");
 
-                Program.LogInfo("Пользователь вышел из системы");
-                this.Close();
+                Close();
 
                 var loginForm = new Autorization(db);
                 loginForm.ShowDialog();
                 
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Program.LogError("Ошибка при выходе из системы", ex);
+                logger.Error("Ошибка при выходе из системы");
                 MessageBox.Show(Resources.ErrorLogout, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -207,84 +208,92 @@ namespace AutomechanicsProject.Formes
                 var today = DateTime.Today;
 
                 var products = db.Products
+                    .AsNoTracking()
                     .Include(p => p.Category)
                     .Include(p => p.Unit)
                     .Where(p => p.Balance > 0)
-                    .Select(p => new
-                    {
-                        p.Id,
-                        p.Article,
-                        p.Name,
-                        CategoryName = p.Category.Name,
-                        UnitName = p.Unit.Name,
-                        p.ExpiryDate,
-                        p.Price,
-                        p.PurchasePrice,
-                        p.Balance
-                    })
                     .ToList();
 
-                var query = products
-                    .GroupBy(p => p.Name)
-                    .Select(g => new
-                    {
-                        Артикул = g.First().Article,
-                        Название = g.Key,
-                        Категория = g.First().CategoryName,
-                        ЕдИзмерения = g.First().UnitName,
-                        СрокГодности = g.Where(x => x.ExpiryDate.HasValue)
-                                        .OrderBy(x => x.ExpiryDate)
-                                        .Select(x => x.ExpiryDate)
-                                        .FirstOrDefault(),
-                        ЦенаЗакупки = g.First().Price,
-                        Остаток = g.Sum(x => x.Balance),
-                        ТребуетСкидки = g.Where(x => x.ExpiryDate.HasValue)
-                                        .Any(x => x.ExpiryDate.Value > today &&
-                                                 (x.ExpiryDate.Value - today).Days <= 30),
-                        Просрочен = g.Where(x => x.ExpiryDate.HasValue)
-                                     .Any(x => x.ExpiryDate.Value < today),
-                        Цена = ChoosingCurrency.ConvertPrice(g.First().PurchasePrice)
-                    });
+                var productList = new List<ProductListItemDto>();
 
-                if (!string.IsNullOrWhiteSpace(searchText) && searchText != Resources.SearchWatermark)
+                foreach (var product in products)
                 {
-                    searchText = searchText.ToLower();
-                    query = query.Where(p =>
-                        p.Артикул.ToLower().Contains(searchText) ||
-                        p.Название.ToLower().Contains(searchText) ||
-                        p.Категория.ToLower().Contains(searchText));
+                    var existingItem = productList.FirstOrDefault(p => p.Name == product.Name);
+                    if (existingItem != null)
+                    {
+                        existingItem.Balance += product.Balance;
+                    }
+                    else
+                    {
+                        var item = ProductMapper.ToListItemDto(product);
+                        productList.Add(item);
+                    }
                 }
 
-                dataGridViewStore.DataSource = query.ToList();
+                if (!Validation.IsWatermark(searchText, Resources.SearchWatermark))
+                {
+                    searchText = searchText.ToLower();
+                    productList = productList
+                        .Where(p => p.Article.ToLower().Contains(searchText) ||
+                                   p.Name.ToLower().Contains(searchText) ||
+                                   p.CategoryName.ToLower().Contains(searchText))
+                        .ToList();
+                }
+
+                var displayData = productList.Select(p => new
+                {
+                    Артикул = p.Article,
+                    Название = p.Name,
+                    Категория = p.CategoryName,
+                    ЕдИзмерения = p.UnitName,
+                    СрокГодности = p.ExpiryDate,
+                    ЦенаЗакупки = GetPurchasePriceBySupplyRate(p.Id, p.Price).ToString("F2"),
+                    ТребуетСкидки = p.RequiresDiscount,
+                    Просрочен = p.IsExpired,
+                    Цена = ChoosingCurrency.ConvertPrice(p.PurchasePrice).ToString("F2"),
+                    Остаток = p.Balance,
+
+                }).ToList();
+
+                dataGridViewStore.DataSource = displayData;
+                dataGridViewStore.ShowCellToolTips = true;
                 ConfigureGrid();
                 FormatDateColumn();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Program.LogError("Ошибка при загрузке товаров.", ex);
+                logger.Error("Ошибка при загрузке товаров.");
                 MessageBox.Show(Resources.ErrorLoadProductsList, Resources.TitleError,
-                     MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
         /// <summary>
-        /// Конвертируем цену
+        /// Получает цену закупки в выбранной валюте по по курсу поставки
         /// </summary>
-        private decimal ConvertPriceSafely(decimal originalPrice)
+        private decimal GetPurchasePriceBySupplyRate(Guid productId, decimal priceInRub)
         {
+            if (ChoosingCurrency.SelectedCurrencyCode == "RUB")
+                return priceInRub;
+
             try
             {
-                if (originalPrice <= 0)
+                var (supplyCurrency, supplyRate, _) = SupplyCurrencyService.GetProductCurrency(productId, db);
+
+                if (supplyCurrency != "RUB" && supplyRate != 1.00m)
                 {
-                    return 0;
+                    decimal priceInSupplyCurrency = priceInRub * supplyRate;
+
+                    decimal priceInRubAgain = priceInSupplyCurrency / supplyRate;
+
+                    return ChoosingCurrency.ConvertPrice(priceInRubAgain);
                 }
 
-                return ChoosingCurrency.ConvertPrice(originalPrice);
+                return ChoosingCurrency.ConvertPrice(priceInRub);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Program.LogError($"Ошибка конвертации цены {originalPrice}", ex);
-                return originalPrice;
+                logger.Error($"Ошибка конвертации цены для товара {productId}");
+                return ChoosingCurrency.ConvertPrice(priceInRub);
             }
         }
 
@@ -424,18 +433,6 @@ namespace AutomechanicsProject.Formes
         }
 
         /// <summary>
-        /// Нормализует поисковый запрос (удаляет лишние пробелы, приводит к нижнему регистру)
-        /// </summary>
-        private string NormalizeSearch(string text)
-        {
-            if (string.IsNullOrWhiteSpace(text) || text == "Поиск...")
-            {
-                return "";
-            }
-            return text.Trim().ToLower();
-        }
-
-        /// <summary>
         /// Обработчик события загрузки формы
         /// </summary>
         private void StorekeeperForm_Load(object sender, EventArgs e)
@@ -443,12 +440,18 @@ namespace AutomechanicsProject.Formes
             try
             {
                 toolStripTextBoxStorekeeper.Text = "Кладовщик";
-                Program.LogInfo("Кладовщик вошёл в StorekeeperForm");
+
+                dataGridViewStore.MultiSelect = false;
+                dataGridViewStore.ShowCellToolTips = true;
+                dataGridViewStore.CellMouseEnter += DataGridViewStore_CellMouseEnter;
+                dataGridViewStore.CellMouseLeave += DataGridViewStore_CellMouseLeave;
+
+                logger.Info("Кладовщик вошёл в StorekeeperForm");
             }
-            catch (Exception ex)
+            catch (Exception )
             {
                 toolStripTextBoxStorekeeper.Text = "Ошибка";
-                Program.LogError("Ошибка при загрузке формы кладовщика", ex);
+                logger.Error("Ошибка при загрузке формы кладовщика");
             }
         }
 
@@ -465,5 +468,47 @@ namespace AutomechanicsProject.Formes
                 }
             }
         }
+
+        /// <summary>
+        /// Показывает информацию о курсе при наведении на ячейку "ЦенаЗакупки"
+        /// </summary>
+        private void DataGridViewStore_CellMouseEnter(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
+            {
+                string headerText = dataGridViewStore.Columns[e.ColumnIndex].HeaderText;
+
+                if (headerText == "Цена закупки" || headerText == "ЦенаЗакупки")
+                {
+                    var article = dataGridViewStore.Rows[e.RowIndex].Cells["Артикул"]?.Value?.ToString();
+                    if (!string.IsNullOrEmpty(article))
+                    {
+                        var product = db.Products.FirstOrDefault(p => p.Article == article);
+                        if (product != null)
+                        {
+                            var tooltipText = SupplyCurrencyService.GetTooltipText(product.Id, product.Name, db);
+
+                            dataGridViewStore.Rows[e.RowIndex].Cells[e.ColumnIndex].ToolTipText = tooltipText;
+                        }
+                    }
+                }
+                else
+                {
+                    dataGridViewStore.Rows[e.RowIndex].Cells[e.ColumnIndex].ToolTipText = null;
+                }
+            }
+        }
+
+
+        /// <summary>
+        /// Прячет информацию о курсе
+        /// </summary>
+        private void DataGridViewStore_CellMouseLeave(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
+            {
+                dataGridViewStore.Rows[e.RowIndex].Cells[e.ColumnIndex].ToolTipText = null;
+            }
+        } 
     }
 }
