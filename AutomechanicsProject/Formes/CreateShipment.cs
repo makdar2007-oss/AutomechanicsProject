@@ -50,9 +50,7 @@ namespace AutomechanicsProject.Formes
             db = database ?? throw new ArgumentNullException(nameof(database));
             shipmentItems = new List<ShipmentItem>();
             totalAmount = 0;
-            totalItemsCount = 0;
             allProducts = new List<ProductComboViewModel>();
-            availableProducts = new List<Product>();
 
             TextBoxHelper.SetupWatermarkTextBox(textBoxUnit, Resources.ShipmentQuantityWatermark);
 
@@ -79,18 +77,6 @@ namespace AutomechanicsProject.Formes
         private void SetupSearchableComboBox()
         {
             comboBoxState = new SearchableComboBoxHelper.ComboBoxState();
-
-            var searchProducts = allProducts.Select(p => new ProductComboViewModel
-            {
-                Id = p.Id,
-                Article = p.Article,
-                Name = p.Name,
-                Text = p.Text,
-                Balance = p.Balance,
-                Price = p.Price,
-                UnitName = p.UnitName,
-                UnitId = p.UnitId
-            }).ToList();
 
             SearchableComboBoxHelper.SetupProductSearchComboBox(
                 comboBoxProduct,
@@ -613,7 +599,9 @@ namespace AutomechanicsProject.Formes
                             ProductId = item.ProductId,
                             Quantity = item.Quantity,
                             Price = item.Price,
-                            PurchasePrice = item.PurchasePrice,
+                            PurchasePrice = currentShipmentType == ShipmentTypeEnum.Отгрузка
+                            ? item.PurchasePrice      
+                            : 0,
                             ProductName = item.ProductName,
                             Article = item.Article
                         };

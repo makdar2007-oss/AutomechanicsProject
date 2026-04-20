@@ -55,13 +55,13 @@ namespace AutomechanicsProject.Classes
         public decimal TotalAmount { get; set; }
 
         /// <summary>
-        /// Код валюты поставки (USD, EUR, RUB и т.д.)
+        /// Код валюты поставки
         /// </summary>
         [Column("currency_code")]
-        public string CurrencyCode { get; set; } = "RUB";
+        public string CurrencyCode { get; set; } = CurrencyCodes.RUB;
 
         /// <summary>
-        /// Курс обмена на момент поставки (1 RUB = X CurrencyCode)
+        /// Курс обмена на момент поставки
         /// </summary>
         [Column("exchange_rate")]
         public decimal ExchangeRate { get; set; } = 1.00m;

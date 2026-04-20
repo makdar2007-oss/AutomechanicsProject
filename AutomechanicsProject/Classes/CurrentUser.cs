@@ -3,7 +3,7 @@
 namespace AutomechanicsProject.Classes
 {
     /// <summary>
-    /// Хоранение информации о текущем пользователе
+    /// Хранение информации о текущем пользователе
     /// </summary>
     public static class CurrentUser
     {

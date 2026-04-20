@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AutomechanicsProject.Classes
+namespace AutomechanicsProject.Dtos.UI
 {
     /// <summary>
     /// Для отображения товара в комбобоксе
@@ -28,7 +28,7 @@ namespace AutomechanicsProject.Classes
         public int Balance { get; set; }
 
         /// <summary>
-        /// Флаг (в наличии ли товар или нет)
+        /// Флаг на наличие товара
         /// </summary>
         public bool IsActive { get; set; }
 
@@ -38,7 +38,7 @@ namespace AutomechanicsProject.Classes
         public DateTime? ProductExpiryDate { get; set; } 
 
         /// <summary>
-        /// Есть ли у товара срок годности
+        /// Флаг на срок годности
         /// </summary>
         public bool HasExpiryDate { get; set; }
 

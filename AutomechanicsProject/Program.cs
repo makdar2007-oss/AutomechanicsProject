@@ -10,8 +10,6 @@ namespace AutomechanicsProject
     internal static class Program
     {
         public static Users CurrentUser { get; set; }
-        private static readonly string LogDirectory;
-        private static readonly object LockObject = new object();
         private static readonly NLog.Logger logger = LogManager.GetCurrentClassLogger();
 
         [STAThread]

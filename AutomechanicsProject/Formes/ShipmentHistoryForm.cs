@@ -63,29 +63,50 @@ namespace AutomechanicsProject.Formes
                     return;
                 }
 
+
+
                 var displayList = shipments
                     .Where(s => s.Items != null && s.Items.Any())
                     .SelectMany(s => s.Items.Select(item => new
                     {
                         Артикул = item.Article ?? "Н/Д",
                         Название = item.ProductName ?? "Н/Д",
-                        Количество = item.Quantity,
+                        Количество = (s.ShipmentType == "Отгрузка") ? item.Quantity : -item.Quantity,
                         ЦенаЗакупки = item.Price,
-                        ЦенаПродажи = item.Quantity >= 0 ? item.PurchasePrice : 0,
-                        Прибыль = item.Quantity >= 0
-                            ? (item.PurchasePrice - item.Price) * item.Quantity
-                            : item.Price * item.Quantity,
-                        Сумма = item.Quantity >= 0
-                            ? item.PurchasePrice * item.Quantity
-                            : 0,
-                        Получатель = item.Quantity < 0 ? "Списание" : (s.User?.CompanyName ?? "Не указан"),
+                        ЦенаПродажи = item.PurchasePrice,
+                        Прибыль = (s.ShipmentType == "Списание" || s.ShipmentType == "Брак")
+                        ? -(Math.Abs(item.Price) * Math.Abs(item.Quantity))  
+                        : (item.PurchasePrice - item.Price) * item.Quantity,
+                        Сумма = (s.ShipmentType == "Списание" || s.ShipmentType == "Брак")
+                            ? 0m
+                            : item.PurchasePrice * item.Quantity,
+                        Получатель = (s.ShipmentType == "Списание") ? "Списание"
+                            : (s.ShipmentType == "Брак") ? "Брак"
+                            : (s.User?.CompanyName ?? "Не указан"),
                         Кладовщик = s.CreatedByUser?.FullName ?? "Не указан",
                         Дата = s.Date.ToString("dd.MM.yyyy HH:mm")
                     }))
-                    .OrderByDescending(x => x.Дата)
                     .ToList();
 
-                if (!displayList.Any())
+                var finalDisplayList = displayList.Select(item => {
+                    bool isWriteOff = (item.Получатель == "Списание" || item.Получатель == "Брак");
+
+                    return new
+                    {
+                        item.Артикул,
+                        item.Название,
+                        Количество = isWriteOff ? -item.Количество : item.Количество,
+                        ЦенаЗакупки = item.ЦенаЗакупки,
+                        ЦенаПродажи = isWriteOff ? 0m : item.ЦенаПродажи,
+                        Прибыль = item.Прибыль,
+                        Сумма = isWriteOff ? 0m : item.Сумма,
+                        item.Получатель,
+                        item.Кладовщик,
+                        item.Дата
+                    };
+                }).ToList();
+
+                if (!finalDisplayList.Any())
                 {
                     dataGridViewHistory.DataSource = null;
                     MessageBox.Show(string.Format(Resources.WarningShipmentsWithoutItems, shipments.Count),
@@ -95,7 +116,7 @@ namespace AutomechanicsProject.Formes
                 }
 
                 var counter = 1;
-                var finalList = displayList.Select(item => new
+                var finalList = finalDisplayList.Select(item => new
                 {
                     Номер = counter++,
                     item.Артикул,
@@ -111,11 +132,25 @@ namespace AutomechanicsProject.Formes
 
                 dataGridViewHistory.DataSource = finalList;
 
-                var totalItemsShipped = displayList.Where(x => x.Количество > 0).Sum(x => x.Количество);
-                var totalItemsWrittenOff = displayList.Where(x => x.Количество < 0).Sum(x => -x.Количество);
-                var totalSum = displayList.Where(x => x.Количество > 0).Sum(x => x.Сумма);
-                var totalProfit = displayList.Where(x => x.Количество > 0).Sum(x => x.Прибыль);
-                var totalLoss = displayList.Where(x => x.Количество < 0).Sum(x => -x.Прибыль);
+                var totalItemsShipped = finalDisplayList
+                    .Where(x => x.Получатель != "Списание" && x.Получатель != "Брак" && x.Количество > 0)
+                    .Sum(x => x.Количество);
+
+                var totalItemsWrittenOff = finalDisplayList
+                    .Where(x => (x.Получатель == "Списание" || x.Получатель == "Брак") && x.Количество < 0)
+                    .Sum(x => -x.Количество);
+
+                var totalSum = finalDisplayList
+                    .Where(x => x.Получатель != "Списание" && x.Получатель != "Брак" && x.Количество > 0)
+                    .Sum(x => x.Сумма);
+
+                var totalProfit = finalDisplayList
+                    .Where(x => x.Получатель != "Списание" && x.Получатель != "Брак")
+                    .Sum(x => x.Прибыль);
+
+                var totalLoss = finalDisplayList
+                    .Where(x => x.Получатель == "Списание" || x.Получатель == "Брак")
+                    .Sum(x => -x.Прибыль);
 
                 UpdateTotalInfo(totalItemsShipped, totalItemsWrittenOff, totalSum, totalProfit, totalLoss);
             }
@@ -126,7 +161,6 @@ namespace AutomechanicsProject.Formes
                     Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
         /// <summary>
         /// Обновляет информацию в заголовке формы (итоги по отгрузкам)
         /// </summary>

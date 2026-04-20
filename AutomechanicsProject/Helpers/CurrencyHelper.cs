@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using AutomechanicsProject.Classes;
+using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Text.Json;
-using System.Threading.Tasks;
-using AutomechanicsProject.Classes;
 
 namespace AutomechanicsProject.Helpers
 {
@@ -12,11 +12,11 @@ namespace AutomechanicsProject.Helpers
         private static bool _isLoaded = false;
 
         /// <summary>
-        /// Возвращает список доступных валют (загружает из API)
+        /// Возвращает список доступных валют
         /// </summary>
-        public static async Task<List<CurrencyInfo>> GetCurrenciesAsync()
+        public static List<CurrencyInfo> GetCurrenciesFromApi()
         {
-            var rates = await GetExchangeRatesAsync();
+            var rates = GetExchangeRates();
             var currencies = new List<CurrencyInfo>();
 
             foreach (var rate in rates)
@@ -35,21 +35,23 @@ namespace AutomechanicsProject.Helpers
         /// <summary>
         /// Получает курсы валют из API
         /// </summary>
-        public static async Task<Dictionary<string, decimal>> GetExchangeRatesAsync()
+        public static Dictionary<string, decimal> GetExchangeRates()
         {
             if (_cachedRates != null && _isLoaded)
+            {
                 return _cachedRates;
+            }
 
             try
             {
                 using (HttpClient client = new HttpClient())
                 {
-                    client.Timeout = System.TimeSpan.FromSeconds(10);
-                    var response = await client.GetAsync("https://open.er-api.com/v6/latest/RUB");
+                    client.Timeout = TimeSpan.FromSeconds(10);
+                    var response = client.GetAsync("https://open.er-api.com/v6/latest/RUB").Result;
 
                     if (response.IsSuccessStatusCode)
                     {
-                        var json = await response.Content.ReadAsStringAsync();
+                        var json = response.Content.ReadAsStringAsync().Result;
                         var data = JsonSerializer.Deserialize<Dictionary<string, object>>(json);
 
                         if (data != null && data.ContainsKey("rates"))
@@ -60,7 +62,9 @@ namespace AutomechanicsProject.Helpers
                             if (rates != null)
                             {
                                 if (!rates.ContainsKey("RUB"))
+                                {
                                     rates["RUB"] = 1.00m;
+                                }
 
                                 _cachedRates = rates;
                                 _isLoaded = true;
@@ -72,40 +76,13 @@ namespace AutomechanicsProject.Helpers
             }
             catch { }
 
-            // Резервные курсы
             return GetFallbackRates();
         }
 
         /// <summary>
-        /// Загружает валюты
+        /// Возвращает резервный список валют
         /// </summary>
-        public static List<CurrencyInfo> GetCurrencies()
-        {
-            return GetFallbackCurrencies();
-        }
-
-        /// <summary>
-        /// Возвращает фиксированный курс
-        /// </summary>
-        private static Dictionary<string, decimal> GetFallbackRates()
-        {
-            return new Dictionary<string, decimal>
-            {
-                { "RUB", 1.00m },
-                { "USD", 0.011m },
-                { "EUR", 0.010m },
-                { "CNY", 0.079m },
-                { "KZT", 4.90m },
-                { "BYN", 0.036m },
-                { "GBP", 0.0087m },
-                { "JPY", 1.63m }
-            };
-        }
-
-        /// <summary>
-        /// Возвращает фксированные валюты
-        /// </summary>
-        private static List<CurrencyInfo> GetFallbackCurrencies()
+        public static List<CurrencyInfo> GetFallbackCurrencies()
         {
             var rates = GetFallbackRates();
             var currencies = new List<CurrencyInfo>();
@@ -124,9 +101,27 @@ namespace AutomechanicsProject.Helpers
         }
 
         /// <summary>
+        /// Возвращает фиксированный курс
+        /// </summary>
+        public  static Dictionary<string, decimal> GetFallbackRates()
+        {
+            return new Dictionary<string, decimal>
+            {
+                { "RUB", 1.00m },
+                { "USD", 0.011m },
+                { "EUR", 0.010m },
+                { "CNY", 0.079m },
+                { "KZT", 4.90m },
+                { "BYN", 0.036m },
+                { "GBP", 0.0087m },
+                { "JPY", 1.63m }
+            };
+        }
+
+        /// <summary>
         /// Возвращает наименование валют
         /// </summary>
-        private static string GetCurrencyName(string code)
+        public static string GetCurrencyName(string code)
         {
             switch (code)
             {
@@ -148,9 +143,11 @@ namespace AutomechanicsProject.Helpers
         public static decimal ConvertToRUB(decimal amount, decimal rate)
         {
             if (rate == 0)
+            {
                 return 0;
+            }
 
-            return amount / rate; // или твоя логика
+            return amount / rate;
         }
 
         /// <summary>
@@ -159,7 +156,9 @@ namespace AutomechanicsProject.Helpers
         public static decimal ConvertFromRUB(decimal amount, decimal rate)
         {
             if (rate == 0)
+            {
                 return 0;
+            }    
 
             return amount * rate;
         }

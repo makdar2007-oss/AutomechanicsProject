@@ -82,5 +82,11 @@ namespace AutomechanicsProject.Classes
         /// </summary>
         [ForeignKey("UnitId")]
         public virtual Unit Unit { get; set; }
+
+        /// <summary>
+        /// Флаг на наличие срока годности
+        /// </summary>
+        [Column("has_expiry_date")]
+        public bool HasExpiryDate { get; set; }
     }
 }

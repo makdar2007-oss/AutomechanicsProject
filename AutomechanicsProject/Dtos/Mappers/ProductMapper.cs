@@ -84,6 +84,7 @@ namespace AutomechanicsProject.Mappers
                 UnitId = dto.UnitId,
                 PurchasePrice = 0,
                 Price = dto.Price,
+                HasExpiryDate = dto.HasExpiryDate,
                 ExpiryDate = null,  
                 BatchNumber = null
             };

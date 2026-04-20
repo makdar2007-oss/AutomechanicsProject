@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace AutomechanicsProject.Classes
 {
@@ -12,17 +11,17 @@ namespace AutomechanicsProject.Classes
     public class CurrencyInfo
     {
         /// <summary>
-        /// Получает или задаёт код валюты 
+        /// Код валюты 
         /// </summary>
         public string Code { get; set; }
 
         /// <summary>
-        /// Получает или задаёт обменный курс валюты
+        /// Обменный курс валюты
         /// </summary>
         public decimal Rate { get; set; }
 
         /// <summary>
-        /// Получает или задаёт отображаемое название валюты
+        /// Отображаемое название валюты
         /// </summary>
         public string DisplayText { get; set; }
     }

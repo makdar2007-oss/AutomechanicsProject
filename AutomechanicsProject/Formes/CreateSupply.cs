@@ -74,16 +74,23 @@ namespace AutomechanicsProject.Formes
         private void OnProductSelected(ProductComboViewModel selectedProduct)
         {
             var product = cachedProducts.FirstOrDefault(p => p.Id == selectedProduct.Id);
-            bool hasExpiryDate = product?.HasExpiryDate == true;
+            if (product != null)
+            {
+                bool productHasExpiryDate = product.HasExpiryDate;  
+                dateTimePickerExpiry.Enabled = productHasExpiryDate;
+                dateTimePickerExpiry.Checked = productHasExpiryDate;
 
-            dateTimePickerExpiry.Enabled = hasExpiryDate;
-            dateTimePickerExpiry.Checked = hasExpiryDate;
+                if (!productHasExpiryDate)
+                {
+                    dateTimePickerExpiry.Checked = false;
+                }
+            }
         }
 
         /// <summary>
         /// Загружает список валют из API
         /// </summary>
-        private async void LoadCurrencies()
+        private void LoadCurrencies()
         {
             try
             {
@@ -91,7 +98,14 @@ namespace AutomechanicsProject.Formes
                 comboBoxCurrency.Items.Add("Загрузка курсов...");
                 comboBoxCurrency.Enabled = false;
 
-                currencies = await CurrencyHelper.GetCurrenciesAsync();
+                currencies = CurrencyHelper.GetCurrenciesFromApi();
+
+                if (currencies == null || currencies.Count == 0)
+                {
+                    currencies = CurrencyHelper.GetFallbackCurrencies();
+                    MessageBox.Show(Resources.WarningCurrencyRatesFallback, Resources.TitleWarning,
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
 
                 comboBoxCurrency.DataSource = currencies;
                 comboBoxCurrency.DisplayMember = "DisplayText";
@@ -116,7 +130,8 @@ namespace AutomechanicsProject.Formes
             {
                 logger.Error("Ошибка загрузки валют из API");
 
-                currencies = CurrencyHelper.GetCurrencies();
+                currencies = CurrencyHelper.GetFallbackCurrencies();
+
                 comboBoxCurrency.DataSource = currencies;
                 comboBoxCurrency.DisplayMember = "DisplayText";
                 comboBoxCurrency.ValueMember = "Code";
@@ -214,6 +229,7 @@ namespace AutomechanicsProject.Formes
                         Name = p.Name,
                         Balance = p.Balance,
                         IsActive = p.Balance > 0,
+                        HasExpiryDate = p.HasExpiryDate,
                         ProductExpiryDate = p.ExpiryDate
                     })
                     .AsNoTracking()
@@ -333,16 +349,6 @@ namespace AutomechanicsProject.Formes
                 if (!dateTimePickerExpiry.Checked || dateTimePickerExpiry.Value < DateTime.Now.Date)
                 {
                     MessageBox.Show(Resources.ErrorExpiryDateRequired, Resources.TitleWarning,
-                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    dateTimePickerExpiry.Focus();
-                    return false;
-                }
-
-                if (dateTimePickerExpiry.Value > selectedProduct.ProductExpiryDate.Value)
-                {
-                    MessageBox.Show(string.Format(Resources.ErrorExpiryDateExceedsProduct,
-                        selectedProduct.ProductExpiryDate.Value.ToShortDateString()),
-                        Resources.TitleWarning,
                         MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     dateTimePickerExpiry.Focus();
                     return false;
@@ -529,7 +535,7 @@ namespace AutomechanicsProject.Formes
         /// <summary>
         /// Импортирует данные поставки из JSON файла
         /// </summary>
-        private async void ButtonImport_Click(object sender, EventArgs e)
+        private void ButtonImport_Click(object sender, EventArgs e)
         {
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
@@ -714,7 +720,7 @@ namespace AutomechanicsProject.Formes
         /// <summary>
         /// Подтверждает поставку и сохраняет данные в базу
         /// </summary>
-        private async void ButtonConfirmSupply_Click(object sender, EventArgs e)
+        private void ButtonConfirmSupply_Click(object sender, EventArgs e)
         {
             if (positions.Count == 0)
             {
@@ -762,12 +768,12 @@ namespace AutomechanicsProject.Formes
                         RateDate = DateTime.Now
                     };
 
-                    using (var transaction = await _db.Database.BeginTransactionAsync())
+                    using (var transaction = _db.Database.BeginTransaction())
                     {
                         try
                         {
                             _db.Supplies.Add(supply);
-                            await _db.SaveChangesAsync();
+                            _db.SaveChanges();
 
                             foreach (var pos in positions)
                             {
@@ -786,11 +792,11 @@ namespace AutomechanicsProject.Formes
                                 };
                                 _db.SupplyPositions.Add(supplyPosition);
                             }
-                            await _db.SaveChangesAsync();
+                            _db.SaveChanges();
 
                             foreach (var pos in positions)
                             {
-                                var product = await _db.Products.FindAsync(pos.ProductId);
+                                var product = _db.Products.Find(pos.ProductId);
                                 if (product != null)
                                 {
                                     product.Balance += pos.Quantity;
@@ -805,25 +811,24 @@ namespace AutomechanicsProject.Formes
                                     product.BatchNumber = $"Партия_{DateTime.Now:yyyyMM}";
                                 }
                             }
-                            await _db.SaveChangesAsync();
+                            _db.SaveChanges();
 
-                            await transaction.CommitAsync();
+                            transaction.Commit();
                         }
                         catch (Exception)
                         {
-                            await transaction.RollbackAsync();
+                            transaction.Rollback();
                             throw;
                         }
                     }
 
-                    MessageBox.Show(
-                        string.Format(Resources.SuccessSupplyFormat, supply.OrderNumber, supply.DateCreated.ToString("dd.MM.yyyy HH:mm"), positions.Count, displayTotalText),
+                    MessageBox.Show(string.Format(Resources.SuccessSupplyFormat, supply.OrderNumber, supply.DateCreated.ToString("dd.MM.yyyy HH:mm"), positions.Count, displayTotalText),
                         Resources.TitleSuccess,
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Information);
 
-                    this.DialogResult = DialogResult.OK;
-                    this.Close();
+                    DialogResult = DialogResult.OK;
+                    Close();
                 }
                 catch (Exception ex)
                 {
@@ -837,8 +842,7 @@ namespace AutomechanicsProject.Formes
                     buttonConfirmSupply.Text = Resources.ButtonConfirmSupply;
                 }
             }
-        }        
-        
+        }
         /// <summary>
         /// Генерирует уникальный номер заказа
         /// </summary>

@@ -40,7 +40,6 @@ namespace AutomechanicsProject.Formes
 
         /// <summary>
         /// Загружает данные отчета за выбранный период из базы данных
-        /// Формирует список отгрузок и списаний для отображения в таблице
         /// </summary>
         private void LoadReport()
         {
@@ -73,44 +72,49 @@ namespace AutomechanicsProject.Formes
                     return;
                 }
 
-                var displayList = shipments
+                var shipmentDisplayList = shipments
                     .Where(s => s.Items != null && s.Items.Any())
                     .SelectMany(s => s.Items.Select(item => new
                     {
                         Артикул = item.Article ?? "Н/Д",
                         Название = item.ProductName ?? "Н/Д",
-                        Количество = (s.ShipmentType == "Списание" || s.ShipmentType == "Брак")
-                        ? -item.Quantity
-                        : item.Quantity,
-                        Цена = item.Quantity >= 0 ? item.PurchasePrice : 0,
-                        Прибыль = s.ShipmentType == "Списание" || s.ShipmentType == "Брак"
-                        ? 0 
-                        : (item.PurchasePrice - item.Price) * item.Quantity,
-                        Сумма = item.Quantity >= 0 ? item.PurchasePrice * item.Quantity : 0,
-                        Получатель = item.Quantity < 0 ? "Списание" : (s.User?.CompanyName ?? "Не указан"),
+                        Количество = (item.PurchasePrice == 0) ? -Math.Abs(item.Quantity) : Math.Abs(item.Quantity),
+                        Цена = (s.ShipmentType == "Отгрузка")
+                            ? item.PurchasePrice
+                            : 0m,
+                        Прибыль = (s.ShipmentType == "Отгрузка")
+                            ? (item.PurchasePrice - item.Price) * item.Quantity
+                            : -(item.Price * Math.Abs(item.Quantity)),
+                        Сумма = (s.ShipmentType == "Отгрузка")
+                            ? item.PurchasePrice * item.Quantity
+                            : 0m,
+                        Получатель = (s.ShipmentType == "Отгрузка")
+                            ? (s.User?.CompanyName ?? "Не указан")
+                            : (s.ShipmentType == "Брак") ? "Брак" : "Списание",
                         Кладовщик = s.CreatedByUser?.FullName ?? "Не указан",
-                        Дата = s.Date.ToString("dd.MM.yyyy HH:mm")
+                        Дата = s.Date.ToString("dd.MM.yyyy HH:mm"),
+                        Тип = "Отгрузка"
                     }))
                     .ToList();
 
-                foreach (var supply in supplies.Where(s => s.Positions != null && s.Positions.Any()))
-                {
-                    foreach (var item in supply.Positions)
+                var supplyDisplayList = supplies
+                    .Where(s => s.Positions != null && s.Positions.Any())
+                    .SelectMany(s => s.Positions.Select(item => new
                     {
-                        displayList.Add(new
-                        {
-                            Артикул = item.Article ?? "Н/Д",
-                            Название = item.ProductName ?? "Н/Д",
-                            Количество = item.Quantity,
-                            Цена = item.Price,
-                            Прибыль = 0m,
-                            Сумма = item.Price * item.Quantity,
-                            Получатель = item.SupplierName ?? "Не указан",
-                            Кладовщик = supply.User?.FullName ?? "Не указан",
-                            Дата = supply.DateCreated.ToString("dd.MM.yyyy HH:mm")
-                        });
-                    }
-                }
+                        Артикул = item.Article ?? "Н/Д",
+                        Название = item.ProductName ?? "Н/Д",
+                        Количество = item.Quantity,  
+                        Цена = item.Price,
+                        Прибыль = 0m,  
+                        Сумма = item.Price * item.Quantity,
+                        Получатель = item.SupplierName ?? "Не указан",
+                        Кладовщик = s.User?.FullName ?? "Не указан",
+                        Дата = s.DateCreated.ToString("dd.MM.yyyy HH:mm"),
+                        Тип = "Поставка"
+                    }))
+                    .ToList();
+
+                var displayList = shipmentDisplayList.Concat(supplyDisplayList).ToList();
 
                 if (!displayList.Any())
                 {
@@ -140,8 +144,13 @@ namespace AutomechanicsProject.Formes
 
                 dataGridViewReport.DataSource = finalList;
 
-                var totalSum = displayList.Where(x => x.Количество > 0).Sum(x => x.Сумма);
-                var totalProfit = displayList.Where(x => x.Количество > 0).Sum(x => x.Прибыль);
+                var totalSum = displayList
+                    .Where(x => x.Тип == "Отгрузка" && x.Количество > 0)
+                    .Sum(x => x.Сумма);
+
+                var totalProfit = displayList
+                    .Where(x => x.Тип == "Отгрузка")
+                    .Sum(x => x.Прибыль);
 
                 UpdateTotalInfo(totalSum, totalProfit);
             }
@@ -151,11 +160,9 @@ namespace AutomechanicsProject.Formes
                 MessageBox.Show(string.Format(Resources.ErrorLoadReportFormat, ex.Message),
                     Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-        }
-
-        /// <summary>
-        /// Обновляет итоговую информацию в нижней панели формы
-        /// </summary>
+        }        /// <summary>
+                 /// Обновляет итоговую информацию в нижней панели формы
+                 /// </summary>
         private void UpdateTotalInfo(decimal totalSum, decimal totalProfit)
         {
             labelTotalAmountValue.Text = string.Format("{0:N2} руб.", totalSum);

@@ -49,7 +49,7 @@ namespace AutomechanicsProject.Helpers
         }
 
         /// <summary>
-        /// Загружает курсы валют из файла. Возвращает null, если кэш устарел (старше 24 часов) или файла нет
+        /// Загружает курсы валют из файла
         /// </summary>
         public static (Dictionary<string, decimal> ExchangeRates, string LastSelectedCurrency, DateTime LastUpdate)? LoadRates()
         {

@@ -109,13 +109,12 @@ namespace AutomechanicsProject.Formes
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
 
-                logger.Error("Ошибка при списании товаров", ex);
+                logger.Error("Ошибка при списании товаров с истекшим сроком годности", ex);
             }
         }
 
         /// <summary>
         /// Обработчик нажатия кнопки "Выбор валюты"
-        /// Открывает форму выбора валюты и обновляет список товаров
         /// </summary>
         private void ButtonCurrency_Click(object sender, EventArgs e)
         {
@@ -140,7 +139,6 @@ namespace AutomechanicsProject.Formes
 
         /// <summary>
         /// Обработчик нажатия кнопки "Оформить отгрузку"
-        /// Открывает форму создания отгрузки и обновляет список товаров после её завершения
         /// </summary>
         private void ButtonShipment_Click(object sender, EventArgs e)
         {
@@ -165,7 +163,6 @@ namespace AutomechanicsProject.Formes
 
         /// <summary>
         /// Обработчик нажатия кнопки "Выйти"
-        /// Завершает работу приложения
         /// </summary>
         private void ButtonExit_Click(object sender, EventArgs e)
         {
@@ -267,6 +264,7 @@ namespace AutomechanicsProject.Formes
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
         /// <summary>
         /// Получает цену закупки в выбранной валюте по по курсу поставки
         /// </summary>
@@ -498,7 +496,6 @@ namespace AutomechanicsProject.Formes
                 }
             }
         }
-
 
         /// <summary>
         /// Прячет информацию о курсе

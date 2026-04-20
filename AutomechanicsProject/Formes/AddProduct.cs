@@ -255,8 +255,9 @@ namespace AutomechanicsProject.Formes
         private string GenerateArticle()
         {
             var lastProduct = _db.Products
-                .OrderByDescending(p => p.Id)
-                .FirstOrDefault();
+                  .Where(p => p.Article.StartsWith("ART-"))
+                  .OrderByDescending(p => p.Article)
+                  .FirstOrDefault();
 
             if (lastProduct != null && lastProduct.Article.StartsWith("ART-"))
             {

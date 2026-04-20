@@ -38,10 +38,14 @@ namespace AutomechanicsProject.Classes
         public static decimal ConvertPriceToRub(decimal priceInCurrency, string currencyCode, decimal rate)
         {
             if (currencyCode == CurrencyCodes.RUB)
+            {
                 return priceInCurrency;
+            }
 
             if (rate <= 0)
+            {
                 return 0;
+            }
 
             return priceInCurrency / rate;
         }

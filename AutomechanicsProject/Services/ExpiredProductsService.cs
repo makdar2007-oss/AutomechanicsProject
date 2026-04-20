@@ -51,7 +51,7 @@ namespace AutomechanicsProject.Services
                     ProductName = product.Name,
                     Quantity = -product.Balance,
                     Price = product.Price,
-                    PurchasePrice = product.PurchasePrice
+                    PurchasePrice = 0
                 };
 
                 db.ShipmentItems.Add(shipmentItem);
