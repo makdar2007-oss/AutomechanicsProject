@@ -81,11 +81,22 @@ namespace AutomechanicsProject.Helpers
         /// Настраивает водяной знак для выпадающего списка
         /// При фокусе на списке водяной знак исчезает, при потере фокуса и пустом выборе - появляется снова
         /// </summary>
+        /// <summary>
+        /// Настраивает водяной знак для выпадающего списка
+        /// Поддерживает как DropDown, так и DropDownList стили
+        /// </summary>
         public static void SetupWatermarkComboBox(ComboBox comboBox, string watermarkText)
         {
             if (string.IsNullOrEmpty(watermarkText))
             {
                 return;
+            }
+
+            var originalStyle = comboBox.DropDownStyle;
+
+            if (originalStyle == ComboBoxStyle.DropDownList)
+            {
+                comboBox.DropDownStyle = ComboBoxStyle.DropDown;
             }
 
             comboBox.Text = watermarkText;
@@ -97,16 +108,32 @@ namespace AutomechanicsProject.Helpers
                 if (cb.Text == watermarkText)
                 {
                     cb.Text = string.Empty;
-                    cb.ForeColor = Color.Black;
+                    cb.ForeColor = SystemColors.WindowText;
+
+                    if (originalStyle == ComboBoxStyle.DropDownList)
+                    {
+                        cb.DropDownStyle = ComboBoxStyle.DropDownList;
+                    }
                 }
             };
+
             comboBox.Leave += (sender, e) =>
             {
                 var cb = sender as ComboBox;
-                if (string.IsNullOrWhiteSpace(cb.Text))
+                if (string.IsNullOrWhiteSpace(cb.Text) && cb.SelectedIndex == -1)
                 {
+                    if (originalStyle == ComboBoxStyle.DropDownList)
+                    {
+                        cb.DropDownStyle = ComboBoxStyle.DropDown;
+                    }
+
                     cb.Text = watermarkText;
                     cb.ForeColor = Color.Gray;
+
+                    if (originalStyle == ComboBoxStyle.DropDownList)
+                    {
+                        cb.DropDownStyle = ComboBoxStyle.DropDownList;
+                    }
                 }
             };
         }

@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using NLog;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text.Json;
 using System.Windows.Forms;
@@ -34,6 +35,7 @@ namespace AutomechanicsProject.Formes
         {
             InitializeComponent();
             _db = database ?? throw new ArgumentNullException(nameof(database));
+            this.Load += new System.EventHandler(this.CreateSupply_Load);
         }
 
         /// <summary>
@@ -45,8 +47,20 @@ namespace AutomechanicsProject.Formes
             LoadCurrencies();
             LoadSuppliersFromDatabase();
 
+            TextBoxHelper.SetupWatermarkTextBox(textBoxQuantity, "Введите количество");
+            TextBoxHelper.SetupWatermarkTextBox(textBoxPrice, "Введите цену");
+            TextBoxHelper.SetupWatermarkComboBox(comboBoxProduct, "Выберите товар");
+            TextBoxHelper.SetupWatermarkComboBox(comboBoxSupplier, "Выберите поставщика");
+            TextBoxHelper.SetupWatermarkComboBox(comboBoxCurrency, "Выберите валюту");
+
+            labelProduct.Visible = false;
+            labelQuantity.Visible = false;
+            labelExpiry.Visible = false;
+            labelSupplier.Visible = false;
+            labelCurrency.Visible = false;
+            labelPrice.Visible = false;
+
             comboBoxCurrency.SelectedIndexChanged += ComboBoxCurrency_SelectedIndexChanged;
-            Load += CreateSupply_Load;
 
             dateTimePickerExpiry.Enabled = false;
             dateTimePickerExpiry.Checked = false;
@@ -78,7 +92,7 @@ namespace AutomechanicsProject.Formes
             var product = cachedProducts.FirstOrDefault(p => p.Id == selectedProduct.Id);
             if (product != null)
             {
-                bool productHasExpiryDate = product.HasExpiryDate;  
+                bool productHasExpiryDate = product.HasExpiryDate;
                 dateTimePickerExpiry.Enabled = productHasExpiryDate;
                 dateTimePickerExpiry.Checked = productHasExpiryDate;
 
@@ -115,16 +129,6 @@ namespace AutomechanicsProject.Formes
 
                 comboBoxCurrency.Enabled = true;
 
-                int rubIndex = currencies.FindIndex(c => c.Code == CurrencyCodes.RUB);
-                if (rubIndex >= 0)
-                {
-                    comboBoxCurrency.SelectedIndex = rubIndex;
-                }
-                else if (currencies.Count > 0)
-                {
-                    comboBoxCurrency.SelectedIndex = 0;
-                }
-
                 currentCurrency = CurrencyCodes.RUB;
                 currentCurrencyRate = 1.00m;
             }
@@ -138,7 +142,6 @@ namespace AutomechanicsProject.Formes
                 comboBoxCurrency.DisplayMember = "DisplayText";
                 comboBoxCurrency.ValueMember = "Code";
                 comboBoxCurrency.Enabled = true;
-                comboBoxCurrency.SelectedIndex = 0;
                 currentCurrency = CurrencyCodes.RUB;
                 currentCurrencyRate = 1.00m;
 
@@ -311,7 +314,14 @@ namespace AutomechanicsProject.Formes
         /// </summary>
         private bool ValidateInputs()
         {
-            if (comboBoxProduct.SelectedItem == null)
+            string productPlaceholder = "Выберите товар";
+            string supplierPlaceholder = "Выберите поставщика";
+            string quantityPlaceholder = "Введите количество";
+            string pricePlaceholder = "Введите цену";
+
+            if (comboBoxProduct.SelectedItem == null ||
+                comboBoxProduct.Text == productPlaceholder ||
+                string.IsNullOrWhiteSpace(comboBoxProduct.Text))
             {
                 MessageBox.Show(Resources.ErrorSelectProduct, Resources.TitleWarning,
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -319,10 +329,8 @@ namespace AutomechanicsProject.Formes
                 return false;
             }
 
-            var selectedProductDto = (ProductComboViewModel)comboBoxProduct.SelectedItem;
-            var selectedProduct = cachedProducts.FirstOrDefault(p => p.Id == selectedProductDto.Id);
-
-            if (!int.TryParse(textBoxQuantity.Text, out int quantity) || quantity <= 0)
+            string quantityText = textBoxQuantity.Text;
+            if (quantityText == quantityPlaceholder || string.IsNullOrWhiteSpace(quantityText))
             {
                 MessageBox.Show(Resources.ErrorEnterValidQuantity, Resources.TitleWarning,
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -330,7 +338,16 @@ namespace AutomechanicsProject.Formes
                 return false;
             }
 
-            if (!decimal.TryParse(textBoxPrice.Text.Replace('.', ','), out decimal price) || price <= 0)
+            if (!int.TryParse(quantityText, out int quantity) || quantity <= 0)
+            {
+                MessageBox.Show(Resources.ErrorEnterValidQuantity, Resources.TitleWarning,
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                textBoxQuantity.Focus();
+                return false;
+            }
+
+            string priceText = textBoxPrice.Text;
+            if (priceText == pricePlaceholder || string.IsNullOrWhiteSpace(priceText))
             {
                 MessageBox.Show(Resources.ErrorEnterValidPrice, Resources.TitleWarning,
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -338,11 +355,39 @@ namespace AutomechanicsProject.Formes
                 return false;
             }
 
-            if (comboBoxSupplier.SelectedItem == null)
+            if (!decimal.TryParse(priceText.Replace('.', ','), out decimal price) || price <= 0)
+            {
+                MessageBox.Show(Resources.ErrorEnterValidPrice, Resources.TitleWarning,
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                textBoxPrice.Focus();
+                return false;
+            }
+
+            // 4. Проверка поставщика
+            if (comboBoxSupplier.SelectedItem == null ||
+                comboBoxSupplier.Text == supplierPlaceholder ||
+                string.IsNullOrWhiteSpace(comboBoxSupplier.Text))
             {
                 MessageBox.Show(Resources.ErrorSelectSupplier, Resources.TitleWarning,
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 comboBoxSupplier.Focus();
+                return false;
+            }
+
+            // 5. Проверка срока годности (если требуется)
+            var selectedProductDto = comboBoxProduct.SelectedItem as ProductComboViewModel;
+            if (selectedProductDto == null)
+            {
+                MessageBox.Show(Resources.ErrorSelectProduct, Resources.TitleWarning,
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+
+            var selectedProduct = cachedProducts.FirstOrDefault(p => p.Id == selectedProductDto.Id);
+            if (selectedProduct == null)
+            {
+                MessageBox.Show(Resources.ErrorSelectProduct, Resources.TitleWarning,
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
             }
 
@@ -376,6 +421,20 @@ namespace AutomechanicsProject.Formes
         {
             textBoxQuantity.Clear();
             textBoxPrice.Clear();
+
+            if (comboBoxProduct != null)
+            {
+                comboBoxProduct.SelectedIndex = -1;
+                comboBoxProduct.Text = "Выберите товар";
+                comboBoxProduct.ForeColor = Color.Gray;
+            }
+
+            if (comboBoxSupplier != null)
+            {
+                comboBoxSupplier.SelectedIndex = -1;
+                comboBoxSupplier.Text = "Выберите поставщика";
+                comboBoxSupplier.ForeColor = Color.Gray;
+            }
 
             if (comboBoxState != null)
             {
@@ -511,7 +570,7 @@ namespace AutomechanicsProject.Formes
                 ProductName = selectedItem.Name,
                 Article = selectedItem.Article,
                 Quantity = quantity,
-                Price = priceInRUB,  
+                Price = priceInRUB,
                 SupplierId = selectedSupplier.Id,
                 SupplierName = selectedSupplier.Text,
                 ExpiryDate = selectedItem.HasExpiryDate ? dateTimePickerExpiry.Value : (DateTime?)null
@@ -533,7 +592,7 @@ namespace AutomechanicsProject.Formes
             UpdateTotalAmount();
             ClearInputFields();
         }
-        
+
         /// <summary>
         /// Импортирует данные поставки из JSON файла
         /// </summary>
@@ -621,8 +680,8 @@ namespace AutomechanicsProject.Formes
                                 Quantity = item.Quantity,
                                 Price = item.Price,
                                 SupplyId = Guid.Empty,
-                                SupplierId = supplier.Id,        
-                                SupplierName = supplier.Text,    
+                                SupplierId = supplier.Id,
+                                SupplierName = supplier.Text,
                                 ExpiryDate = expiryDate
                             };
 
@@ -634,7 +693,7 @@ namespace AutomechanicsProject.Formes
                                 position.Quantity,
                                 $"{position.Price:N2} {currentCurrency}",
                                 $"{position.Quantity * position.Price:N2} {currentCurrency}",
-                                supplier.Text,                   
+                                supplier.Text,
                                 position.ExpiryDate?.ToShortDateString() ?? ""
                             );
 

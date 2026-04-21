@@ -61,18 +61,17 @@ namespace AutomechanicsProject.Formes
             this.panelSupply.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewSupply)).BeginInit();
             this.SuspendLayout();
-            this.Load += CreateSupply_Load;
             // 
             // labelSupply
             // 
             this.labelSupply.AutoSize = true;
-            this.labelSupply.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.875F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelSupply.Location = new System.Drawing.Point(27, 19);
+            this.labelSupply.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelSupply.Location = new System.Drawing.Point(104, 19);
             this.labelSupply.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.labelSupply.Name = "labelSupply";
-            this.labelSupply.Size = new System.Drawing.Size(325, 29);
+            this.labelSupply.Size = new System.Drawing.Size(119, 29);
             this.labelSupply.TabIndex = 0;
-            this.labelSupply.Text = "Формирование поставки";
+            this.labelSupply.Text = "Поставка";
             // 
             // panelSupply
             // 
@@ -108,7 +107,7 @@ namespace AutomechanicsProject.Formes
             // 
             this.labelTotalValue.AutoSize = true;
             this.labelTotalValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelTotalValue.Location = new System.Drawing.Point(93, 510);
+            this.labelTotalValue.Location = new System.Drawing.Point(117, 442);
             this.labelTotalValue.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.labelTotalValue.Name = "labelTotalValue";
             this.labelTotalValue.Size = new System.Drawing.Size(0, 25);
@@ -118,7 +117,7 @@ namespace AutomechanicsProject.Formes
             // 
             this.labelTotalCaption.AutoSize = true;
             this.labelTotalCaption.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelTotalCaption.Location = new System.Drawing.Point(27, 510);
+            this.labelTotalCaption.Location = new System.Drawing.Point(37, 442);
             this.labelTotalCaption.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.labelTotalCaption.Name = "labelTotalCaption";
             this.labelTotalCaption.Size = new System.Drawing.Size(74, 25);
@@ -240,7 +239,7 @@ namespace AutomechanicsProject.Formes
             this.buttonAddToList.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonAddToList.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.125F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.buttonAddToList.ForeColor = System.Drawing.Color.Black;
-            this.buttonAddToList.Location = new System.Drawing.Point(32, 439);
+            this.buttonAddToList.Location = new System.Drawing.Point(97, 486);
             this.buttonAddToList.Margin = new System.Windows.Forms.Padding(2);
             this.buttonAddToList.Name = "buttonAddToList";
             this.buttonAddToList.Size = new System.Drawing.Size(167, 59);
@@ -255,10 +254,10 @@ namespace AutomechanicsProject.Formes
             this.buttonImport.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonImport.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.buttonImport.ForeColor = System.Drawing.Color.Black;
-            this.buttonImport.Location = new System.Drawing.Point(203, 439);
+            this.buttonImport.Location = new System.Drawing.Point(37, 388);
             this.buttonImport.Margin = new System.Windows.Forms.Padding(2);
             this.buttonImport.Name = "buttonImport";
-            this.buttonImport.Size = new System.Drawing.Size(132, 59);
+            this.buttonImport.Size = new System.Drawing.Size(303, 40);
             this.buttonImport.TabIndex = 15;
             this.buttonImport.Text = "Импорт файла";
             this.buttonImport.UseVisualStyleBackColor = false;
@@ -270,7 +269,7 @@ namespace AutomechanicsProject.Formes
             this.comboBoxProduct.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.comboBoxProduct.FormattingEnabled = true;
             this.comboBoxProduct.IntegralHeight = false;
-            this.comboBoxProduct.Location = new System.Drawing.Point(27, 90);
+            this.comboBoxProduct.Location = new System.Drawing.Point(32, 79);
             this.comboBoxProduct.Margin = new System.Windows.Forms.Padding(2);
             this.comboBoxProduct.MaxDropDownItems = 10;
             this.comboBoxProduct.Name = "comboBoxProduct";
@@ -280,12 +279,11 @@ namespace AutomechanicsProject.Formes
             // textBoxQuantity
             // 
             this.textBoxQuantity.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBoxQuantity.Location = new System.Drawing.Point(27, 152);
+            this.textBoxQuantity.Location = new System.Drawing.Point(32, 133);
             this.textBoxQuantity.Margin = new System.Windows.Forms.Padding(2);
             this.textBoxQuantity.Name = "textBoxQuantity";
             this.textBoxQuantity.Size = new System.Drawing.Size(308, 28);
             this.textBoxQuantity.TabIndex = 5;
-            this.textBoxQuantity.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // comboBoxSupplier
             // 
@@ -293,7 +291,7 @@ namespace AutomechanicsProject.Formes
             this.comboBoxSupplier.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxSupplier.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.comboBoxSupplier.FormattingEnabled = true;
-            this.comboBoxSupplier.Location = new System.Drawing.Point(27, 272);
+            this.comboBoxSupplier.Location = new System.Drawing.Point(32, 237);
             this.comboBoxSupplier.Margin = new System.Windows.Forms.Padding(2);
             this.comboBoxSupplier.Name = "comboBoxSupplier";
             this.comboBoxSupplier.Size = new System.Drawing.Size(308, 30);
@@ -301,36 +299,34 @@ namespace AutomechanicsProject.Formes
             // 
             // comboBoxCurrency
             // 
+            this.comboBoxCurrency.DropDownHeight = 200;
             this.comboBoxCurrency.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxCurrency.Enabled = true;
             this.comboBoxCurrency.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.comboBoxCurrency.FormattingEnabled = true;
-            this.comboBoxCurrency.Location = new System.Drawing.Point(32, 336);
+            this.comboBoxCurrency.IntegralHeight = false;
+            this.comboBoxCurrency.Location = new System.Drawing.Point(36, 291);
             this.comboBoxCurrency.Margin = new System.Windows.Forms.Padding(2);
             this.comboBoxCurrency.Name = "comboBoxCurrency";
-            this.comboBoxCurrency.Size = new System.Drawing.Size(303, 30);
+            this.comboBoxCurrency.Size = new System.Drawing.Size(304, 30);
             this.comboBoxCurrency.TabIndex = 11;
-            this.comboBoxCurrency.DropDownHeight = 200;
-            this.comboBoxCurrency.IntegralHeight = false;
             // 
             // textBoxPrice
             // 
             this.textBoxPrice.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBoxPrice.Location = new System.Drawing.Point(36, 401);
+            this.textBoxPrice.Location = new System.Drawing.Point(36, 345);
             this.textBoxPrice.Margin = new System.Windows.Forms.Padding(2);
             this.textBoxPrice.Name = "textBoxPrice";
-            this.textBoxPrice.Size = new System.Drawing.Size(299, 28);
+            this.textBoxPrice.Size = new System.Drawing.Size(304, 28);
             this.textBoxPrice.TabIndex = 13;
-            this.textBoxPrice.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // dateTimePickerExpiry
             // 
-            this.dateTimePickerExpiry.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.dateTimePickerExpiry.Checked = false;
-            this.dateTimePickerExpiry.MinDate = new System.DateTime(2024, 1, 1); this.dateTimePickerExpiry.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dateTimePickerExpiry.Location = new System.Drawing.Point(27, 214);
-            this.dateTimePickerExpiry.ShowCheckBox = false;
+            this.dateTimePickerExpiry.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.dateTimePickerExpiry.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dateTimePickerExpiry.Location = new System.Drawing.Point(32, 185);
             this.dateTimePickerExpiry.Margin = new System.Windows.Forms.Padding(2);
+            this.dateTimePickerExpiry.MinDate = new System.DateTime(2024, 1, 1, 0, 0, 0, 0);
             this.dateTimePickerExpiry.Name = "dateTimePickerExpiry";
             this.dateTimePickerExpiry.Size = new System.Drawing.Size(308, 28);
             this.dateTimePickerExpiry.TabIndex = 7;
@@ -339,61 +335,67 @@ namespace AutomechanicsProject.Formes
             // 
             this.labelProduct.AutoSize = true;
             this.labelProduct.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelProduct.Location = new System.Drawing.Point(24, 65);
+            this.labelProduct.Location = new System.Drawing.Point(32, 48);
             this.labelProduct.Name = "labelProduct";
             this.labelProduct.Size = new System.Drawing.Size(244, 20);
             this.labelProduct.TabIndex = 2;
             this.labelProduct.Text = "Выберите товар из списка: ";
+            this.labelProduct.Visible = false;
             // 
             // labelQuantity
             // 
             this.labelQuantity.AutoSize = true;
             this.labelQuantity.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelQuantity.Location = new System.Drawing.Point(24, 128);
+            this.labelQuantity.Location = new System.Drawing.Point(32, 111);
             this.labelQuantity.Name = "labelQuantity";
             this.labelQuantity.Size = new System.Drawing.Size(191, 20);
             this.labelQuantity.TabIndex = 4;
             this.labelQuantity.Text = "Введите количество:";
+            this.labelQuantity.Visible = false;
             // 
             // labelSupplier
             // 
             this.labelSupplier.AutoSize = true;
             this.labelSupplier.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelSupplier.Location = new System.Drawing.Point(24, 250);
+            this.labelSupplier.Location = new System.Drawing.Point(38, 215);
             this.labelSupplier.Name = "labelSupplier";
             this.labelSupplier.Size = new System.Drawing.Size(205, 20);
             this.labelSupplier.TabIndex = 8;
             this.labelSupplier.Text = "Выберите поставщика:";
+            this.labelSupplier.Visible = false;
             // 
             // labelCurrency
             // 
             this.labelCurrency.AutoSize = true;
             this.labelCurrency.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelCurrency.Location = new System.Drawing.Point(28, 314);
+            this.labelCurrency.Location = new System.Drawing.Point(38, 269);
             this.labelCurrency.Name = "labelCurrency";
             this.labelCurrency.Size = new System.Drawing.Size(149, 20);
             this.labelCurrency.TabIndex = 10;
             this.labelCurrency.Text = "Валюта закупки:";
+            this.labelCurrency.Visible = false;
             // 
             // labelPrice
             // 
             this.labelPrice.AutoSize = true;
             this.labelPrice.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelPrice.Location = new System.Drawing.Point(32, 379);
+            this.labelPrice.Location = new System.Drawing.Point(38, 323);
             this.labelPrice.Name = "labelPrice";
             this.labelPrice.Size = new System.Drawing.Size(131, 20);
             this.labelPrice.TabIndex = 12;
             this.labelPrice.Text = "Введите цену:";
+            this.labelPrice.Visible = false;
             // 
             // labelExpiry
             // 
             this.labelExpiry.AutoSize = true;
             this.labelExpiry.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelExpiry.Location = new System.Drawing.Point(24, 190);
+            this.labelExpiry.Location = new System.Drawing.Point(38, 163);
             this.labelExpiry.Name = "labelExpiry";
             this.labelExpiry.Size = new System.Drawing.Size(139, 20);
             this.labelExpiry.TabIndex = 6;
             this.labelExpiry.Text = "Срок годности:";
+            this.labelExpiry.Visible = false;
             // 
             // CreateSupply
             // 
@@ -413,7 +415,7 @@ namespace AutomechanicsProject.Formes
 
         }
 
-#endregion
+        #endregion
 
         private System.Windows.Forms.Label labelSupply;
         private System.Windows.Forms.Panel panelSupply;
