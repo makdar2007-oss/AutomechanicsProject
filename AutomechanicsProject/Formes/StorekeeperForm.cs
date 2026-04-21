@@ -74,9 +74,9 @@ namespace AutomechanicsProject.Formes
                         }
                     }
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    logger.Error("Ошибка при подсветке строки");
+                    logger.Error("Ошибка при подсветке строки", ex);
                 }
             }
         }
@@ -103,8 +103,7 @@ namespace AutomechanicsProject.Formes
             }
             catch (Exception ex)
             {
-                MessageBox.Show(
-                    string.Format(Resources.ErrorWithDetails, ex.Message),
+                MessageBox.Show(Resources.ErrorWithDetails,
                     Resources.TitleError,
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
@@ -153,9 +152,9 @@ namespace AutomechanicsProject.Formes
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                logger.Error("Ошибка при открытии формы отгрузки");
+                logger.Error("Ошибка при открытии формы отгрузки", ex);
                 MessageBox.Show(Resources.ErrorOpenShipmentForm, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -179,9 +178,9 @@ namespace AutomechanicsProject.Formes
                 loginForm.ShowDialog();
                 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                logger.Error("Ошибка при выходе из системы");
+                logger.Error("Ошибка при выходе из системы", ex);
                 MessageBox.Show(Resources.ErrorLogout, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -257,9 +256,9 @@ namespace AutomechanicsProject.Formes
                 ConfigureGrid();
                 FormatDateColumn();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                logger.Error("Ошибка при загрузке товаров.");
+                logger.Error("Ошибка при загрузке товаров", ex);
                 MessageBox.Show(Resources.ErrorLoadProductsList, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -270,14 +269,14 @@ namespace AutomechanicsProject.Formes
         /// </summary>
         private decimal GetPurchasePriceBySupplyRate(Guid productId, decimal priceInRub)
         {
-            if (ChoosingCurrency.SelectedCurrencyCode == "RUB")
+            if (ChoosingCurrency.SelectedCurrencyCode == CurrencyCodes.RUB)
                 return priceInRub;
 
             try
             {
                 var (supplyCurrency, supplyRate, _) = SupplyCurrencyService.GetProductCurrency(productId, db);
 
-                if (supplyCurrency != "RUB" && supplyRate != 1.00m)
+                if (supplyCurrency != CurrencyCodes.RUB && supplyRate != 1.00m)
                 {
                     decimal priceInSupplyCurrency = priceInRub * supplyRate;
 
@@ -288,9 +287,9 @@ namespace AutomechanicsProject.Formes
 
                 return ChoosingCurrency.ConvertPrice(priceInRub);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                logger.Error($"Ошибка конвертации цены для товара {productId}");
+                logger.Error($"Ошибка конвертации цены для товара {productId}", ex);
                 return ChoosingCurrency.ConvertPrice(priceInRub);
             }
         }
@@ -446,10 +445,10 @@ namespace AutomechanicsProject.Formes
 
                 logger.Info("Кладовщик вошёл в StorekeeperForm");
             }
-            catch (Exception )
+            catch (Exception ex)
             {
                 toolStripTextBoxStorekeeper.Text = "Ошибка";
-                logger.Error("Ошибка при загрузке формы кладовщика");
+                logger.Error("Ошибка при загрузке формы кладовщика", ex);
             }
         }
 

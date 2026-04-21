@@ -72,9 +72,9 @@ namespace AutomechanicsProject.Formes
                 textBoxNewName.ForeColor = System.Drawing.Color.Gray;
                 selectedCategory = null;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                logger.Error("Ошибка при загрузке категорий в форму 'Редактирование категории'");
+                logger.Error("Ошибка при загрузке категорий в форму 'Редактирование категории'", ex);
                 MessageBox.Show(Resources.ErrorLoadCategories, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -159,9 +159,9 @@ namespace AutomechanicsProject.Formes
                     Resources.TitleSuccess, MessageBoxButtons.OK, MessageBoxIcon.Information);
                 LoadCategories();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                logger.Error($"Ошибка при редактировании категории");
+                logger.Error($"Ошибка при редактировании категории", ex);
                 MessageBox.Show(Resources.ErrorEditCategory, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }

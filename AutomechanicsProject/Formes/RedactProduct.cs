@@ -80,9 +80,9 @@ namespace AutomechanicsProject.Formes
                 comboBoxUnit.DataSource = units;
                 comboBoxUnit.SelectedIndex = -1;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                logger.Error("Ошибка при загрузке единиц измерения");
+                logger.Error("Ошибка при загрузке единиц измерения", ex);
                 MessageBox.Show(Resources.ErrorLoadUnits, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -127,9 +127,9 @@ namespace AutomechanicsProject.Formes
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                logger.Error($"Ошибка при загрузке данных товара ID {productId}");
+                logger.Error($"Ошибка при загрузке данных товара ID {productId}", ex);
                 MessageBox.Show(Resources.ErrorLoadProductData, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -196,9 +196,9 @@ namespace AutomechanicsProject.Formes
                 DialogResult = DialogResult.OK;
                 Close();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                logger.Error($"Ошибка при обновлении товара ID {productId}");
+                logger.Error($"Ошибка при обновлении товара ID {productId}", ex);
                 MessageBox.Show(Resources.ErrorUpdateProduct, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }

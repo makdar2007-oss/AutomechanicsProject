@@ -202,7 +202,7 @@
     <value>Категория не найдена в базе данных!</value>
   </data>
 	<data name="ErrorCreateShipment" xml:space="preserve">
-    <value>Не удалось оформить отгрузку.</value>
+    <value>Не удалось оформить отгрузку.&#xD;&#xA;&#xD;&#xA;Ошибка: {0}</value>
   </data>
 	<data name="ErrorDeleteCategory" xml:space="preserve">
     <value>Не удалось удалить категорию. Попробуйте позже.</value>

@@ -42,9 +42,9 @@ namespace AutomechanicsProject.Helpers
                 var json = JsonSerializer.Serialize(cache);
                 File.WriteAllText(FilePath, json);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                logger.Error("Ошибка сохранения курсов валют");
+                logger.Error("Ошибка сохранения курсов валют", ex);
             }
         }
 
@@ -74,9 +74,9 @@ namespace AutomechanicsProject.Helpers
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                logger.Error("Ошибка загрузки кэша курсов валют");
+                logger.Error("Ошибка загрузки кэша курсов валют", ex);
             }
             return null;
         }

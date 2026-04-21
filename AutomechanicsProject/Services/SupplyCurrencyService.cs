@@ -28,12 +28,12 @@ namespace AutomechanicsProject.Services
                     return (lastSupply.CurrencyCode, lastSupply.ExchangeRate, lastSupply.RateDate);
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                logger.Error($"Ошибка получения валюты для товара {productId}");
+                logger.Error($"Ошибка получения валюты для товара {productId}", ex);
             }
 
-            return ("RUB", 1.00m, DateTime.Now);
+            return (CurrencyCodes.RUB, 1.00m, DateTime.Now);
         }
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace AutomechanicsProject.Services
         {
             var (currency, rate, date) = GetProductCurrency(productId, db);
 
-            if (currency == "RUB" && rate == 1.00m && date == DateTime.Now)
+            if (currency == CurrencyCodes.RUB && rate == 1.00m && date == DateTime.Now)
             {
                 var hasSupply = db.SupplyPositions.Any(sp => sp.ProductId == productId);
                 if (!hasSupply)
@@ -52,7 +52,7 @@ namespace AutomechanicsProject.Services
                 }
             }
 
-            if (currency == "RUB" || rate == 1.00m)
+            if (currency == CurrencyCodes.RUB || rate == 1.00m)
             {
                 return $"{productName}\nЗакупка в рублях\nТекущая валюта: {ChoosingCurrency.SelectedCurrencyCode}";
             }

@@ -1,4 +1,5 @@
 ﻿using AutomechanicsProject.Classes;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -10,6 +11,7 @@ namespace AutomechanicsProject.Helpers
     {
         private static Dictionary<string, decimal> _cachedRates;
         private static bool _isLoaded = false;
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         /// <summary>
         /// Возвращает список доступных валют
@@ -61,7 +63,7 @@ namespace AutomechanicsProject.Helpers
 
                             if (rates != null)
                             {
-                                if (!rates.ContainsKey("RUB"))
+                                if (!rates.ContainsKey(CurrencyCodes.RUB))
                                 {
                                     rates["RUB"] = 1.00m;
                                 }
@@ -74,7 +76,10 @@ namespace AutomechanicsProject.Helpers
                     }
                 }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                logger.Error("Ошибка получения валют", ex);
+            }
 
             return GetFallbackRates();
         }

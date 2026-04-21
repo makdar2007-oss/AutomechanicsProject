@@ -431,6 +431,15 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Ошибка при автоматическом списании просроченных товаров.к..
+        /// </summary>
+        public static string ErrorAutoWriteOff {
+            get {
+                return ResourceManager.GetString("ErrorAutoWriteOff", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Невозможно удалить категорию, так как некоторые товары используются в отгрузках.
         ///Сначала удалите связанные отгрузки..
         /// </summary>
@@ -468,9 +477,7 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Не удалось оформить отгрузку.
-        ///
-        ///Ошибка: {0}.
+        ///   Ищет локализованную строку, похожую на Не удалось оформить отгрузку..
         /// </summary>
         public static string ErrorCreateShipment {
             get {
@@ -623,7 +630,7 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Для этого товара требуется указать срок годности в поставке.
+        ///   Ищет локализованную строку, похожую на Срок годности не может быть в прошлом.
         /// </summary>
         public static string ErrorExpiryDateRequired {
             get {
@@ -632,7 +639,7 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Ошибка при экспорте данных: {0}.
+        ///   Ищет локализованную строку, похожую на Ошибка при экспорте данных..
         /// </summary>
         public static string ErrorExportToCsvWithMessage {
             get {
@@ -841,7 +848,7 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Ошибка при загрузке отчета: {0}.
+        ///   Ищет локализованную строку, похожую на Ошибка при загрузке отчета.
         /// </summary>
         public static string ErrorLoadReportFormat {
             get {
@@ -850,7 +857,7 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Не удалось загрузить историю отгрузок: {0}.
+        ///   Ищет локализованную строку, похожую на Не удалось загрузить историю отгрузок..
         /// </summary>
         public static string ErrorLoadShipmentHistory {
             get {
@@ -1139,7 +1146,7 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Ошибка: {0}.
+        ///   Ищет локализованную строку, похожую на Ошибка при подтверждении поставки..
         /// </summary>
         public static string ErrorSupplyFailed {
             get {
@@ -1184,7 +1191,7 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Ошибка: {0}.
+        ///   Ищет локализованную строку, похожую на Ошибка..
         /// </summary>
         public static string ErrorWithDetails {
             get {

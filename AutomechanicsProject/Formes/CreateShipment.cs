@@ -19,9 +19,9 @@ namespace AutomechanicsProject.Formes
     ///</summary>
     public enum ShipmentTypeEnum
     {
-        Отгрузка,
-        Списание,
-        Брак
+        Shipment,
+        WriteOff,
+        Defect
     }
 
     /// <summary>
@@ -39,7 +39,7 @@ namespace AutomechanicsProject.Formes
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
         private static readonly Guid WriteOffUserId = Guid.Parse("4adf792a-247b-435d-a15e-37314224c761");
         private static readonly Guid DefectUserId = Guid.Parse("fda70302-e336-4a5d-9783-eff33827adc8"); 
-        private ShipmentTypeEnum currentShipmentType = ShipmentTypeEnum.Отгрузка;
+        private ShipmentTypeEnum currentShipmentType = ShipmentTypeEnum.Shipment;
 
         /// <summary>
         /// Инициализирует новый экземпляр формы создания отгрузки
@@ -103,19 +103,19 @@ namespace AutomechanicsProject.Formes
 
             switch (selectedType)
             {
-                case "Отгрузка":
-                    currentShipmentType = ShipmentTypeEnum.Отгрузка;
+                case "Shipment":
+                    currentShipmentType = ShipmentTypeEnum.Shipment;
                     comboBoxRecipient1.Enabled = true;
                     comboBoxRecipient1.BackColor = System.Drawing.SystemColors.Window;
                     break;
                 case "Списание":
-                    currentShipmentType = ShipmentTypeEnum.Списание;
+                    currentShipmentType = ShipmentTypeEnum.WriteOff;
                     comboBoxRecipient1.Enabled = false;
                     comboBoxRecipient1.BackColor = System.Drawing.SystemColors.ControlLight;
                     comboBoxRecipient1.SelectedIndex = -1;
                     break;
                 case "Брак":
-                    currentShipmentType = ShipmentTypeEnum.Брак;
+                    currentShipmentType = ShipmentTypeEnum.Defect;
                     comboBoxRecipient1.Enabled = false;
                     comboBoxRecipient1.BackColor = System.Drawing.SystemColors.ControlLight;
                     comboBoxRecipient1.SelectedIndex = -1;
@@ -170,9 +170,9 @@ namespace AutomechanicsProject.Formes
                     comboBoxExpiry.Items.Clear();
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                logger.Error("Ошибка при загрузке сроков годности");
+                logger.Error("Ошибка при загрузке сроков годности", ex);
                 comboBoxExpiry.Enabled = false;
             }
         }
@@ -230,9 +230,9 @@ namespace AutomechanicsProject.Formes
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                logger.Error("Ошибка при загрузке товаров в отгрузку");
+                logger.Error("Ошибка при загрузке товаров в отгрузку", ex);
                 MessageBox.Show(Resources.ErrorLoadProducts, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -272,9 +272,9 @@ namespace AutomechanicsProject.Formes
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                logger.Error("Ошибка при загрузке списка получателей");
+                logger.Error("Ошибка при загрузке списка получателей", ex);
                 MessageBox.Show(Resources.ErrorLoadRecipients, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -307,7 +307,7 @@ namespace AutomechanicsProject.Formes
                 return false;
             }
 
-            if (currentShipmentType == ShipmentTypeEnum.Отгрузка && comboBoxRecipient1.SelectedItem == null)
+            if (currentShipmentType == ShipmentTypeEnum.Shipment && comboBoxRecipient1.SelectedItem == null)
             {
                 MessageBox.Show(Resources.ErrorSelectRecipient, Resources.TitleWarning,
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -461,10 +461,10 @@ namespace AutomechanicsProject.Formes
             string recipientName;
             switch (currentShipmentType)
             {
-                case ShipmentTypeEnum.Списание:
+                case ShipmentTypeEnum.WriteOff:
                     recipientName = "Списание";
                     break;
-                case ShipmentTypeEnum.Брак:
+                case ShipmentTypeEnum.Defect:
                     recipientName = "Брак";
                     break;
                 default:
@@ -484,7 +484,9 @@ namespace AutomechanicsProject.Formes
             {
                 var itemTotal = item.Quantity * item.PurchasePrice;
                 var itemCost = item.Quantity * item.Price;
-                var profit = itemTotal - itemCost;
+                var profit = (currentShipmentType == ShipmentTypeEnum.Shipment)
+                ? itemTotal - itemCost   
+                : 0;
 
                 totalAmount += itemTotal;
                 totalCost += itemCost;
@@ -538,12 +540,12 @@ namespace AutomechanicsProject.Formes
 
             switch (currentShipmentType)
             {
-                case ShipmentTypeEnum.Списание:
+                case ShipmentTypeEnum.WriteOff:
                     recipientName = "Списание";
                     recipientId = WriteOffUserId;
                     displayTotal = -totalAmount;
                     break;
-                case ShipmentTypeEnum.Брак:
+                case ShipmentTypeEnum.Defect:
                     recipientName = "Брак";
                     recipientId = DefectUserId;
                     displayTotal = -totalAmount;
@@ -581,7 +583,7 @@ namespace AutomechanicsProject.Formes
                     {
                         Id = Guid.NewGuid(),
                         Date = DateTime.Now,
-                        UserId = recipientId ?? Guid.Empty,
+                        UserId = recipientId.Value,
                         CreatedByUserId = Program.CurrentUser?.Id ?? Guid.Empty,
                         TotalAmount = totalAmount,
                         ShipmentType = currentShipmentType.ToString()
@@ -597,9 +599,9 @@ namespace AutomechanicsProject.Formes
                             Id = Guid.NewGuid(),
                             ShipmentId = shipment.Id,
                             ProductId = item.ProductId,
-                            Quantity = item.Quantity,
+                            Quantity = currentShipmentType == ShipmentTypeEnum.Shipment ? item.Quantity : -Math.Abs(item.Quantity),
                             Price = item.Price,
-                            PurchasePrice = currentShipmentType == ShipmentTypeEnum.Отгрузка
+                            PurchasePrice = currentShipmentType == ShipmentTypeEnum.Shipment
                             ? item.PurchasePrice      
                             : 0,
                             ProductName = item.ProductName,
@@ -629,8 +631,8 @@ namespace AutomechanicsProject.Formes
             }
             catch (Exception ex)
             {
-                logger.Error($"Не удалось оформить отгрузку");
-                MessageBox.Show(string.Format(Resources.ErrorCreateShipment, ex.Message),
+                logger.Error($"Не удалось оформить отгрузку", ex);
+                MessageBox.Show(Resources.ErrorCreateShipment,
                     Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }

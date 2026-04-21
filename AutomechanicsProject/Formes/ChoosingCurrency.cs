@@ -1,4 +1,5 @@
-﻿using AutomechanicsProject.Classes;
+﻿
+using AutomechanicsProject.Classes;
 using AutomechanicsProject.Helpers;
 using AutomechanicsProject.Properties;
 using NLog;
@@ -57,9 +58,9 @@ namespace AutomechanicsProject.Formes
 
                 PopulateCurrencyComboBox();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                logger.Error("Ошибка при загрузке курсов валют");
+                logger.Error("Ошибка при загрузке курсов валют", ex);
 
                 if (!LoadFromCache())
                 {
@@ -98,9 +99,9 @@ namespace AutomechanicsProject.Formes
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                logger.Error("Ошибка загрузки кэша курсов валют");
+                logger.Error("Ошибка загрузки кэша курсов валют", ex);
             }
             return false;
         }

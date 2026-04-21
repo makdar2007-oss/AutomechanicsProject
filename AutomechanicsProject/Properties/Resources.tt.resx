@@ -15,19 +15,19 @@
 
 	<!-- Названия полей -->
 	<data name="AuthLoginWatermark" xml:space="preserve">
-    <value>Введите имя</value>
+    <value>Исемегезне языгыз</value>
   </data>
 	<data name="AuthPasswordWatermark" xml:space="preserve">
-    <value>Введите пароль</value>
+    <value>Серсүзне языгыз</value>
   </data>
 	<data name="CategoryAddWatermark" xml:space="preserve">
-    <value>Введите название</value>
+    <value>Исемен языгыз</value>
   </data>
 	<data name="CategorySelectWatermark" xml:space="preserve">
-    <value>Выберите категорию</value>
+    <value>Категорияне сайлагыз</value>
   </data>
 	<data name="DeleteArticleWatermark" xml:space="preserve">
-    <value>Введите артикул товара</value>
+    <value>Тауар артикулын языгыз</value>
   </data>
 	<data name="EditArticleWatermark" xml:space="preserve">
     <value>Артикул</value>
@@ -36,13 +36,13 @@
     <value>Введите название</value>
   </data>
 	<data name="EditNameWatermark" xml:space="preserve">
-    <value>Название</value>
+    <value>Исеме</value>
   </data>
 	<data name="EditPriceWatermark" xml:space="preserve">
-    <value>Цена</value>
+    <value>Бәясе</value>
   </data>
 	<data name="ProductArticleWatermark" xml:space="preserve">
-    <value>Введите артикул</value>
+    <value>Артикулны языгыз</value>
   </data>
 	<data name="ProductNameWatermark" xml:space="preserve">
     <value>Введите название</value>
@@ -69,13 +69,13 @@
     <value>Введите фамилию</value>
   </data>
 	<data name="SearchWatermark" xml:space="preserve">
-    <value>Поиск:</value>
+    <value>Эзләү:</value>
   </data>
 	<data name="ShipmentQuantityWatermark" xml:space="preserve">
-    <value>Введите количество товара</value>
+    <value>Тауар күләмен языгыз</value>
   </data>
 	<data name="UnitSelectWatermark" xml:space="preserve">
-    <value>Выберите единицу измерения</value>
+    <value>Үлчәү берәмлеген сайлагыз</value>
   </data>
 
 	<!-- Кнопки -->
@@ -159,20 +159,11 @@
   </data>
 
 	<!-- Сообщения ошибок -->
-	<data name="ErrorImportFailed" xml:space="preserve">
-    <value>Ошибка при импорте данных. Операция прервана. Подробности записаны в журнал ошибок.</value>
-</data>
-	<data name="ErrorCreateShipment" xml:space="preserve">
-    <value>Не удалось оформить отгрузку.</value>
-</data>
-	<data name="ErrorAutoWriteOff" xml:space="preserve">
-    <value>Ошибка при автоматическом списании просроченных товаров.к.</value>
-</data>
 	<data name="ErrorCurrencyFixed" xml:space="preserve">
     <value>Нельзя изменить валюту после добавления позиций в поставку.</value>
 </data>
 	<data name="ErrorExpiryDateRequired" xml:space="preserve">
-    <value>Срок годности не может быть в прошлом</value>
+    <value>Для этого товара требуется указать срок годности в поставке</value>
 </data>
 	<data name="ErrorExpiryDateExceedsProduct" xml:space="preserve">
     <value>Срок годности в поставке не может превышать срок годности товара ({0})</value>
@@ -190,7 +181,7 @@
     <value>Ошибка при входе в систему</value>
   </data>
 	<data name="ErrorAuthInvalid" xml:space="preserve">
-    <value>Неверный логин или пароль!</value>
+    <value>Логин яки серсүз дөрес түгел!</value>
   </data>
 	<data name="ErrorCannotDeleteCategoryWithShipments" xml:space="preserve">
     <value>Невозможно удалить категорию, так как некоторые товары используются в отгрузках.&#xD;&#xA;Сначала удалите связанные отгрузки.</value>
@@ -280,7 +271,7 @@
     <value>Не удалось загрузить список получателей</value>
   </data>
 	<data name="ErrorLoadReportFormat" xml:space="preserve">
-    <value>Ошибка при загрузке отчета</value>
+    <value>Ошибка при загрузке отчета/</value>
   </data>
 	<data name="ErrorLoadShipmentHistory" xml:space="preserve">
     <value>Не удалось загрузить историю отгрузок.</value>

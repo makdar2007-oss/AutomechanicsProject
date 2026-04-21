@@ -63,7 +63,7 @@ namespace AutomechanicsProject.Classes
         /// Идентификатор поставщика
         /// </summary>
         [Column("supplier_id")]
-        public Guid? SupplierId { get; set; }
+        public Guid SupplierId { get; set; }
 
         /// <summary>
         /// Наименование поставщика 

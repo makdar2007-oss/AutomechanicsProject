@@ -226,9 +226,9 @@ namespace AutomechanicsProject.Formes
 
                 OpenAuthorization();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                logger.Error("Ошибка регистрации");
+                logger.Error("Ошибка регистрации", ex);
                 MessageBox.Show(Resources.ErrorRegistration, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }

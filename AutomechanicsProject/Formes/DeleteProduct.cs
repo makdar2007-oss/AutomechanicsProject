@@ -62,9 +62,9 @@ namespace AutomechanicsProject.Formes
                     labelDeleteProduct.Text = $"Удаление товара: \n{product.Article} - {product.Name}";
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                logger.Error($"Ошибка при загрузке товара с ID {_productId}");
+                logger.Error($"Ошибка при загрузке товара с ID {_productId}", ex);
                 MessageBox.Show(Resources.ErrorLoadProduct, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -131,9 +131,9 @@ namespace AutomechanicsProject.Formes
                 DialogResult = DialogResult.OK;
                 Close();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                logger.Error("ошибка при удалении товара");
+                logger.Error("ошибка при удалении товара", ex);
                 MessageBox.Show(Resources.ErrorDeleteProduct, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }

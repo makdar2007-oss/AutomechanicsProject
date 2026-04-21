@@ -126,9 +126,9 @@ namespace AutomechanicsProject
                 Program.CurrentUser = user;
                 OpenMainForm(user);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                logger.Error("Ошибка авторизации");
+                logger.Error("Ошибка авторизации", ex);
                 MessageBox.Show(Resources.ErrorAuthFailed, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }

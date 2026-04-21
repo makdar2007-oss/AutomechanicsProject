@@ -69,40 +69,40 @@ namespace AutomechanicsProject.Formes
                     .Where(s => s.Items != null && s.Items.Any())
                     .SelectMany(s => s.Items.Select(item => new
                     {
-                        Артикул = item.Article ?? "Н/Д",
-                        Название = item.ProductName ?? "Н/Д",
-                        Количество = (s.ShipmentType == "Отгрузка") ? item.Quantity : -item.Quantity,
-                        ЦенаЗакупки = item.Price,
-                        ЦенаПродажи = item.PurchasePrice,
-                        Прибыль = (s.ShipmentType == "Списание" || s.ShipmentType == "Брак")
-                        ? -(Math.Abs(item.Price) * Math.Abs(item.Quantity))  
+                        Article = item.Article ?? "Н/Д",
+                        Name = item.ProductName ?? "Н/Д",
+                        Quantity = (s.ShipmentType == "Shipment") ? item.Quantity : -item.Quantity,
+                        PurchasePrice = item.Price,
+                        SalePrice = item.PurchasePrice,
+                        Profit = (s.ShipmentType == "WriteOff" || s.ShipmentType == "Defect")
+                        ? -(Math.Abs(item.Price) * Math.Abs(item.Quantity))
                         : (item.PurchasePrice - item.Price) * item.Quantity,
-                        Сумма = (s.ShipmentType == "Списание" || s.ShipmentType == "Брак")
-                            ? 0m
-                            : item.PurchasePrice * item.Quantity,
-                        Получатель = (s.ShipmentType == "Списание") ? "Списание"
-                            : (s.ShipmentType == "Брак") ? "Брак"
-                            : (s.User?.CompanyName ?? "Не указан"),
-                        Кладовщик = s.CreatedByUser?.FullName ?? "Не указан",
-                        Дата = s.Date.ToString("dd.MM.yyyy HH:mm")
+                        Total = (s.ShipmentType == "WriteOff" || s.ShipmentType == "Defect")
+                        ? 0m
+                        : item.PurchasePrice * item.Quantity,
+                        Recipient = (s.ShipmentType == "WriteOff") ? "WriteOff"
+                        : (s.ShipmentType == "Defect") ? "Defect"
+                        : (s.User?.CompanyName ?? "Не указан"),
+                        Storekeeper = s.CreatedByUser?.FullName ?? "Не указан",
+                        Date = s.Date.ToString("dd.MM.yyyy HH:mm")
                     }))
                     .ToList();
 
                 var finalDisplayList = displayList.Select(item => {
-                    bool isWriteOff = (item.Получатель == "Списание" || item.Получатель == "Брак");
+                    bool isWriteOff = (item.Recipient == "WriteOff" || item.Recipient == "Defect");
 
                     return new
                     {
-                        item.Артикул,
-                        item.Название,
-                        Количество = isWriteOff ? -item.Количество : item.Количество,
-                        ЦенаЗакупки = item.ЦенаЗакупки,
-                        ЦенаПродажи = isWriteOff ? 0m : item.ЦенаПродажи,
-                        Прибыль = item.Прибыль,
-                        Сумма = isWriteOff ? 0m : item.Сумма,
-                        item.Получатель,
-                        item.Кладовщик,
-                        item.Дата
+                        item.Article,
+                        item.Name,
+                        Quantity = isWriteOff ? -item.Quantity : item.Quantity,
+                        PurchasePrice = item.PurchasePrice,
+                        SalePrice = isWriteOff ? 0m : item.SalePrice,
+                        Profit = item.Profit,
+                        Total = isWriteOff ? 0m : item.Total,
+                        item.Recipient,
+                        item.Storekeeper,
+                        item.Date
                     };
                 }).ToList();
 
@@ -118,49 +118,129 @@ namespace AutomechanicsProject.Formes
                 var counter = 1;
                 var finalList = finalDisplayList.Select(item => new
                 {
-                    Номер = counter++,
-                    item.Артикул,
-                    item.Название,
-                    Количество = item.Количество,
-                    Цена = item.ЦенаПродажи.ToString("F2"),
-                    Прибыль = item.Прибыль.ToString("F2"),
-                    Сумма = item.Сумма.ToString("F2"),
-                    item.Получатель,
-                    item.Кладовщик,
-                    item.Дата
+                    Number = counter++,
+                    item.Article,
+                    item.Name,
+                    item.Quantity,
+                    Price = item.SalePrice.ToString("F2"),
+                    Profit = item.Profit.ToString("F2"),
+                    Total = item.Total.ToString("F2"),
+                    item.Recipient,
+                    item.Storekeeper,
+                    item.Date
                 }).ToList();
 
                 dataGridViewHistory.DataSource = finalList;
 
+                ConfigureRussianColumns();
+
                 var totalItemsShipped = finalDisplayList
-                    .Where(x => x.Получатель != "Списание" && x.Получатель != "Брак" && x.Количество > 0)
-                    .Sum(x => x.Количество);
+                        .Where(x => x.Recipient != "WriteOff" && x.Recipient != "Defect" && x.Quantity > 0)
+                        .Sum(x => x.Quantity);
 
                 var totalItemsWrittenOff = finalDisplayList
-                    .Where(x => (x.Получатель == "Списание" || x.Получатель == "Брак") && x.Количество < 0)
-                    .Sum(x => -x.Количество);
+                    .Where(x => (x.Recipient == "WriteOff" || x.Recipient == "Defect") && x.Quantity < 0)
+                    .Sum(x => -x.Quantity);
 
                 var totalSum = finalDisplayList
-                    .Where(x => x.Получатель != "Списание" && x.Получатель != "Брак" && x.Количество > 0)
-                    .Sum(x => x.Сумма);
+                    .Where(x => x.Recipient != "WriteOff" && x.Recipient != "Defect" && x.Quantity > 0)
+                    .Sum(x => x.Total);
 
                 var totalProfit = finalDisplayList
-                    .Where(x => x.Получатель != "Списание" && x.Получатель != "Брак")
-                    .Sum(x => x.Прибыль);
+                    .Where(x => x.Recipient != "WriteOff" && x.Recipient != "Defect")
+                    .Sum(x => x.Profit);
 
                 var totalLoss = finalDisplayList
-                    .Where(x => x.Получатель == "Списание" || x.Получатель == "Брак")
-                    .Sum(x => -x.Прибыль);
+                    .Where(x => x.Recipient == "WriteOff" || x.Recipient == "Defect")
+                    .Sum(x => -x.Profit);
 
                 UpdateTotalInfo(totalItemsShipped, totalItemsWrittenOff, totalSum, totalProfit, totalLoss);
             }
             catch (Exception ex)
             {
-                logger.Error("Не удалось загрузить историю отгрузок");
-                MessageBox.Show(string.Format(Resources.ErrorLoadShipmentHistory, ex.Message),
+                logger.Error("Не удалось загрузить историю отгрузок", ex);
+                MessageBox.Show(Resources.ErrorLoadShipmentHistory,
                     Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        /// <summary>
+        /// Настраивает заголовки колонок DataGridView на русском языке
+        /// </summary>
+        private void ConfigureRussianColumns()
+        {
+            if (dataGridViewHistory.Columns.Count == 0) return;
+
+            if (dataGridViewHistory.Columns["Number"] != null)
+                dataGridViewHistory.Columns["Number"].HeaderText = "№";
+
+            if (dataGridViewHistory.Columns["Article"] != null)
+                dataGridViewHistory.Columns["Article"].HeaderText = "Артикул";
+
+            if (dataGridViewHistory.Columns["Name"] != null)
+                dataGridViewHistory.Columns["Name"].HeaderText = "Название";
+
+            if (dataGridViewHistory.Columns["Quantity"] != null)
+                dataGridViewHistory.Columns["Quantity"].HeaderText = "Количество";
+
+            if (dataGridViewHistory.Columns["Price"] != null)
+                dataGridViewHistory.Columns["Price"].HeaderText = "Цена";
+
+            if (dataGridViewHistory.Columns["Profit"] != null)
+                dataGridViewHistory.Columns["Profit"].HeaderText = "Прибыль";
+
+            if (dataGridViewHistory.Columns["Total"] != null)
+                dataGridViewHistory.Columns["Total"].HeaderText = "Сумма";
+
+            if (dataGridViewHistory.Columns["Recipient"] != null)
+                dataGridViewHistory.Columns["Recipient"].HeaderText = "Получатель";
+
+            if (dataGridViewHistory.Columns["Storekeeper"] != null)
+                dataGridViewHistory.Columns["Storekeeper"].HeaderText = "Кладовщик";
+
+            if (dataGridViewHistory.Columns["Date"] != null)
+                dataGridViewHistory.Columns["Date"].HeaderText = "Дата";
+
+            if (dataGridViewHistory.Columns["Number"] != null)
+                dataGridViewHistory.Columns["Number"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            if (dataGridViewHistory.Columns["Quantity"] != null)
+                dataGridViewHistory.Columns["Quantity"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+
+            if (dataGridViewHistory.Columns["Price"] != null)
+                dataGridViewHistory.Columns["Price"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+
+            if (dataGridViewHistory.Columns["Profit"] != null)
+                dataGridViewHistory.Columns["Profit"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+
+            if (dataGridViewHistory.Columns["Total"] != null)
+                dataGridViewHistory.Columns["Total"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+
+            if (dataGridViewHistory.Columns["Date"] != null)
+                dataGridViewHistory.Columns["Date"].DefaultCellStyle.Format = "dd.MM.yyyy HH:mm";
+
+            dataGridViewHistory.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+            dataGridViewHistory.CellFormatting += DataGridViewHistory_CellFormatting;
+        }
+
+        /// <summary>
+        /// Форматирование ячеек - перевод английских значений на русский
+        /// </summary>
+        private void DataGridViewHistory_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (dataGridViewHistory.Columns[e.ColumnIndex].Name == "Recipient" && e.Value != null)
+            {
+                string value = e.Value.ToString();
+                if (value == "Shipment")
+                    e.Value = "Отгрузка";
+                else if (value == "WriteOff")
+                    e.Value = "Списание";
+                else if (value == "Defect")
+                    e.Value = "Брак";
+            }
+        }
+
         /// <summary>
         /// Обновляет информацию в заголовке формы (итоги по отгрузкам)
         /// </summary>

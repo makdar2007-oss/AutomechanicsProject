@@ -31,12 +31,6 @@ namespace AutomechanicsProject.Classes
         public DateTime DateCreated { get; set; }
 
         /// <summary>
-        /// Идентификатор поставщика
-        /// </summary>
-        [Column("supplier_id")]
-        public Guid? SupplierId { get; set; }
-
-        /// <summary>
         /// Идентификатор пользователя, создавшего поставку
         /// </summary>
         [Column("user_id")]
@@ -71,12 +65,6 @@ namespace AutomechanicsProject.Classes
         /// </summary>
         [Column("rate_date")]
         public DateTime RateDate { get; set; }
-
-        /// <summary>
-        /// Поставщик (навигационное свойство)
-        /// </summary>
-        [ForeignKey("SupplierId")]
-        public virtual Supplier Supplier { get; set; }
 
         /// <summary>
         /// Пользователь (навигационное свойство)

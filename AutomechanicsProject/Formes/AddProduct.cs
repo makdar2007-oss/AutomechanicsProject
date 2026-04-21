@@ -72,9 +72,9 @@ namespace AutomechanicsProject.Formes
                 comboBoxCategory.DataSource = categories;
                 comboBoxCategory.SelectedIndex = -1;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                Logger.Error("Ошибка при загрузке категорий в форму 'Редактирование категорий'");
+                Logger.Error("Ошибка при загрузке категорий в форму 'Редактирование категорий'", ex);
                 MessageBox.Show(Resources.ErrorLoadCategories, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -100,9 +100,9 @@ namespace AutomechanicsProject.Formes
                 comboBoxUnit.DataSource = units;
                 comboBoxUnit.SelectedIndex = -1;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                Logger.Error("Ошибка при загрузке единиц измерения");
+                Logger.Error("Ошибка при загрузке единиц измерения", ex);
                 MessageBox.Show(Resources.ErrorLoadUnits, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -282,9 +282,9 @@ namespace AutomechanicsProject.Formes
                 textBoxArt.Text = newArticle;
                 textBoxArt.ForeColor = System.Drawing.SystemColors.WindowText;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                Logger.Error("Ошибка при генерации артикула");
+                Logger.Error("Ошибка при генерации артикула", ex);
                 textBoxArt.Text = "Ошибка";
             }
         }

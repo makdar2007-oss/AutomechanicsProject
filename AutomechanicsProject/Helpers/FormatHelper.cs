@@ -1,4 +1,5 @@
 ﻿using System;
+using AutomechanicsProject.Classes;
 using AutomechanicsProject.Formes;
 
 namespace AutomechanicsProject.Helpers
@@ -51,7 +52,7 @@ namespace AutomechanicsProject.Helpers
         /// <summary>
         /// Форматирует отображение товара с ценой
         /// </summary>
-        public static string FormatProductWithPrice(string article, string name, decimal price, string currencyCode = "RUB")
+        public static string FormatProductWithPrice(string article, string name, decimal price, string currencyCode = CurrencyCodes.RUB)
         {
             return $"{article} - {name} ({price:F2} {currencyCode})";
         }

@@ -98,9 +98,9 @@ namespace AutomechanicsProject.Formes
                 DialogResult = DialogResult.OK;
                 Close();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                logger.Error($"Ошибка при добавлении категори '{categoryName}'");
+                logger.Error($"Ошибка при добавлении категори '{categoryName}'", ex);
                 MessageBox.Show(Resources.ErrorAddCategory, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }

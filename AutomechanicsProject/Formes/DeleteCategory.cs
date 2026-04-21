@@ -57,9 +57,9 @@ namespace AutomechanicsProject.Formes
                 label1.Text = hasCategories ? Resources.SelectCategoryForDelete : Resources.NoCategoriesForDelete;
                 buttonDelete.Enabled = hasCategories;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                logger.Error("Ошибка при загрузке категорий в форму 'Удаление категории'");
+                logger.Error("Ошибка при загрузке категорий в форму 'Удаление категории'", ex);
                 MessageBox.Show(Resources.ErrorLoadCategories, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -134,9 +134,9 @@ namespace AutomechanicsProject.Formes
                 DialogResult = DialogResult.OK;
                 Close();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                logger.Error("Ошибка при удалении категории");
+                logger.Error("Ошибка при удалении категории", ex);
                 MessageBox.Show(Resources.ErrorDeleteCategory, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }

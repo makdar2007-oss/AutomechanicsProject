@@ -48,6 +48,8 @@ namespace AutomechanicsProject.Formes
             comboBoxCurrency.SelectedIndexChanged += ComboBoxCurrency_SelectedIndexChanged;
             Load += CreateSupply_Load;
 
+            dateTimePickerExpiry.Enabled = false;
+            dateTimePickerExpiry.Checked = false;
 
             comboBoxProduct.Text = "";
             comboBoxProduct.SelectedIndex = -1;
@@ -113,7 +115,7 @@ namespace AutomechanicsProject.Formes
 
                 comboBoxCurrency.Enabled = true;
 
-                int rubIndex = currencies.FindIndex(c => c.Code == "RUB");
+                int rubIndex = currencies.FindIndex(c => c.Code == CurrencyCodes.RUB);
                 if (rubIndex >= 0)
                 {
                     comboBoxCurrency.SelectedIndex = rubIndex;
@@ -126,9 +128,9 @@ namespace AutomechanicsProject.Formes
                 currentCurrency = CurrencyCodes.RUB;
                 currentCurrencyRate = 1.00m;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                logger.Error("Ошибка загрузки валют из API");
+                logger.Error("Ошибка загрузки валют из API", ex);
 
                 currencies = CurrencyHelper.GetFallbackCurrencies();
 
@@ -179,9 +181,9 @@ namespace AutomechanicsProject.Formes
                 UpdatePricesInGrid();
                 UpdateTotalAmount();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                logger.Error("Ошибка при смене валюты");
+                logger.Error("Ошибка при смене валюты", ex);
             }
         }
 
@@ -256,9 +258,9 @@ namespace AutomechanicsProject.Formes
                         MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                logger.Error("Ошибка при загрузке товаров из БД");
+                logger.Error("Ошибка при загрузке товаров из БД", ex);
                 MessageBox.Show(Resources.ErrorLoadProducts, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -296,9 +298,9 @@ namespace AutomechanicsProject.Formes
                         MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                logger.Error("Ошибка при загрузке поставщиков из БД");
+                logger.Error("Ошибка при загрузке поставщиков из БД", ex);
                 MessageBox.Show(Resources.ErrorLoadSuppliers, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -587,12 +589,15 @@ namespace AutomechanicsProject.Formes
                             var supplier = cachedSuppliers
                                 .FirstOrDefault(s => s.Text.Equals(item.SupplierName, StringComparison.OrdinalIgnoreCase));
 
-                            if (supplier == null && cachedSuppliers.Count > 0)
+                            if (supplier == null)
                             {
-                                supplier = cachedSuppliers[0];
+                                notFoundCount++;
+                                notFoundArticles.Add($"{item.Article} (поставщик '{item.SupplierName}' не найден)");
+                                continue;
                             }
+
                             DateTime? expiryDate = null;
-                            if (product.HasExpiryDate)  
+                            if (product.HasExpiryDate)
                             {
                                 if (!string.IsNullOrEmpty(item.ExpiryDate))
                                 {
@@ -616,8 +621,8 @@ namespace AutomechanicsProject.Formes
                                 Quantity = item.Quantity,
                                 Price = item.Price,
                                 SupplyId = Guid.Empty,
-                                SupplierId = supplier?.Id,
-                                SupplierName = supplier?.Text,
+                                SupplierId = supplier.Id,        
+                                SupplierName = supplier.Text,    
                                 ExpiryDate = expiryDate
                             };
 
@@ -629,13 +634,12 @@ namespace AutomechanicsProject.Formes
                                 position.Quantity,
                                 $"{position.Price:N2} {currentCurrency}",
                                 $"{position.Quantity * position.Price:N2} {currentCurrency}",
-                                supplier?.Text ?? Resources.UnknownSupplier,
+                                supplier.Text,                   
                                 position.ExpiryDate?.ToShortDateString() ?? ""
                             );
 
                             importedCount++;
                         }
-
                         if (importedCount > 0 && !isCurrencyFixed)
                         {
                             var importedCurrency = comboBoxCurrency.SelectedItem as CurrencyInfo;
@@ -663,9 +667,9 @@ namespace AutomechanicsProject.Formes
                     }
                     catch (Exception ex)
                     {
-                        logger.Error("Ошибка при импорте");
-                        MessageBox.Show(string.Format(Resources.ErrorImportFailed, ex.Message), Resources.TitleError,
-                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        logger.Error("Ошибка при импорте", ex);
+                        MessageBox.Show(Resources.ErrorImportFailed,
+                            Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
             }
@@ -732,7 +736,7 @@ namespace AutomechanicsProject.Formes
             decimal totalInRUB = positions.Sum(p => p.Quantity * p.Price);
             string displayTotalText;
 
-            if (currentCurrency != "RUB" && currentCurrencyRate != 1.0m)
+            if (currentCurrency != CurrencyCodes.RUB && currentCurrencyRate != 1.0m)
             {
                 decimal displayTotal = CurrencyHelper.ConvertFromRUB(totalInRUB, currentCurrencyRate);
                 displayTotalText = $"{displayTotal:N2} {currentCurrency}";
@@ -765,7 +769,7 @@ namespace AutomechanicsProject.Formes
                         TotalAmount = totalInRUB,
                         CurrencyCode = currentCurrency,
                         ExchangeRate = currentCurrencyRate,
-                        RateDate = DateTime.Now
+                        RateDate = DateTime.Now,
                     };
 
                     using (var transaction = _db.Database.BeginTransaction())
@@ -812,7 +816,6 @@ namespace AutomechanicsProject.Formes
                                 }
                             }
                             _db.SaveChanges();
-
                             transaction.Commit();
                         }
                         catch (Exception)
@@ -832,9 +835,10 @@ namespace AutomechanicsProject.Formes
                 }
                 catch (Exception ex)
                 {
-                    logger.Error("Ошибка при подтверждении поставки");
-                    MessageBox.Show(string.Format(Resources.ErrorSupplyFailed, ex.Message), Resources.TitleError,
+                    logger.Error("Ошибка при подтверждении поставки", ex);
+                    MessageBox.Show(Resources.ErrorSupplyFailed, Resources.TitleError,
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
+
                 }
                 finally
                 {
@@ -843,6 +847,7 @@ namespace AutomechanicsProject.Formes
                 }
             }
         }
+
         /// <summary>
         /// Генерирует уникальный номер заказа
         /// </summary>
