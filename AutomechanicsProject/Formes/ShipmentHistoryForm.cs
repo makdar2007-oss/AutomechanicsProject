@@ -46,6 +46,13 @@ namespace AutomechanicsProject.Formes
                 DateTime startDate = dateTimePickerFrom.Value.Date;
                 DateTime endDate = dateTimePickerTo.Value.Date.AddDays(1).AddSeconds(-1);
 
+                if (startDate > endDate)
+                {
+                    MessageBox.Show(Resources.WarningNoHistoryForPeriod,
+                        Resources.TitleWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
                 var shipments = _db.Shipments
                     .Include(s => s.User)
                     .Include(s => s.CreatedByUser)
@@ -62,8 +69,6 @@ namespace AutomechanicsProject.Formes
                     UpdateTotalInfo(0, 0, 0, 0, 0);
                     return;
                 }
-
-
 
                 var displayList = shipments
                     .Where(s => s.Items != null && s.Items.Any())

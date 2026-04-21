@@ -36,8 +36,9 @@ namespace AutomechanicsProject.Formes
         private List<ProductComboViewModel> allProducts;
         private SearchableComboBoxHelper.ComboBoxState comboBoxState;
         private List<Product> availableProducts;
+        private bool isShipmentTypeLocked = false;
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
-        private static readonly Guid WriteOffUserId = Guid.Parse("4adf792a-247b-435d-a15e-37314224c761");
+        private static readonly Guid WriteOffUserId = Guid.Parse("dc40ff88-af12-4841-b101-9da423f7f777");
         private static readonly Guid DefectUserId = Guid.Parse("fda70302-e336-4a5d-9783-eff33827adc8"); 
         private ShipmentTypeEnum currentShipmentType = ShipmentTypeEnum.Shipment;
 
@@ -52,8 +53,6 @@ namespace AutomechanicsProject.Formes
             totalAmount = 0;
             allProducts = new List<ProductComboViewModel>();
 
-            TextBoxHelper.SetupWatermarkTextBox(textBoxUnit, Resources.ShipmentQuantityWatermark);
-
             UpdateDisplay();
         }
 
@@ -62,13 +61,20 @@ namespace AutomechanicsProject.Formes
         /// </summary>
         private void CreateShipment_Load(object sender, EventArgs e)
         {
+            TextBoxHelper.SetupWatermarkTextBox(textBoxUnit, Resources.ShipmentQuantityWatermark);
+            TextBoxHelper.SetupWatermarkComboBox(comboBoxProduct, Resources.SProductWatermark);
+            TextBoxHelper.SetupWatermarkComboBox(comboBoxRecipient1, Resources.ShipmentRecipientWatermark);
+            TextBoxHelper.SetupWatermarkComboBox(comboBox1, Resources.ShipmentTypeWatermark);
+
+            comboBoxExpiry.Enabled = false;
+            comboBoxExpiry.DropDownStyle = ComboBoxStyle.DropDown;
+            comboBoxExpiry.Text = "Нет срока годности";
+            comboBoxExpiry.ForeColor = Color.Gray;
+
             LoadProducts();
             LoadRecipients();
 
             comboBox1.SelectedIndexChanged += ComboBox1_SelectedIndexChanged;
-
-            comboBoxProduct.Text = "";
-            comboBoxProduct.SelectedIndex = -1;
         }
 
         /// <summary>
@@ -84,6 +90,10 @@ namespace AutomechanicsProject.Formes
                 allProducts,
                 OnProductSelected
             );
+
+            comboBoxProduct.SelectedIndex = -1;
+            comboBoxProduct.Text = Resources.SProductWatermark;
+            comboBoxProduct.ForeColor = Color.Gray;
         }
 
         /// <summary>
@@ -91,6 +101,7 @@ namespace AutomechanicsProject.Formes
         /// </summary>
         private void OnProductSelected(ProductComboViewModel selectedProduct)
         {
+            comboBoxProduct.ForeColor = SystemColors.WindowText;
             LoadExpiryDatesForProduct(selectedProduct.Id);
         }
 
@@ -99,6 +110,17 @@ namespace AutomechanicsProject.Formes
         /// </summary>
         private void ComboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (isShipmentTypeLocked) 
+            {
+                comboBox1.SelectedItem = comboBox1.Items.Cast<object>().FirstOrDefault(x => x.ToString() == currentShipmentType.ToString());
+                return;
+            }
+
+            if (comboBox1.SelectedItem == null || comboBox1.Text == Resources.ShipmentTypeWatermark)
+            {
+                return;
+            }
+
             string selectedType = comboBox1.SelectedItem.ToString();
 
             switch (selectedType)
@@ -142,7 +164,7 @@ namespace AutomechanicsProject.Formes
                 var productsWithSameName = db.Products
                     .Include(p => p.Unit)
                     .Where(p => p.Name == selectedProduct.Name && p.Balance > 0)
-                    .Select(p => new
+                    .Select(p => new ExpiryItemDto
                     {
                         ProductId = p.Id,
                         DisplayText = FormatHelper.FormatExpiryDateDisplay(p.ExpiryDate, p.Balance),
@@ -158,6 +180,8 @@ namespace AutomechanicsProject.Formes
                     comboBoxExpiry.DisplayMember = "DisplayText";
                     comboBoxExpiry.ValueMember = "ProductId";
                     comboBoxExpiry.DataSource = productsWithSameName;
+                    comboBoxExpiry.ForeColor = SystemColors.WindowText;
+
                     if (productsWithSameName.Any())
                     {
                         comboBoxExpiry.SelectedIndex = 0;
@@ -168,6 +192,8 @@ namespace AutomechanicsProject.Formes
                     comboBoxExpiry.Enabled = false;
                     comboBoxExpiry.DataSource = null;
                     comboBoxExpiry.Items.Clear();
+                    comboBoxExpiry.Text = "Нет срока годности";
+                    comboBoxExpiry.ForeColor = Color.Gray;
                 }
             }
             catch (Exception ex)
@@ -223,7 +249,7 @@ namespace AutomechanicsProject.Formes
                 {
                     SetupSearchableComboBox();
                 }
-
+                
                 if (products.Count == 0)
                 {
                     MessageBox.Show(Resources.InfoNoProductsForShipment, Resources.TitleInformation,
@@ -245,8 +271,11 @@ namespace AutomechanicsProject.Formes
         {
             try
             {
+                var excludedNames = new[] { "Брак", "Списание", "-", "" };
+
                 var recipients = db.Addresses
-                    .Where(a => a.CompanyName != null && a.CompanyName.Trim() != "" && a.CompanyName.Trim() != "-")
+                    .Where(a => a.CompanyName != null &&
+                       !excludedNames.Contains(a.CompanyName.Trim()))
                     .OrderBy(a => a.CompanyName)
                     .Select(a => new ComboItemDto
                     {
@@ -258,11 +287,6 @@ namespace AutomechanicsProject.Formes
                 comboBoxRecipient1.DisplayMember = "Text";
                 comboBoxRecipient1.ValueMember = "Id";
                 comboBoxRecipient1.DataSource = recipients;
-
-                if (comboBoxRecipient1.Items.Count > 0)
-                {
-                    comboBoxRecipient1.SelectedIndex = -1;
-                }
 
                 buttonShipment.Enabled = recipients.Count > 0;
 
@@ -285,7 +309,19 @@ namespace AutomechanicsProject.Formes
         /// </summary>
         private void ButtonAdd_Click(object sender, EventArgs e)
         {
-            if (TryAddProductToShipment())
+            if (shipmentItems.Count == 0 && TryAddProductToShipment())
+            {
+                isShipmentTypeLocked = true;
+                comboBox1.Enabled = false;
+                comboBox1.BackColor = SystemColors.ControlLight;
+
+                RefreshShipmentList();
+                ClearAddFields();
+                MessageBox.Show(Resources.SuccessProductAddedToList, Resources.TitleSuccess,
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+
+            else if (TryAddProductToShipment())
             {
                 RefreshShipmentList();
                 ClearAddFields();
@@ -394,6 +430,8 @@ namespace AutomechanicsProject.Formes
             comboBoxExpiry.DataSource = null;
             comboBoxExpiry.Items.Clear();
             comboBoxExpiry.Enabled = false;
+            comboBoxExpiry.Text = "Нет срока годности";
+            comboBoxExpiry.ForeColor = Color.Gray;
         }
 
         /// <summary>
@@ -444,6 +482,14 @@ namespace AutomechanicsProject.Formes
             {
                 SearchableComboBoxHelper.ClearAndReloadProducts(comboBoxProduct, comboBoxState);
             }
+
+            comboBoxRecipient1.SelectedIndex = -1;
+            comboBoxRecipient1.Text = Resources.ShipmentRecipientWatermark;
+            comboBoxRecipient1.ForeColor = Color.Gray;
+
+            comboBoxExpiry.Enabled = false;
+            comboBoxExpiry.Text = Resources.NoExpiryDateWatermark;
+            comboBoxExpiry.ForeColor = Color.Gray;
 
             ClearExpiryComboBox();
         }

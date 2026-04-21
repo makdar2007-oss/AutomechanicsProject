@@ -153,6 +153,8 @@ namespace AutomechanicsProject.Helpers
                 comboBox.SelectionStart = 0;
                 comboBox.SelectionLength = 0;
                 state.IsUpdatingText = false;
+                comboBox.ForeColor = System.Drawing.SystemColors.WindowText;
+                comboBox.BackColor = System.Drawing.SystemColors.Window;
 
                 onSelected?.Invoke(selected);
             }
@@ -186,6 +188,9 @@ namespace AutomechanicsProject.Helpers
             LoadProducts(comboBox, state.AllProducts);
             comboBox.Text = "";
             comboBox.SelectedIndex = -1;
+
+            comboBox.ForeColor = System.Drawing.Color.Gray;
+            comboBox.BackColor = System.Drawing.SystemColors.Window;
 
             if (state != null)
             {

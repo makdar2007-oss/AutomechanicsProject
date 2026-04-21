@@ -246,7 +246,7 @@ namespace AutomechanicsProject.Formes
                     ЦенаЗакупки = GetPurchasePriceBySupplyRate(p.Id, p.Price).ToString("F2"),
                     ТребуетСкидки = p.RequiresDiscount,
                     Просрочен = p.IsExpired,
-                    Цена = ChoosingCurrency.ConvertPrice(p.PurchasePrice).ToString("F2"),
+                    Цена = CalculateProductPrice(p).ToString("F2"),
                     Остаток = p.Balance,
 
                 }).ToList();
@@ -262,6 +262,23 @@ namespace AutomechanicsProject.Formes
                 MessageBox.Show(Resources.ErrorLoadProductsList, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        /// <summary>
+        /// Метод для расчета скидки у товара с истекающим сроком годности
+        /// </summary>
+        private decimal CalculateProductPrice(ProductListItemDto product)
+        {
+            decimal priceInRub = product.PurchasePrice;
+
+            if (product.ExpiryDate.HasValue &&
+                product.ExpiryDate.Value.Date >= DateTime.Today &&
+                (product.ExpiryDate.Value.Date - DateTime.Today).Days <= 30)
+            {
+                priceInRub = priceInRub * 0.9m;
+            }
+
+            return ChoosingCurrency.ConvertPrice(priceInRub);
         }
 
         /// <summary>

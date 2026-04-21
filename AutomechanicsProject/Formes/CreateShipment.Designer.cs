@@ -55,11 +55,11 @@ namespace AutomechanicsProject.Formes
             // labelShipment
             // 
             this.labelShipment.AutoSize = true;
-            this.labelShipment.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.875F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelShipment.Location = new System.Drawing.Point(27, 19);
+            this.labelShipment.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelShipment.Location = new System.Drawing.Point(39, 19);
             this.labelShipment.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.labelShipment.Name = "labelShipment";
-            this.labelShipment.Size = new System.Drawing.Size(321, 29);
+            this.labelShipment.Size = new System.Drawing.Size(300, 29);
             this.labelShipment.TabIndex = 0;
             this.labelShipment.Text = "Формирование отгрузки";
             // 
@@ -99,58 +99,61 @@ namespace AutomechanicsProject.Formes
             "Отгрузка",
             "Списание",
             "Брак"});
-            this.comboBox1.Location = new System.Drawing.Point(27, 99);
+            this.comboBox1.Location = new System.Drawing.Point(31, 74);
             this.comboBox1.Margin = new System.Windows.Forms.Padding(2);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(308, 30);
             this.comboBox1.TabIndex = 16;
-            this.comboBox1.SelectedIndex = 0;
             // 
             // label4
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F);
-            this.label4.Location = new System.Drawing.Point(27, 73);
+            this.label4.Location = new System.Drawing.Point(31, 48);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(129, 24);
             this.label4.TabIndex = 15;
             this.label4.Text = "Тип отгрузки";
+            this.label4.Visible = false;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F);
-            this.label3.Location = new System.Drawing.Point(28, 245);
+            this.label3.Location = new System.Drawing.Point(31, 220);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(212, 24);
             this.label3.TabIndex = 14;
             this.label3.Text = "Выберите получателя:";
+            this.label3.Visible = false;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F);
-            this.label2.Location = new System.Drawing.Point(28, 189);
+            this.label2.Location = new System.Drawing.Point(31, 164);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(270, 24);
             this.label2.TabIndex = 13;
             this.label2.Text = "Введите количество товара:";
+            this.label2.Visible = false;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F);
-            this.label1.Location = new System.Drawing.Point(28, 131);
+            this.label1.Location = new System.Drawing.Point(31, 106);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(163, 24);
             this.label1.TabIndex = 12;
             this.label1.Text = "Выберите товар:";
+            this.label1.Visible = false;
             // 
             // labelTotalValue
             // 
             this.labelTotalValue.AutoSize = true;
             this.labelTotalValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelTotalValue.Location = new System.Drawing.Point(93, 378);
+            this.labelTotalValue.Location = new System.Drawing.Point(113, 353);
             this.labelTotalValue.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.labelTotalValue.Name = "labelTotalValue";
             this.labelTotalValue.Size = new System.Drawing.Size(0, 25);
@@ -160,7 +163,7 @@ namespace AutomechanicsProject.Formes
             // 
             this.labelTotalCaption.AutoSize = true;
             this.labelTotalCaption.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelTotalCaption.Location = new System.Drawing.Point(26, 378);
+            this.labelTotalCaption.Location = new System.Drawing.Point(30, 353);
             this.labelTotalCaption.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.labelTotalCaption.Name = "labelTotalCaption";
             this.labelTotalCaption.Size = new System.Drawing.Size(74, 25);
@@ -239,7 +242,7 @@ namespace AutomechanicsProject.Formes
             // 
             this.comboBoxProduct.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.comboBoxProduct.FormattingEnabled = true;
-            this.comboBoxProduct.Location = new System.Drawing.Point(27, 157);
+            this.comboBoxProduct.Location = new System.Drawing.Point(31, 132);
             this.comboBoxProduct.Margin = new System.Windows.Forms.Padding(2);
             this.comboBoxProduct.Name = "comboBoxProduct";
             this.comboBoxProduct.Size = new System.Drawing.Size(308, 30);
@@ -248,7 +251,7 @@ namespace AutomechanicsProject.Formes
             // textBoxUnit
             // 
             this.textBoxUnit.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBoxUnit.Location = new System.Drawing.Point(27, 215);
+            this.textBoxUnit.Location = new System.Drawing.Point(31, 190);
             this.textBoxUnit.Margin = new System.Windows.Forms.Padding(2);
             this.textBoxUnit.Name = "textBoxUnit";
             this.textBoxUnit.Size = new System.Drawing.Size(308, 28);
@@ -260,7 +263,7 @@ namespace AutomechanicsProject.Formes
             this.comboBoxRecipient1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxRecipient1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.comboBoxRecipient1.FormattingEnabled = true;
-            this.comboBoxRecipient1.Location = new System.Drawing.Point(27, 271);
+            this.comboBoxRecipient1.Location = new System.Drawing.Point(31, 246);
             this.comboBoxRecipient1.Margin = new System.Windows.Forms.Padding(2);
             this.comboBoxRecipient1.Name = "comboBoxRecipient1";
             this.comboBoxRecipient1.Size = new System.Drawing.Size(308, 30);
@@ -270,11 +273,12 @@ namespace AutomechanicsProject.Formes
             // 
             this.labelExpiry.AutoSize = true;
             this.labelExpiry.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F);
-            this.labelExpiry.Location = new System.Drawing.Point(27, 303);
+            this.labelExpiry.Location = new System.Drawing.Point(31, 278);
             this.labelExpiry.Name = "labelExpiry";
             this.labelExpiry.Size = new System.Drawing.Size(149, 24);
             this.labelExpiry.TabIndex = 10;
             this.labelExpiry.Text = "Срок годности:";
+            this.labelExpiry.Visible = false;
             // 
             // comboBoxExpiry
             // 
@@ -282,7 +286,7 @@ namespace AutomechanicsProject.Formes
             this.comboBoxExpiry.Enabled = false;
             this.comboBoxExpiry.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F);
             this.comboBoxExpiry.FormattingEnabled = true;
-            this.comboBoxExpiry.Location = new System.Drawing.Point(27, 330);
+            this.comboBoxExpiry.Location = new System.Drawing.Point(31, 305);
             this.comboBoxExpiry.Name = "comboBoxExpiry";
             this.comboBoxExpiry.Size = new System.Drawing.Size(308, 30);
             this.comboBoxExpiry.TabIndex = 11;

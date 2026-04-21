@@ -145,10 +145,11 @@ namespace AutomechanicsProject.Formes
         private bool ConfirmDelete(Product product)
         {
             var categoryName = product.Category?.Name ?? Resources.CategoryNone;
+            var unitName = product.Unit?.Name ?? "шт";
 
             var result = MessageBox.Show(
                 string.Format(Resources.ConfirmDeleteProduct,
-                    product.Article, product.Name, categoryName, product.Price, product.Balance, product.Unit),
+                    product.Article, product.Name, categoryName, product.Price, product.Balance, unitName),
                 Resources.TitleConfirmation,
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Warning);

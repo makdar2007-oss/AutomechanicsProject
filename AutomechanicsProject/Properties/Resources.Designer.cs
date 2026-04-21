@@ -1227,7 +1227,7 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на История отгрузок пуста.
+        ///   Ищет локализованную строку, похожую на Задайте корректно период.
         /// </summary>
         public static string InfoHistoryEmpty {
             get {
@@ -1236,7 +1236,7 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Нет данных за выбранный период.
+        ///   Ищет локализованную строку, похожую на Нет данных для истории.
         /// </summary>
         public static string InfoNoDataForPeriod {
             get {
@@ -1314,6 +1314,15 @@ namespace AutomechanicsProject.Properties {
         public static string NoCurrenciesAvailable {
             get {
                 return ResourceManager.GetString("NoCurrenciesAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Нет срока годности.
+        /// </summary>
+        public static string NoExpiryDateWatermark {
+            get {
+                return ResourceManager.GetString("NoExpiryDateWatermark", resourceCulture);
             }
         }
         
@@ -1429,6 +1438,15 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Выберите валюту закупки.
+        /// </summary>
+        public static string SCurrencyWatermark {
+            get {
+                return ResourceManager.GetString("SCurrencyWatermark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Поиск:.
         /// </summary>
         public static string SearchWatermark {
@@ -1474,6 +1492,15 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Выберите срок годности.
+        /// </summary>
+        public static string ShipmentExpiryDateWatermark {
+            get {
+                return ResourceManager.GetString("ShipmentExpiryDateWatermark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на История отгрузок - Отгружено: {0} ед. | Списано: {1} ед. | Сумма: {2:C2} | Прибыль: {3:C2} | Убыток: {4:C2}.
         /// </summary>
         public static string ShipmentHistoryTitle {
@@ -1488,6 +1515,60 @@ namespace AutomechanicsProject.Properties {
         public static string ShipmentQuantityWatermark {
             get {
                 return ResourceManager.GetString("ShipmentQuantityWatermark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Выберите получателя.
+        /// </summary>
+        public static string ShipmentRecipientWatermark {
+            get {
+                return ResourceManager.GetString("ShipmentRecipientWatermark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Выберите тип отгрузки.
+        /// </summary>
+        public static string ShipmentTypeWatermark {
+            get {
+                return ResourceManager.GetString("ShipmentTypeWatermark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Введите цену.
+        /// </summary>
+        public static string SPriceWatermark {
+            get {
+                return ResourceManager.GetString("SPriceWatermark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Выберите товар из списка.
+        /// </summary>
+        public static string SProductWatermark {
+            get {
+                return ResourceManager.GetString("SProductWatermark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Введите количество товара.
+        /// </summary>
+        public static string SQuantityWatermark {
+            get {
+                return ResourceManager.GetString("SQuantityWatermark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Выберите поставщика.
+        /// </summary>
+        public static string SSupplierWatermark {
+            get {
+                return ResourceManager.GetString("SSupplierWatermark", resourceCulture);
             }
         }
         
@@ -1772,6 +1853,24 @@ namespace AutomechanicsProject.Properties {
         public static string WarningCurrencyRatesFallback {
             get {
                 return ResourceManager.GetString("WarningCurrencyRatesFallback", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Задайте корректно период.
+        /// </summary>
+        public static string WarningNoDataForPeriod {
+            get {
+                return ResourceManager.GetString("WarningNoDataForPeriod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Задайте корректно период.
+        /// </summary>
+        public static string WarningNoHistoryForPeriod {
+            get {
+                return ResourceManager.GetString("WarningNoHistoryForPeriod", resourceCulture);
             }
         }
         

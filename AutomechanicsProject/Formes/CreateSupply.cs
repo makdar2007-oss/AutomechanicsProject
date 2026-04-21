@@ -47,11 +47,11 @@ namespace AutomechanicsProject.Formes
             LoadCurrencies();
             LoadSuppliersFromDatabase();
 
-            TextBoxHelper.SetupWatermarkTextBox(textBoxQuantity, "Введите количество");
-            TextBoxHelper.SetupWatermarkTextBox(textBoxPrice, "Введите цену");
-            TextBoxHelper.SetupWatermarkComboBox(comboBoxProduct, "Выберите товар");
-            TextBoxHelper.SetupWatermarkComboBox(comboBoxSupplier, "Выберите поставщика");
-            TextBoxHelper.SetupWatermarkComboBox(comboBoxCurrency, "Выберите валюту");
+            TextBoxHelper.SetupWatermarkTextBox(textBoxQuantity, Resources.SQuantityWatermark);
+            TextBoxHelper.SetupWatermarkTextBox(textBoxPrice, Resources.SCurrencyWatermark);
+            TextBoxHelper.SetupWatermarkComboBox(comboBoxProduct, Resources.SProductWatermark);
+            TextBoxHelper.SetupWatermarkComboBox(comboBoxSupplier, Resources.SSupplierWatermark);
+            TextBoxHelper.SetupWatermarkComboBox(comboBoxCurrency, Resources.SCurrencyWatermark);
 
             labelProduct.Visible = false;
             labelQuantity.Visible = false;
@@ -61,6 +61,7 @@ namespace AutomechanicsProject.Formes
             labelPrice.Visible = false;
 
             comboBoxCurrency.SelectedIndexChanged += ComboBoxCurrency_SelectedIndexChanged;
+            dataGridViewSupply.DoubleClick += DataGridViewSupply_DoubleClick;
 
             dateTimePickerExpiry.Enabled = false;
             dateTimePickerExpiry.Checked = false;
@@ -314,10 +315,10 @@ namespace AutomechanicsProject.Formes
         /// </summary>
         private bool ValidateInputs()
         {
-            string productPlaceholder = "Выберите товар";
-            string supplierPlaceholder = "Выберите поставщика";
-            string quantityPlaceholder = "Введите количество";
-            string pricePlaceholder = "Введите цену";
+            string productPlaceholder = Resources.SProductWatermark;
+            string supplierPlaceholder = Resources.SSupplierWatermark;
+            string quantityPlaceholder = Resources.SQuantityWatermark;
+            string pricePlaceholder = Resources.SProductWatermark;
 
             if (comboBoxProduct.SelectedItem == null ||
                 comboBoxProduct.Text == productPlaceholder ||
@@ -363,7 +364,6 @@ namespace AutomechanicsProject.Formes
                 return false;
             }
 
-            // 4. Проверка поставщика
             if (comboBoxSupplier.SelectedItem == null ||
                 comboBoxSupplier.Text == supplierPlaceholder ||
                 string.IsNullOrWhiteSpace(comboBoxSupplier.Text))
@@ -374,7 +374,6 @@ namespace AutomechanicsProject.Formes
                 return false;
             }
 
-            // 5. Проверка срока годности (если требуется)
             var selectedProductDto = comboBoxProduct.SelectedItem as ProductComboViewModel;
             if (selectedProductDto == null)
             {
@@ -425,15 +424,16 @@ namespace AutomechanicsProject.Formes
             if (comboBoxProduct != null)
             {
                 comboBoxProduct.SelectedIndex = -1;
-                comboBoxProduct.Text = "Выберите товар";
+                comboBoxProduct.Text = Resources.SProductWatermark;
                 comboBoxProduct.ForeColor = Color.Gray;
             }
 
             if (comboBoxSupplier != null)
             {
                 comboBoxSupplier.SelectedIndex = -1;
-                comboBoxSupplier.Text = "Выберите поставщика";
+                comboBoxSupplier.Text = Resources.SSupplierWatermark;
                 comboBoxSupplier.ForeColor = Color.Gray;
+                comboBoxSupplier.BackColor = System.Drawing.SystemColors.Window;
             }
 
             if (comboBoxState != null)
@@ -929,6 +929,74 @@ namespace AutomechanicsProject.Formes
                 MessageBoxButtons.OK, MessageBoxIcon.Error);
 
             return Guid.Empty;
+        }
+
+        /// <summary>
+        /// Обработчик двойного клика по списку поставки - удаление товара
+        /// </summary>
+        private void DataGridViewSupply_DoubleClick(object sender, EventArgs e)
+        {
+            RemoveSelectedSupplyItem();
+        }
+
+        /// <summary>
+        /// Удаляет выбранный товар из списка поставки
+        /// </summary>
+        private void RemoveSelectedSupplyItem()
+        {
+            if (dataGridViewSupply.CurrentRow == null || dataGridViewSupply.CurrentRow.IsNewRow)
+            {
+                return;
+            }
+
+            string article = dataGridViewSupply.CurrentRow.Cells[0].Value?.ToString();
+            string productName = dataGridViewSupply.CurrentRow.Cells[1].Value?.ToString();
+
+            if (string.IsNullOrEmpty(productName))
+            {
+                return;
+            }
+
+            var result = MessageBox.Show(
+                string.Format("Вы действительно хотите удалить товар \"{0} - {1}\" из списка поставки?", article, productName),
+                "Подтверждение удаления",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
+
+            if (result != DialogResult.Yes)
+            {
+                return;
+            }
+
+            var itemToRemove = positions.FirstOrDefault(p => p.ProductName == productName && p.Article == article);
+            if (itemToRemove != null)
+            {
+                positions.Remove(itemToRemove);
+
+                dataGridViewSupply.Rows.Clear();
+                foreach (var pos in positions)
+                {
+                    dataGridViewSupply.Rows.Add(
+                        pos.Article,
+                        pos.ProductName,
+                        pos.Quantity,
+                        $"{pos.Price:N2} {currentCurrency}",
+                        $"{pos.Quantity * pos.Price:N2} {currentCurrency}",
+                        pos.SupplierName,
+                        pos.ExpiryDate?.ToShortDateString() ?? "");
+                }
+
+                UpdateTotalAmount();
+
+                if (positions.Count == 0)
+                {
+                    isCurrencyFixed = false;
+                    comboBoxCurrency.Enabled = true;
+                    comboBoxCurrency.BackColor = SystemColors.Window;
+                }
+
+                logger.Info($"Товар '{article} - {productName}' удален из списка поставки");
+            }
         }
     }
 }

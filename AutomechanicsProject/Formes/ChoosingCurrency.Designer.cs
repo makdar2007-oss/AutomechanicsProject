@@ -34,33 +34,31 @@
             this.comboBoxCurrency = new System.Windows.Forms.ComboBox();
             this.buttonChoose = new System.Windows.Forms.Button();
             this.buttonCancel = new System.Windows.Forms.Button();
-
-            this.buttonChoose.Click += new System.EventHandler(this.buttonChoose_Click);
-            this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
-
             this.SuspendLayout();
             // 
             // textBoxCurrency
             // 
-            this.textBoxCurrency.BackColor = System.Drawing.SystemColors.ControlLight; 
-            this.textBoxCurrency.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBoxCurrency.Location = new System.Drawing.Point(199, 43);
+            this.textBoxCurrency.BackColor = System.Drawing.SystemColors.Window;
+            this.textBoxCurrency.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.textBoxCurrency.Font = new System.Drawing.Font("Microsoft Sans Serif", 22.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.textBoxCurrency.Location = new System.Drawing.Point(169, 64);
             this.textBoxCurrency.Margin = new System.Windows.Forms.Padding(2);
-            this.textBoxCurrency.MaximumSize = new System.Drawing.Size(240, 30);
+            this.textBoxCurrency.MaximumSize = new System.Drawing.Size(440, 100);
             this.textBoxCurrency.Name = "textBoxCurrency";
             this.textBoxCurrency.ReadOnly = true;
-            this.textBoxCurrency.Size = new System.Drawing.Size(240, 30);
+            this.textBoxCurrency.Size = new System.Drawing.Size(310, 42);
             this.textBoxCurrency.TabIndex = 0;
+            this.textBoxCurrency.TabStop = false;
             this.textBoxCurrency.Text = "Выбор валюты";
             this.textBoxCurrency.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.textBoxCurrency.TabStop = false;
             // 
             // comboBoxCurrency
             // 
+            this.comboBoxCurrency.DropDownHeight = 200;
             this.comboBoxCurrency.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxCurrency.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.comboBoxCurrency.DropDownHeight = 200;
             this.comboBoxCurrency.FormattingEnabled = true;
+            this.comboBoxCurrency.IntegralHeight = false;
             this.comboBoxCurrency.Location = new System.Drawing.Point(83, 135);
             this.comboBoxCurrency.Margin = new System.Windows.Forms.Padding(2);
             this.comboBoxCurrency.Name = "comboBoxCurrency";
@@ -77,6 +75,7 @@
             this.buttonChoose.TabIndex = 2;
             this.buttonChoose.Text = "Выбрать";
             this.buttonChoose.UseVisualStyleBackColor = true;
+            this.buttonChoose.Click += new System.EventHandler(this.buttonChoose_Click);
             // 
             // buttonCancel
             // 
@@ -89,6 +88,7 @@
             this.buttonCancel.TabIndex = 3;
             this.buttonCancel.Text = "Отмена";
             this.buttonCancel.UseVisualStyleBackColor = false;
+            this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
             // 
             // ChoosingCurrency
             // 

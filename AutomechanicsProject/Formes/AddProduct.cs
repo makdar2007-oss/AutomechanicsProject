@@ -1,13 +1,14 @@
 ﻿using AutomechanicsProject.Classes;
 using AutomechanicsProject.Dtos.Service;
-using AutomechanicsProject.Mappers;
 using AutomechanicsProject.Dtos.UI;
 using AutomechanicsProject.Helpers;
+using AutomechanicsProject.Mappers;
 using AutomechanicsProject.Properties;
+using NLog;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
-using NLog;
 
 namespace AutomechanicsProject.Formes
 {
@@ -31,6 +32,20 @@ namespace AutomechanicsProject.Formes
             LoadCategories();
             LoadUnits();
             GenerateAndSetArticle();
+
+            comboBoxCategory.SelectedIndexChanged += ComboBoxCategory_SelectedIndexChanged;
+        }
+
+        /// <summary>
+        /// При изменении категории генерируем новый артикул
+        /// </summary>
+        private void ComboBoxCategory_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (comboBoxCategory.SelectedItem != null &&
+                comboBoxCategory.Text != Resources.CategorySelectWatermark)
+            {
+                GenerateAndSetArticle();
+            }
         }
 
         /// <summary>
@@ -254,10 +269,41 @@ namespace AutomechanicsProject.Formes
         /// </summary>
         private string GenerateArticle()
         {
+            var selectedCategory = (ComboItemDto)comboBoxCategory.SelectedItem;
+
+            if (selectedCategory == null)
+            {
+                return GenerateDefaultArticle();
+            }
+
+            string categoryPrefix = GetCategoryPrefix(selectedCategory.Text);
+
             var lastProduct = _db.Products
-                  .Where(p => p.Article.StartsWith("ART-"))
-                  .OrderByDescending(p => p.Article)
-                  .FirstOrDefault();
+                .Where(p => p.Article.StartsWith(categoryPrefix))
+                .OrderByDescending(p => p.Article)
+                .FirstOrDefault();
+
+            if (lastProduct != null && lastProduct.Article.StartsWith(categoryPrefix))
+            {
+                string numberPart = lastProduct.Article.Substring(categoryPrefix.Length);
+                if (int.TryParse(numberPart, out int num))
+                {
+                    return $"{categoryPrefix}{(num + 1):D4}";
+                }
+            }
+
+            return $"{categoryPrefix}0001";
+        }
+
+        /// <summary>
+        /// Генерация обычного артикула (без категории)
+        /// </summary>
+        private string GenerateDefaultArticle()
+        {
+            var lastProduct = _db.Products
+                .Where(p => p.Article.StartsWith("ART-"))
+                .OrderByDescending(p => p.Article)
+                .FirstOrDefault();
 
             if (lastProduct != null && lastProduct.Article.StartsWith("ART-"))
             {
@@ -287,6 +333,15 @@ namespace AutomechanicsProject.Formes
                 Logger.Error("Ошибка при генерации артикула", ex);
                 textBoxArt.Text = "Ошибка";
             }
+        }
+
+        /// <summary>
+        /// Получение префикса для категории
+        /// </summary>
+        private string GetCategoryPrefix(string categoryName)
+        {
+            string shortPrefix = categoryName.Length >= 3 ? categoryName.Substring(0, 3).ToUpper() : categoryName.ToUpper();
+            return $"{shortPrefix}-";
         }
     }
 }

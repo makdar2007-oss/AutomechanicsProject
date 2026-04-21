@@ -432,10 +432,10 @@
     <value>Название категории не изменилось</value>
   </data>
 	<data name="InfoHistoryEmpty" xml:space="preserve">
-    <value>История отгрузок пуста</value>
+    <value>Задайте корректный период</value>
   </data>
 	<data name="InfoNoDataForPeriod" xml:space="preserve">
-    <value>Нет данных за выбранный период</value>
+    <value>Задайте корректный период</value>
   </data>
 	<data name="InfoNoPositionsToDisplay" xml:space="preserve">
     <value>Нет позиций для отображения</value>

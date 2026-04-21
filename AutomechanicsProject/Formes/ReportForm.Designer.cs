@@ -132,8 +132,8 @@
             // panelBottom
             // 
             this.panelBottom.ColumnCount = 3;
-            this.panelBottom.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 42.97694F));
-            this.panelBottom.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40.25157F));
+            this.panelBottom.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.20964F));
+            this.panelBottom.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.01887F));
             this.panelBottom.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 16.66667F));
             this.panelBottom.Controls.Add(this.panelDateFilter, 0, 0);
             this.panelBottom.Controls.Add(this.panelSummary, 1, 0);
@@ -167,7 +167,7 @@
             this.panelDateFilter.Name = "panelDateFilter";
             this.panelDateFilter.RowCount = 1;
             this.panelDateFilter.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.panelDateFilter.Size = new System.Drawing.Size(410, 70);
+            this.panelDateFilter.Size = new System.Drawing.Size(479, 70);
             this.panelDateFilter.TabIndex = 0;
             // 
             // labelPeriod
@@ -200,7 +200,7 @@
             this.dateTimePickerFrom.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.dateTimePickerFrom.Location = new System.Drawing.Point(132, 23);
             this.dateTimePickerFrom.Name = "dateTimePickerFrom";
-            this.dateTimePickerFrom.Size = new System.Drawing.Size(114, 24);
+            this.dateTimePickerFrom.Size = new System.Drawing.Size(145, 24);
             this.dateTimePickerFrom.TabIndex = 2;
             this.dateTimePickerFrom.ValueChanged += new System.EventHandler(this.dateTimePickerFrom_ValueChanged);
             // 
@@ -209,7 +209,7 @@
             this.labelTo.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.labelTo.AutoSize = true;
             this.labelTo.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.labelTo.Location = new System.Drawing.Point(252, 26);
+            this.labelTo.Location = new System.Drawing.Point(283, 26);
             this.labelTo.Name = "labelTo";
             this.labelTo.Size = new System.Drawing.Size(25, 18);
             this.labelTo.TabIndex = 3;
@@ -221,9 +221,9 @@
             this.dateTimePickerTo.CustomFormat = "dd.MM.yyyy";
             this.dateTimePickerTo.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
             this.dateTimePickerTo.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dateTimePickerTo.Location = new System.Drawing.Point(283, 23);
+            this.dateTimePickerTo.Location = new System.Drawing.Point(314, 23);
             this.dateTimePickerTo.Name = "dateTimePickerTo";
-            this.dateTimePickerTo.Size = new System.Drawing.Size(124, 24);
+            this.dateTimePickerTo.Size = new System.Drawing.Size(148, 24);
             this.dateTimePickerTo.TabIndex = 4;
             this.dateTimePickerTo.ValueChanged += new System.EventHandler(this.dateTimePickerTo_ValueChanged);
             // 
@@ -237,13 +237,13 @@
             this.panelSummary.Controls.Add(this.labelProfitValue, 1, 1);
             this.panelSummary.Controls.Add(this.labelTotalAmountCaption, 0, 0);
             this.panelSummary.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelSummary.Location = new System.Drawing.Point(415, 5);
+            this.panelSummary.Location = new System.Drawing.Point(484, 5);
             this.panelSummary.Margin = new System.Windows.Forms.Padding(0);
             this.panelSummary.Name = "panelSummary";
             this.panelSummary.RowCount = 2;
             this.panelSummary.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.panelSummary.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.panelSummary.Size = new System.Drawing.Size(384, 70);
+            this.panelSummary.Size = new System.Drawing.Size(315, 70);
             this.panelSummary.TabIndex = 1;
             // 
             // labelTotalAmountValue
@@ -251,7 +251,7 @@
             this.labelTotalAmountValue.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.labelTotalAmountValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold);
             this.labelTotalAmountValue.ForeColor = System.Drawing.Color.Black;
-            this.labelTotalAmountValue.Location = new System.Drawing.Point(195, 7);
+            this.labelTotalAmountValue.Location = new System.Drawing.Point(160, 7);
             this.labelTotalAmountValue.Name = "labelTotalAmountValue";
             this.labelTotalAmountValue.Size = new System.Drawing.Size(108, 20);
             this.labelTotalAmountValue.TabIndex = 1;
@@ -264,7 +264,7 @@
             this.labelProfitCaption.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold);
             this.labelProfitCaption.Location = new System.Drawing.Point(3, 42);
             this.labelProfitCaption.Name = "labelProfitCaption";
-            this.labelProfitCaption.Size = new System.Drawing.Size(186, 20);
+            this.labelProfitCaption.Size = new System.Drawing.Size(151, 20);
             this.labelProfitCaption.TabIndex = 2;
             this.labelProfitCaption.Text = "Прибыль(RUB):";
             this.labelProfitCaption.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -274,7 +274,7 @@
             this.labelProfitValue.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.labelProfitValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold);
             this.labelProfitValue.ForeColor = System.Drawing.Color.Black;
-            this.labelProfitValue.Location = new System.Drawing.Point(195, 42);
+            this.labelProfitValue.Location = new System.Drawing.Point(160, 42);
             this.labelProfitValue.Name = "labelProfitValue";
             this.labelProfitValue.Size = new System.Drawing.Size(108, 20);
             this.labelProfitValue.TabIndex = 3;
@@ -285,9 +285,9 @@
             // 
             this.labelTotalAmountCaption.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.labelTotalAmountCaption.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold);
-            this.labelTotalAmountCaption.Location = new System.Drawing.Point(17, 7);
+            this.labelTotalAmountCaption.Location = new System.Drawing.Point(3, 7);
             this.labelTotalAmountCaption.Name = "labelTotalAmountCaption";
-            this.labelTotalAmountCaption.Size = new System.Drawing.Size(172, 20);
+            this.labelTotalAmountCaption.Size = new System.Drawing.Size(151, 20);
             this.labelTotalAmountCaption.TabIndex = 0;
             this.labelTotalAmountCaption.Text = "Сумма(RUB):                                                ";
             this.labelTotalAmountCaption.TextAlign = System.Drawing.ContentAlignment.MiddleRight;

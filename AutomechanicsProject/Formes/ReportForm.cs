@@ -48,6 +48,13 @@ namespace AutomechanicsProject.Formes
                 DateTime startDate = dateTimePickerFrom.Value.Date;
                 DateTime endDate = dateTimePickerTo.Value.Date.AddDays(1);
 
+                if (startDate > endDate)
+                {
+                    MessageBox.Show(Resources.WarningNoDataForPeriod,
+                        Resources.TitleWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
                 var shipments = _db.Shipments
                     .Include(s => s.User)
                     .Include(s => s.CreatedByUser)

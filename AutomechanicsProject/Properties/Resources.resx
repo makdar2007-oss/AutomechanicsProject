@@ -77,6 +77,33 @@
 	<data name="UnitSelectWatermark" xml:space="preserve">
     <value>Выберите единицу измерения</value>
   </data>
+	<data name="SQuantityWatermark" xml:space="preserve">
+    <value>Введите количество товара</value>
+</data>
+	<data name="SPriceWatermark" xml:space="preserve">
+    <value>Введите цену</value>
+</data>
+	<data name="SProductWatermark" xml:space="preserve">
+    <value>Выберите товар из списка</value>
+</data>
+	<data name="SSupplierWatermark" xml:space="preserve">
+    <value>Выберите поставщика</value>
+</data>
+	<data name="SCurrencyWatermark" xml:space="preserve">
+    <value>Выберите валюту закупки</value>
+</data>
+	<data name="ShipmentRecipientWatermark" xml:space="preserve">
+    <value>Выберите получателя</value>
+</data>
+	<data name="ShipmentTypeWatermark" xml:space="preserve">
+    <value>Выберите тип отгрузки</value>
+</data>
+	<data name="ShipmentExpiryDateWatermark" xml:space="preserve">
+    <value>Выберите срок годности</value>
+</data>
+	<data name="NoExpiryDateWatermark" xml:space="preserve">
+    <value>Нет срока годности</value>
+</data>
 
 	<!-- Кнопки -->
 	<data name="ButtonConfirmSupply" xml:space="preserve">
@@ -441,10 +468,10 @@
     <value>Название категории не изменилось</value>
   </data>
 	<data name="InfoHistoryEmpty" xml:space="preserve">
-    <value>История отгрузок пуста</value>
+    <value>Задайте корректно период</value>
   </data>
 	<data name="InfoNoDataForPeriod" xml:space="preserve">
-    <value>Нет данных за выбранный период</value>
+    <value>Нет данных для истории</value>
   </data>
 	<data name="InfoNoPositionsToDisplay" xml:space="preserve">
     <value>Нет позиций для отображения</value>
@@ -479,6 +506,12 @@
   </data>
 
 	<!-- Разное -->
+	<data name="WarningNoDataForPeriod" xml:space="preserve">
+    <value>Задайте корректно период</value>
+  </data>
+	<data name="WarningNoHistoryForPeriod" xml:space="preserve">
+    <value>Задайте корректно период</value>
+  </data>
 	<data name="NoCategoriesForDelete" xml:space="preserve">
     <value>Нет доступных категорий для удаления</value>
   </data>
