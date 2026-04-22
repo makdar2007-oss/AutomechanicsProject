@@ -96,11 +96,13 @@ namespace AutomechanicsProject.Formes
                             ? item.PurchasePrice * item.Quantity
                             : 0m,
                         Recipient = (s.ShipmentType == ShipmentTypeEnum.Shipment.ToString())
-                            ? (s.User?.CompanyName ?? Resources.NotListed)
-                            : (s.ShipmentType == ShipmentTypeEnum.Defect.ToString()) ? ShipmentTypeEnum.Defect.ToString() : ShipmentTypeEnum.WriteOff.ToString(),
+                        ? (s.User?.CompanyName ?? Resources.NotListed)
+                        : (s.ShipmentType == ShipmentTypeEnum.Defect.ToString())
+                        ? Resources.ShipmentType_Defect
+                        : Resources.ShipmentType_WriteOff,
                         Storekeeper = s.CreatedByUser?.FullName ?? Resources.NotListed,
                         Date = s.Date.ToString("dd.MM.yyyy HH:mm"),
-                        Type = ShipmentTypeEnum.Shipment.ToString()
+                        Type = Resources.ShipmentType_Shipment
                     }))
                     .ToList();
 

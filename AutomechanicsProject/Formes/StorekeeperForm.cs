@@ -480,9 +480,9 @@ namespace AutomechanicsProject.Formes
         {
             if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
             {
-                string headerText = dataGridViewStore.Columns[e.ColumnIndex].HeaderText;
+                string columnName = dataGridViewStore.Columns[e.ColumnIndex].Name;
 
-                if (headerText == Resources.ColumnPurchasePrice)
+                if (columnName == "Price") 
                 {
                     var article = dataGridViewStore.Rows[e.RowIndex].Cells["Article"]?.Value?.ToString();
                     if (!string.IsNullOrEmpty(article))
@@ -491,7 +491,6 @@ namespace AutomechanicsProject.Formes
                         if (product != null)
                         {
                             var tooltipText = SupplyCurrencyService.GetTooltipText(product.Id, product.Name, db);
-
                             dataGridViewStore.Rows[e.RowIndex].Cells[e.ColumnIndex].ToolTipText = tooltipText;
                         }
                     }
@@ -502,7 +501,6 @@ namespace AutomechanicsProject.Formes
                 }
             }
         }
-
         /// <summary>
         /// Прячет информацию о курсе
         /// </summary>

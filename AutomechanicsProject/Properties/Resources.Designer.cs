@@ -187,7 +187,7 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Цена.
+        ///   Ищет локализованную строку, похожую на Цена закупки.
         /// </summary>
         public static string ColumnPrice {
             get {
@@ -196,7 +196,7 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Цена закупки.
+        ///   Ищет локализованную строку, похожую на Цена.
         /// </summary>
         public static string ColumnPurchasePrice {
             get {
@@ -205,7 +205,7 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Цена закупки ({0}).
+        ///   Ищет локализованную строку, похожую на Цена ({0}).
         /// </summary>
         public static string ColumnPurchasePriceFormat {
             get {

@@ -728,13 +728,13 @@
 		<value>Срок годности</value>
 	</data>
 	<data name="ColumnPrice" xml:space="preserve">
-		<value>Цена</value>
-	</data>
-	<data name="ColumnPurchasePrice" xml:space="preserve">
 		<value>Цена закупки</value>
 	</data>
+	<data name="ColumnPurchasePrice" xml:space="preserve">
+		<value>Цена</value>
+	</data>
 	<data name="ColumnPurchasePriceFormat" xml:space="preserve">
-		<value>Цена закупки ({0})</value>
+		<value>Цена ({0})</value>
 	</data>
 	<data name="ColumnBalance" xml:space="preserve">
 		<value>Остаток</value>

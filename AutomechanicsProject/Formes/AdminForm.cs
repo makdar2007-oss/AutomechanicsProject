@@ -653,7 +653,7 @@ namespace AutomechanicsProject.Formes
             {
                 string headerText = dataGridViewMainForm.Columns[e.ColumnIndex].HeaderText;
 
-                if (headerText == "Price")
+                if (headerText == Resources.ColumnPrice)
                 {
                     var article = dataGridViewMainForm.Rows[e.RowIndex].Cells["Article"]?.Value?.ToString();
                     if (!string.IsNullOrEmpty(article))
