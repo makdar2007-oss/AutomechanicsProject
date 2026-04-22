@@ -25,6 +25,8 @@ namespace AutomechanicsProject.Formes
         {
             InitializeComponent();
             _db = database ?? throw new ArgumentNullException(nameof(database));
+
+            TextBoxHelper.SetupWatermarkTextBox(textBoxNewName, Resources.EditCategoryWatermark);
         }
 
         /// <summary>
@@ -33,15 +35,6 @@ namespace AutomechanicsProject.Formes
         private void EditCategory_Load(object sender, EventArgs e)
         {
             LoadCategories();
-            SetupWatermarks();
-        }
-
-        /// <summary>
-        /// Настраивает водяные знаки для полей ввода
-        /// </summary>
-        private void SetupWatermarks()
-        {
-            TextBoxHelper.SetupWatermarkTextBox(textBoxNewName, Resources.EditCategoryWatermark);
         }
 
         /// <summary>

@@ -53,6 +53,11 @@ namespace AutomechanicsProject.Formes
             totalAmount = 0;
             allProducts = new List<ProductComboViewModel>();
 
+            TextBoxHelper.SetupWatermarkTextBox(textBoxUnit, Resources.ShipmentQuantityWatermark);
+            TextBoxHelper.SetupWatermarkComboBox(comboBoxProduct, Resources.SProductWatermark);
+            TextBoxHelper.SetupWatermarkComboBox(comboBoxRecipient1, Resources.ShipmentRecipientWatermark);
+            TextBoxHelper.SetupWatermarkComboBox(comboBox1, Resources.ShipmentTypeWatermark);
+
             UpdateDisplay();
         }
 
@@ -61,11 +66,6 @@ namespace AutomechanicsProject.Formes
         /// </summary>
         private void CreateShipment_Load(object sender, EventArgs e)
         {
-            TextBoxHelper.SetupWatermarkTextBox(textBoxUnit, Resources.ShipmentQuantityWatermark);
-            TextBoxHelper.SetupWatermarkComboBox(comboBoxProduct, Resources.SProductWatermark);
-            TextBoxHelper.SetupWatermarkComboBox(comboBoxRecipient1, Resources.ShipmentRecipientWatermark);
-            TextBoxHelper.SetupWatermarkComboBox(comboBox1, Resources.ShipmentTypeWatermark);
-
             comboBoxExpiry.Enabled = false;
             comboBoxExpiry.DropDownStyle = ComboBoxStyle.DropDown;
             comboBoxExpiry.Text = "Нет срока годности";

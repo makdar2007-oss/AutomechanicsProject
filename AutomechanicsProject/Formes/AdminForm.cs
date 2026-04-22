@@ -30,29 +30,13 @@ namespace AutomechanicsProject.Formes
             InitializeComponent();
             _db = database ?? throw new ArgumentNullException(nameof(database));
 
-            SetupWatermarks();
-            SetupDataGridView();
+            TextBoxHelper.SetupWatermarkTextBox(textBoxSearch, Resources.SearchWatermark);
+            dataGridViewMainForm.DataBindingComplete += DataGridViewStore_DataBindingComplete;
 
             AutoWriteOffExpiredProducts();
             RefreshProductList();
 
             Logger.Info("AdminForm успешно инициализирована");
-        }
-
-        /// <summary>
-        /// Устанавливает водяные знаки
-        /// </summary>
-        private void SetupWatermarks()
-        {
-            TextBoxHelper.SetupWatermarkTextBox(textBoxSearch, Resources.SearchWatermark);
-        }
-
-        /// <summary>
-        /// Настройка таблицы
-        /// </summary>
-        private void SetupDataGridView()
-        {
-            dataGridViewMainForm.DataBindingComplete += DataGridViewStore_DataBindingComplete;
         }
 
         /// <summary>

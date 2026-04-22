@@ -68,7 +68,6 @@ namespace AutomechanicsProject
         private void linkRegisterClick(object sender, EventArgs e)
         {
             new Registration(_db).Show();
-
             Hide();
         }
 

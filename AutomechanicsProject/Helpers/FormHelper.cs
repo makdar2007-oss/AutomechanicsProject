@@ -41,7 +41,10 @@ namespace AutomechanicsProject.Helpers
         /// </summary>
         public static void OpenDialog(Form form)
         {
-            if (form == null) return;
+            if (form == null)
+            {
+                return;
+            } 
             form.ShowDialog();
         }
 
@@ -50,7 +53,10 @@ namespace AutomechanicsProject.Helpers
         /// </summary>
         public static void OpenDialog(Form form, IWin32Window owner)
         {
-            if (form == null) return;
+            if (form == null)
+            {
+                return;
+            }
             form.ShowDialog(owner);
         }
 
@@ -59,7 +65,10 @@ namespace AutomechanicsProject.Helpers
         /// </summary>
         public static DialogResult OpenDialogWithResult(Form form)
         {
-            if (form == null) return DialogResult.None;
+            if (form == null)
+            {
+                return DialogResult.None;
+            }
             return form.ShowDialog();
         }
     }

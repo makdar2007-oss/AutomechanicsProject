@@ -27,11 +27,15 @@ namespace AutomechanicsProject.Formes
         {
             InitializeComponent();
             _db = database ?? throw new ArgumentNullException(nameof(database));
-            SetupWatermarks();
             SetupReadOnlyFields();
             LoadCategories();
             LoadUnits();
             GenerateAndSetArticle();
+
+            TextBoxHelper.SetupWatermarkTextBox(textBoxName, Resources.ProductNameWatermark);
+            TextBoxHelper.SetupWatermarkTextBox(textBoxPrice, Resources.ProductPriceWatermark);
+            TextBoxHelper.SetupWatermarkComboBox(comboBoxCategory, Resources.CategorySelectWatermark);
+            TextBoxHelper.SetupWatermarkComboBox(comboBoxUnit, Resources.UnitSelectWatermark);
 
             comboBoxCategory.SelectedIndexChanged += ComboBoxCategory_SelectedIndexChanged;
         }
@@ -46,17 +50,6 @@ namespace AutomechanicsProject.Formes
             {
                 GenerateAndSetArticle();
             }
-        }
-
-        /// <summary>
-        /// Устанавливает название полей
-        /// </summary>
-        private void SetupWatermarks()
-        {
-            TextBoxHelper.SetupWatermarkTextBox(textBoxName, Resources.ProductNameWatermark);
-            TextBoxHelper.SetupWatermarkTextBox(textBoxPrice, Resources.ProductPriceWatermark);
-            TextBoxHelper.SetupWatermarkComboBox(comboBoxCategory, Resources.CategorySelectWatermark);
-            TextBoxHelper.SetupWatermarkComboBox(comboBoxUnit, Resources.UnitSelectWatermark);
         }
 
         /// <summary>

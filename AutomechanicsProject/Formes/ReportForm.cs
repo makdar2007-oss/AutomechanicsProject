@@ -249,7 +249,6 @@ namespace AutomechanicsProject.Formes
             }
         }
 
-
         /// <summary>
         /// Обновляет итоговую информацию в нижней панели формы
         /// </summary>

@@ -25,6 +25,7 @@ namespace AutomechanicsProject.Formes
         {
             InitializeComponent();
             _db = database ?? throw new ArgumentNullException(nameof(database));
+
             TextBoxHelper.SetupWatermarkTextBox(textBoxSurname, Resources.RegSurnameWatermark);
             TextBoxHelper.SetupWatermarkTextBox(textBoxName, Resources.RegNameWatermark);
             TextBoxHelper.SetupWatermarkTextBox(textBoxLastname, Resources.RegLastnameWatermark);

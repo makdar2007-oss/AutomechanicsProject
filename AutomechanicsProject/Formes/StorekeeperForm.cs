@@ -287,7 +287,9 @@ namespace AutomechanicsProject.Formes
         private decimal GetPurchasePriceBySupplyRate(Guid productId, decimal priceInRub)
         {
             if (ChoosingCurrency.SelectedCurrencyCode == CurrencyCodes.RUB)
+            {
                 return priceInRub;
+            }    
 
             try
             {
@@ -370,7 +372,6 @@ namespace AutomechanicsProject.Formes
             if (dataGridViewStore.Columns["Остаток"] != null)
             {
                 dataGridViewStore.Columns["Остаток"].HeaderText = "Остаток";
-
             }
             SetColumnOrder();
         }

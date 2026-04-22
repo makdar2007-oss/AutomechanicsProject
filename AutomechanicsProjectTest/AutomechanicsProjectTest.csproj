@@ -89,7 +89,6 @@
     <Compile Include="ClassesTest\CurrentUserTests.cs" />
     <Compile Include="ClassesTest\ImportFileDataTests.cs" />
     <Compile Include="ClassesTest\ImportProductItemTests.cs" />
-    <Compile Include="ClassesTest\ProductDisplayItemTests.cs" />
     <Compile Include="ClassesTest\ProductTests.cs" />
     <Compile Include="ClassesTest\RoleTests.cs" />
     <Compile Include="ClassesTest\UnitTests.cs" />
