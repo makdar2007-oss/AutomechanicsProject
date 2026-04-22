@@ -16,6 +16,9 @@ namespace AutomechanicsProject.Formes
         private readonly DateBase _db;
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
+        /// <summary>
+        /// Инициализирует новый экземпляр формы удаления категории
+        /// </summary>
         public DeleteCategory(DateBase database)
         {
             InitializeComponent();
@@ -37,8 +40,6 @@ namespace AutomechanicsProject.Formes
         {
             try
             {
-                comboBoxCategory.DropDownStyle = ComboBoxStyle.DropDownList;
-
                 var categories = _db.Categories
                     .OrderBy(c => c.Name)
                     .Select(c => new ComboItemDto
@@ -47,8 +48,6 @@ namespace AutomechanicsProject.Formes
                         Text = $"{c.Name} (товаров: {_db.Products.Count(p => p.CategoryId == c.Id)})"
                     })
                     .ToList();
-                comboBoxCategory.DisplayMember = "Text";
-                comboBoxCategory.ValueMember = "Id";
                 comboBoxCategory.DataSource = categories;
                 comboBoxCategory.SelectedIndex = -1;
                 var hasCategories = comboBoxCategory.Items.Count > 0;

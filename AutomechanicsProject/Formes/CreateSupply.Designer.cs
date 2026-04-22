@@ -296,6 +296,8 @@ namespace AutomechanicsProject.Formes
             this.comboBoxSupplier.Name = "comboBoxSupplier";
             this.comboBoxSupplier.Size = new System.Drawing.Size(308, 30);
             this.comboBoxSupplier.TabIndex = 9;
+            this.comboBoxSupplier.DisplayMember = "Text";
+            this.comboBoxSupplier.ValueMember = "Id";
             // 
             // comboBoxCurrency
             // 
@@ -309,6 +311,8 @@ namespace AutomechanicsProject.Formes
             this.comboBoxCurrency.Name = "comboBoxCurrency";
             this.comboBoxCurrency.Size = new System.Drawing.Size(304, 30);
             this.comboBoxCurrency.TabIndex = 11;
+            this.comboBoxCurrency.DisplayMember = "DisplayText";
+            this.comboBoxCurrency.ValueMember = "Code";
             // 
             // textBoxPrice
             // 
@@ -330,6 +334,7 @@ namespace AutomechanicsProject.Formes
             this.dateTimePickerExpiry.Name = "dateTimePickerExpiry";
             this.dateTimePickerExpiry.Size = new System.Drawing.Size(308, 28);
             this.dateTimePickerExpiry.TabIndex = 7;
+            this.dateTimePickerExpiry.Enabled = false;
             // 
             // labelProduct
             // 

@@ -268,6 +268,8 @@ namespace AutomechanicsProject.Formes
             this.comboBoxRecipient1.Name = "comboBoxRecipient1";
             this.comboBoxRecipient1.Size = new System.Drawing.Size(308, 30);
             this.comboBoxRecipient1.TabIndex = 2;
+            this.comboBoxRecipient1.DisplayMember = "Text";
+            this.comboBoxRecipient1.ValueMember = "Id";
             // 
             // labelExpiry
             // 

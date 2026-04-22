@@ -1,4 +1,5 @@
 ﻿using AutomechanicsProject.Classes;
+using AutomechanicsProject.Properties;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -130,14 +131,14 @@ namespace AutomechanicsProject.Helpers
         {
             switch (code)
             {
-                case "RUB": return "Российский рубль";
-                case "USD": return "Доллар США";
-                case "EUR": return "Евро";
-                case "CNY": return "Китайский юань";
-                case "KZT": return "Казахстанский тенге";
-                case "BYN": return "Белорусский рубль";
-                case "GBP": return "Фунт стерлингов";
-                case "JPY": return "Японская иена";
+                case "RUB": return Resources.RussianRuble;
+                case "USD": return Resources.CurrencyUSD;
+                case "EUR": return Resources.CurrencyEUR;
+                case "CNY": return Resources.CurrencyCNY;
+                case "KZT": return Resources.CurrencyRUB;
+                case "BYN": return Resources.CurrencyBYN;
+                case "GBP": return Resources.CurrencyGBP;
+                case "JPY": return Resources.CurrencyJPY;
                 default: return code;
             }
         }

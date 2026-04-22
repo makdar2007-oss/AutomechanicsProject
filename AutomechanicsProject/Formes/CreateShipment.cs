@@ -11,19 +11,11 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using AutomechanicsProject.Enum;
 
 namespace AutomechanicsProject.Formes
 {
-    /// <summary>
-    /// Перечисление типов отгрузки
-    ///</summary>
-    public enum ShipmentTypeEnum
-    {
-        Shipment,
-        WriteOff,
-        Defect
-    }
-
+    
     /// <summary>
     /// Форма для создания новой отгрузки товаров
     /// </summary>
@@ -68,7 +60,7 @@ namespace AutomechanicsProject.Formes
         {
             comboBoxExpiry.Enabled = false;
             comboBoxExpiry.DropDownStyle = ComboBoxStyle.DropDown;
-            comboBoxExpiry.Text = "Нет срока годности";
+            comboBoxExpiry.Text = Resources.NoExpiryDateWatermark;
             comboBoxExpiry.ForeColor = Color.Gray;
 
             LoadProducts();
@@ -125,7 +117,7 @@ namespace AutomechanicsProject.Formes
 
             switch (selectedType)
             {
-                case "Shipment":
+                case "Отгрузка":
                     currentShipmentType = ShipmentTypeEnum.Shipment;
                     comboBoxRecipient1.Enabled = true;
                     comboBoxRecipient1.BackColor = System.Drawing.SystemColors.Window;
@@ -192,7 +184,7 @@ namespace AutomechanicsProject.Formes
                     comboBoxExpiry.Enabled = false;
                     comboBoxExpiry.DataSource = null;
                     comboBoxExpiry.Items.Clear();
-                    comboBoxExpiry.Text = "Нет срока годности";
+                    comboBoxExpiry.Text = Resources.NoExpiryDateWatermark;
                     comboBoxExpiry.ForeColor = Color.Gray;
                 }
             }
@@ -219,7 +211,7 @@ namespace AutomechanicsProject.Formes
                         p.Name,
                         p.Balance,
                         p.Price,
-                        UnitName = p.Unit != null ? p.Unit.Name : "шт",
+                        UnitName = p.Unit != null ? p.Unit.Name : Resources.Unit_Piece_Short,
                         p.UnitId
                     })
                     .ToList();
@@ -271,7 +263,7 @@ namespace AutomechanicsProject.Formes
         {
             try
             {
-                var excludedNames = new[] { "Брак", "Списание", "-", "" };
+                var excludedNames = new[] { Resources.ShipmentType_Defect, Resources.ShipmentType_WriteOff, "-", "" };
 
                 var recipients = db.Addresses
                     .Where(a => a.CompanyName != null &&
@@ -283,9 +275,6 @@ namespace AutomechanicsProject.Formes
                         Text = a.CompanyName
                     })
                     .ToList();
-
-                comboBoxRecipient1.DisplayMember = "Text";
-                comboBoxRecipient1.ValueMember = "Id";
                 comboBoxRecipient1.DataSource = recipients;
 
                 buttonShipment.Enabled = recipients.Count > 0;
@@ -371,7 +360,7 @@ namespace AutomechanicsProject.Formes
                     if (quantity > productWithExpiry.Balance)
                     {
                         MessageBox.Show(string.Format(Resources.ErrorInsufficientStockWithDetails,
-                            productWithExpiry.Balance, productWithExpiry.Unit?.Name ?? "шт"),
+                            productWithExpiry.Balance, productWithExpiry.Unit?.Name ?? Resources.Unit_Piece_Short),
                             Resources.TitleWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         textBoxUnit.Focus();
                         return false;
@@ -386,7 +375,7 @@ namespace AutomechanicsProject.Formes
                         quantity,
                         productWithExpiry.Price,
                         productWithExpiry.Price * 2,
-                        productWithExpiry.Unit?.Name ?? "шт"
+                        productWithExpiry.Unit?.Name ?? Resources.Unit_Piece_Short
                     );
                 }
             }
@@ -430,7 +419,7 @@ namespace AutomechanicsProject.Formes
             comboBoxExpiry.DataSource = null;
             comboBoxExpiry.Items.Clear();
             comboBoxExpiry.Enabled = false;
-            comboBoxExpiry.Text = "Нет срока годности";
+            comboBoxExpiry.Text = Resources.NoExpiryDateWatermark;
             comboBoxExpiry.ForeColor = Color.Gray;
         }
 
@@ -508,10 +497,10 @@ namespace AutomechanicsProject.Formes
             switch (currentShipmentType)
             {
                 case ShipmentTypeEnum.WriteOff:
-                    recipientName = "Списание";
+                    recipientName = Resources.ShipmentType_WriteOff;
                     break;
                 case ShipmentTypeEnum.Defect:
-                    recipientName = "Брак";
+                    recipientName = Resources.ShipmentType_Defect;
                     break;
                 default:
                     if (comboBoxRecipient1.SelectedItem != null)
@@ -521,7 +510,7 @@ namespace AutomechanicsProject.Formes
                     }
                     else
                     {
-                        recipientName = "Не выбран";
+                        recipientName = Resources.NotListed;
                     }
                     break;
             }
@@ -565,7 +554,7 @@ namespace AutomechanicsProject.Formes
             {
                 labelTotalValue.Text = totalAmount.ToString("F2");
             }
-            Text = $"Формирование отгрузки - Общая сумма: {totalAmount:F2}, Прибыль: {totalProfit:F2}";
+            Text = string.Format(Resources.ShipmentForm_TitleFormat, totalAmount, totalProfit);
         }
 
         /// <summary>

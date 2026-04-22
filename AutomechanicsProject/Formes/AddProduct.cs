@@ -75,8 +75,6 @@ namespace AutomechanicsProject.Formes
                         Text = c.Name
                     })
                     .ToList();
-                comboBoxCategory.DisplayMember = "Text";
-                comboBoxCategory.ValueMember = "Id";
                 comboBoxCategory.DataSource = categories;
                 comboBoxCategory.SelectedIndex = -1;
             }
@@ -103,8 +101,6 @@ namespace AutomechanicsProject.Formes
                         Text = $"{u.Name} ({u.ShortName})"
                     })
                     .ToList();
-                comboBoxUnit.DisplayMember = "Text";
-                comboBoxUnit.ValueMember = "Id";
                 comboBoxUnit.DataSource = units;
                 comboBoxUnit.SelectedIndex = -1;
             }
@@ -324,7 +320,7 @@ namespace AutomechanicsProject.Formes
             catch (Exception ex)
             {
                 Logger.Error("Ошибка при генерации артикула", ex);
-                textBoxArt.Text = "Ошибка";
+                textBoxArt.Text = Resources.StatusError;
             }
         }
 

@@ -53,7 +53,7 @@ namespace AutomechanicsProject.Formes
                 {
                     var dataItem = row.DataBoundItem;
 
-                    var expiryDateProp = dataItem.GetType().GetProperty("СрокГодности");
+                    var expiryDateProp = dataItem.GetType().GetProperty("ExpiryDate");
                     if (expiryDateProp == null)
                     {
                         continue;
@@ -169,7 +169,7 @@ namespace AutomechanicsProject.Formes
             {
                 ChoosingCurrency.SelectedCurrencyCode = CurrencyCodes.RUB;
                 ChoosingCurrency.CurrentExchangeRate = 1m;
-                ChoosingCurrency.SelectedCurrencyName = "Российский рубль";
+                ChoosingCurrency.SelectedCurrencyName = Resources.RussianRuble;
                 logger.Info("Пользователь вышел из системы, валюта сброшена");
 
                 Close();
@@ -238,21 +238,20 @@ namespace AutomechanicsProject.Formes
 
                 var displayData = productList.Select(p => new
                 {
-                    Артикул = p.Article,
-                    Название = p.Name,
-                    Категория = p.CategoryName,
-                    ЕдИзмерения = p.UnitName,
-                    СрокГодности = p.ExpiryDate,
-                    ЦенаЗакупки = GetPurchasePriceBySupplyRate(p.Id, p.Price).ToString("F2"),
-                    ТребуетСкидки = p.RequiresDiscount,
-                    Просрочен = p.IsExpired,
-                    Цена = CalculateProductPrice(p).ToString("F2"),
-                    Остаток = p.Balance,
+                    Article = p.Article,
+                    Name = p.Name,
+                    Category = p.CategoryName,
+                    Unit = p.UnitName,
+                    ExpiryDate = p.ExpiryDate,
+                    Price = GetPurchasePriceBySupplyRate(p.Id, p.Price).ToString("F2"),
+                    RequiresDiscount = p.RequiresDiscount,
+                    IsExpired = p.IsExpired,
+                    PurchasePrice = CalculateProductPrice(p).ToString("F2"),
+                    Balance = p.Balance,
 
                 }).ToList();
 
                 dataGridViewStore.DataSource = displayData;
-                dataGridViewStore.ShowCellToolTips = true;
                 ConfigureGrid();
                 FormatDateColumn();
             }
@@ -323,56 +322,55 @@ namespace AutomechanicsProject.Formes
                 dataGridViewStore.Columns["Id"].Visible = false;
             }
 
-            if (dataGridViewStore.Columns.Contains("ТребуетСкидки"))
+            if (dataGridViewStore.Columns.Contains("RequiresDiscount"))
             {
-                dataGridViewStore.Columns["ТребуетСкидки"].Visible = false;
+                dataGridViewStore.Columns["RequiresDiscount"].Visible = false;
             }
-            if (dataGridViewStore.Columns.Contains("Просрочен"))
+            if (dataGridViewStore.Columns.Contains("IsExpired"))
             {
-                dataGridViewStore.Columns["Просрочен"].Visible = false;
-            }
-
-            if (dataGridViewStore.Columns["Артикул"] != null)
-            {
-                dataGridViewStore.Columns["Артикул"].HeaderText = "Артикул";
+                dataGridViewStore.Columns["IsExpired"].Visible = false;
             }
 
-            if (dataGridViewStore.Columns["Название"] != null)
+            if (dataGridViewStore.Columns["Article"] != null)
             {
-                dataGridViewStore.Columns["Название"].HeaderText = "Наименование";
+                dataGridViewStore.Columns["Article"].HeaderText = Resources.ColumnArticle ;
             }
 
-            if (dataGridViewStore.Columns["Категория"] != null)
+            if (dataGridViewStore.Columns["Name"] != null)
             {
-                dataGridViewStore.Columns["Категория"].HeaderText = "Категория";
+                dataGridViewStore.Columns["Name"].HeaderText = Resources.ColumnName;
             }
 
-            if (dataGridViewStore.Columns["ЕдИзмерения"] != null)
+            if (dataGridViewStore.Columns["Category"] != null)
             {
-                dataGridViewStore.Columns["ЕдИзмерения"].HeaderText = "Ед. изм.";
-
-            }
-            if (dataGridViewStore.Columns["СрокГодности"] != null)
-            {
-                dataGridViewStore.Columns["СрокГодности"].HeaderText = "Срок годности";
-            }
-            ;
-
-            if (dataGridViewStore.Columns["Цена"] != null)
-            {
-                dataGridViewStore.Columns["Цена"].HeaderText = $"Цена ({ChoosingCurrency.SelectedCurrencyCode})";
+                dataGridViewStore.Columns["Category"].HeaderText = Resources.ColumnCategory;
             }
 
-            if (dataGridViewStore.Columns["ЦенаЗакупки"] != null)
+            if (dataGridViewStore.Columns["Unit"] != null)
             {
-                dataGridViewStore.Columns["ЦенаЗакупки"].HeaderText = "Цена закупки";
+                dataGridViewStore.Columns["Unit"].HeaderText = Resources.ColumnUnit;
 
             }
-
-            if (dataGridViewStore.Columns["Остаток"] != null)
+            if (dataGridViewStore.Columns["ExpiryDate"] != null)
             {
-                dataGridViewStore.Columns["Остаток"].HeaderText = "Остаток";
+                dataGridViewStore.Columns["ExpiryDate"].HeaderText = Resources.ColumnExpiryDate;
             }
+            
+            if (dataGridViewStore.Columns["PurchasePrice"] != null)
+            {
+                dataGridViewStore.Columns["PurchasePrice"].HeaderText = string.Format(Resources.ColumnPurchasePriceFormat, ChoosingCurrency.SelectedCurrencyCode);
+            }
+
+            if (dataGridViewStore.Columns["Price"] != null)
+            {
+                dataGridViewStore.Columns["Price"].HeaderText = Resources.ColumnPrice;
+            }
+
+            if (dataGridViewStore.Columns["Balance"] != null)
+            {
+                dataGridViewStore.Columns["Balance"].HeaderText = Resources.ColumnBalance;
+            }
+
             SetColumnOrder();
         }
 
@@ -382,8 +380,8 @@ namespace AutomechanicsProject.Formes
         private void SetColumnOrder()
         {
             string[] columnOrder = {
-                "Артикул", "Название", "Категория", "ЕдИзмерения",
-                "СрокГодности", "Цена", "ЦенаЗакупки", "Остаток"
+                "Article", "Name", "Category", "Unit",
+                "ExpiryDate", "PurchasePrice", "Price", "Balance"
             };
 
             for (int i = 0; i < columnOrder.Length; i++)
@@ -398,36 +396,31 @@ namespace AutomechanicsProject.Formes
         /// </summary>
         private void FormatDateColumn()
         {
-            if (dataGridViewStore.Columns["СрокГодности"] != null)
+            if (dataGridViewStore.Columns["ExpiryDate"] != null)
             {
-                dataGridViewStore.Columns["СрокГодности"].DefaultCellStyle.Format = "dd.MM.yyyy";
-                dataGridViewStore.Columns["СрокГодности"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                dataGridViewStore.Columns["ExpiryDate"].DefaultCellStyle.Format = "dd.MM.yyyy";
+                dataGridViewStore.Columns["ExpiryDate"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             }
 
-            if (dataGridViewStore.Columns["Цена"] != null)
+            if (dataGridViewStore.Columns["PurchasePrice"] != null)
             {
-                dataGridViewStore.Columns["Цена"].DefaultCellStyle.Format = "F2";
-                dataGridViewStore.Columns["Цена"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                dataGridViewStore.Columns["PurchasePrice"].DefaultCellStyle.Format = "F2";
+                dataGridViewStore.Columns["PurchasePrice"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
             }
 
-            if (dataGridViewStore.Columns["ЦенаЗакупки"] != null)
+            if (dataGridViewStore.Columns["Price"] != null)
             {
-                dataGridViewStore.Columns["ЦенаЗакупки"].DefaultCellStyle.Format = "F2";
-                dataGridViewStore.Columns["ЦенаЗакупки"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                dataGridViewStore.Columns["Price"].DefaultCellStyle.Format = "F2";
+                dataGridViewStore.Columns["Price"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
             }
 
-            if (dataGridViewStore.Columns["Остаток"] != null)
+            if (dataGridViewStore.Columns["Balance"] != null)
             {
-                dataGridViewStore.Columns["Остаток"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                dataGridViewStore.Columns["Balance"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
             }
 
             dataGridViewStore.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridViewStore.RowHeadersVisible = false;
-            dataGridViewStore.AllowUserToAddRows = false;
-            dataGridViewStore.AllowUserToDeleteRows = false;
-            dataGridViewStore.ReadOnly = true;
             dataGridViewStore.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dataGridViewStore.MultiSelect = false;
         }
 
         /// <summary>
@@ -454,10 +447,6 @@ namespace AutomechanicsProject.Formes
         {
             try
             {
-                toolStripTextBoxStorekeeper.Text = "Кладовщик";
-
-                dataGridViewStore.MultiSelect = false;
-                dataGridViewStore.ShowCellToolTips = true;
                 dataGridViewStore.CellMouseEnter += DataGridViewStore_CellMouseEnter;
                 dataGridViewStore.CellMouseLeave += DataGridViewStore_CellMouseLeave;
 
@@ -493,9 +482,9 @@ namespace AutomechanicsProject.Formes
             {
                 string headerText = dataGridViewStore.Columns[e.ColumnIndex].HeaderText;
 
-                if (headerText == "Цена закупки" || headerText == "ЦенаЗакупки")
+                if (headerText == Resources.ColumnPurchasePrice)
                 {
-                    var article = dataGridViewStore.Rows[e.RowIndex].Cells["Артикул"]?.Value?.ToString();
+                    var article = dataGridViewStore.Rows[e.RowIndex].Cells["Article"]?.Value?.ToString();
                     if (!string.IsNullOrEmpty(article))
                     {
                         var product = db.Products.FirstOrDefault(p => p.Article == article);

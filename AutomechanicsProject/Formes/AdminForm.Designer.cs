@@ -1,4 +1,6 @@
-﻿namespace AutomechanicsProject.Formes
+﻿using System.Windows.Forms;
+
+namespace AutomechanicsProject.Formes
 {
     partial class AdminForm
     {
@@ -189,6 +191,15 @@
             // 
             // dataGridViewMainForm
             // 
+            this.toolStripTextBoxAdmin.Text = "Администратор";
+            this.dataGridViewMainForm.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            this.dataGridViewMainForm.AllowUserToResizeColumns = false;
+            this.dataGridViewMainForm.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            this.dataGridViewMainForm.MultiSelect = false;
+            this.dataGridViewMainForm.ShowCellToolTips = true;
+            this.dataGridViewMainForm.CellMouseEnter += DataGridViewMainForm_CellMouseEnter;
+            this.dataGridViewMainForm.CellMouseLeave += DataGridViewMainForm_CellMouseLeave;
+            this.dataGridViewMainForm.DataBindingComplete += DataGridViewStore_DataBindingComplete;
             this.dataGridViewMainForm.AllowUserToResizeRows = false;
             this.dataGridViewMainForm.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 

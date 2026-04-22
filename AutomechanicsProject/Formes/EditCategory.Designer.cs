@@ -64,6 +64,7 @@
             this.buttonEdit.TabIndex = 4;
             this.buttonEdit.Text = "Редактировать";
             this.buttonEdit.UseVisualStyleBackColor = false;
+            this.buttonEdit.Enabled = false;
             this.buttonEdit.Click += new System.EventHandler(this.ButtonEdit_Click);
             // 
             // buttonCancel
@@ -94,6 +95,7 @@
             this.textBoxNewName.Size = new System.Drawing.Size(434, 34);
             this.textBoxNewName.TabIndex = 2;
             this.textBoxNewName.Text = "Введите название";
+            this.textBoxNewName.ForeColor = System.Drawing.Color.Gray;
             // 
             // comboBoxCategory
             // 
@@ -107,6 +109,8 @@
             this.comboBoxCategory.Size = new System.Drawing.Size(435, 37);
             this.comboBoxCategory.TabIndex = 1;
             this.comboBoxCategory.SelectedIndexChanged += new System.EventHandler(this.ComboBoxCategory_SelectedIndexChanged);
+            this.comboBoxCategory.DisplayMember = "Text";
+            this.comboBoxCategory.ValueMember = "Id";
             // 
             // labelTitle
             // 

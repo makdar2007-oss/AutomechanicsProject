@@ -48,23 +48,13 @@ namespace AutomechanicsProject.Formes
             LoadSuppliersFromDatabase();
 
             TextBoxHelper.SetupWatermarkTextBox(textBoxQuantity, Resources.SQuantityWatermark);
-            TextBoxHelper.SetupWatermarkTextBox(textBoxPrice, Resources.SCurrencyWatermark);
+            TextBoxHelper.SetupWatermarkTextBox(textBoxPrice, Resources.SPriceWatermark);
             TextBoxHelper.SetupWatermarkComboBox(comboBoxProduct, Resources.SProductWatermark);
             TextBoxHelper.SetupWatermarkComboBox(comboBoxSupplier, Resources.SSupplierWatermark);
             TextBoxHelper.SetupWatermarkComboBox(comboBoxCurrency, Resources.SCurrencyWatermark);
 
-            labelProduct.Visible = false;
-            labelQuantity.Visible = false;
-            labelExpiry.Visible = false;
-            labelSupplier.Visible = false;
-            labelCurrency.Visible = false;
-            labelPrice.Visible = false;
-
             comboBoxCurrency.SelectedIndexChanged += ComboBoxCurrency_SelectedIndexChanged;
             dataGridViewSupply.DoubleClick += DataGridViewSupply_DoubleClick;
-
-            dateTimePickerExpiry.Enabled = false;
-            dateTimePickerExpiry.Checked = false;
 
             comboBoxProduct.Text = "";
             comboBoxProduct.SelectedIndex = -1;
@@ -112,7 +102,7 @@ namespace AutomechanicsProject.Formes
             try
             {
                 comboBoxCurrency.Items.Clear();
-                comboBoxCurrency.Items.Add("Загрузка курсов...");
+                comboBoxCurrency.Items.Add(Resources.LoadingCurrencies);
                 comboBoxCurrency.Enabled = false;
 
                 currencies = CurrencyHelper.GetCurrenciesFromApi();
@@ -125,11 +115,7 @@ namespace AutomechanicsProject.Formes
                 }
 
                 comboBoxCurrency.DataSource = currencies;
-                comboBoxCurrency.DisplayMember = "DisplayText";
-                comboBoxCurrency.ValueMember = "Code";
-
                 comboBoxCurrency.Enabled = true;
-
                 currentCurrency = CurrencyCodes.RUB;
                 currentCurrencyRate = 1.00m;
             }
@@ -140,8 +126,6 @@ namespace AutomechanicsProject.Formes
                 currencies = CurrencyHelper.GetFallbackCurrencies();
 
                 comboBoxCurrency.DataSource = currencies;
-                comboBoxCurrency.DisplayMember = "DisplayText";
-                comboBoxCurrency.ValueMember = "Code";
                 comboBoxCurrency.Enabled = true;
                 currentCurrency = CurrencyCodes.RUB;
                 currentCurrencyRate = 1.00m;
@@ -247,8 +231,7 @@ namespace AutomechanicsProject.Formes
                         Id = p.Id,
                         Article = p.Article,
                         Name = p.Name,
-                        Text = $"{p.Article} - {p.Name} (остаток: {p.Balance} шт.)",
-                        Balance = p.Balance
+                        Text = string.Format(Resources.ComboItemFormat, p.Article, p.Name, p.Balance),                      Balance = p.Balance
                     })
                     .ToList();
 
@@ -291,8 +274,6 @@ namespace AutomechanicsProject.Formes
 
                 if (cachedSuppliers != null && cachedSuppliers.Count > 0)
                 {
-                    comboBoxSupplier.DisplayMember = "Text";
-                    comboBoxSupplier.ValueMember = "Id";
                     comboBoxSupplier.DataSource = cachedSuppliers;
                     comboBoxSupplier.SelectedIndex = -1;
                 }
@@ -651,7 +632,7 @@ namespace AutomechanicsProject.Formes
                             if (supplier == null)
                             {
                                 notFoundCount++;
-                                notFoundArticles.Add($"{item.Article} (поставщик '{item.SupplierName}' не найден)");
+                                notFoundArticles.Add(string.Format(Resources.SupplierNotFoundFormat, item.Article, item.SupplierName));
                                 continue;
                             }
 
@@ -871,7 +852,7 @@ namespace AutomechanicsProject.Formes
                                         product.ExpiryDate = pos.ExpiryDate;
                                     }
 
-                                    product.BatchNumber = $"Партия_{DateTime.Now:yyyyMM}";
+                                    product.BatchNumber = string.Format(Resources.BatchNumberFormat, DateTime.Now);
                                 }
                             }
                             _db.SaveChanges();
@@ -957,11 +938,10 @@ namespace AutomechanicsProject.Formes
                 return;
             }
 
-            var result = MessageBox.Show(
-                string.Format("Вы действительно хотите удалить товар \"{0} - {1}\" из списка поставки?", article, productName),
-                "Подтверждение удаления",
-                MessageBoxButtons.YesNo,
-                MessageBoxIcon.Question);
+            var result = MessageBox.Show(string.Format(Resources.ConfirmDeleteSupplyItem, article, productName),
+                                   Resources.TitleConfirmDelete,
+                                   MessageBoxButtons.YesNo,
+                                   MessageBoxIcon.Question);
 
             if (result != DialogResult.Yes)
             {

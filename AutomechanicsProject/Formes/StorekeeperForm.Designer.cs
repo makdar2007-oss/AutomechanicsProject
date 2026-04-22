@@ -185,6 +185,12 @@
             this.dataGridViewStore.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridViewStore.Size = new System.Drawing.Size(882, 628);
             this.dataGridViewStore.TabIndex = 1;
+            this.dataGridViewStore.ShowCellToolTips = true;
+            this.dataGridViewStore.MultiSelect = false;
+            this.dataGridViewStore.RowHeadersVisible = false;
+            this.dataGridViewStore.AllowUserToAddRows = false;
+            this.dataGridViewStore.AllowUserToDeleteRows = false;
+            this.dataGridViewStore.ReadOnly = true;
             this.dataGridViewStore.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.DataGridViewStore_DataBindingComplete);
             // 
             // menuStripStorekeeper

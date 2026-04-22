@@ -1,4 +1,6 @@
-﻿namespace AutomechanicsProject.Formes
+﻿using System.Windows.Forms;
+
+namespace AutomechanicsProject.Formes
 {
     partial class DeleteCategory
     {
@@ -97,6 +99,9 @@
             this.comboBoxCategory.Name = "comboBoxCategory";
             this.comboBoxCategory.Size = new System.Drawing.Size(407, 33);
             this.comboBoxCategory.TabIndex = 0;
+            this.comboBoxCategory.DropDownStyle = ComboBoxStyle.DropDownList;
+            this.comboBoxCategory.DisplayMember = "Text";
+            this.comboBoxCategory.ValueMember = "Id";
             // 
             // DeleteCategory
             // 

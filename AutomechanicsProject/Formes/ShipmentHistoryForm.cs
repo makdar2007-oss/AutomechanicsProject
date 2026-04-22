@@ -5,6 +5,7 @@ using System;
 using System.Linq;
 using System.Windows.Forms;
 using NLog;
+using AutomechanicsProject.Enum;
 
 namespace AutomechanicsProject.Formes
 {
@@ -74,27 +75,27 @@ namespace AutomechanicsProject.Formes
                     .Where(s => s.Items != null && s.Items.Any())
                     .SelectMany(s => s.Items.Select(item => new
                     {
-                        Article = item.Article ?? "Н/Д",
-                        Name = item.ProductName ?? "Н/Д",
-                        Quantity = (s.ShipmentType == "Shipment") ? item.Quantity : -item.Quantity,
+                        Article = item.Article ?? Resources.ND,
+                        Name = item.ProductName ?? Resources.ND,
+                        Quantity = (s.ShipmentType == ShipmentTypeEnum.Shipment.ToString()) ? item.Quantity : -item.Quantity,
                         PurchasePrice = item.Price,
                         SalePrice = item.PurchasePrice,
-                        Profit = (s.ShipmentType == "WriteOff" || s.ShipmentType == "Defect")
+                        Profit = (s.ShipmentType == ShipmentTypeEnum.WriteOff.ToString() || s.ShipmentType == ShipmentTypeEnum.Defect.ToString())
                         ? -(Math.Abs(item.Price) * Math.Abs(item.Quantity))
                         : (item.PurchasePrice - item.Price) * item.Quantity,
-                        Total = (s.ShipmentType == "WriteOff" || s.ShipmentType == "Defect")
+                        Total = (s.ShipmentType == ShipmentTypeEnum.WriteOff.ToString() || s.ShipmentType == ShipmentTypeEnum.Defect.ToString())
                         ? 0m
                         : item.PurchasePrice * item.Quantity,
-                        Recipient = (s.ShipmentType == "WriteOff") ? "WriteOff"
-                        : (s.ShipmentType == "Defect") ? "Defect"
-                        : (s.User?.CompanyName ?? "Не указан"),
-                        Storekeeper = s.CreatedByUser?.FullName ?? "Не указан",
+                        Recipient = (s.ShipmentType == ShipmentTypeEnum.WriteOff.ToString()) ? ShipmentTypeEnum.WriteOff.ToString()
+                        : (s.ShipmentType == ShipmentTypeEnum.Defect.ToString()) ? ShipmentTypeEnum.Defect.ToString()
+                        : (s.User?.CompanyName ?? Resources.NotListed),
+                        Storekeeper = s.CreatedByUser?.FullName ?? Resources.NotListed,
                         Date = s.Date.ToString("dd.MM.yyyy HH:mm")
                     }))
                     .ToList();
 
                 var finalDisplayList = displayList.Select(item => {
-                    bool isWriteOff = (item.Recipient == "WriteOff" || item.Recipient == "Defect");
+                    bool isWriteOff = (item.Recipient == ShipmentTypeEnum.WriteOff.ToString() || item.Recipient == ShipmentTypeEnum.Defect.ToString());
 
                     return new
                     {
@@ -140,23 +141,23 @@ namespace AutomechanicsProject.Formes
                 ConfigureRussianColumns();
 
                 var totalItemsShipped = finalDisplayList
-                        .Where(x => x.Recipient != "WriteOff" && x.Recipient != "Defect" && x.Quantity > 0)
+                        .Where(x => x.Recipient != ShipmentTypeEnum.WriteOff.ToString() && x.Recipient != ShipmentTypeEnum.Defect.ToString() && x.Quantity > 0)
                         .Sum(x => x.Quantity);
 
                 var totalItemsWrittenOff = finalDisplayList
-                    .Where(x => (x.Recipient == "WriteOff" || x.Recipient == "Defect") && x.Quantity < 0)
+                    .Where(x => (x.Recipient == ShipmentTypeEnum.WriteOff.ToString()) || x.Recipient == ShipmentTypeEnum.Defect.ToString() && x.Quantity < 0)
                     .Sum(x => -x.Quantity);
 
                 var totalSum = finalDisplayList
-                    .Where(x => x.Recipient != "WriteOff" && x.Recipient != "Defect" && x.Quantity > 0)
+                    .Where(x => x.Recipient != ShipmentTypeEnum.WriteOff.ToString() && x.Recipient != ShipmentTypeEnum.Defect.ToString() && x.Quantity > 0)
                     .Sum(x => x.Total);
 
                 var totalProfit = finalDisplayList
-                    .Where(x => x.Recipient != "WriteOff" && x.Recipient != "Defect")
+                    .Where(x => x.Recipient != ShipmentTypeEnum.WriteOff.ToString() && x.Recipient != ShipmentTypeEnum.Defect.ToString())
                     .Sum(x => x.Profit);
 
                 var totalLoss = finalDisplayList
-                    .Where(x => x.Recipient == "WriteOff" || x.Recipient == "Defect")
+                    .Where(x => x.Recipient == ShipmentTypeEnum.WriteOff.ToString() || x.Recipient == ShipmentTypeEnum.Defect.ToString())
                     .Sum(x => -x.Profit);
 
                 UpdateTotalInfo(totalItemsShipped, totalItemsWrittenOff, totalSum, totalProfit, totalLoss);
@@ -170,59 +171,95 @@ namespace AutomechanicsProject.Formes
         }
 
         /// <summary>
-        /// Настраивает заголовки колонок DataGridView на русском языке
+        /// Настраивает заголовки колонок таблицы на русском языке
         /// </summary>
         private void ConfigureRussianColumns()
         {
-            if (dataGridViewHistory.Columns.Count == 0) return;
+            if (dataGridViewHistory.Columns.Count == 0)
+            {
+                return;
+            }
 
             if (dataGridViewHistory.Columns["Number"] != null)
-                dataGridViewHistory.Columns["Number"].HeaderText = "№";
+            {
+                dataGridViewHistory.Columns["Number"].HeaderText = Resources.History_Number;
+            }
 
             if (dataGridViewHistory.Columns["Article"] != null)
-                dataGridViewHistory.Columns["Article"].HeaderText = "Артикул";
+            {
+                dataGridViewHistory.Columns["Article"].HeaderText = Resources.History_Article;
+
+            }
 
             if (dataGridViewHistory.Columns["Name"] != null)
-                dataGridViewHistory.Columns["Name"].HeaderText = "Название";
+            {
+                dataGridViewHistory.Columns["Name"].HeaderText = Resources.History_Name;
+            }
 
             if (dataGridViewHistory.Columns["Quantity"] != null)
-                dataGridViewHistory.Columns["Quantity"].HeaderText = "Количество";
+            {
+                dataGridViewHistory.Columns["Quantity"].HeaderText = Resources.History_Quantity;
+            }
 
             if (dataGridViewHistory.Columns["Price"] != null)
-                dataGridViewHistory.Columns["Price"].HeaderText = "Цена";
+            {
+                dataGridViewHistory.Columns["Price"].HeaderText = Resources.History_Price;
+            }
 
             if (dataGridViewHistory.Columns["Profit"] != null)
-                dataGridViewHistory.Columns["Profit"].HeaderText = "Прибыль";
+            {
+                dataGridViewHistory.Columns["Profit"].HeaderText = Resources.History_Profit;
+            }
 
             if (dataGridViewHistory.Columns["Total"] != null)
-                dataGridViewHistory.Columns["Total"].HeaderText = "Сумма";
+            {
+                dataGridViewHistory.Columns["Total"].HeaderText = Resources.History_Total;
+            }
 
             if (dataGridViewHistory.Columns["Recipient"] != null)
-                dataGridViewHistory.Columns["Recipient"].HeaderText = "Получатель";
+            {
+                dataGridViewHistory.Columns["Recipient"].HeaderText = Resources.History_Recipient;
+            }
 
             if (dataGridViewHistory.Columns["Storekeeper"] != null)
-                dataGridViewHistory.Columns["Storekeeper"].HeaderText = "Кладовщик";
+            {
+                dataGridViewHistory.Columns["Storekeeper"].HeaderText = Resources.History_Storekeeper;
+            }
 
             if (dataGridViewHistory.Columns["Date"] != null)
-                dataGridViewHistory.Columns["Date"].HeaderText = "Дата";
+            {
+                dataGridViewHistory.Columns["Date"].HeaderText = Resources.History_Date;
+            }
 
             if (dataGridViewHistory.Columns["Number"] != null)
+            {
                 dataGridViewHistory.Columns["Number"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            }
 
             if (dataGridViewHistory.Columns["Quantity"] != null)
+            {
                 dataGridViewHistory.Columns["Quantity"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            }
 
             if (dataGridViewHistory.Columns["Price"] != null)
+            {
                 dataGridViewHistory.Columns["Price"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            }
 
             if (dataGridViewHistory.Columns["Profit"] != null)
+            {
                 dataGridViewHistory.Columns["Profit"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            }
 
             if (dataGridViewHistory.Columns["Total"] != null)
+            {
                 dataGridViewHistory.Columns["Total"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            }
 
             if (dataGridViewHistory.Columns["Date"] != null)
+            {
                 dataGridViewHistory.Columns["Date"].DefaultCellStyle.Format = "dd.MM.yyyy HH:mm";
+            }
 
             dataGridViewHistory.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
@@ -230,7 +267,7 @@ namespace AutomechanicsProject.Formes
         }
 
         /// <summary>
-        /// Форматирование ячеек - перевод английских значений на русский
+        /// Форматирование ячеек - перевод значений на русский
         /// </summary>
         private void DataGridViewHistory_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
@@ -238,11 +275,19 @@ namespace AutomechanicsProject.Formes
             {
                 string value = e.Value.ToString();
                 if (value == "Shipment")
-                    e.Value = "Отгрузка";
+                {
+                    e.Value = Resources.ShipmentType_Shipment;
+                }
+
                 else if (value == "WriteOff")
-                    e.Value = "Списание";
+                {
+                    e.Value = Resources.ShipmentType_WriteOff;
+                }
+
                 else if (value == "Defect")
-                    e.Value = "Брак";
+                {
+                    e.Value = Resources.ShipmentType_Defect;
+                }
             }
         }
 

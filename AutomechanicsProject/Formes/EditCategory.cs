@@ -49,20 +49,14 @@ namespace AutomechanicsProject.Formes
                     .Select(c => new ComboItemDto
                     {
                         Id = c.Id,
-                        Text = $"{c.Name} (товаров: {_db.Products.Count(p => p.CategoryId == c.Id)})"
+                        Text = string.Format(Resources.CategoryItemFormat, c.Name, _db.Products.Count(p => p.CategoryId == c.Id))
                     })
                     .ToList();
 
-                comboBoxCategory.DisplayMember = "Text";
-                comboBoxCategory.ValueMember = "Id";
                 comboBoxCategory.DataSource = categories;
-
                 var hasCategories = comboBoxCategory.Items.Count > 0;
                 comboBoxCategory.SelectedIndex = -1;
-                buttonEdit.Enabled = false;
-                textBoxNewName.Enabled = false;
                 textBoxNewName.Text = Resources.EditCategoryWatermark;
-                textBoxNewName.ForeColor = System.Drawing.Color.Gray;
                 selectedCategory = null;
             }
             catch (Exception ex)

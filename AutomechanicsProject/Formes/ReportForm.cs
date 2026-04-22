@@ -1,4 +1,5 @@
 ﻿using AutomechanicsProject.Classes;
+using AutomechanicsProject.Enum;
 using AutomechanicsProject.Properties;
 using Microsoft.EntityFrameworkCore;
 using NLog;
@@ -82,24 +83,24 @@ namespace AutomechanicsProject.Formes
                     .Where(s => s.Items != null && s.Items.Any())
                     .SelectMany(s => s.Items.Select(item => new
                     {
-                        Article = item.Article ?? "Н/Д",
-                        Name = item.ProductName ?? "Н/Д",
+                        Article = item.Article ?? Resources.ND,
+                        Name = item.ProductName ?? Resources.ND,
                         Quantity = (item.PurchasePrice == 0) ? -Math.Abs(item.Quantity) : Math.Abs(item.Quantity),
-                        Price = (s.ShipmentType == "Shipment")
+                        Price = (s.ShipmentType == ShipmentTypeEnum.Shipment.ToString())
                             ? item.PurchasePrice
                             : 0m,
-                        Profit = (s.ShipmentType == "Shipment")
+                        Profit = (s.ShipmentType == ShipmentTypeEnum.Shipment.ToString())
                             ? (item.PurchasePrice - item.Price) * item.Quantity
                             : -(item.Price * Math.Abs(item.Quantity)),
-                        Total = (s.ShipmentType == "Shipment")
+                        Total = (s.ShipmentType == ShipmentTypeEnum.Shipment.ToString())
                             ? item.PurchasePrice * item.Quantity
                             : 0m,
-                        Recipient = (s.ShipmentType == "Shipment")
-                            ? (s.User?.CompanyName ?? "Не указан")
-                            : (s.ShipmentType == "Defect") ? "Defect" : "WriteOff",
-                        Storekeeper = s.CreatedByUser?.FullName ?? "Не указан",
+                        Recipient = (s.ShipmentType == ShipmentTypeEnum.Shipment.ToString())
+                            ? (s.User?.CompanyName ?? Resources.NotListed)
+                            : (s.ShipmentType == ShipmentTypeEnum.Defect.ToString()) ? ShipmentTypeEnum.Defect.ToString() : ShipmentTypeEnum.WriteOff.ToString(),
+                        Storekeeper = s.CreatedByUser?.FullName ?? Resources.NotListed,
                         Date = s.Date.ToString("dd.MM.yyyy HH:mm"),
-                        Type = "Shipment"
+                        Type = ShipmentTypeEnum.Shipment.ToString()
                     }))
                     .ToList();
 
@@ -107,16 +108,16 @@ namespace AutomechanicsProject.Formes
                     .Where(s => s.Positions != null && s.Positions.Any())
                     .SelectMany(s => s.Positions.Select(item => new
                     {
-                        Article = item.Article ?? "Н/Д",
-                        Name = item.ProductName ?? "Н/Д",
+                        Article = item.Article ?? Resources.ND,
+                        Name = item.ProductName ?? Resources.ND,
                         Quantity = item.Quantity,  
                         Price = item.Price,
                         Profit = 0m,  
                         Total = item.Price * item.Quantity,
-                        Recipient = item.SupplierName ?? "Не указан",
-                        Storekeeper = s.User?.FullName ?? "Не указан",
+                        Recipient = item.SupplierName ?? Resources.NotListed,
+                        Storekeeper = s.User?.FullName ?? Resources.NotListed,
                         Date = s.DateCreated.ToString("dd.MM.yyyy HH:mm"),
-                        Type = "Поставка"
+                        Type = Resources.ShipmentType_Supply
                     }))
                     .ToList();
 
@@ -153,11 +154,11 @@ namespace AutomechanicsProject.Formes
                 ConfigureRussianColumns();
 
                 var totalSum = displayList
-                    .Where(x => x.Type == "Shipment" && x.Quantity > 0)
+                    .Where(x => x.Type == ShipmentTypeEnum.Shipment.ToString() && x.Quantity > 0)
                     .Sum(x => x.Total);
 
                 var totalProfit = displayList
-                    .Where(x => x.Type == "Shipment")
+                    .Where(x => x.Type == ShipmentTypeEnum.Shipment.ToString())
                     .Sum(x => x.Profit);
 
                 UpdateTotalInfo(totalSum, totalProfit);
@@ -171,7 +172,7 @@ namespace AutomechanicsProject.Formes
         }
 
         /// <summary>
-        /// Настраивает заголовки колонок DataGridView на русском языке
+        /// Настраивает заголовки колонок таблицы на русском языке
         /// </summary>
         private void ConfigureRussianColumns()
         {
@@ -181,31 +182,31 @@ namespace AutomechanicsProject.Formes
                 dataGridViewReport.Columns["Number"].HeaderText = "№";
 
             if (dataGridViewReport.Columns["Article"] != null)
-                dataGridViewReport.Columns["Article"].HeaderText = "Артикул";
+                dataGridViewReport.Columns["Article"].HeaderText = Resources.Report_Article;
 
             if (dataGridViewReport.Columns["Name"] != null)
-                dataGridViewReport.Columns["Name"].HeaderText = "Название";
+                dataGridViewReport.Columns["Name"].HeaderText = Resources.Report_Name;
 
             if (dataGridViewReport.Columns["Quantity"] != null)
-                dataGridViewReport.Columns["Quantity"].HeaderText = "Количество";
+                dataGridViewReport.Columns["Quantity"].HeaderText = Resources.Report_Quantity;
 
             if (dataGridViewReport.Columns["Price"] != null)
-                dataGridViewReport.Columns["Price"].HeaderText = "Цена";
+                dataGridViewReport.Columns["Price"].HeaderText = Resources.Report_Price;
 
             if (dataGridViewReport.Columns["Profit"] != null)
-                dataGridViewReport.Columns["Profit"].HeaderText = "Прибыль";
+                dataGridViewReport.Columns["Profit"].HeaderText = Resources.Report_Profit;
 
             if (dataGridViewReport.Columns["Total"] != null)
-                dataGridViewReport.Columns["Total"].HeaderText = "Сумма";
+                dataGridViewReport.Columns["Total"].HeaderText = Resources.Report_Total;
 
             if (dataGridViewReport.Columns["Recipient"] != null)
-                dataGridViewReport.Columns["Recipient"].HeaderText = "Получатель";
+                dataGridViewReport.Columns["Recipient"].HeaderText = Resources.Report_Recipient;
 
             if (dataGridViewReport.Columns["Storekeeper"] != null)
-                dataGridViewReport.Columns["Storekeeper"].HeaderText = "Кладовщик";
+                dataGridViewReport.Columns["Storekeeper"].HeaderText = Resources.Report_Storekeeper;
 
             if (dataGridViewReport.Columns["Date"] != null)
-                dataGridViewReport.Columns["Date"].HeaderText = "Дата";
+                dataGridViewReport.Columns["Date"].HeaderText = Resources.Report_Date;
 
             if (dataGridViewReport.Columns["Number"] != null)
                 dataGridViewReport.Columns["Number"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
@@ -233,19 +234,27 @@ namespace AutomechanicsProject.Formes
         }
 
         /// <summary>
-        /// Форматирование ячеек - перевод английских значений на русский
+        /// Форматирование ячеек - перевод значений на русский
         /// </summary>
         private void DataGridViewReport_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
-            if (dataGridViewReport.Columns[e.ColumnIndex].Name == "Recipient" && e.Value != null)
+            if (dataGridViewReport.Columns[e.ColumnIndex].Name == Resources.Report_Recipient && e.Value != null)
             {
                 string value = e.Value.ToString();
                 if (value == "Shipment")
-                    e.Value = "Отгрузка";
+                {
+                    e.Value = Resources.ShipmentType_Shipment;
+                }
+
                 else if (value == "WriteOff")
-                    e.Value = "Списание";
+                {
+                    e.Value = Resources.ShipmentType_WriteOff;
+                }
+
                 else if (value == "Defect")
-                    e.Value = "Брак";
+                {
+                    e.Value = Resources.ShipmentType_Defect;
+                }
             }
         }
 
@@ -254,8 +263,8 @@ namespace AutomechanicsProject.Formes
         /// </summary>
         private void UpdateTotalInfo(decimal totalSum, decimal totalProfit)
         {
-            labelTotalAmountValue.Text = string.Format("{0:N2} руб.", totalSum);
-            labelProfitValue.Text = string.Format("{0:N2} руб.", totalProfit);
+            labelTotalAmountValue.Text = string.Format(Resources.CurrencyFormat_Rub, totalSum);
+            labelProfitValue.Text = string.Format(Resources.CurrencyFormat_Rub, totalProfit);
         }
 
         /// <summary>
@@ -274,10 +283,12 @@ namespace AutomechanicsProject.Formes
 
                 using (SaveFileDialog saveFileDialog = new SaveFileDialog())
                 {
-                    saveFileDialog.Filter = "CSV файлы (*.csv)|*.csv|Все файлы (*.*)|*.*";
-                    saveFileDialog.DefaultExt = "csv";
-                    saveFileDialog.FileName = string.Format("Отчет_{0}", DateTime.Now.ToString("yyyyMMdd_HHmmss"));
-                    saveFileDialog.Title = Resources.SaveCsvFileTitle;
+                    saveFileDialog.Filter = Resources.SaveFileFilter_CSV;
+                    saveFileDialog.DefaultExt = Resources.SaveFileDefaultExt_CSV;
+                    saveFileDialog.FileName = string.Format(
+                        Resources.SaveFileFileNameTemplate_Report,
+                        DateTime.Now.ToString(Resources.FileNameDateFormat));                   
+                        saveFileDialog.Title = Resources.SaveCsvFileTitle;
                     if (saveFileDialog.ShowDialog() == DialogResult.OK)
                     {
                         StringBuilder csvContent = new StringBuilder();
@@ -323,7 +334,7 @@ namespace AutomechanicsProject.Formes
             }
             catch (Exception ex)
             {
-                logger.Error("Ошибка загрузки экспортируемого файла");
+                logger.Error("Ошибка загрузки экспортируемого файла", ex);
                 MessageBox.Show(Resources.ErrorExportToCsvWithMessage,
                     Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }

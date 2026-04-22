@@ -107,6 +107,8 @@
             this.comboBoxCategory.Name = "comboBoxCategory";
             this.comboBoxCategory.Size = new System.Drawing.Size(343, 33);
             this.comboBoxCategory.TabIndex = 3;
+            this.comboBoxCategory.DisplayMember = "Text";
+            this.comboBoxCategory.ValueMember = "Id";
             // 
             // comboBoxUnit
             // 
@@ -118,6 +120,8 @@
             this.comboBoxUnit.Name = "comboBoxUnit";
             this.comboBoxUnit.Size = new System.Drawing.Size(343, 33);
             this.comboBoxUnit.TabIndex = 4;
+            this.comboBoxUnit.DisplayMember = "Text";
+            this.comboBoxUnit.ValueMember = "Id";
             // 
             // textBoxPrice
             // 

@@ -35,177 +35,50 @@ namespace AutomechanicsProject.Formes
         }
 
         /// <summary>
-        /// Выполняет валидацию всех полей формы регистрации
-        /// </summary>
-        private bool ValidateAllFields()
-        {
-            var isValid = true;
-            if (Validation.IsWatermark(textBoxSurname.Text, Resources.RegSurnameWatermark))
-            {
-                textBoxSurname.BackColor = Color.LightPink;
-                isValid = false;
-            }
-            else if (!Validation.IsValidRussianName(textBoxSurname.Text))
-            {
-                textBoxSurname.BackColor = Color.LightPink;
-                isValid = false;
-            }
-            else if (!Validation.IsValidNameLength(textBoxSurname.Text))
-            {
-                textBoxSurname.BackColor = Color.LightPink;
-                isValid = false;
-            }
-            else
-            {
-                textBoxSurname.BackColor = Color.White;
-            }
-            if (Validation.IsWatermark(textBoxName.Text, Resources.RegNameWatermark))
-            {
-                textBoxName.BackColor = Color.LightPink;
-                isValid = false;
-            }
-            else if (!Validation.IsValidRussianName(textBoxName.Text))
-            {
-                textBoxName.BackColor = Color.LightPink;
-                isValid = false;
-            }
-            else if (!Validation.IsValidNameLength(textBoxName.Text))
-            {
-                textBoxName.BackColor = Color.LightPink;
-                isValid = false;
-            }
-            else
-            {
-                textBoxName.BackColor = Color.White;
-            }
-            if (!Validation.IsWatermark(textBoxLastname.Text, Resources.RegLastnameWatermark) &&
-                !string.IsNullOrWhiteSpace(textBoxLastname.Text))
-            {
-                if (!Validation.IsValidRussianName(textBoxLastname.Text))
-                {
-                    textBoxLastname.BackColor = Color.LightPink;
-                    isValid = false;
-                }
-                else if (!Validation.IsValidNameLength(textBoxLastname.Text))
-                {
-                    textBoxLastname.BackColor = Color.LightPink;
-                    isValid = false;
-                }
-                else
-                {
-                    textBoxLastname.BackColor = Color.White;
-                }
-            }
-            else
-            {
-                textBoxLastname.BackColor = Color.White;
-            }
-            if (Validation.IsWatermark(textBoxLogin.Text, Resources.RegLoginWatermark))
-            {
-                textBoxLogin.BackColor = Color.LightPink;
-                isValid = false;
-            }
-            else if (!Validation.IsValidLogin(textBoxLogin.Text))
-            {
-                textBoxLogin.BackColor = Color.LightPink;
-                isValid = false;
-            }
-            else if (!Validation.IsValidLoginLength(textBoxLogin.Text))
-            {
-                textBoxLogin.BackColor = Color.LightPink;
-                isValid = false;
-            }
-            else
-            {
-                textBoxLogin.BackColor = Color.White;
-            }
-            if (Validation.IsWatermark(textBoxPassword.Text, Resources.RegPasswordWatermark))
-            {
-                textBoxPassword.BackColor = Color.LightPink;
-                isValid = false;
-            }
-            else if (!Validation.IsValidPassword(textBoxPassword.Text))
-            {
-                textBoxPassword.BackColor = Color.LightPink;
-                isValid = false;
-            }
-            else
-            {
-                textBoxPassword.BackColor = Color.White;
-            }
-            if (Validation.IsWatermark(textBoxAgreePassword.Text, Resources.RegConfirmPasswordWatermark))
-            {
-                textBoxAgreePassword.BackColor = Color.LightPink;
-                isValid = false;
-            }
-            else if (textBoxPassword.Text != textBoxAgreePassword.Text)
-            {
-                textBoxPassword.BackColor = Color.LightPink;
-                textBoxAgreePassword.BackColor = Color.LightPink;
-                isValid = false;
-            }
-            else
-            {
-                textBoxAgreePassword.BackColor = Color.White;
-            }
-
-            return isValid;
-        }
-
-        /// <summary>
-        /// Сбрасывает подсветку всех полей ввода к белому цвету
-        /// </summary>
-        private void ResetAllHighlights()
-        {
-            textBoxSurname.BackColor = Color.White;
-            textBoxName.BackColor = Color.White;
-            textBoxLastname.BackColor = Color.White;
-            textBoxLogin.BackColor = Color.White;
-            textBoxPassword.BackColor = Color.White;
-            textBoxAgreePassword.BackColor = Color.White;
-        }
-
-        /// <summary>
-        /// Отображает сообщение об ошибке пользователю
-        /// </summary>
-        private void ShowErrorMessage(string message)
-        {
-            MessageBox.Show(message, Resources.TitleWarning,
-                MessageBoxButtons.OK, MessageBoxIcon.Warning);
-        }
-
-        /// <summary>
         /// Обработчик нажатия кнопки регистрации
         /// Выполняет регистрацию нового пользователя в системе
         /// </summary>
         private void buttonRegistration_Click(object sender, EventArgs e)
         {
-            ResetAllHighlights();
-
-            if (!ValidateAllFields())
-            {
-                ShowErrorMessage(Resources.ErrorFixFormErrors);
-                return;
-            }
             try
             {
+                string errorMessage;
+
+                var isValid = Validation.ValidateRegistrationFields(
+                    textBoxSurname.Text, Resources.RegSurnameWatermark,
+                    textBoxName.Text, Resources.RegNameWatermark,
+                    textBoxLogin.Text, Resources.RegLoginWatermark,
+                    textBoxPassword.Text, Resources.RegPasswordWatermark,
+                    textBoxAgreePassword.Text, Resources.RegConfirmPasswordWatermark,
+                    out errorMessage,
+                    textBoxLastname.Text, Resources.RegLastnameWatermark
+                );
+
+                if (!isValid)
+                {
+                    MessageBox.Show(errorMessage, Resources.TitleWarning,
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
                 var login = textBoxLogin.Text.Trim();
 
-                var storekeeperRole = _db.Roles
-                    .FirstOrDefault(r => r.Position == "Кладовщик");
-                if (storekeeperRole == null)
+                var role = _db.Roles.FirstOrDefault(r => r.Position == Resources.StorekeeperRoleName);
+                if (role == null)
                 {
                     MessageBox.Show(Resources.ErrorRoleNotFound,
                         Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
+
                 if (_db.Users.Any(u => u.Login == login))
                 {
-                    textBoxLogin.BackColor = Color.LightPink;
-                    ShowErrorMessage(Resources.ErrorUserExists);
+                    Validation.HighlightError(textBoxLogin, true);
+                    MessageBox.Show(Resources.ErrorUserExists,
+                        Resources.TitleWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
-                var hashedPassword = PasswordHelper.HashPassword(textBoxPassword.Text);
+
                 var newUser = new Users
                 {
                     Id = Guid.NewGuid(),
@@ -215,26 +88,27 @@ namespace AutomechanicsProject.Formes
                         ? null
                         : textBoxLastname.Text.Trim(),
                     Login = login,
-                    Password = hashedPassword,
-                    RoleId = storekeeperRole.Id
+                    Password = PasswordHelper.HashPassword(textBoxPassword.Text),
+                    RoleId = role.Id
                 };
+
                 _db.Users.Add(newUser);
                 _db.SaveChanges();
 
-                logger.Info($"Зарегистрирован новый пользователь: {newUser.Login} - {newUser.FullName}");
-                MessageBox.Show(string.Format(Resources.SuccessRegistrationWithDetails, login, newUser.FullName),
-                    Resources.TitleSuccess, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(
+                    string.Format(Resources.SuccessRegistrationWithDetails, login, newUser.FullName),
+                    Resources.TitleSuccess,
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information
+                );
 
                 OpenAuthorization();
             }
             catch (Exception ex)
             {
-                logger.Error("Ошибка регистрации", ex);
-                MessageBox.Show(Resources.ErrorRegistration, Resources.TitleError,
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                FormHelper.HandleException("Ошибка регистрации", ex, this);
             }
-        }        
-        
+        }
         /// <summary>
         /// Открывает форму авторизации и закрывает текущую форму
         /// </summary>
@@ -258,22 +132,12 @@ namespace AutomechanicsProject.Formes
         /// </summary>
         private void textBoxSurname_TextChanged(object sender, EventArgs e)
         {
-            if (!Validation.IsWatermark(textBoxSurname.Text, Resources.RegSurnameWatermark))
-            {
-                if (!Validation.IsValidRussianName(textBoxSurname.Text) ||
-                    !Validation.IsValidNameLength(textBoxSurname.Text))
-                {
-                    textBoxSurname.BackColor = Color.LightPink;
-                }
-                else
-                {
-                    textBoxSurname.BackColor = Color.White;
-                }
-            }
-            else
-            {
-                textBoxSurname.BackColor = Color.White;
-            }
+            Validation.HighlightError(
+                textBoxSurname,
+                !Validation.IsWatermark(textBoxSurname.Text, Resources.RegSurnameWatermark) &&
+                (!Validation.IsValidRussianName(textBoxSurname.Text) ||
+                 !Validation.IsValidNameLength(textBoxSurname.Text))
+            );
         }
 
         /// <summary>
@@ -281,22 +145,12 @@ namespace AutomechanicsProject.Formes
         /// </summary>
         private void textBoxName_TextChanged(object sender, EventArgs e)
         {
-            if (!Validation.IsWatermark(textBoxName.Text, Resources.RegNameWatermark))
-            {
-                if (!Validation.IsValidRussianName(textBoxName.Text) ||
-                    !Validation.IsValidNameLength(textBoxName.Text))
-                {
-                    textBoxName.BackColor = Color.LightPink;
-                }
-                else
-                {
-                    textBoxName.BackColor = Color.White;
-                }
-            }
-            else
-            {
-                textBoxName.BackColor = Color.White;
-            }
+            Validation.HighlightError(
+                textBoxName,
+                !Validation.IsWatermark(textBoxName.Text, Resources.RegNameWatermark) &&
+                (!Validation.IsValidRussianName(textBoxName.Text) ||
+                 !Validation.IsValidNameLength(textBoxName.Text))
+            );
         }
 
         /// <summary>
@@ -304,23 +158,13 @@ namespace AutomechanicsProject.Formes
         /// </summary>
         private void textBoxLastname_TextChanged(object sender, EventArgs e)
         {
-            if (!Validation.IsWatermark(textBoxLastname.Text, Resources.RegLastnameWatermark) &&
-                !string.IsNullOrWhiteSpace(textBoxLastname.Text))
-            {
-                if (!Validation.IsValidRussianName(textBoxLastname.Text) ||
-                    !Validation.IsValidNameLength(textBoxLastname.Text))
-                {
-                    textBoxLastname.BackColor = Color.LightPink;
-                }
-                else
-                {
-                    textBoxLastname.BackColor = Color.White;
-                }
-            }
-            else
-            {
-                textBoxLastname.BackColor = Color.White;
-            }
+            Validation.HighlightError(
+                textBoxLastname,
+                !Validation.IsWatermark(textBoxLastname.Text, Resources.RegLastnameWatermark) &&
+                !string.IsNullOrWhiteSpace(textBoxLastname.Text) &&
+                (!Validation.IsValidRussianName(textBoxLastname.Text) ||
+                 !Validation.IsValidNameLength(textBoxLastname.Text))
+            );
         }
 
         /// <summary>
@@ -328,22 +172,12 @@ namespace AutomechanicsProject.Formes
         /// </summary>
         private void textBoxLogin_TextChanged(object sender, EventArgs e)
         {
-            if (!Validation.IsWatermark(textBoxLogin.Text, Resources.RegLoginWatermark))
-            {
-                if (!Validation.IsValidLogin(textBoxLogin.Text) ||
-                    !Validation.IsValidLoginLength(textBoxLogin.Text))
-                {
-                    textBoxLogin.BackColor = Color.LightPink;
-                }
-                else
-                {
-                    textBoxLogin.BackColor = Color.White;
-                }
-            }
-            else
-            {
-                textBoxLogin.BackColor = Color.White;
-            }
+            Validation.HighlightError(
+                textBoxLogin,
+                !Validation.IsWatermark(textBoxLogin.Text, Resources.RegLoginWatermark) &&
+                (!Validation.IsValidLogin(textBoxLogin.Text) ||
+                 !Validation.IsValidLoginLength(textBoxLogin.Text))
+            );
         }
 
         /// <summary>
@@ -351,58 +185,40 @@ namespace AutomechanicsProject.Formes
         /// </summary>
         private void textBoxPassword_TextChanged(object sender, EventArgs e)
         {
-            if (!Validation.IsWatermark(textBoxPassword.Text, Resources.RegPasswordWatermark))
-            {
-                if (!Validation.IsValidPassword(textBoxPassword.Text))
-                {
-                    textBoxPassword.BackColor = Color.LightPink;
-                }
-                else
-                {
-                    textBoxPassword.BackColor = Color.White;
-                }
-            }
-            else
-            {
-                textBoxPassword.BackColor = Color.White;
-            }
+            Validation.HighlightError(
+                textBoxPassword,
+                !Validation.IsWatermark(textBoxPassword.Text, Resources.RegPasswordWatermark) &&
+                !Validation.IsValidPassword(textBoxPassword.Text)
+            );
+
             if (!Validation.IsWatermark(textBoxAgreePassword.Text, Resources.RegConfirmPasswordWatermark))
             {
-                if (textBoxPassword.Text != textBoxAgreePassword.Text)
-                {
-                    textBoxAgreePassword.BackColor = Color.LightPink;
-                }
-                else if (!Validation.IsWatermark(textBoxAgreePassword.Text, Resources.RegConfirmPasswordWatermark))
-                {
-                    textBoxAgreePassword.BackColor = Color.White;
-                }
+                Validation.HighlightError(
+                    textBoxAgreePassword,
+                    textBoxPassword.Text != textBoxAgreePassword.Text
+                );
             }
         }
+
         /// <summary>
         /// Обработчик изменения текста в поле подтверждения пароля
         /// Выполняет проверку совпадения паролей в реальном времени
         /// </summary>
         private void textBoxAgreePassword_TextChanged(object sender, EventArgs e)
         {
-            if (!Validation.IsWatermark(textBoxAgreePassword.Text, Resources.RegConfirmPasswordWatermark))
+            Validation.HighlightError(
+                textBoxAgreePassword,
+                !Validation.IsWatermark(textBoxAgreePassword.Text, Resources.RegConfirmPasswordWatermark) &&
+                textBoxPassword.Text != textBoxAgreePassword.Text
+            );
+
+            if (!Validation.IsWatermark(textBoxPassword.Text, Resources.RegPasswordWatermark))
             {
-                if (textBoxPassword.Text != textBoxAgreePassword.Text)
-                {
-                    textBoxAgreePassword.BackColor = Color.LightPink;
-                    textBoxPassword.BackColor = Color.LightPink;
-                }
-                else if (!Validation.IsWatermark(textBoxPassword.Text, Resources.RegPasswordWatermark))
-                {
-                    textBoxAgreePassword.BackColor = Color.White;
-                    if (Validation.IsValidPassword(textBoxPassword.Text))
-                    {
-                        textBoxPassword.BackColor = Color.White;
-                    }
-                }
-            }
-            else
-            {
-                textBoxAgreePassword.BackColor = Color.White;
+                Validation.HighlightError(
+                    textBoxPassword,
+                    textBoxPassword.Text != textBoxAgreePassword.Text &&
+                    !Validation.IsWatermark(textBoxAgreePassword.Text, Resources.RegConfirmPasswordWatermark)
+                );
             }
         }
     }

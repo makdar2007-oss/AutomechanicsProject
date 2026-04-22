@@ -1,6 +1,7 @@
-﻿using System;
-using AutomechanicsProject.Classes;
+﻿using AutomechanicsProject.Classes;
 using AutomechanicsProject.Formes;
+using AutomechanicsProject.Properties;
+using System;
 
 namespace AutomechanicsProject.Helpers
 {
@@ -46,7 +47,7 @@ namespace AutomechanicsProject.Helpers
         /// </summary>
         public static string FormatProductWithBalance(string article, string name, int balance, string unitName)
         {
-            return $"{article} - {name} (остаток: {balance} {unitName})";
+            return string.Format(Resources.ProductDisplayFormat_WithBalance, article, name, balance, unitName);
         }
 
         /// <summary>
@@ -102,7 +103,7 @@ namespace AutomechanicsProject.Helpers
         /// </summary>
         public static string FormatCategoryWithCount(string categoryName, int productCount)
         {
-            return $"{categoryName} (товаров: {productCount})";
+            return string.Format(Resources.CategoryDisplayFormat_WithCount, categoryName, productCount);
         }
 
         /// <summary>
@@ -112,10 +113,9 @@ namespace AutomechanicsProject.Helpers
         {
             if (expiryDate.HasValue)
             {
-                return $"Срок: {expiryDate.Value:dd.MM.yyyy} (остаток: {balance})";
-
+                return string.Format(Resources.ExpiryDisplayFormat_WithBalance, expiryDate.Value, balance);
             }
-            return $"Без срока (остаток: {balance})";
+            return string.Format(Resources.NoExpiryDisplayFormat, balance);
         }
     }
 }
