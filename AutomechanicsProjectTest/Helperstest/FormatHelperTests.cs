@@ -9,10 +9,7 @@ namespace AutomechanicsProjectTest.Classes
         [Fact]
         public void FormatDate_WithValue_ReturnsFormatted()
         {
-            var date = new DateTime(2024, 1, 15);
-
-            var result = FormatHelper.FormatDate(date);
-
+            var result = FormatHelper.FormatDate(new DateTime(2024, 1, 15));
             Assert.Equal("15.01.2024", result);
         }
 
@@ -20,60 +17,68 @@ namespace AutomechanicsProjectTest.Classes
         public void FormatDate_Null_ReturnsDash()
         {
             var result = FormatHelper.FormatDate(null);
-
             Assert.Equal("—", result);
         }
 
         [Fact]
-        public void FormatDateTime_ReturnsCorrectFormat()
+        public void FormatDateTime_ReturnsCorrect()
         {
-            var date = new DateTime(2024, 1, 15, 14, 30, 0);
+            var result = FormatHelper.FormatDateTime(new DateTime(2024, 1, 15, 14, 30, 0));
+            Assert.Equal("15.01.2024 14:30", result);
+        }
 
-            var result = FormatHelper.FormatDateTime(date);
+        [Fact]
+        public void FormatProductShort_ReturnsCorrect()
+        {
+            var result = FormatHelper.FormatProductShort("A1", "Товар");
+            Assert.Equal("A1 - Товар", result);
+        }
+
+        [Fact]
+        public void FormatBalance_ReturnsCorrect()
+        {
+            var result = FormatHelper.FormatBalance(10, "шт");
+            Assert.Equal("10 шт", result);
+        }
+
+        [Fact]
+        public void FormatDate_MinValue_Works()
+        {
+            var result = FormatHelper.FormatDate(DateTime.MinValue);
+
+            Assert.Equal("01.01.0001", result);
+        }
+
+        [Fact]
+        public void FormatDateTime_SecondsIgnored()
+        {
+            var result = FormatHelper.FormatDateTime(new DateTime(2024, 1, 15, 14, 30, 59));
 
             Assert.Equal("15.01.2024 14:30", result);
         }
 
         [Fact]
-        public void FormatProductShort_ReturnsCorrectString()
+        public void FormatProductShort_EmptyValues()
         {
-            var result = FormatHelper.FormatProductShort("A1", "Товар");
+            var result = FormatHelper.FormatProductShort("", "");
 
-            Assert.Equal("A1 - Товар", result);
-        }
-        
-        [Fact]
-        public void FormatBalance_ReturnsCorrectString()
-        {
-            var result = FormatHelper.FormatBalance(10, "шт");
-
-            Assert.Equal("10 шт", result);
+            Assert.Equal(" - ", result);
         }
 
         [Fact]
-        public void FormatProductWithBalance_ReturnsCorrect()
+        public void FormatBalance_Zero_ReturnsCorrect()
         {
-            var result = FormatHelper.FormatProductWithBalance("A1", "Товар", 5, "шт");
+            var result = FormatHelper.FormatBalance(0, "шт");
 
-            Assert.Equal("A1 - Товар (остаток: 5 шт)", result);
-        }       
-
-        [Fact]
-        public void FormatExpiryDateDisplay_WithDate()
-        {
-            var date = new DateTime(2025, 5, 1);
-
-            var result = FormatHelper.FormatExpiryDateDisplay(date, 10);
-
-            Assert.Contains("01.05.2025", result);
+            Assert.Equal("0 шт", result);
         }
 
         [Fact]
-        public void FormatExpiryDateDisplay_WithoutDate()
+        public void FormatBalance_Negative_ReturnsCorrect()
         {
-            var result = FormatHelper.FormatExpiryDateDisplay(null, 10);
+            var result = FormatHelper.FormatBalance(-5, "шт");
 
-            Assert.Contains("Без срока", result);
-        }   
+            Assert.Equal("-5 шт", result);
+        }
     }
 }

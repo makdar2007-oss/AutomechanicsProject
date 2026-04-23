@@ -31,4 +31,12 @@ public class ProductTests
 
         Assert.Null(product.ExpiryDate);
     }
+
+    [Fact]
+    public void NegativeBalance_Works()
+    {
+        var product = new Product { Balance = -5 };
+
+        Assert.Equal(-5, product.Balance);
+    }
 }

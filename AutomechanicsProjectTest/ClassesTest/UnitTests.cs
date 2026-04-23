@@ -29,4 +29,12 @@ public class UnitTests
         Assert.Equal("Литр", unit.Name);
         Assert.Equal("л", unit.ShortName);
     }
+
+    [Fact]
+    public void DisplayName_EmptyValues()
+    {
+        var unit = new Unit();
+
+        Assert.NotNull(unit.DisplayName);
+    }
 }

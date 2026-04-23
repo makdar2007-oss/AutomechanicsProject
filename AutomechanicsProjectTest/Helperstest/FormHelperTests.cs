@@ -8,25 +8,45 @@ namespace AutomechanicsProjectTest.Classes
         [Fact]
         public void IsWatermark_Empty_ReturnsTrue()
         {
-            var result = FormHelper.IsWatermark("", "test");
-
-            Assert.True(result);
+            Assert.True(FormHelper.IsWatermark("", "test"));
         }
 
         [Fact]
-        public void IsWatermark_SameAsWatermark_ReturnsTrue()
+        public void IsWatermark_Same_ReturnsTrue()
         {
-            var result = FormHelper.IsWatermark("test", "test");
-
-            Assert.True(result);
+            Assert.True(FormHelper.IsWatermark("test", "test"));
         }
 
         [Fact]
-        public void IsWatermark_NormalText_ReturnsFalse()
+        public void IsWatermark_Normal_ReturnsFalse()
         {
-            var result = FormHelper.IsWatermark("hello", "test");
+            Assert.False(FormHelper.IsWatermark("hello", "test"));
+        }
 
-            Assert.False(result);
+        [Fact]
+        public void IsWatermark_NullText_ReturnsTrue()
+        {
+            Assert.True(FormHelper.IsWatermark(null, "test"));
+        }
+
+        [Fact]
+        public void IsWatermark_NullWatermark_ReturnsFalse()
+        {
+            Assert.False(FormHelper.IsWatermark("text", null));
+        }
+
+        [Fact]
+        public void IsWatermark_DifferentCase_ReturnsFalse()
+        {
+            Assert.False(FormHelper.IsWatermark("Test", "test"));
+        }
+
+        [Fact]
+        public void IsWatermark_LongText_ReturnsFalse()
+        {
+            var text = new string('a', 1000);
+
+            Assert.False(FormHelper.IsWatermark(text, "test"));
         }
     }
 }

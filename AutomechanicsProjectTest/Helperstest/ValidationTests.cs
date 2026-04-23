@@ -159,5 +159,45 @@ namespace AutomechanicsProjectTest.Classes
 
             Assert.False(result);
         }
+
+        [Fact]
+        public void ValidateQuantity_Negative_ReturnsFalse()
+        {
+            var result = Validation.ValidateQuantity("-5", out var quantity);
+
+            Assert.False(result);
+        }
+
+        [Fact]
+        public void ValidatePrice_Negative_ReturnsFalse()
+        {
+            var result = Validation.ValidatePrice("-10", out var price);
+
+            Assert.False(result);
+        }
+
+        [Fact]
+        public void IsValidLoginLength_MinBoundary()
+        {
+            var result = Validation.IsValidLoginLength("abc");
+
+            Assert.True(result);
+        }
+
+        [Fact]
+        public void IsValidRussianName_WithHyphen_ReturnsTrue()
+        {
+            var result = Validation.IsValidRussianName("Анна-Мария");
+
+            Assert.True(result);
+        }
+
+        [Fact]
+        public void IsValidRussianName_WithNumbers_ReturnsFalse()
+        {
+            var result = Validation.IsValidRussianName("Иван123");
+
+            Assert.False(result);
+        }
     }
 }

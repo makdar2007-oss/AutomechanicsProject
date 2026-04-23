@@ -141,7 +141,7 @@ namespace AutomechanicsProject.Formes
         /// <summary>
         /// Проверка формата цены
         /// </summary>
-        private bool ValidatePrice(out decimal price)
+        internal bool ValidatePrice(out decimal price)
         {
             if (!Validation.ValidatePrice(textBoxPrice.Text, out price))
             {
@@ -155,7 +155,7 @@ namespace AutomechanicsProject.Formes
         /// <summary>
         /// Проверка выбора категории
         /// </summary>
-        private bool ValidateCategory()
+        internal bool ValidateCategory()
         {
             if (comboBoxCategory.SelectedItem == null)
             {
@@ -169,7 +169,7 @@ namespace AutomechanicsProject.Formes
         /// <summary>
         /// Проверка выбора ед измерения
         /// </summary>
-        private bool ValidateUnit()
+        internal bool ValidateUnit()
         {
             if (comboBoxUnit.SelectedItem == null)
             {
@@ -222,7 +222,7 @@ namespace AutomechanicsProject.Formes
         /// <summary>
         /// Выполняет валидацию обязательных полей формы
         /// </summary>
-        private bool ValidateFields()
+        internal bool ValidateFields()
         {
             if (Validation.IsWatermark(textBoxName.Text, Resources.ProductNameWatermark) ||
                 Validation.IsWatermark(textBoxPrice.Text, Resources.ProductPriceWatermark))

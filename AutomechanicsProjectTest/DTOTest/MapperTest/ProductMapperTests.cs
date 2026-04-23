@@ -4,114 +4,126 @@ using AutomechanicsProject.Classes;
 using AutomechanicsProject.Mappers;
 using AutomechanicsProject.Dtos.Service;
 
-public class ProductMapperTests
+namespace AutomechanicsProjectTest.Classes
 {
-    [Fact]
-    public void ToDto_Null_ReturnsNull()
+    public class ProductMapperTests
     {
-        var result = ProductMapper.ToDto(null);
-
-        Assert.Null(result);
-    }
-
-    [Fact]
-    public void ToDto_ReturnsCorrectData()
-    {
-        var product = new Product
+        [Fact]
+        public void ToDto_Null_ReturnsNull()
         {
-            Id = Guid.NewGuid(),
-            Article = "A1",
-            Name = "Масло",
-            Price = 100,
-            PurchasePrice = 80,
-            Balance = 5
-        };
+            Assert.Null(ProductMapper.ToDto(null));
+        }
 
-        var dto = ProductMapper.ToDto(product);
-
-        Assert.Equal("A1", dto.Article);
-        Assert.Equal("Масло", dto.Name);
-        Assert.Equal(100, dto.Price);
-    }
-
-    [Fact]
-    public void ToListItemDto_ExpiredProduct_IsExpiredTrue()
-    {
-        var product = new Product
+        [Fact]
+        public void ToDto_ReturnsCorrect()
         {
-            ExpiryDate = DateTime.Today.AddDays(-1)
-        };
+            var product = new Product
+            {
+                Id = Guid.NewGuid(),
+                Article = "A1",
+                Name = "Масло",
+                Price = 100,
+                PurchasePrice = 80,
+                Balance = 5
+            };
 
-        var dto = ProductMapper.ToListItemDto(product);
+            var dto = ProductMapper.ToDto(product);
 
-        Assert.True(dto.IsExpired);
-    }
+            Assert.Equal("A1", dto.Article);
+            Assert.Equal("Масло", dto.Name);
+            Assert.Equal(100, dto.Price);
+        }
 
-    [Fact]
-    public void ToListItemDto_NearExpiry_RequiresDiscountTrue()
-    {
-        var product = new Product
+        [Fact]
+        public void ToListItemDto_Expired()
         {
-            ExpiryDate = DateTime.Today.AddDays(10)
-        };
+            var product = new Product
+            {
+                ExpiryDate = DateTime.Today.AddDays(-1)
+            };
 
-        var dto = ProductMapper.ToListItemDto(product);
+            var dto = ProductMapper.ToListItemDto(product);
 
-        Assert.True(dto.RequiresDiscount);
-    }
+            Assert.True(dto.IsExpired);
+        }
 
-    [Fact]
-    public void ToEntity_CreatesCorrectEntity()
-    {
-        var dto = new CreateProductDto
+        [Fact]
+        public void ToListItemDto_NearExpiry()
         {
-            Article = "A1",
-            Name = "Масло",
-            Price = 100
-        };
+            var product = new Product
+            {
+                ExpiryDate = DateTime.Today.AddDays(5)
+            };
 
-        var entity = ProductMapper.ToEntity(dto);
+            var dto = ProductMapper.ToListItemDto(product);
 
-        Assert.Equal("A1", entity.Article);
-        Assert.Equal("Масло", entity.Name);
-        Assert.Equal(100, entity.Price);
-        Assert.NotEqual(Guid.Empty, entity.Id);
-    }
+            Assert.True(dto.RequiresDiscount);
+        }
 
-    [Fact]
-    public void UpdateEntity_UpdatesFields()
-    {
-        var entity = new Product();
-
-        var dto = new UpdateProductDto
+        [Fact]
+        public void ToListItemDto_NoExpiry()
         {
-            Article = "A2",
-            Name = "Фильтр",
-            PurchasePrice = 200
-        };
+            var product = new Product
+            {
+                ExpiryDate = null
+            };
 
-        ProductMapper.UpdateEntity(entity, dto);
+            var dto = ProductMapper.ToListItemDto(product);
 
-        Assert.Equal("A2", entity.Article);
-        Assert.Equal("Фильтр", entity.Name);
-        Assert.Equal(200, entity.Price);
-    }
+            Assert.False(dto.IsExpired);
+            Assert.False(dto.RequiresDiscount);
+        }
 
-    [Fact]
-    public void ToComboViewModel_ReturnsCorrectText()
-    {
-        var dto = new ProductDto
+        [Fact]
+        public void ToEntity_CreatesNew()
         {
-            Id = Guid.NewGuid(),
-            Article = "A1",
-            Name = "Масло",
-            Balance = 5,
-            UnitName = "шт"
-        };
+            var dto = new CreateProductDto
+            {
+                Article = "A1",
+                Name = "Масло",
+                Price = 100
+            };
 
-        var vm = ProductMapper.ToComboViewModel(dto);
+            var entity = ProductMapper.ToEntity(dto);
 
-        Assert.Contains("A1 - Масло", vm.Text);
-        Assert.Contains("остаток: 5", vm.Text);
+            Assert.NotEqual(Guid.Empty, entity.Id);
+            Assert.Equal("A1", entity.Article);
+        }
+
+        [Fact]
+        public void UpdateEntity_UpdatesFields()
+        {
+            var entity = new Product();
+
+            var dto = new UpdateProductDto
+            {
+                Article = "A2",
+                Name = "Фильтр",
+                PurchasePrice = 200
+            };
+
+            ProductMapper.UpdateEntity(entity, dto);
+
+            Assert.Equal("A2", entity.Article);
+            Assert.Equal(200, entity.Price); 
+        }
+
+        [Fact]
+        public void ToComboViewModel_ReturnsCorrectText()
+        {
+            var dto = new ProductDto
+            {
+                Id = Guid.NewGuid(),
+                Article = "A1",
+                Name = "Масло",
+                Balance = 5,
+                UnitName = "шт"
+            };
+
+            var vm = ProductMapper.ToComboViewModel(dto);
+
+            Assert.Contains("A1 - Масло", vm.Text);
+            Assert.Contains("остаток: 5", vm.Text);
+        }
     }
 }

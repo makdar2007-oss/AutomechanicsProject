@@ -55,7 +55,7 @@ namespace AutomechanicsProject.Formes
         /// <summary>
         /// Проверяет название категории из текстового поля
         /// </summary>
-        private string GetValidatedCategoryName()
+        internal string GetValidatedCategoryName()
         {
             if (Validation.IsWatermark(textBoxAddCategory.Text, Resources.CategoryAddWatermark))
             {
@@ -70,7 +70,7 @@ namespace AutomechanicsProject.Formes
         /// <summary>
         /// Проверка на наличие категории с таким же названием
         /// </summary>
-        private bool CategoryExists(string categoryName)
+        internal bool CategoryExists(string categoryName)
         {
             return _db.Categories.Any(c => c.Name.ToLower() == categoryName.ToLower());
         }

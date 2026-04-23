@@ -436,7 +436,7 @@ namespace AutomechanicsProject.Formes
         /// <summary>
         /// Метод для расчета скидки у товара с истекающим сроком годности
         /// </summary>
-        private decimal CalculateProductPrice(ProductListItemDto product)
+        internal decimal CalculateProductPrice(ProductListItemDto product)
         {
             decimal priceInRub = product.PurchasePrice;
 

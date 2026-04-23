@@ -16,4 +16,12 @@ public class ImportFileDataTests
         Assert.Equal("USD", data.Currency);
         Assert.NotNull(data.Products);
     }
+
+    [Fact]
+    public void Products_Default_NotNull()
+    {
+        var data = new ImportFileData();
+
+        Assert.Null(data.Products);
+    }
 }

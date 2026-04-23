@@ -43,26 +43,6 @@ namespace AutomechanicsProject
         }
 
         /// <summary>
-        /// Проверяет заполнение обязательных полей
-        /// </summary>
-        private bool ValidateFields()
-        {
-            var isValid = true;
-
-            if (Validation.IsWatermark(textBoxLogin.Text, Resources.AuthLoginWatermark))
-            {
-                textBoxLogin.BackColor = Color.LightPink;
-                isValid = false;
-            }
-            if (Validation.IsWatermark(textBoxPassword.Text, Resources.AuthPasswordWatermark))
-            {
-                textBoxPassword.BackColor = Color.LightPink;
-                isValid = false;
-            }
-            return isValid;
-        }
-
-        /// <summary>
         /// Обработчик перехода на форму регистрации
         /// </summary>
         private void linkRegisterClick(object sender, EventArgs e)
@@ -77,15 +57,24 @@ namespace AutomechanicsProject
         /// </summary>
         private void BtnLoginClick(object sender, EventArgs e)
         {
-            textBoxLogin.BackColor = SystemColors.Window;
-            textBoxPassword.BackColor = SystemColors.Window;
+            Validation.ResetHighlights(textBoxLogin, textBoxPassword);
 
-            if (!ValidateFields())
+            if (!Validation.ValidateRequiredFields(
+                (textBoxLogin.Text, Resources.AuthLoginWatermark),
+                (textBoxPassword.Text, Resources.AuthPasswordWatermark)
+            ))
             {
+                Validation.HighlightError(textBoxLogin,
+                    Validation.IsWatermark(textBoxLogin.Text, Resources.AuthLoginWatermark));
+
+                Validation.HighlightError(textBoxPassword,
+                    Validation.IsWatermark(textBoxPassword.Text, Resources.AuthPasswordWatermark));
+
                 MessageBox.Show(Resources.ErrorFillFields, Resources.TitleWarning,
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
+
             try
             {
                 var user = _db.Users
@@ -94,42 +83,46 @@ namespace AutomechanicsProject
 
                 if (user == null)
                 {
-                    textBoxLogin.BackColor = Color.LightPink;
+                    Validation.HighlightError(textBoxLogin, true);
+
                     MessageBox.Show(Resources.ErrorAuthInvalid, Resources.TitleWarning,
                         MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
-                bool isValid = false;
+                bool isValid;
+
                 if (user.Password.StartsWith("$2"))
                 {
                     isValid = PasswordHelper.VerifyPassword(textBoxPassword.Text, user.Password);
                 }
                 else
                 {
-                    isValid = (textBoxPassword.Text == user.Password);
+                    isValid = textBoxPassword.Text == user.Password;
+
                     if (isValid)
                     {
                         user.Password = PasswordHelper.HashPassword(textBoxPassword.Text);
                         _db.SaveChanges();
-                        logger.Info($"Пароль для польщователя {user.Login} был хеширован");
+                        logger.Info($"Пароль для пользователя {user.Login} был хеширован");
                     }
                 }
+
                 if (!isValid)
                 {
-                    textBoxPassword.BackColor = Color.LightPink;
+                    Validation.HighlightError(textBoxPassword, true);
+
                     MessageBox.Show(Resources.ErrorAuthInvalid, Resources.TitleWarning,
                         MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
+
                 Program.CurrentUser = user;
                 OpenMainForm(user);
             }
             catch (Exception ex)
             {
-                logger.Error("Ошибка авторизации", ex);
-                MessageBox.Show(Resources.ErrorAuthFailed, Resources.TitleError,
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                FormHelper.HandleException("Ошибка авторизации", ex);
             }
         }
 

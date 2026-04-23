@@ -19,4 +19,12 @@ public class ImportProductItemTests
         Assert.Equal(5, item.Quantity);
         Assert.Equal(100, item.Price);
     }
+
+    [Fact]
+    public void NegativeQuantity_Works()
+    {
+        var item = new ImportProductItem { Quantity = -1 };
+
+        Assert.Equal(-1, item.Quantity);
+    }
 }

@@ -4,41 +4,55 @@ using System.Collections.Generic;
 using AutomechanicsProject.Classes;
 using AutomechanicsProject.Mappers;
 
-public class CategoryMapperTests
+namespace AutomechanicsProjectTest.Classes
 {
-    [Fact]
-    public void ToDto_ReturnsCorrectData()
+    public class CategoryMapperTests
     {
-        var category = new Category
+        [Fact]
+        public void ToDto_ReturnsCorrectData()
         {
-            Id = Guid.NewGuid(),
-            Name = "Двигатель",
-            Products = new List<Product>
+            var category = new Category
             {
-                new Product(),
-                new Product()
-            }
-        };
+                Id = Guid.NewGuid(),
+                Name = "Двигатель",
+                Products = new List<Product> { new Product(), new Product() }
+            };
 
-        var dto = CategoryMapper.ToDto(category);
+            var dto = CategoryMapper.ToDto(category);
 
-        Assert.Equal(category.Id, dto.Id);
-        Assert.Equal("Двигатель", dto.Name);
-        Assert.Equal(2, dto.ProductsCount);
-    }
+            Assert.Equal(category.Id, dto.Id);
+            Assert.Equal("Двигатель", dto.Name);
+            Assert.Equal(2, dto.ProductsCount);
+        }
 
-    [Fact]
-    public void ToComboItem_ReturnsCorrectData()
-    {
-        var dto = new AutomechanicsProject.Dtos.Service.CategoryDto
+        [Fact]
+        public void ToDto_NullProducts_ReturnsZeroCount()
         {
-            Id = Guid.NewGuid(),
-            Name = "Фильтры"
-        };
+            var category = new Category
+            {
+                Id = Guid.NewGuid(),
+                Name = "Фильтры",
+                Products = null
+            };
 
-        var combo = CategoryMapper.ToComboItem(dto);
+            var dto = CategoryMapper.ToDto(category);
 
-        Assert.Equal(dto.Id, combo.Id);
-        Assert.Equal("Фильтры", combo.Text);
+            Assert.Equal(0, dto.ProductsCount);
+        }
+
+        [Fact]
+        public void ToComboItem_ReturnsCorrect()
+        {
+            var dto = new AutomechanicsProject.Dtos.Service.CategoryDto
+            {
+                Id = Guid.NewGuid(),
+                Name = "Фильтры"
+            };
+
+            var result = CategoryMapper.ToComboItem(dto);
+
+            Assert.Equal(dto.Id, result.Id);
+            Assert.Equal("Фильтры", result.Text);
+        }
     }
 }

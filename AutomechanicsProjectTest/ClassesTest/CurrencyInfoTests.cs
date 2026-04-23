@@ -17,4 +17,13 @@ public class CurrencyInfoTests
         Assert.Equal(100, info.Rate);
         Assert.Equal("Доллар", info.DisplayText);
     }
+
+    [Fact]
+    public void DefaultValues_AreCorrect()
+    {
+        var info = new CurrencyInfo();
+
+        Assert.Null(info.Code);
+        Assert.Equal(0, info.Rate);
+    }
 }
