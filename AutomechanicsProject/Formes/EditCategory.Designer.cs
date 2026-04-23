@@ -1,4 +1,6 @@
-﻿namespace AutomechanicsProject.Formes
+﻿using AutomechanicsProject.Properties;
+
+namespace AutomechanicsProject.Formes
 {
     partial class EditCategory
     {
@@ -62,7 +64,7 @@
             this.buttonEdit.Name = "buttonEdit";
             this.buttonEdit.Size = new System.Drawing.Size(193, 45);
             this.buttonEdit.TabIndex = 4;
-            this.buttonEdit.Text = "Редактировать";
+            this.buttonEdit.Text = Resources.EditCategory_ButtonEdit_Text;
             this.buttonEdit.UseVisualStyleBackColor = false;
             this.buttonEdit.Enabled = false;
             this.buttonEdit.Click += new System.EventHandler(this.ButtonEdit_Click);
@@ -78,7 +80,7 @@
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(167, 45);
             this.buttonCancel.TabIndex = 3;
-            this.buttonCancel.Text = "Отмена";
+            this.buttonCancel.Text = Resources.EditCategory_ButtonCancel_Text;
             this.buttonCancel.UseVisualStyleBackColor = false;
             this.buttonCancel.Click += new System.EventHandler(this.ButtonCancel_Click);
             // 
@@ -94,7 +96,7 @@
             this.textBoxNewName.Name = "textBoxNewName";
             this.textBoxNewName.Size = new System.Drawing.Size(434, 34);
             this.textBoxNewName.TabIndex = 2;
-            this.textBoxNewName.Text = "Введите название";
+            this.textBoxNewName.Text = Resources.EditCategory_TextBoxNewName_Watermark;
             this.textBoxNewName.ForeColor = System.Drawing.Color.Gray;
             // 
             // comboBoxCategory
@@ -122,7 +124,7 @@
             this.labelTitle.Name = "labelTitle";
             this.labelTitle.Size = new System.Drawing.Size(457, 39);
             this.labelTitle.TabIndex = 0;
-            this.labelTitle.Text = "Редактировать категорию";
+            this.labelTitle.Text = Resources.EditCategory_LabelTitle_Text;
             this.labelTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // EditCategory
@@ -137,7 +139,7 @@
             this.MinimizeBox = false;
             this.Name = "EditCategory";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Редактировать категорию";
+            this.Text = Resources.EditCategory_Form_Title;
             this.Load += new System.EventHandler(this.EditCategory_Load);
             this.panelEditCategory.ResumeLayout(false);
             this.panelEditCategory.PerformLayout();

@@ -297,8 +297,16 @@ namespace AutomechanicsProject.Formes
                         csvContent.AppendLine("\uFEFF");
 
                         string[] headers = {
-                            "№", "Артикул", "Название", "Количество", "Цена",
-                            "Прибыль", "Сумма", "Получатель", "Кладовщик", "Дата"
+                            Resources.Report_ColumnNumber,
+                            Resources.Report_ColumnArticle,
+                            Resources.Report_ColumnName,
+                            Resources.Report_ColumnQuantity,
+                            Resources.Report_ColumnPrice,
+                            Resources.Report_ColumnProfit,
+                            Resources.Report_ColumnTotal,
+                            Resources.Report_ColumnRecipient,
+                            Resources.Report_ColumnStorekeeper,
+                            Resources.Report_ColumnDate
                         };
                         csvContent.AppendLine(string.Join(";", headers));
 

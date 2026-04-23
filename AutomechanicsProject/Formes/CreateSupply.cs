@@ -1,4 +1,4 @@
-﻿    using AutomechanicsProject.Classes;
+﻿using AutomechanicsProject.Classes;
 using AutomechanicsProject.Dtos.UI;
 using AutomechanicsProject.Helpers;
 using AutomechanicsProject.Properties;
@@ -693,7 +693,6 @@ namespace AutomechanicsProject.Formes
                                 comboBoxCurrency.BackColor = System.Drawing.SystemColors.ControlLight;
                             }
                         }
-
                         UpdateTotalAmount();
 
                         string warningMessage = notFoundCount > 0
@@ -974,7 +973,6 @@ namespace AutomechanicsProject.Formes
                     comboBoxCurrency.Enabled = true;
                     comboBoxCurrency.BackColor = SystemColors.Window;
                 }
-
                 logger.Info($"Товар '{article} - {productName}' удален из списка поставки");
             }
         }

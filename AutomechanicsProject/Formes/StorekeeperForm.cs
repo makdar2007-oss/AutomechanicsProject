@@ -454,7 +454,7 @@ namespace AutomechanicsProject.Formes
             }
             catch (Exception ex)
             {
-                toolStripTextBoxStorekeeper.Text = "Ошибка";
+                toolStripTextBoxStorekeeper.Text = Resources.StatusError;
                 logger.Error("Ошибка при загрузке формы кладовщика", ex);
             }
         }

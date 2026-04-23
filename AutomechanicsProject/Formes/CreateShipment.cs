@@ -15,7 +15,7 @@ using AutomechanicsProject.Enum;
 
 namespace AutomechanicsProject.Formes
 {
-    
+
     /// <summary>
     /// Форма для создания новой отгрузки товаров
     /// </summary>
@@ -31,7 +31,7 @@ namespace AutomechanicsProject.Formes
         private bool isShipmentTypeLocked = false;
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
         private static readonly Guid WriteOffUserId = Guid.Parse("dc40ff88-af12-4841-b101-9da423f7f777");
-        private static readonly Guid DefectUserId = Guid.Parse("fda70302-e336-4a5d-9783-eff33827adc8"); 
+        private static readonly Guid DefectUserId = Guid.Parse("fda70302-e336-4a5d-9783-eff33827adc8");
         private ShipmentTypeEnum currentShipmentType = ShipmentTypeEnum.Shipment;
 
         /// <summary>
@@ -102,9 +102,10 @@ namespace AutomechanicsProject.Formes
         /// </summary>
         private void ComboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (isShipmentTypeLocked) 
+            if (isShipmentTypeLocked)
             {
-                comboBox1.SelectedItem = comboBox1.Items.Cast<object>().FirstOrDefault(x => x.ToString() == currentShipmentType.ToString());
+                var currentLocalizedName = ShipmentTypeHelper.GetLocalizedName(currentShipmentType);
+                comboBox1.SelectedItem = comboBox1.Items.Cast<string>().FirstOrDefault(x => x == currentLocalizedName);
                 return;
             }
 
@@ -115,28 +116,28 @@ namespace AutomechanicsProject.Formes
 
             string selectedType = comboBox1.SelectedItem.ToString();
 
-            switch (selectedType)
+            if (selectedType == Resources.ShipmentType_Shipment)
             {
-                case "Отгрузка":
-                    currentShipmentType = ShipmentTypeEnum.Shipment;
-                    comboBoxRecipient1.Enabled = true;
-                    comboBoxRecipient1.BackColor = System.Drawing.SystemColors.Window;
-                    break;
-                case "Списание":
-                    currentShipmentType = ShipmentTypeEnum.WriteOff;
-                    comboBoxRecipient1.Enabled = false;
-                    comboBoxRecipient1.BackColor = System.Drawing.SystemColors.ControlLight;
-                    comboBoxRecipient1.SelectedIndex = -1;
-                    break;
-                case "Брак":
-                    currentShipmentType = ShipmentTypeEnum.Defect;
-                    comboBoxRecipient1.Enabled = false;
-                    comboBoxRecipient1.BackColor = System.Drawing.SystemColors.ControlLight;
-                    comboBoxRecipient1.SelectedIndex = -1;
-                    break;
+                currentShipmentType = ShipmentTypeEnum.Shipment;
+                comboBoxRecipient1.Enabled = true;
+                comboBoxRecipient1.BackColor = System.Drawing.SystemColors.Window;
+            }
+            else if (selectedType == Resources.ShipmentType_WriteOff)
+            {
+                currentShipmentType = ShipmentTypeEnum.WriteOff;
+                comboBoxRecipient1.Enabled = false;
+                comboBoxRecipient1.BackColor = System.Drawing.SystemColors.ControlLight;
+                comboBoxRecipient1.SelectedIndex = -1;
+            }
+            else if (selectedType == Resources.ShipmentType_Defect)
+            {
+                currentShipmentType = ShipmentTypeEnum.Defect;
+                comboBoxRecipient1.Enabled = false;
+                comboBoxRecipient1.BackColor = System.Drawing.SystemColors.ControlLight;
+                comboBoxRecipient1.SelectedIndex = -1;
             }
         }
-        
+
         /// <summary>
         /// Загружает доступные сроки годности для выбранного товара
         /// </summary>
@@ -241,7 +242,7 @@ namespace AutomechanicsProject.Formes
                 {
                     SetupSearchableComboBox();
                 }
-                
+
                 if (products.Count == 0)
                 {
                     MessageBox.Show(Resources.InfoNoProductsForShipment, Resources.TitleInformation,
@@ -350,7 +351,7 @@ namespace AutomechanicsProject.Formes
 
             if (comboBoxExpiry.Enabled && comboBoxExpiry.SelectedItem != null)
             {
-                var selectedExpiry = (ExpiryItemDto)comboBoxExpiry.SelectedItem; 
+                var selectedExpiry = (ExpiryItemDto)comboBoxExpiry.SelectedItem;
                 Guid actualProductId = selectedExpiry.ProductId;
 
                 var productWithExpiry = db.Products.FirstOrDefault(p => p.Id == actualProductId);
@@ -520,7 +521,7 @@ namespace AutomechanicsProject.Formes
                 var itemTotal = item.Quantity * item.PurchasePrice;
                 var itemCost = item.Quantity * item.Price;
                 var profit = (currentShipmentType == ShipmentTypeEnum.Shipment)
-                ? itemTotal - itemCost   
+                ? itemTotal - itemCost
                 : 0;
 
                 totalAmount += itemTotal;
@@ -576,12 +577,12 @@ namespace AutomechanicsProject.Formes
             switch (currentShipmentType)
             {
                 case ShipmentTypeEnum.WriteOff:
-                    recipientName = "Списание";
+                    recipientName = Resources.ShipmentType_WriteOff;
                     recipientId = WriteOffUserId;
                     displayTotal = -totalAmount;
                     break;
                 case ShipmentTypeEnum.Defect:
-                    recipientName = "Брак";
+                    recipientName = Resources.ShipmentType_Defect;
                     recipientId = DefectUserId;
                     displayTotal = -totalAmount;
                     break;
@@ -637,7 +638,7 @@ namespace AutomechanicsProject.Formes
                             Quantity = currentShipmentType == ShipmentTypeEnum.Shipment ? item.Quantity : -Math.Abs(item.Quantity),
                             Price = item.Price,
                             PurchasePrice = currentShipmentType == ShipmentTypeEnum.Shipment
-                            ? item.PurchasePrice      
+                            ? item.PurchasePrice
                             : 0,
                             ProductName = item.ProductName,
                             Article = item.Article

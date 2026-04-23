@@ -1,4 +1,6 @@
-﻿namespace AutomechanicsProject.Formes
+﻿using AutomechanicsProject.Properties;
+
+namespace AutomechanicsProject.Formes
 {
     partial class StorekeeperForm
     {
@@ -74,7 +76,7 @@
             this.buttonExit.Name = "buttonExit";
             this.buttonExit.Size = new System.Drawing.Size(155, 30);
             this.buttonExit.TabIndex = 3;
-            this.buttonExit.Text = "Выйти";
+            this.buttonExit.Text = Resources.Storekeeper_ButtonExitText;
             this.buttonExit.UseVisualStyleBackColor = false;
             this.buttonExit.Click += new System.EventHandler(this.ButtonExit_Click);
             // 
@@ -105,7 +107,7 @@
             this.buttonCurrency.Name = "buttonCurrency";
             this.buttonCurrency.Size = new System.Drawing.Size(159, 35);
             this.buttonCurrency.TabIndex = 5;
-            this.buttonCurrency.Text = "Выбор валюты";
+            this.buttonCurrency.Text = Resources.Storekeeper_ButtonCurrencyText;
             this.buttonCurrency.UseVisualStyleBackColor = false;
             this.buttonCurrency.Click += new System.EventHandler(this.ButtonCurrency_Click);
             // 
@@ -122,7 +124,7 @@
             this.buttonSupply.Name = "buttonSupply";
             this.buttonSupply.Size = new System.Drawing.Size(109, 35);
             this.buttonSupply.TabIndex = 6;
-            this.buttonSupply.Text = "Поставка";
+            this.buttonSupply.Text = Resources.Storekeeper_ButtonSupplyText;
             this.buttonSupply.UseVisualStyleBackColor = false;
             this.buttonSupply.Click += new System.EventHandler(this.buttonSupply_Click_1);
             // 
@@ -139,7 +141,7 @@
             this.buttonShipment.Name = "buttonShipment";
             this.buttonShipment.Size = new System.Drawing.Size(214, 35);
             this.buttonShipment.TabIndex = 4;
-            this.buttonShipment.Text = "Оформить отгрузку";
+            this.buttonShipment.Text = Resources.Storekeeper_ButtonShipmentText;
             this.buttonShipment.UseVisualStyleBackColor = false;
             this.buttonShipment.Click += new System.EventHandler(this.ButtonShipment_Click);
             // 
@@ -151,7 +153,7 @@
             this.textBoxSearch.Name = "textBoxSearch";
             this.textBoxSearch.Size = new System.Drawing.Size(200, 30);
             this.textBoxSearch.TabIndex = 2;
-            this.textBoxSearch.Text = "Поиск:";
+            this.textBoxSearch.Text = Resources.Storekeeper_TextBoxSearch_Text;
             this.textBoxSearch.TextChanged += new System.EventHandler(this.TextBoxSearch_TextChanged);
             // 
             // panelData
@@ -213,8 +215,8 @@
             this.toolStripTextBoxStorekeeper.Name = "toolStripTextBoxStorekeeper";
             this.toolStripTextBoxStorekeeper.ReadOnly = true;
             this.toolStripTextBoxStorekeeper.Size = new System.Drawing.Size(335, 28);
-            this.toolStripTextBoxStorekeeper.Text = "Кладовщик";
-            // 
+            this.toolStripTextBoxStorekeeper.Text = Resources.Storekeeper_ToolStripText;
+            //
             // StorekeeperForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -225,7 +227,7 @@
             this.Margin = new System.Windows.Forms.Padding(2);
             this.MinimumSize = new System.Drawing.Size(900, 400);
             this.Name = "StorekeeperForm";
-            this.Text = "Кладовщик - Управление складом";
+            this.Text = Resources.Storekeeper_Form_Title;
             this.panelStorekeeper.ResumeLayout(false);
             this.panelStorekeeper.PerformLayout();
             this.panelSearch.ResumeLayout(false);
@@ -240,7 +242,6 @@
 
         #endregion
 
-        // Объявление всех компонентов формы
         private System.Windows.Forms.Panel panelStorekeeper;
         private System.Windows.Forms.Panel panelSearch;
         private System.Windows.Forms.Button buttonShipment;

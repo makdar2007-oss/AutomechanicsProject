@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using AutomechanicsProject.Properties;
+using System.Drawing;
 
 namespace AutomechanicsProject.Formes
 {
@@ -69,7 +70,7 @@ namespace AutomechanicsProject.Formes
             this.buttonRedact.Name = "buttonRedact";
             this.buttonRedact.Size = new System.Drawing.Size(194, 53);
             this.buttonRedact.TabIndex = 7;
-            this.buttonRedact.Text = "Редактировать";
+            this.buttonRedact.Text = Resources.RedactProduct_ButtonRedact_Text;
             this.buttonRedact.UseVisualStyleBackColor = true;
             this.buttonRedact.Click += new System.EventHandler(this.ButtonRedact_Click);
             // 
@@ -82,7 +83,7 @@ namespace AutomechanicsProject.Formes
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(169, 53);
             this.buttonCancel.TabIndex = 6;
-            this.buttonCancel.Text = "Отмена";
+            this.buttonCancel.Text = Resources.RedactProduct_ButtonCancel_Text;
             this.buttonCancel.UseVisualStyleBackColor = false;
             this.buttonCancel.Click += new System.EventHandler(this.ButtonCancel_Click);
             // 
@@ -96,7 +97,7 @@ namespace AutomechanicsProject.Formes
             this.textBoxPrice.Name = "textBoxPrice";
             this.textBoxPrice.Size = new System.Drawing.Size(400, 30);
             this.textBoxPrice.TabIndex = 5;
-            this.textBoxPrice.Text = "Цена";
+            this.textBoxPrice.Text = Resources.RedactProduct_TextBoxPrice_Watermark;
             this.textBoxPrice.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // comboBoxUnit
@@ -122,7 +123,7 @@ namespace AutomechanicsProject.Formes
             this.textBoxCategory.ReadOnly = true;
             this.textBoxCategory.Size = new System.Drawing.Size(400, 30);
             this.textBoxCategory.TabIndex = 3;
-            this.textBoxCategory.Text = "Категория";
+            this.textBoxCategory.Text = Resources.RedactProduct_TextBoxCategory_Watermark;
             this.textBoxCategory.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // textBoxName
@@ -135,7 +136,7 @@ namespace AutomechanicsProject.Formes
             this.textBoxName.Name = "textBoxName";
             this.textBoxName.Size = new System.Drawing.Size(400, 30);
             this.textBoxName.TabIndex = 2;
-            this.textBoxName.Text = "Название";
+            this.textBoxName.Text = Resources.RedactProduct_TextBoxName_Watermark;
             this.textBoxName.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // textBoxArt
@@ -148,7 +149,7 @@ namespace AutomechanicsProject.Formes
             this.textBoxArt.Name = "textBoxArt";
             this.textBoxArt.Size = new System.Drawing.Size(400, 30);
             this.textBoxArt.TabIndex = 1;
-            this.textBoxArt.Text = "Артикул";
+            this.textBoxArt.Text = Resources.RedactProduct_TextBoxArt_Watermark;
             this.textBoxArt.ReadOnly = true;
             this.textBoxArt.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
@@ -161,7 +162,7 @@ namespace AutomechanicsProject.Formes
             this.labelRedact.Name = "labelRedact";
             this.labelRedact.Size = new System.Drawing.Size(359, 39);
             this.labelRedact.TabIndex = 0;
-            this.labelRedact.Text = "Редактировать товар";
+            this.labelRedact.Text = Resources.RedactProduct_LabelTitle_Text;
             // 
             // RedactProduct
             // 
@@ -170,8 +171,8 @@ namespace AutomechanicsProject.Formes
             this.ClientSize = new System.Drawing.Size(623, 515);
             this.Controls.Add(this.panelRedact);
             this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Text = Resources.RedactProduct_Form_Title;
             this.Name = "RedactProduct";
-            this.Text = "RedactProduct";
             this.panelRedact.ResumeLayout(false);
             this.panelRedact.PerformLayout();
             this.ResumeLayout(false);

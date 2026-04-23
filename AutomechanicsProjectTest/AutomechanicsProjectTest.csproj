@@ -178,6 +178,7 @@
     <Compile Include="Helperstest\FormatHelperTests.cs" />
     <Compile Include="Helperstest\FormHelperTests.cs" />
     <Compile Include="Helperstest\PasswordHelperTests.cs" />
+    <Compile Include="Helperstest\ShipmentTypeHelperTests.cs" />
     <Compile Include="Helperstest\ValidationTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -1,4 +1,6 @@
-﻿namespace AutomechanicsProject.Formes
+﻿using AutomechanicsProject.Properties;
+
+namespace AutomechanicsProject.Formes
 {
     partial class ShipmentHistoryForm
     {
@@ -111,7 +113,7 @@
             this.labelPeriod.Name = "labelPeriod";
             this.labelPeriod.Size = new System.Drawing.Size(18, 20);
             this.labelPeriod.TabIndex = 0;
-            this.labelPeriod.Text = "с";
+            this.labelPeriod.Text = Resources.History_LabelFrom_Text;
             // 
             // dateTimePickerFrom
             // 
@@ -135,7 +137,7 @@
             this.labelTo.Name = "labelTo";
             this.labelTo.Size = new System.Drawing.Size(29, 20);
             this.labelTo.TabIndex = 2;
-            this.labelTo.Text = "по";
+            this.labelTo.Text = Resources.History_LabelTo_Text;
             // 
             // buttonApplyFilter
             // 
@@ -152,7 +154,7 @@
             this.buttonApplyFilter.Name = "buttonApplyFilter";
             this.buttonApplyFilter.Size = new System.Drawing.Size(137, 32);
             this.buttonApplyFilter.TabIndex = 4;
-            this.buttonApplyFilter.Text = "Применить";
+            this.buttonApplyFilter.Text = Resources.History_ButtonApplyFilter_Text;
             this.buttonApplyFilter.UseVisualStyleBackColor = false;
             this.buttonApplyFilter.Click += new System.EventHandler(this.buttonApplyFilter_Click);
             // 
@@ -181,7 +183,7 @@
             this.textBoxHistory.ReadOnly = true;
             this.textBoxHistory.Size = new System.Drawing.Size(836, 38);
             this.textBoxHistory.TabIndex = 0;
-            this.textBoxHistory.Text = "История отгрузок";
+            this.textBoxHistory.Text = Resources.History_TextBox_Text;
             this.textBoxHistory.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // ShipmentHistoryForm
@@ -194,7 +196,7 @@
             this.MinimumSize = new System.Drawing.Size(539, 401);
             this.Name = "ShipmentHistoryForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "История отгрузок";
+            this.Text = Resources.History_Form_Title;
             this.Load += new System.EventHandler(this.ShipmentHistoryForm_Load);
             this.panelHistory.ResumeLayout(false);
             this.panelHistory.PerformLayout();

@@ -59,7 +59,7 @@ namespace AutomechanicsProject.Formes
                     textBoxArt.Text = product.Article;
                     textBoxArt.ForeColor = Color.Black;
                     textBoxArt.ReadOnly = true;
-                    labelDeleteProduct.Text = $"Удаление товара: \n{product.Article} - {product.Name}";
+                    labelDeleteProduct.Text = string.Format(Resources.DeleteProductWithDetails, product.Article, product.Name);
                 }
             }
             catch (Exception ex)

@@ -3,7 +3,7 @@ using System.Drawing;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Linq;
-using AutomechanicsProject.Properties; 
+using AutomechanicsProject.Properties;
 
 /// <summary>
 /// Вспомогательный класс для валидации данных в формах

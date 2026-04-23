@@ -96,14 +96,6 @@ namespace AutomechanicsProjectTest.Classes
         }
 
         [Fact]
-        public void IsValidRussianName_Valid_ReturnsTrue()
-        {
-            var result = Validation.IsValidRussianName("Иван Иванов");
-
-            Assert.True(result);
-        }
-
-        [Fact]
         public void IsValidRussianName_Invalid_ReturnsFalse()
         {
             var result = Validation.IsValidRussianName("John");

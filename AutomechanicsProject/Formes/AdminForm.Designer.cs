@@ -1,4 +1,5 @@
-﻿using System.Windows.Forms;
+﻿using AutomechanicsProject.Properties;
+using System.Windows.Forms;
 
 namespace AutomechanicsProject.Formes
 {
@@ -86,7 +87,7 @@ namespace AutomechanicsProject.Formes
             this.buttonExit.Name = "buttonExit";
             this.buttonExit.Size = new System.Drawing.Size(173, 28);
             this.buttonExit.TabIndex = 3;
-            this.buttonExit.Text = "Выйти";
+            this.buttonExit.Text = Resources.AdminForm_ButtonExitText;
             this.buttonExit.UseVisualStyleBackColor = false;
             this.buttonExit.Click += new System.EventHandler(this.ButtonExit_Click);
             // 
@@ -114,7 +115,7 @@ namespace AutomechanicsProject.Formes
             this.buttonReport.Name = "buttonReport";
             this.buttonReport.Size = new System.Drawing.Size(83, 35);
             this.buttonReport.TabIndex = 6;
-            this.buttonReport.Text = "Отчет";
+            this.buttonReport.Text = Resources.AdminForm_ButtonReportText;
             this.buttonReport.UseVisualStyleBackColor = true;
             this.buttonReport.Click += new System.EventHandler(this.buttonReport_Click);
             // 
@@ -130,7 +131,7 @@ namespace AutomechanicsProject.Formes
             this.buttonCurrency.Name = "buttonCurrency";
             this.buttonCurrency.Size = new System.Drawing.Size(159, 35);
             this.buttonCurrency.TabIndex = 5;
-            this.buttonCurrency.Text = "Выбор валюты";
+            this.buttonCurrency.Text = Resources.AdminForm_ButtonCurrencyText;
             this.buttonCurrency.UseVisualStyleBackColor = false;
             this.buttonCurrency.Click += new System.EventHandler(this.buttonCurrency_Click);
             // 
@@ -146,7 +147,7 @@ namespace AutomechanicsProject.Formes
             this.buttonSupply.Name = "buttonSupply";
             this.buttonSupply.Size = new System.Drawing.Size(109, 35);
             this.buttonSupply.TabIndex = 1;
-            this.buttonSupply.Text = "Поставка";
+            this.buttonSupply.Text = Resources.AdminForm_ButtonSupplyText;
             this.buttonSupply.UseVisualStyleBackColor = false;
             this.buttonSupply.Click += new System.EventHandler(this.buttonSupply_Click);
             // 
@@ -162,7 +163,7 @@ namespace AutomechanicsProject.Formes
             this.buttonhistory.Name = "buttonhistory";
             this.buttonhistory.Size = new System.Drawing.Size(190, 35);
             this.buttonhistory.TabIndex = 4;
-            this.buttonhistory.Text = "История отгрузок";
+            this.buttonhistory.Text = Resources.AdminForm_ButtonHistoryText;
             this.buttonhistory.UseVisualStyleBackColor = false;
             this.buttonhistory.Click += new System.EventHandler(this.ButtonHistory_Click);
             // 
@@ -174,7 +175,7 @@ namespace AutomechanicsProject.Formes
             this.textBoxSearch.Name = "textBoxSearch";
             this.textBoxSearch.Size = new System.Drawing.Size(180, 30);
             this.textBoxSearch.TabIndex = 2;
-            this.textBoxSearch.Text = "Поиск:";
+            this.buttonhistory.Text = Resources.AdminForm_ButtonHistoryText;    
             this.textBoxSearch.TextChanged += new System.EventHandler(this.TextBoxSearch_TextChanged);
             // 
             // panelAdminData
@@ -191,7 +192,7 @@ namespace AutomechanicsProject.Formes
             // 
             // dataGridViewMainForm
             // 
-            this.toolStripTextBoxAdmin.Text = "Администратор";
+            this.toolStripTextBoxAdmin.Text = Resources.AdminForm_ToolStripAdminText;
             this.dataGridViewMainForm.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridViewMainForm.AllowUserToResizeColumns = false;
             this.dataGridViewMainForm.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
@@ -240,20 +241,20 @@ namespace AutomechanicsProject.Formes
             this.CategoryToolStripMenuItem});
             this.toolStripComboBoxAdd.Name = "toolStripComboBoxAdd";
             this.toolStripComboBoxAdd.Size = new System.Drawing.Size(113, 28);
-            this.toolStripComboBoxAdd.Text = "Добавить";
+            this.toolStripComboBoxAdd.Text = Resources.AdminForm_ToolStripAddText;
             // 
             // ProductToolStripMenuItem
             // 
             this.ProductToolStripMenuItem.Name = "ProductToolStripMenuItem";
             this.ProductToolStripMenuItem.Size = new System.Drawing.Size(193, 28);
-            this.ProductToolStripMenuItem.Text = "Товар";
+            this.ProductToolStripMenuItem.Text = Resources.AdminForm_ToolStripProductText;
             this.ProductToolStripMenuItem.Click += new System.EventHandler(this.ProductToolStripMenuItem_Click);
             // 
             // CategoryToolStripMenuItem
             // 
             this.CategoryToolStripMenuItem.Name = "CategoryToolStripMenuItem";
             this.CategoryToolStripMenuItem.Size = new System.Drawing.Size(193, 28);
-            this.CategoryToolStripMenuItem.Text = "Категорию";
+            this.CategoryToolStripMenuItem.Text = Resources.AdminForm_ToolStripCategoryText;
             this.CategoryToolStripMenuItem.Click += new System.EventHandler(this.CategoryToolStripMenuItem_Click);
             // 
             // toolStripComboBox2
@@ -263,20 +264,20 @@ namespace AutomechanicsProject.Formes
             this.CategoryToolStripMenuItem1});
             this.toolStripComboBox2.Name = "toolStripComboBox2";
             this.toolStripComboBox2.Size = new System.Drawing.Size(163, 28);
-            this.toolStripComboBox2.Text = "Редактировать";
+            this.toolStripComboBox2.Text = Resources.AdminForm_ToolStripEditText;
             // 
             // ProductToolStripMenuItem1
             // 
             this.ProductToolStripMenuItem1.Name = "ProductToolStripMenuItem1";
             this.ProductToolStripMenuItem1.Size = new System.Drawing.Size(193, 28);
-            this.ProductToolStripMenuItem1.Text = "Товар";
+            this.ProductToolStripMenuItem1.Text = Resources.AdminForm_ToolStripProductText;
             this.ProductToolStripMenuItem1.Click += new System.EventHandler(this.ProductToolStripMenuItem1_Click);
             // 
             // CategoryToolStripMenuItem1
             // 
             this.CategoryToolStripMenuItem1.Name = "CategoryToolStripMenuItem1";
             this.CategoryToolStripMenuItem1.Size = new System.Drawing.Size(193, 28);
-            this.CategoryToolStripMenuItem1.Text = "Категорию";
+            this.CategoryToolStripMenuItem1.Text = Resources.AdminForm_ToolStripCategoryText;
             this.CategoryToolStripMenuItem1.Click += new System.EventHandler(this.CategoryToolStripMenuItem1_Click);
             // 
             // toolStripComboBox3
@@ -286,20 +287,20 @@ namespace AutomechanicsProject.Formes
             this.CategoryToolStripMenuItem2});
             this.toolStripComboBox3.Name = "toolStripComboBox3";
             this.toolStripComboBox3.Size = new System.Drawing.Size(100, 28);
-            this.toolStripComboBox3.Text = "Удалить";
+            this.toolStripComboBox3.Text = Resources.AdminForm_ToolStripDeleteText;
             // 
             // ProductToolStripMenuItem2
             // 
             this.ProductToolStripMenuItem2.Name = "ProductToolStripMenuItem2";
             this.ProductToolStripMenuItem2.Size = new System.Drawing.Size(193, 28);
-            this.ProductToolStripMenuItem2.Text = "Товар";
+            this.ProductToolStripMenuItem2.Text = Resources.AdminForm_ToolStripProductText;
             this.ProductToolStripMenuItem2.Click += new System.EventHandler(this.ProductToolStripMenuItem2_Click);
             // 
             // CategoryToolStripMenuItem2
             // 
             this.CategoryToolStripMenuItem2.Name = "CategoryToolStripMenuItem2";
             this.CategoryToolStripMenuItem2.Size = new System.Drawing.Size(193, 28);
-            this.CategoryToolStripMenuItem2.Text = "Категорию";
+            this.CategoryToolStripMenuItem2.Text = Resources.AdminForm_ToolStripCategoryText;
             this.CategoryToolStripMenuItem2.Click += new System.EventHandler(this.CategoryToolStripMenuItem2_Click);
             // 
             // toolStripTextBoxAdmin
@@ -309,7 +310,7 @@ namespace AutomechanicsProject.Formes
             this.toolStripTextBoxAdmin.Name = "toolStripTextBoxAdmin";
             this.toolStripTextBoxAdmin.ReadOnly = true;
             this.toolStripTextBoxAdmin.Size = new System.Drawing.Size(335, 28);
-            this.toolStripTextBoxAdmin.Text = "Администратор";
+            this.toolStripTextBoxAdmin.Text = Resources.AdminForm_ToolStripAdminText;
             // 
             // AdminForm
             // 
@@ -321,7 +322,7 @@ namespace AutomechanicsProject.Formes
             this.Margin = new System.Windows.Forms.Padding(2);
             this.MinimumSize = new System.Drawing.Size(900, 400);
             this.Name = "AdminForm";
-            this.Text = "Главная форма";
+            this.Text = Resources.AdminForm_Title;
             this.Load += new System.EventHandler(this.AdminForm_Load);
             this.panelAdmin.ResumeLayout(false);
             this.panelAdmin.PerformLayout();

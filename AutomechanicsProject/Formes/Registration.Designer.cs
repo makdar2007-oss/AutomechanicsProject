@@ -1,4 +1,6 @@
-﻿namespace AutomechanicsProject.Formes
+﻿using AutomechanicsProject.Properties;
+
+namespace AutomechanicsProject.Formes
 {
     partial class Registration
     {
@@ -91,7 +93,7 @@
             this.buttonEnter.Name = "buttonEnter";
             this.buttonEnter.Size = new System.Drawing.Size(241, 42);
             this.buttonEnter.TabIndex = 14;
-            this.buttonEnter.Text = "Уже есть аккаунт? Войти";
+            this.buttonEnter.Text = Resources.Registration_ButtonEnter_Text;
             this.buttonEnter.UseVisualStyleBackColor = true;
             this.buttonEnter.Click += new System.EventHandler(this.ButtonEnter_Click);
             // 
@@ -103,7 +105,7 @@
             this.buttonRegistration.Name = "buttonRegistration";
             this.buttonRegistration.Size = new System.Drawing.Size(451, 52);
             this.buttonRegistration.TabIndex = 13;
-            this.buttonRegistration.Text = "Зарегистрироваться";
+            this.buttonRegistration.Text = Resources.Registration_ButtonRegister_Text;
             this.buttonRegistration.UseVisualStyleBackColor = false;
             this.buttonRegistration.Click += new System.EventHandler(this.buttonRegistration_Click);
             // 
@@ -116,7 +118,7 @@
             this.textBoxPassword.Size = new System.Drawing.Size(451, 30);
             this.textBoxPassword.TabIndex = 12;
             this.textBoxPassword.Tag = "*";
-            this.textBoxPassword.Text = "Введите пароль";
+            this.textBoxPassword.Text = Resources.Registration_TextBoxPassword_Watermark;
             this.textBoxPassword.TextChanged += new System.EventHandler(this.textBoxPassword_TextChanged);
             // 
             // textBoxAgreePassword
@@ -127,7 +129,7 @@
             this.textBoxAgreePassword.Name = "textBoxAgreePassword";
             this.textBoxAgreePassword.Size = new System.Drawing.Size(451, 30);
             this.textBoxAgreePassword.TabIndex = 11;
-            this.textBoxAgreePassword.Text = "Повторите пароль";
+            this.textBoxAgreePassword.Text = Resources.Registration_TextBoxConfirmPassword_Watermark;
             this.textBoxAgreePassword.TextChanged += new System.EventHandler(this.textBoxAgreePassword_TextChanged);
             // 
             // textBoxLogin
@@ -138,7 +140,7 @@
             this.textBoxLogin.Name = "textBoxLogin";
             this.textBoxLogin.Size = new System.Drawing.Size(451, 30);
             this.textBoxLogin.TabIndex = 10;
-            this.textBoxLogin.Text = "Введите логин";
+            this.textBoxLogin.Text = Resources.Registration_TextBoxLogin_Watermark;
             this.textBoxLogin.TextChanged += new System.EventHandler(this.textBoxLogin_TextChanged);
             // 
             // textBoxLastname
@@ -149,7 +151,7 @@
             this.textBoxLastname.Name = "textBoxLastname";
             this.textBoxLastname.Size = new System.Drawing.Size(451, 30);
             this.textBoxLastname.TabIndex = 9;
-            this.textBoxLastname.Text = "Введите отчество";
+            this.textBoxLastname.Text = Resources.Registration_TextBoxLastname_Watermark;
             this.textBoxLastname.TextChanged += new System.EventHandler(this.textBoxLastname_TextChanged);
             // 
             // textBoxName
@@ -161,7 +163,7 @@
             this.textBoxName.Name = "textBoxName";
             this.textBoxName.Size = new System.Drawing.Size(451, 30);
             this.textBoxName.TabIndex = 8;
-            this.textBoxName.Text = "Введите имя";
+            this.textBoxName.Text = Resources.Registration_TextBoxName_Watermark;
             this.textBoxName.TextChanged += new System.EventHandler(this.textBoxName_TextChanged);
             // 
             // textBoxSurname
@@ -172,7 +174,7 @@
             this.textBoxSurname.Name = "textBoxSurname";
             this.textBoxSurname.Size = new System.Drawing.Size(451, 30);
             this.textBoxSurname.TabIndex = 7;
-            this.textBoxSurname.Text = "Введите фамилию";
+            this.textBoxSurname.Text = Resources.Registration_TextBoxSurname_Watermark;
             this.textBoxSurname.TextChanged += new System.EventHandler(this.textBoxSurname_TextChanged);
             // 
             // labelPassword
@@ -183,7 +185,7 @@
             this.labelPassword.Name = "labelPassword";
             this.labelPassword.Size = new System.Drawing.Size(80, 25);
             this.labelPassword.TabIndex = 6;
-            this.labelPassword.Text = "Пароль";
+            this.labelPassword.Text = Resources.Registration_LabelPassword_Text;    
             // 
             // labelAgreePassword
             // 
@@ -193,7 +195,7 @@
             this.labelAgreePassword.Name = "labelAgreePassword";
             this.labelAgreePassword.Size = new System.Drawing.Size(237, 25);
             this.labelAgreePassword.TabIndex = 5;
-            this.labelAgreePassword.Text = "Подтверждение пароля";
+            this.labelAgreePassword.Text = Resources.Registration_LabelConfirmPassword_Text;
             // 
             // labelLogin
             // 
@@ -203,7 +205,7 @@
             this.labelLogin.Name = "labelLogin";
             this.labelLogin.Size = new System.Drawing.Size(68, 25);
             this.labelLogin.TabIndex = 4;
-            this.labelLogin.Text = "Логин";
+            this.labelLogin.Text = Resources.Registration_LabelLogin_Text;
             // 
             // labelLastname
             // 
@@ -213,7 +215,7 @@
             this.labelLastname.Name = "labelLastname";
             this.labelLastname.Size = new System.Drawing.Size(104, 25);
             this.labelLastname.TabIndex = 3;
-            this.labelLastname.Text = "Отчество";
+            this.labelLastname.Text = Resources.Registration_LabelLastname_Text;
             // 
             // labelName
             // 
@@ -223,7 +225,7 @@
             this.labelName.Name = "labelName";
             this.labelName.Size = new System.Drawing.Size(54, 25);
             this.labelName.TabIndex = 2;
-            this.labelName.Text = "Имя";
+            this.labelName.Text = Resources.Registration_LabelName_Text;
             // 
             // labelSurname
             // 
@@ -233,7 +235,7 @@
             this.labelSurname.Name = "labelSurname";
             this.labelSurname.Size = new System.Drawing.Size(103, 25);
             this.labelSurname.TabIndex = 1;
-            this.labelSurname.Text = "Фамилия";
+            this.labelSurname.Text = Resources.Registration_LabelSurname_Text;
             // 
             // labelRegistration
             // 
@@ -243,7 +245,7 @@
             this.labelRegistration.Name = "labelRegistration";
             this.labelRegistration.Size = new System.Drawing.Size(219, 39);
             this.labelRegistration.TabIndex = 0;
-            this.labelRegistration.Text = "Регистрация";
+            this.labelRegistration.Text = Resources.Registration_LabelTitle_Text;
             // 
             // Registration
             // 
@@ -253,7 +255,7 @@
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.Name = "Registration";
-            this.Text = "Регистрация";
+            this.Text = Resources.Registration_Form_Title;
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             this.ResumeLayout(false);

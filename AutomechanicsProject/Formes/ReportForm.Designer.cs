@@ -1,4 +1,6 @@
-﻿namespace AutomechanicsProject.Formes
+﻿using AutomechanicsProject.Properties;
+
+namespace AutomechanicsProject.Formes
 {
     partial class ReportForm
     {
@@ -96,7 +98,7 @@
             this.labelTitle.Name = "labelTitle";
             this.labelTitle.Size = new System.Drawing.Size(964, 60);
             this.labelTitle.TabIndex = 0;
-            this.labelTitle.Text = "Отчет";
+            this.labelTitle.Text = Resources.Report_LabelTitle_Text;
             // 
             // panelTable
             // 
@@ -179,7 +181,7 @@
             this.labelPeriod.Name = "labelPeriod";
             this.labelPeriod.Size = new System.Drawing.Size(101, 40);
             this.labelPeriod.TabIndex = 0;
-            this.labelPeriod.Text = "Выберите\n период:";
+            this.labelPeriod.Text = Resources.Report_LabelPeriod_Text;
             // 
             // labelFrom
             // 
@@ -190,7 +192,7 @@
             this.labelFrom.Name = "labelFrom";
             this.labelFrom.Size = new System.Drawing.Size(16, 18);
             this.labelFrom.TabIndex = 1;
-            this.labelFrom.Text = "с";
+            this.labelFrom.Text = Resources.Report_LabelFrom_Text;
             // 
             // dateTimePickerFrom
             // 
@@ -213,7 +215,7 @@
             this.labelTo.Name = "labelTo";
             this.labelTo.Size = new System.Drawing.Size(25, 18);
             this.labelTo.TabIndex = 3;
-            this.labelTo.Text = "по";
+            this.labelTo.Text = Resources.Report_LabelTo_Text;
             // 
             // dateTimePickerTo
             // 
@@ -255,7 +257,7 @@
             this.labelTotalAmountValue.Name = "labelTotalAmountValue";
             this.labelTotalAmountValue.Size = new System.Drawing.Size(108, 20);
             this.labelTotalAmountValue.TabIndex = 1;
-            this.labelTotalAmountValue.Text = "0.00 руб.";
+            this.labelTotalAmountCaption.Text = Resources.Report_LabelTotalAmount_Text;
             this.labelTotalAmountValue.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // labelProfitCaption
@@ -266,7 +268,7 @@
             this.labelProfitCaption.Name = "labelProfitCaption";
             this.labelProfitCaption.Size = new System.Drawing.Size(151, 20);
             this.labelProfitCaption.TabIndex = 2;
-            this.labelProfitCaption.Text = "Прибыль(RUB):";
+            this.labelProfitCaption.Text = Resources.Report_LabelProfit_Text;
             this.labelProfitCaption.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // labelProfitValue
@@ -316,7 +318,7 @@
             this.buttonExport.Name = "buttonExport";
             this.buttonExport.Size = new System.Drawing.Size(126, 67);
             this.buttonExport.TabIndex = 0;
-            this.buttonExport.Text = "Экспорт\n файла";
+            this.buttonExport.Text = Resources.Report_ButtonExport_Text;
             this.buttonExport.UseVisualStyleBackColor = false;
             this.buttonExport.Click += new System.EventHandler(this.buttonExport_Click);
             // 
@@ -329,7 +331,7 @@
             this.MinimumSize = new System.Drawing.Size(800, 500);
             this.Name = "ReportForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Отчет";
+            this.Text = Resources.Report_Form_Title;
             this.Load += new System.EventHandler(this.ReportForm_Load);
             this.tableLayoutPanelMain.ResumeLayout(false);
             this.panelTitle.ResumeLayout(false);

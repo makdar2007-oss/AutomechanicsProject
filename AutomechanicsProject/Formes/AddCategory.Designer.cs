@@ -1,4 +1,6 @@
-﻿namespace AutomechanicsProject.Formes
+﻿using AutomechanicsProject.Properties;
+
+namespace AutomechanicsProject.Formes
 {
     partial class AddCategory
     {
@@ -44,7 +46,7 @@
             this.labelAddCategory.Name = "labelAddCategory";
             this.labelAddCategory.Size = new System.Drawing.Size(454, 69);
             this.labelAddCategory.TabIndex = 0;
-            this.labelAddCategory.Text = "Добавить категорию";
+            this.labelAddCategory.Text = Resources.AddCategory_LabelText;
             // 
             // textBoxAddCategory
             // 
@@ -54,7 +56,7 @@
             this.textBoxAddCategory.Name = "textBoxAddCategory";
             this.textBoxAddCategory.Size = new System.Drawing.Size(573, 61);
             this.textBoxAddCategory.TabIndex = 1;
-            this.textBoxAddCategory.Text = "Введите название";
+            this.textBoxAddCategory.Text = Resources.CategoryAddWatermark;
             // 
             // buttonCancel
             // 
@@ -64,7 +66,7 @@
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(250, 80);
             this.buttonCancel.TabIndex = 2;
-            this.buttonCancel.Text = "Отмена";
+            this.buttonCancel.Text = Resources.AddCategory_ButtonCancelText;
             this.buttonCancel.UseVisualStyleBackColor = false;
             this.buttonCancel.Click += new System.EventHandler(this.ButtonCancel_Click);
             // 
@@ -75,7 +77,7 @@
             this.buttonAdd.Name = "buttonAdd";
             this.buttonAdd.Size = new System.Drawing.Size(250, 80);
             this.buttonAdd.TabIndex = 3;
-            this.buttonAdd.Text = "Добавить";
+            this.buttonAdd.Text = Resources.AddCategory_ButtonAddText;
             this.buttonAdd.UseVisualStyleBackColor = true;
             this.buttonAdd.Click += new System.EventHandler(this.buttonAdd_Click);
             // 
@@ -99,7 +101,7 @@
             this.Controls.Add(this.labelAddCategory);
             this.Controls.Add(this.panel1);
             this.Name = "AddCategory";
-            this.Text = "Добавить категорию";
+            this.Text = Resources.AddCategory_Title;
             this.ResumeLayout(false);
             this.PerformLayout();
 

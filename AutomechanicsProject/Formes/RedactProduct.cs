@@ -30,34 +30,20 @@ namespace AutomechanicsProject.Formes
             db = database ?? throw new ArgumentNullException(nameof(database));
             productId = id;
 
-            SetupWatermarks();
-            SubscribeToChanges();
-            LoadUnits();
-            LoadProductData();
-        }
-
-        /// <summary>
-        /// Настраивает водяные знаки для полей ввода
-        /// </summary>
-        private void SetupWatermarks()
-        {
             TextBoxHelper.SetupWatermarkTextBox(textBoxArt, Resources.EditArticleWatermark);
             TextBoxHelper.SetupWatermarkTextBox(textBoxName, Resources.EditNameWatermark);
             TextBoxHelper.SetupWatermarkTextBox(textBoxCategory, Resources.EditCategoryWatermark);
             TextBoxHelper.SetupWatermarkTextBox(textBoxPrice, Resources.EditPriceWatermark);
             TextBoxHelper.SetupWatermarkComboBox(comboBoxUnit, Resources.UnitSelectWatermark);
-        }
 
-        /// <summary>
-        /// Обработчики изменения полей
-        /// </summary>
-        private void SubscribeToChanges()
-        {
             textBoxArt.TextChanged += (s, e) => hasChanges = true;
             textBoxName.TextChanged += (s, e) => hasChanges = true;
             textBoxCategory.TextChanged += (s, e) => hasChanges = true;
             comboBoxUnit.SelectedIndexChanged += (s, e) => hasChanges = true;
             textBoxPrice.TextChanged += (s, e) => hasChanges = true;
+
+            LoadUnits();
+            LoadProductData();
         }
 
         /// <summary>

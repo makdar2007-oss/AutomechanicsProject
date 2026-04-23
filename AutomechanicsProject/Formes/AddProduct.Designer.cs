@@ -1,4 +1,6 @@
-﻿namespace AutomechanicsProject.Formes
+﻿using AutomechanicsProject.Properties;
+
+namespace AutomechanicsProject.Formes
 {
     partial class AddProduct
     {
@@ -73,7 +75,7 @@
             this.labelAddProduct.Name = "labelAddProduct";
             this.labelAddProduct.Size = new System.Drawing.Size(250, 36);
             this.labelAddProduct.TabIndex = 0;
-            this.labelAddProduct.Text = "Добавить товар";
+            this.labelAddProduct.Text = Resources.AddProduct_LabelText;
             // 
             // textBoxArt
             // 
@@ -84,8 +86,7 @@
             this.textBoxArt.Name = "textBoxArt";
             this.textBoxArt.Size = new System.Drawing.Size(342, 30);
             this.textBoxArt.TabIndex = 1;
-            this.textBoxArt.Text = "Введите артикул";
-            // 
+            this.textBoxArt.Text = Resources.AddProduct_TextBoxArt_Watermark;            // 
             // textBoxName
             // 
             this.textBoxName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -95,7 +96,7 @@
             this.textBoxName.Name = "textBoxName";
             this.textBoxName.Size = new System.Drawing.Size(342, 30);
             this.textBoxName.TabIndex = 2;
-            this.textBoxName.Text = "Введите название";
+            this.textBoxName.Text = Resources.ProductNameWatermark;
             // 
             // comboBoxCategory
             // 
@@ -132,7 +133,7 @@
             this.textBoxPrice.Name = "textBoxPrice";
             this.textBoxPrice.Size = new System.Drawing.Size(342, 30);
             this.textBoxPrice.TabIndex = 5;
-            this.textBoxPrice.Text = "Введите цену";
+            this.textBoxPrice.Text = Resources.ProductPriceWatermark;
             // 
             // groupBoxExpiry
             // 
@@ -144,7 +145,7 @@
             this.groupBoxExpiry.Size = new System.Drawing.Size(343, 80);
             this.groupBoxExpiry.TabIndex = 6;
             this.groupBoxExpiry.TabStop = false;
-            this.groupBoxExpiry.Text = "Срок годности";
+            this.groupBoxExpiry.Text = Resources.AddProduct_GroupBoxExpiry_Text;
             // 
             // radioButtonNoExpiry
             // 
@@ -156,7 +157,7 @@
             this.radioButtonNoExpiry.Size = new System.Drawing.Size(116, 24);
             this.radioButtonNoExpiry.TabIndex = 1;
             this.radioButtonNoExpiry.TabStop = true;
-            this.radioButtonNoExpiry.Text = "Нет срока";
+            this.radioButtonNoExpiry.Text = Resources.AddProduct_RadioButtonNoExpiry_Text;
             // 
             // radioButtonHasExpiry
             // 
@@ -166,7 +167,7 @@
             this.radioButtonHasExpiry.Name = "radioButtonHasExpiry";
             this.radioButtonHasExpiry.Size = new System.Drawing.Size(114, 24);
             this.radioButtonHasExpiry.TabIndex = 0;
-            this.radioButtonHasExpiry.Text = "Есть срок";
+            this.radioButtonHasExpiry.Text = Resources.AddProduct_RadioButtonHasExpiry_Text;
             // 
             // buttonCancel
             // 
@@ -177,7 +178,7 @@
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(167, 40);
             this.buttonCancel.TabIndex = 6;
-            this.buttonCancel.Text = "Отмена";
+            this.buttonCancel.Text = Resources.AddProduct_ButtonCancelText;
             this.buttonCancel.UseVisualStyleBackColor = false;
             this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
             // 
@@ -189,7 +190,7 @@
             this.buttonAdd.Name = "buttonAdd";
             this.buttonAdd.Size = new System.Drawing.Size(167, 40);
             this.buttonAdd.TabIndex = 7;
-            this.buttonAdd.Text = "Добавить";
+            this.buttonAdd.Text = Resources.AddProduct_ButtonAddText;
             this.buttonAdd.UseVisualStyleBackColor = true;
             this.buttonAdd.Click += new System.EventHandler(this.ButtonAdd_Click);
 
@@ -202,7 +203,7 @@
             this.Controls.Add(this.panelAdd);
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "AddProduct";
-            this.Text = "Добавить товар";
+            this.Text = Resources.AddProduct_Title; 
             this.panelAdd.ResumeLayout(false);
             this.panelAdd.PerformLayout();
             this.groupBoxExpiry.ResumeLayout(false);

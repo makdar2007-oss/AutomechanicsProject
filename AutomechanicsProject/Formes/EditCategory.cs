@@ -175,7 +175,6 @@ namespace AutomechanicsProject.Formes
                     return;
                 }
             }
-
             DialogResult = DialogResult.Cancel;
             Close();
         }

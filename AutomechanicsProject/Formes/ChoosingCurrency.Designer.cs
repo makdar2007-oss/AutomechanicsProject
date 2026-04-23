@@ -1,4 +1,6 @@
-﻿namespace AutomechanicsProject.Formes
+﻿using AutomechanicsProject.Properties;
+
+namespace AutomechanicsProject.Formes
 {
     partial class ChoosingCurrency
     {
@@ -49,7 +51,7 @@
             this.textBoxCurrency.Size = new System.Drawing.Size(310, 42);
             this.textBoxCurrency.TabIndex = 0;
             this.textBoxCurrency.TabStop = false;
-            this.textBoxCurrency.Text = "Выбор валюты";
+            this.textBoxCurrency.Text = Resources.Currency_TextBox_Text;
             this.textBoxCurrency.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // comboBoxCurrency
@@ -73,7 +75,7 @@
             this.buttonChoose.Name = "buttonChoose";
             this.buttonChoose.Size = new System.Drawing.Size(191, 55);
             this.buttonChoose.TabIndex = 2;
-            this.buttonChoose.Text = "Выбрать";
+            this.buttonChoose.Text = Resources.Currency_ButtonChoose_Text;
             this.buttonChoose.UseVisualStyleBackColor = true;
             this.buttonChoose.Click += new System.EventHandler(this.buttonChoose_Click);
             // 
@@ -86,7 +88,7 @@
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(191, 55);
             this.buttonCancel.TabIndex = 3;
-            this.buttonCancel.Text = "Отмена";
+            this.buttonCancel.Text = Resources.Currency_ButtonCancel_Text;
             this.buttonCancel.UseVisualStyleBackColor = false;
             this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
             // 
@@ -102,7 +104,7 @@
             this.Controls.Add(this.textBoxCurrency);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.Name = "ChoosingCurrency";
-            this.Text = "Выбор валюты";
+            this.Text = Resources.Currency_Form_Title;
             this.ResumeLayout(false);
             this.PerformLayout();
 

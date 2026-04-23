@@ -1,4 +1,5 @@
-﻿using System.Windows.Forms;
+﻿using AutomechanicsProject.Properties;
+using System.Windows.Forms;
 
 namespace AutomechanicsProject.Formes
 {
@@ -58,7 +59,7 @@ namespace AutomechanicsProject.Formes
             this.buttonDelete.Name = "buttonDelete";
             this.buttonDelete.Size = new System.Drawing.Size(251, 67);
             this.buttonDelete.TabIndex = 3;
-            this.buttonDelete.Text = "Удалить";
+            this.buttonDelete.Text = Resources.DeleteProduct_ButtonDelete_Text;
             this.buttonDelete.UseVisualStyleBackColor = true;
             this.buttonDelete.Click += new System.EventHandler(this.ButtonDelete_Click);
             // 
@@ -70,7 +71,7 @@ namespace AutomechanicsProject.Formes
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(251, 67);
             this.buttonCancel.TabIndex = 2;
-            this.buttonCancel.Text = "Отмена";
+            this.buttonCancel.Text = Resources.DeleteProduct_ButtonCancel_Text;
             this.buttonCancel.UseVisualStyleBackColor = false;
             this.buttonCancel.Click += new System.EventHandler(this.ButtonCancel_Click);
             // 
@@ -84,7 +85,7 @@ namespace AutomechanicsProject.Formes
             this.textBoxArt.ReadOnly = true;
             this.textBoxArt.Size = new System.Drawing.Size(350, 54);
             this.textBoxArt.TabIndex = 1;
-            this.textBoxArt.Text = "Введите артикул товара";
+            this.textBoxArt.Text = Resources.DeleteProduct_TextBoxArt_Watermark;
             this.textBoxArt.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // labelDeleteProduct
@@ -97,7 +98,7 @@ namespace AutomechanicsProject.Formes
             this.labelDeleteProduct.Name = "labelDeleteProduct";
             this.labelDeleteProduct.Size = new System.Drawing.Size(218, 46);
             this.labelDeleteProduct.TabIndex = 0;
-            this.labelDeleteProduct.Text = "Удалить товар";
+            this.labelDeleteProduct.Text = Resources.DeleteProduct_LabelTitle_Text;
             this.labelDeleteProduct.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // DeleteProduct
@@ -111,7 +112,7 @@ namespace AutomechanicsProject.Formes
             this.MinimizeBox = false;
             this.Name = "DeleteProduct";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Удалить товар";
+            this.Text = Resources.DeleteProduct_Form_Title;
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.ResumeLayout(false);

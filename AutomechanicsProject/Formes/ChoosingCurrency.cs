@@ -18,14 +18,14 @@ namespace AutomechanicsProject.Formes
     public partial class ChoosingCurrency : Form
     {
         private static string CacheFilePath => Path.Combine(
-       Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-       "AutomechanicsProject",
-       "currency_cache.json");
+        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+        "AutomechanicsProject",
+        "currency_cache.json");
         private List<CurrencyInfo> currencies;
         private Dictionary<string, decimal> exchangeRates;
         public static string SelectedCurrencyCode = CurrencyCodes.RUB;
         public static decimal CurrentExchangeRate = 1m;
-        public static string SelectedCurrencyName = "Российский рубль";
+        public static string SelectedCurrencyName = Resources.RussianRuble;
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         public ChoosingCurrency()
@@ -147,15 +147,6 @@ namespace AutomechanicsProject.Formes
             {
                 comboBoxCurrency.SelectedIndex = 0;
             }
-        }
-
-        /// <summary>
-        /// Возвращает отображаемый текст для валюты
-        /// </summary>
-        private string GetCurrencyDisplayText(string code, decimal rate)
-        {
-            var name = CurrencyHelper.GetCurrencyName(code);
-            return $"{code} - {name} (1 RUB = {rate:F4} {code})";
         }
 
         /// <summary>

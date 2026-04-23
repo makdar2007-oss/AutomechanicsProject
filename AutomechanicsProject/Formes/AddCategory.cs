@@ -20,15 +20,8 @@ namespace AutomechanicsProject.Formes
         {
             InitializeComponent();
             _db = database ?? throw new ArgumentNullException(nameof(database));
-            SetupWatermark();
-        }
-
-        /// <summary>
-        /// Установка водяного знака для текстового поля
-        /// </summary>
-        private void SetupWatermark()
-        {
             TextBoxHelper.SetupWatermarkTextBox(textBoxAddCategory, Resources.CategoryAddWatermark);
+
         }
 
         /// <summary>

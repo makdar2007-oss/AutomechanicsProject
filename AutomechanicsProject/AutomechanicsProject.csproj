@@ -302,6 +302,7 @@
     <Compile Include="Helpers\FormHelper.cs" />
     <Compile Include="Helpers\PasswordHasher.cs" />
     <Compile Include="Helpers\SearchableComboBoxHelper.cs" />
+    <Compile Include="Helpers\ShipmentTypeHelper.cs" />
     <Compile Include="Helpers\TextBoxHelper.cs" />
     <Compile Include="Classes\User.cs" />
     <Compile Include="Formes\AddProduct.cs">
@@ -467,9 +468,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <None Include="Shipment History\История_отгрузок_20260409_011659.csv" />
-    <None Include="Shipment History\История_отгрузок_20260409_163554.csv" />
-    <None Include="Shipment History\Отчет_20260412_025940.csv" />
     <None Include="Supply\Supply1.json" />
   </ItemGroup>
   <ItemGroup>
@@ -481,6 +479,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Images\photo_2026-03-02_20-14-38.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Shipment History\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

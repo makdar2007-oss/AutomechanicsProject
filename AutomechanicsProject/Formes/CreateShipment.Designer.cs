@@ -1,4 +1,6 @@
-﻿using System.Windows.Forms;
+﻿using AutomechanicsProject.Helpers;
+using AutomechanicsProject.Properties;
+using System.Windows.Forms;
 
 namespace AutomechanicsProject.Formes
 {
@@ -61,7 +63,7 @@ namespace AutomechanicsProject.Formes
             this.labelShipment.Name = "labelShipment";
             this.labelShipment.Size = new System.Drawing.Size(300, 29);
             this.labelShipment.TabIndex = 0;
-            this.labelShipment.Text = "Формирование отгрузки";
+            this.labelShipment.Text = Resources.Shipment_LabelTitle_Text;
             // 
             // panelShipment
             // 
@@ -95,10 +97,7 @@ namespace AutomechanicsProject.Formes
             this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Items.AddRange(new object[] {
-            "Отгрузка",
-            "Списание",
-            "Брак"});
+            this.comboBox1.Items.AddRange(ShipmentTypeHelper.GetLocalizedTypeList());
             this.comboBox1.Location = new System.Drawing.Point(31, 74);
             this.comboBox1.Margin = new System.Windows.Forms.Padding(2);
             this.comboBox1.Name = "comboBox1";
@@ -113,7 +112,7 @@ namespace AutomechanicsProject.Formes
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(129, 24);
             this.label4.TabIndex = 15;
-            this.label4.Text = "Тип отгрузки";
+            this.label4.Text = Resources.Shipment_LabelType_Text;
             this.label4.Visible = false;
             // 
             // label3
@@ -124,7 +123,7 @@ namespace AutomechanicsProject.Formes
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(212, 24);
             this.label3.TabIndex = 14;
-            this.label3.Text = "Выберите получателя:";
+            this.label3.Text = Resources.Shipment_LabelRecipient_Text;
             this.label3.Visible = false;
             // 
             // label2
@@ -135,7 +134,7 @@ namespace AutomechanicsProject.Formes
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(270, 24);
             this.label2.TabIndex = 13;
-            this.label2.Text = "Введите количество товара:";
+            this.label2.Text = Resources.Shipment_LabelQuantity_Text;
             this.label2.Visible = false;
             // 
             // label1
@@ -146,7 +145,7 @@ namespace AutomechanicsProject.Formes
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(163, 24);
             this.label1.TabIndex = 12;
-            this.label1.Text = "Выберите товар:";
+            this.label1.Text = Resources.Shipment_LabelSelectProduct_Text;
             this.label1.Visible = false;
             // 
             // labelTotalValue
@@ -168,7 +167,7 @@ namespace AutomechanicsProject.Formes
             this.labelTotalCaption.Name = "labelTotalCaption";
             this.labelTotalCaption.Size = new System.Drawing.Size(74, 25);
             this.labelTotalCaption.TabIndex = 8;
-            this.labelTotalCaption.Text = "Итого:";
+            this.labelTotalCaption.Text = Resources.Shipment_LabelTotalCaption_Text;
             // 
             // dataGridViewShipment
             // 
@@ -204,7 +203,7 @@ namespace AutomechanicsProject.Formes
             this.buttonShipment.Name = "buttonShipment";
             this.buttonShipment.Size = new System.Drawing.Size(161, 45);
             this.buttonShipment.TabIndex = 6;
-            this.buttonShipment.Text = "Подтвердить отгрузку";
+            this.buttonShipment.Text = Resources.Shipment_ButtonShipment_Text;
             this.buttonShipment.UseVisualStyleBackColor = false;
             this.buttonShipment.Click += new System.EventHandler(this.ButtonShipment_Click);
             // 
@@ -219,7 +218,7 @@ namespace AutomechanicsProject.Formes
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(133, 45);
             this.buttonCancel.TabIndex = 5;
-            this.buttonCancel.Text = "Отмена";
+            this.buttonCancel.Text = Resources.Shipment_ButtonCancel_Text;
             this.buttonCancel.UseVisualStyleBackColor = false;
             this.buttonCancel.Click += new System.EventHandler(this.ButtonCancel_Click);
             // 
@@ -234,7 +233,7 @@ namespace AutomechanicsProject.Formes
             this.buttonAdd.Name = "buttonAdd";
             this.buttonAdd.Size = new System.Drawing.Size(190, 68);
             this.buttonAdd.TabIndex = 4;
-            this.buttonAdd.Text = "Добавить в список";
+            this.buttonAdd.Text = Resources.Shipment_ButtonAdd_Text;
             this.buttonAdd.UseVisualStyleBackColor = false;
             this.buttonAdd.Click += new System.EventHandler(this.ButtonAdd_Click);
             // 
@@ -279,7 +278,7 @@ namespace AutomechanicsProject.Formes
             this.labelExpiry.Name = "labelExpiry";
             this.labelExpiry.Size = new System.Drawing.Size(149, 24);
             this.labelExpiry.TabIndex = 10;
-            this.labelExpiry.Text = "Срок годности:";
+            this.labelExpiry.Text = Resources.Shipment_LabelExpiry_Text;
             this.labelExpiry.Visible = false;
             // 
             // comboBoxExpiry
@@ -304,7 +303,7 @@ namespace AutomechanicsProject.Formes
             this.Name = "CreateShipment";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Формирование отгрузки";
+            this.Text = Resources.Shipment_Form_Title;
             this.Load += new System.EventHandler(this.CreateShipment_Load);
             this.panelShipment.ResumeLayout(false);
             this.panelShipment.PerformLayout();

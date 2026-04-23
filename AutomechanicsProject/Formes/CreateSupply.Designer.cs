@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AutomechanicsProject.Properties;
+using System;
 namespace AutomechanicsProject.Formes
 {
     partial class CreateSupply
@@ -71,7 +72,7 @@ namespace AutomechanicsProject.Formes
             this.labelSupply.Name = "labelSupply";
             this.labelSupply.Size = new System.Drawing.Size(119, 29);
             this.labelSupply.TabIndex = 0;
-            this.labelSupply.Text = "Поставка";
+            this.labelSupply.Text = Resources.Supply_LabelTitle_Text;
             // 
             // panelSupply
             // 
@@ -122,7 +123,7 @@ namespace AutomechanicsProject.Formes
             this.labelTotalCaption.Name = "labelTotalCaption";
             this.labelTotalCaption.Size = new System.Drawing.Size(74, 25);
             this.labelTotalCaption.TabIndex = 20;
-            this.labelTotalCaption.Text = "Итого:";
+            this.labelTotalCaption.Text = Resources.Supply_LabelTotalCaption_Text;
             // 
             // dataGridViewSupply
             // 
@@ -156,49 +157,49 @@ namespace AutomechanicsProject.Formes
             // 
             // dataGridViewTextBoxColumn1
             // 
-            this.dataGridViewTextBoxColumn1.HeaderText = "Артикул";
+            this.dataGridViewTextBoxColumn1.HeaderText = Resources.Supply_DataGridView_ColumnArticle;
             this.dataGridViewTextBoxColumn1.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
             this.dataGridViewTextBoxColumn1.ReadOnly = true;
             // 
             // dataGridViewTextBoxColumn2
             // 
-            this.dataGridViewTextBoxColumn2.HeaderText = "Название";
+            this.dataGridViewTextBoxColumn2.HeaderText = Resources.Supply_DataGridView_ColumnName;
             this.dataGridViewTextBoxColumn2.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
             this.dataGridViewTextBoxColumn2.ReadOnly = true;
             // 
             // dataGridViewTextBoxColumn3
             // 
-            this.dataGridViewTextBoxColumn3.HeaderText = "Кол-во";
+            this.dataGridViewTextBoxColumn3.HeaderText = Resources.Supply_DataGridView_ColumnQuantity;
             this.dataGridViewTextBoxColumn3.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
             this.dataGridViewTextBoxColumn3.ReadOnly = true;
             // 
             // dataGridViewTextBoxColumn4
             // 
-            this.dataGridViewTextBoxColumn4.HeaderText = "Цена";
+            this.dataGridViewTextBoxColumn4.HeaderText = Resources.Supply_DataGridView_ColumnPrice;
             this.dataGridViewTextBoxColumn4.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
             this.dataGridViewTextBoxColumn4.ReadOnly = true;
             // 
             // dataGridViewTextBoxColumn5
             // 
-            this.dataGridViewTextBoxColumn5.HeaderText = "Сумма";
+            this.dataGridViewTextBoxColumn5.HeaderText = Resources.Supply_DataGridView_ColumnTotal;
             this.dataGridViewTextBoxColumn5.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn5.Name = "dataGridViewTextBoxColumn5";
             this.dataGridViewTextBoxColumn5.ReadOnly = true;
             // 
             // dataGridViewTextBoxColumn6
             // 
-            this.dataGridViewTextBoxColumn6.HeaderText = "Поставщик";
+            this.dataGridViewTextBoxColumn6.HeaderText = Resources.Supply_DataGridView_ColumnSupplier;
             this.dataGridViewTextBoxColumn6.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn6.Name = "dataGridViewTextBoxColumn6";
             this.dataGridViewTextBoxColumn6.ReadOnly = true;
             // 
             // dataGridViewTextBoxColumn7
             // 
-            this.dataGridViewTextBoxColumn7.HeaderText = "Срок годности";
+            this.dataGridViewTextBoxColumn7.HeaderText = Resources.Supply_DataGridView_ColumnExpiry;
             this.dataGridViewTextBoxColumn7.MinimumWidth = 6;
             this.dataGridViewTextBoxColumn7.Name = "dataGridViewTextBoxColumn7";
             this.dataGridViewTextBoxColumn7.ReadOnly = true;
@@ -214,7 +215,7 @@ namespace AutomechanicsProject.Formes
             this.buttonConfirmSupply.Name = "buttonConfirmSupply";
             this.buttonConfirmSupply.Size = new System.Drawing.Size(161, 63);
             this.buttonConfirmSupply.TabIndex = 18;
-            this.buttonConfirmSupply.Text = "Подтвердить поставку";
+            this.buttonConfirmSupply.Text = Resources.Supply_ButtonConfirmSupply_Text;
             this.buttonConfirmSupply.UseVisualStyleBackColor = false;
             this.buttonConfirmSupply.Click += new System.EventHandler(this.ButtonConfirmSupply_Click);
             // 
@@ -229,7 +230,7 @@ namespace AutomechanicsProject.Formes
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(133, 63);
             this.buttonCancel.TabIndex = 17;
-            this.buttonCancel.Text = "Отмена";
+            this.buttonCancel.Text = Resources.Supply_ButtonCancel_Text;
             this.buttonCancel.UseVisualStyleBackColor = false;
             this.buttonCancel.Click += new System.EventHandler(this.ButtonCancel_Click);
             // 
@@ -244,7 +245,7 @@ namespace AutomechanicsProject.Formes
             this.buttonAddToList.Name = "buttonAddToList";
             this.buttonAddToList.Size = new System.Drawing.Size(167, 59);
             this.buttonAddToList.TabIndex = 16;
-            this.buttonAddToList.Text = "Добавить в список";
+            this.buttonAddToList.Text = Resources.Supply_ButtonAddToList_Text;
             this.buttonAddToList.UseVisualStyleBackColor = false;
             this.buttonAddToList.Click += new System.EventHandler(this.ButtonAddToList_Click);
             // 
@@ -259,7 +260,7 @@ namespace AutomechanicsProject.Formes
             this.buttonImport.Name = "buttonImport";
             this.buttonImport.Size = new System.Drawing.Size(303, 40);
             this.buttonImport.TabIndex = 15;
-            this.buttonImport.Text = "Импорт файла";
+            this.buttonImport.Text = Resources.Supply_ButtonImport_Text;
             this.buttonImport.UseVisualStyleBackColor = false;
             this.buttonImport.Click += new System.EventHandler(this.ButtonImport_Click);
             // 
@@ -344,7 +345,7 @@ namespace AutomechanicsProject.Formes
             this.labelProduct.Name = "labelProduct";
             this.labelProduct.Size = new System.Drawing.Size(244, 20);
             this.labelProduct.TabIndex = 2;
-            this.labelProduct.Text = "Выберите товар из списка: ";
+            this.labelProduct.Text = Resources.Supply_LabelProduct_Text;
             this.labelProduct.Visible = false;
             // 
             // labelQuantity
@@ -355,7 +356,7 @@ namespace AutomechanicsProject.Formes
             this.labelQuantity.Name = "labelQuantity";
             this.labelQuantity.Size = new System.Drawing.Size(191, 20);
             this.labelQuantity.TabIndex = 4;
-            this.labelQuantity.Text = "Введите количество:";
+            this.labelQuantity.Text = Resources.Supply_LabelQuantity_Text;
             this.labelQuantity.Visible = false;
             // 
             // labelSupplier
@@ -366,7 +367,7 @@ namespace AutomechanicsProject.Formes
             this.labelSupplier.Name = "labelSupplier";
             this.labelSupplier.Size = new System.Drawing.Size(205, 20);
             this.labelSupplier.TabIndex = 8;
-            this.labelSupplier.Text = "Выберите поставщика:";
+            this.labelSupplier.Text = Resources.Supply_LabelSupplier_Text;
             this.labelSupplier.Visible = false;
             // 
             // labelCurrency
@@ -377,7 +378,7 @@ namespace AutomechanicsProject.Formes
             this.labelCurrency.Name = "labelCurrency";
             this.labelCurrency.Size = new System.Drawing.Size(149, 20);
             this.labelCurrency.TabIndex = 10;
-            this.labelCurrency.Text = "Валюта закупки:";
+            this.labelCurrency.Text = Resources.Supply_LabelCurrency_Text;
             this.labelCurrency.Visible = false;
             // 
             // labelPrice
@@ -388,7 +389,7 @@ namespace AutomechanicsProject.Formes
             this.labelPrice.Name = "labelPrice";
             this.labelPrice.Size = new System.Drawing.Size(131, 20);
             this.labelPrice.TabIndex = 12;
-            this.labelPrice.Text = "Введите цену:";
+            this.labelPrice.Text = Resources.Supply_LabelPrice_Text;
             this.labelPrice.Visible = false;
             // 
             // labelExpiry
@@ -399,7 +400,7 @@ namespace AutomechanicsProject.Formes
             this.labelExpiry.Name = "labelExpiry";
             this.labelExpiry.Size = new System.Drawing.Size(139, 20);
             this.labelExpiry.TabIndex = 6;
-            this.labelExpiry.Text = "Срок годности:";
+            this.labelExpiry.Text = Resources.Supply_LabelExpiry_Text;
             this.labelExpiry.Visible = false;
             // 
             // CreateSupply
@@ -412,7 +413,7 @@ namespace AutomechanicsProject.Formes
             this.MinimumSize = new System.Drawing.Size(900, 550);
             this.Name = "CreateSupply";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Формирование поставки";
+            this.Text = Resources.Supply_Form_Title;
             this.panelSupply.ResumeLayout(false);
             this.panelSupply.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewSupply)).EndInit();

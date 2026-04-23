@@ -1,4 +1,5 @@
-﻿using System.Windows.Forms;
+﻿using AutomechanicsProject.Properties;
+using System.Windows.Forms;
 
 namespace AutomechanicsProject.Formes
 {
@@ -61,7 +62,7 @@ namespace AutomechanicsProject.Formes
             this.buttonDelete.Name = "buttonDelete";
             this.buttonDelete.Size = new System.Drawing.Size(191, 55);
             this.buttonDelete.TabIndex = 3;
-            this.buttonDelete.Text = "Удалить";
+            this.buttonDelete.Text = Resources.DeleteCategory_ButtonDelete_Text;
             this.buttonDelete.UseVisualStyleBackColor = true;
             this.buttonDelete.Click += new System.EventHandler(this.ButtonDelete_Click);
             // 
@@ -74,7 +75,7 @@ namespace AutomechanicsProject.Formes
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(191, 55);
             this.buttonCancel.TabIndex = 2;
-            this.buttonCancel.Text = "Отмена";
+            this.buttonCancel.Text = Resources.DeleteCategory_ButtonCancel_Text;
             this.buttonCancel.UseVisualStyleBackColor = false;
             this.buttonCancel.Click += new System.EventHandler(this.ButtonCancel_Click);
             // 
@@ -87,7 +88,7 @@ namespace AutomechanicsProject.Formes
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(258, 29);
             this.label1.TabIndex = 1;
-            this.label1.Text = "Удалить категорию";
+            this.label1.Text = Resources.DeleteCategory_LabelTitle_Text;
             // 
             // comboBoxCategory
             // 
@@ -111,7 +112,7 @@ namespace AutomechanicsProject.Formes
             this.Controls.Add(this.panelDelete);
             this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "DeleteCategory";
-            this.Text = "Удалить категорию";
+            this.Text = Resources.DeleteCategory_Form_Title;
             this.Load += new System.EventHandler(this.DeleteCategory_Load);
             this.panelDelete.ResumeLayout(false);
             this.panelDelete.PerformLayout();
