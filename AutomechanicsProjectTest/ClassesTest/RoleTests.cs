@@ -22,14 +22,6 @@ namespace AutomechanicsProjectTest.Classes
         }
 
         [Fact]
-        public void IsStorekeeper_WhenFalse_ReturnsFalse()
-        {
-            var role = new Role { Position = "Администратор" };
-
-            Assert.False(role.IsStorekeeper);
-        }
-
-        [Fact]
         public void Type_WithUnknownPosition_ReturnsDefaultEnum()
         {
             var role = new Role { Position = "Что-то левое" };

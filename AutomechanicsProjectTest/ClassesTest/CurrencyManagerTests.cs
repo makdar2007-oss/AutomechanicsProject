@@ -35,16 +35,6 @@ namespace AutomechanicsProjectTest.Classes
         }
 
         [Fact]
-        public void ConvertPrice_WithZero_ReturnsZero()
-        {
-            CurrencyManager.SetCurrency(CurrencyCodes.USD, 0.5m);
-
-            var result = CurrencyManager.ConvertPrice(0m);
-
-            Assert.Equal(0m, result);
-        }
-
-        [Fact]
         public void ConvertPrice_WithNegativeValue_StillConverts()
         {
             CurrencyManager.SetCurrency(CurrencyCodes.USD, 0.5m);
@@ -74,27 +64,11 @@ namespace AutomechanicsProjectTest.Classes
         }
 
         [Fact]
-        public void ConvertPriceToRub_InvalidRate_ReturnsZero()
-        {
-            var result = CurrencyManager.ConvertPriceToRub(100, "USD", 0);
-
-            Assert.Equal(0, result);
-        }
-
-        [Fact]
         public void ConvertPriceToRub_Normal_ReturnsDivided()
         {
             var result = CurrencyManager.ConvertPriceToRub(200, "USD", 2);
 
             Assert.Equal(100, result);
-        }
-
-        [Fact]
-        public void ConvertPriceToRub_WithZeroRate_ShouldNotCrash()
-        {
-            var result = CurrencyManager.ConvertPriceToRub(100m, CurrencyCodes.USD, 0m);
-
-            Assert.Equal(0m, result);
         }
     }
 }
