@@ -156,11 +156,11 @@ namespace AutomechanicsProject.Formes
                 ConfigureRussianColumns();
 
                 var totalSum = displayList
-                    .Where(x => x.Type == ShipmentTypeEnum.Shipment.ToString() && x.Quantity > 0)
+                    .Where(x => x.Type == Resources.ShipmentType_Shipment && x.Quantity > 0)
                     .Sum(x => x.Total);
 
                 var totalProfit = displayList
-                    .Where(x => x.Type == ShipmentTypeEnum.Shipment.ToString())
+                    .Where(x => x.Type == Resources.ShipmentType_Shipment)
                     .Sum(x => x.Profit);
 
                 UpdateTotalInfo(totalSum, totalProfit);
