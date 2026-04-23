@@ -421,6 +421,13 @@ namespace AutomechanicsProject.Formes
             {
                 SearchableComboBoxHelper.ClearAndReloadProducts(comboBoxProduct, comboBoxState);
             }
+
+            TextBoxHelper.SetupWatermarkTextBox(textBoxQuantity, Resources.SQuantityWatermark);
+            TextBoxHelper.SetupWatermarkTextBox(textBoxPrice, Resources.SPriceWatermark);
+            TextBoxHelper.SetupWatermarkComboBox(comboBoxProduct, Resources.SProductWatermark);
+            TextBoxHelper.SetupWatermarkComboBox(comboBoxSupplier, Resources.SSupplierWatermark);
+            TextBoxHelper.SetupWatermarkComboBox(comboBoxCurrency, Resources.SCurrencyWatermark);
+
         }
 
         /// <summary>
