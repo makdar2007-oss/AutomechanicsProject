@@ -779,7 +779,6 @@
 		<value>Н/Д</value>
 	</data>
 	
-	<!-- Форма AddCategory -->
 	<data name="AddCategory_Title" xml:space="preserve">
     <value>Добавить категорию</value>
   </data>
@@ -793,7 +792,6 @@
     <value>Отмена</value>
   </data>
 
-	<!-- Форма AddProduct -->
 	<data name="AddProduct_Title" xml:space="preserve">
     <value>Добавить товар</value>
   </data>
@@ -822,7 +820,6 @@
     <value>Введите артикул</value>
   </data>
 
-	<!-- Форма AdminForm -->
 	<data name="AdminForm_Title" xml:space="preserve">
     <value>Главная форма</value>
   </data>
@@ -863,7 +860,6 @@
     <value>Администратор</value>
   </data>
 
-	<!-- Форма Autorization -->
 	<data name="Auth_Form_Title" xml:space="preserve">
     <value>Авторизация</value>
   </data>
@@ -883,7 +879,6 @@
     <value>Нет аккаунта? Зарегистрироваться</value>
   </data>
 
-	<!-- Форма ChoosingCurrency -->
 	<data name="Currency_Form_Title" xml:space="preserve">
     <value>Выбор валюты</value>
   </data>
@@ -896,7 +891,7 @@
 	<data name="Currency_ButtonCancel_Text" xml:space="preserve">
     <value>Отмена</value>
   </data>
-	<!-- CreateShipment -->
+
 	<data name="Shipment_Form_Title" xml:space="preserve">
     <value>Формирование отгрузки</value>
 </data>
@@ -931,7 +926,6 @@
     <value>Итого:</value>
 </data>
 
-	<!-- Типы отгрузки -->
 	<data name="ShipmentType_Shipment" xml:space="preserve">
     <value>Отгрузка</value>
 </data>
@@ -945,7 +939,6 @@
     <value>Выберите тип отгрузки</value>
 </data>
 
-	<!-- Форма CreateSupply -->
 	<data name="Supply_Form_Title" xml:space="preserve">
     <value>Формирование поставки</value>
   </data>
@@ -1007,7 +1000,6 @@
     <value>Срок годности</value>
   </data>
 
-	<!-- Форма DeleteCategory -->
 	<data name="DeleteCategory_Form_Title" xml:space="preserve">
     <value>Удалить категорию</value>
   </data>
@@ -1021,7 +1013,6 @@
     <value>Отмена</value>
   </data>
 
-	<!-- Форма DeleteProduct -->
 	<data name="DeleteProduct_Form_Title" xml:space="preserve">
     <value>Удалить товар</value>
   </data>
@@ -1041,7 +1032,6 @@
     <value>Удаление товара: {0} - {1}</value>
   </data>
 
-	<!-- Форма EditCategory -->
 	<data name="EditCategory_Form_Title" xml:space="preserve">
     <value>Редактировать категорию</value>
   </data>
@@ -1058,7 +1048,6 @@
     <value>Введите название</value>
   </data>
 
-	<!-- Форма RedactProduct -->
 	<data name="RedactProduct_Form_Title" xml:space="preserve">
     <value>Редактировать товар</value>
   </data>
@@ -1084,7 +1073,6 @@
     <value>Отмена</value>
   </data>
 
-	<!-- Форма Registration -->
 	<data name="Registration_Form_Title" xml:space="preserve">
     <value>Регистрация</value>
   </data>
@@ -1134,7 +1122,6 @@
     <value>Повторите пароль</value>
   </data>
 
-	<!-- Форма ReportForm -->
 	<data name="Report_Form_Title" xml:space="preserve">
     <value>Отчет</value>
   </data>
@@ -1190,7 +1177,6 @@
     <value>Дата</value>
   </data>
 
-	<!-- Типы отгрузки -->
 	<data name="ShipmentType_Shipment" xml:space="preserve">
     <value>Отгрузка</value>
 </data>
@@ -1201,7 +1187,6 @@
     <value>Брак</value>
 </data>
 
-	<!-- Форма ShipmentHistoryForm -->
 	<data name="History_Form_Title" xml:space="preserve">
     <value>История отгрузок</value>
   </data>
@@ -1218,7 +1203,6 @@
     <value>Применить</value>
   </data>
 
-	<!-- Форма StorekeeperForm -->
 	<data name="Storekeeper_Form_Title" xml:space="preserve">
     <value>Кладовщик - Управление складом</value>
   </data>
@@ -1241,7 +1225,6 @@
     <value>Кладовщик</value>
   </data>
 
-	<!-- Общие строки конфигурации DataGridView -->
 	<data name="DataGridView_ColumnArticle" xml:space="preserve">
     <value>Артикул</value>
   </data>
