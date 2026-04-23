@@ -1,16 +1,18 @@
-﻿namespace AutomechanicsProject
+﻿using AutomechanicsProject.Properties;
+
+namespace AutomechanicsProject
 {
     partial class Autorization
     {
         /// <summary>
-        /// Обязательная переменная конструктора.
+        /// Required designer variable.
         /// </summary>
         private System.ComponentModel.IContainer components = null;
 
         /// <summary>
-        /// Освободить все используемые ресурсы.
+        /// Clean up any resources being used.
         /// </summary>
-        /// <param name="disposing">истинно, если управляемый ресурс должен быть удален; иначе ложно.</param>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -20,11 +22,11 @@
             base.Dispose(disposing);
         }
 
-        #region Код, автоматически созданный конструктором форм Windows
+        #region Windows Form Designer generated code
 
         /// <summary>
-        /// Требуемый метод для поддержки конструктора — не изменяйте 
-        /// содержимое этого метода с помощью редактора кода.
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent()
         {
@@ -52,7 +54,7 @@
             this.labelEnter.Name = "labelEnter";
             this.labelEnter.Size = new System.Drawing.Size(201, 85);
             this.labelEnter.TabIndex = 0;
-            this.labelEnter.Text = "Войти";
+            this.labelEnter.Text = Resources.Auth_LabelEnter_Text;
             // 
             // labelLogin
             // 
@@ -62,7 +64,7 @@
             this.labelLogin.Name = "labelLogin";
             this.labelLogin.Size = new System.Drawing.Size(104, 46);
             this.labelLogin.TabIndex = 1;
-            this.labelLogin.Text = "Логин";
+            this.labelLogin.Text = Resources.Auth_LabelLogin_Text;
             // 
             // labelPassword
             // 
@@ -72,7 +74,7 @@
             this.labelPassword.Name = "labelPassword";
             this.labelPassword.Size = new System.Drawing.Size(127, 46);
             this.labelPassword.TabIndex = 2;
-            this.labelPassword.Text = "Пароль";
+            this.labelPassword.Text = Resources.Auth_LabelPassword_Text;
             // 
             // panelauto
             // 
@@ -113,7 +115,7 @@
             this.buttonRegest.Name = "buttonRegest";
             this.buttonRegest.Size = new System.Drawing.Size(561, 42);
             this.buttonRegest.TabIndex = 6;
-            this.buttonRegest.Text = "Нет аккаунта? Зарегистрироваться";
+            this.buttonRegest.Text = Resources.Auth_ButtonRegister_Text;
             this.buttonRegest.UseVisualStyleBackColor = true;
             this.buttonRegest.Click += new System.EventHandler(this.linkRegisterClick);
             // 
@@ -125,7 +127,7 @@
             this.buttonEnter.Name = "buttonEnter";
             this.buttonEnter.Size = new System.Drawing.Size(561, 130);
             this.buttonEnter.TabIndex = 5;
-            this.buttonEnter.Text = "Войти";
+            this.buttonEnter.Text = Resources.Auth_ButtonEnter_Text;
             this.buttonEnter.UseVisualStyleBackColor = false;
             this.buttonEnter.Click += new System.EventHandler(this.BtnLoginClick);
             // 
@@ -138,7 +140,8 @@
             this.textBoxPassword.Name = "textBoxPassword";
             this.textBoxPassword.Size = new System.Drawing.Size(561, 54);
             this.textBoxPassword.TabIndex = 4;
-            this.textBoxPassword.Text = "Введите пароль";
+            this.textBoxPassword.Text = Resources.AuthPasswordWatermark;
+            this.textBoxPassword.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TextBox_KeyDown);
             // 
             // textBoxLogin
             // 
@@ -149,7 +152,8 @@
             this.textBoxLogin.Name = "textBoxLogin";
             this.textBoxLogin.Size = new System.Drawing.Size(561, 54);
             this.textBoxLogin.TabIndex = 3;
-            this.textBoxLogin.Text = "Введите логин";
+            this.textBoxLogin.Text = Resources.AuthLoginWatermark;
+            this.textBoxLogin.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TextBox_KeyDown);
             // 
             // Autorization
             // 
@@ -159,7 +163,7 @@
             this.Controls.Add(this.panelauto);
             this.Controls.Add(this.panelautorization);
             this.Name = "Autorization";
-            this.Text = "Авторизация";
+            this.Text = Resources.Auth_Form_Title;
             this.panelautorization.ResumeLayout(false);
             this.panelautorization.PerformLayout();
             this.ResumeLayout(false);

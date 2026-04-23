@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace AutomechanicsProject.Classes
 {
     /// <summary>
-    /// Представляет поставку товаров (входящую накладную)
+    /// Представляет поставку товаров
     /// </summary>
     [Table("supply")]
     public class Supply
@@ -31,12 +31,6 @@ namespace AutomechanicsProject.Classes
         public DateTime DateCreated { get; set; }
 
         /// <summary>
-        /// Идентификатор поставщика
-        /// </summary>
-        [Column("supplier_id")]
-        public Guid SupplierId { get; set; }
-
-        /// <summary>
         /// Идентификатор пользователя, создавшего поставку
         /// </summary>
         [Column("user_id")]
@@ -55,10 +49,22 @@ namespace AutomechanicsProject.Classes
         public decimal TotalAmount { get; set; }
 
         /// <summary>
-        /// Поставщик (навигационное свойство)
+        /// Код валюты поставки
         /// </summary>
-        [ForeignKey("SupplierId")]
-        public virtual Supplier Supplier { get; set; }
+        [Column("currency_code")]
+        public string CurrencyCode { get; set; } = CurrencyCodes.RUB;
+
+        /// <summary>
+        /// Курс обмена на момент поставки
+        /// </summary>
+        [Column("exchange_rate")]
+        public decimal ExchangeRate { get; set; } = 1.00m;
+
+        /// <summary>
+        /// Дата и время сохранения курса
+        /// </summary>
+        [Column("rate_date")]
+        public DateTime RateDate { get; set; }
 
         /// <summary>
         /// Пользователь (навигационное свойство)

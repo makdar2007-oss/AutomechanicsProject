@@ -2,6 +2,7 @@
 using AutomechanicsProject.Helpers;
 using AutomechanicsProject.Properties;
 using Microsoft.EntityFrameworkCore;
+using NLog;
 using System;
 using System.Drawing;
 using System.Linq;
@@ -14,25 +15,29 @@ namespace AutomechanicsProject.Formes
     /// </summary>
     public partial class DeleteProduct : Form
     {
-        private readonly DateBase db;
-        private readonly Guid? productId;
+        private readonly DateBase _db;
+        private readonly Guid? _productId;
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
+
         /// <summary>
         /// Инициализирует форму удаления товара (поиск по артикулу)
         /// </summary>
-        public DeleteProduct()
+        public DeleteProduct(DateBase database)
         {
             InitializeComponent();
-            db = new DateBase();
+            _db = database ?? throw new ArgumentNullException(nameof(database));
             TextBoxHelper.SetupWatermarkTextBox(textBoxArt, Resources.DeleteArticleWatermark);
         }
+
         /// <summary>
         /// Инициализирует форму удаления товара по ID
         /// </summary>
-        public DeleteProduct(Guid id) : this()
+        public DeleteProduct(DateBase database, Guid id) : this(database)
         {
-            productId = id;
+            _productId = id;
             LoadProductById();
         }
+
         /// <summary>
         /// Загружает товар по ID и отображает информацию
         /// </summary>
@@ -40,38 +45,46 @@ namespace AutomechanicsProject.Formes
         {
             try
             {
-                if (!productId.HasValue) return;
+                if (!_productId.HasValue)
+                {
+                    return;
+                }
 
-                var product = db.Products
+                var product = _db.Products
                     .Include(p => p.Category)
-                    .FirstOrDefault(p => p.Id == productId.Value);
+                    .FirstOrDefault(p => p.Id == _productId.Value);
 
                 if (product != null)
                 {
                     textBoxArt.Text = product.Article;
                     textBoxArt.ForeColor = Color.Black;
                     textBoxArt.ReadOnly = true;
-                    labelDeleteProduct.Text = $"Удаление товара:\n{product.Article} - {product.Name}";
+                    labelDeleteProduct.Text = string.Format(Resources.DeleteProductWithDetails, product.Article, product.Name);
                 }
             }
             catch (Exception ex)
             {
-                Program.LogError($"Ошибка при загрузке товара с ID {productId}", ex);
+                logger.Error($"Ошибка при загрузке товара с ID {_productId}", ex);
                 MessageBox.Show(Resources.ErrorLoadProduct, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
         /// <summary>
         /// Находит товар по артикулу
         /// </summary>
         private Product FindProductByArticle(string article)
         {
-            if (string.IsNullOrWhiteSpace(article)) return null;
+            if (string.IsNullOrWhiteSpace(article))
+            {
+                return null;
+            }
 
-            return db.Products
+            return _db.Products
                 .Include(p => p.Category)
                 .FirstOrDefault(p => p.Article == article.Trim());
         }
+
         /// <summary>
         /// Обработчик нажатия кнопки "Удалить"
         /// </summary>
@@ -102,12 +115,15 @@ namespace AutomechanicsProject.Formes
                     return;
                 }
 
-                if (!ConfirmDelete(product)) return;
+                if (!ConfirmDelete(product))
+                {
+                    return;
+                }
 
-                db.Products.Remove(product);
-                db.SaveChanges();
+                _db.Products.Remove(product);
+                _db.SaveChanges();
 
-                Program.LogInfo($"Товар '{product.Article} - {product.Name}' удален");
+                logger.Info($"Товар '{product.Article} - {product.Name}' удален");
 
                 MessageBox.Show(Resources.SuccessProductDeleted, Resources.TitleSuccess,
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -117,40 +133,48 @@ namespace AutomechanicsProject.Formes
             }
             catch (Exception ex)
             {
-                Program.LogError("Ошибка при удалении товара", ex);
+                logger.Error("ошибка при удалении товара", ex);
                 MessageBox.Show(Resources.ErrorDeleteProduct, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        /// <summary>
+        /// Подтверждает удаление товара
+        /// </summary>
         private bool ConfirmDelete(Product product)
         {
             var categoryName = product.Category?.Name ?? Resources.CategoryNone;
+            var unitName = product.Unit?.Name ?? "шт";
 
             var result = MessageBox.Show(
                 string.Format(Resources.ConfirmDeleteProduct,
-                    product.Article, product.Name, categoryName, product.Price, product.Balance, product.Unit),
+                    product.Article, product.Name, categoryName, product.Price, product.Balance, unitName),
                 Resources.TitleConfirmation,
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Warning);
 
             return result == DialogResult.Yes;
         }
+
         /// <summary>
         /// Проверка использования в отгрузках
         /// </summary>
         private bool HasShipments(Product product, out int count)
         {
-            count = db.ShipmentItems.Count(si => si.ProductId == product.Id);
+            count = _db.ShipmentItems.Count(si => si.ProductId == product.Id);
             return count > 0;
         }
+
         /// <summary>
-        ///Проверка валидности артикула
+        /// Проверка валидности артикула
         /// </summary>
         private bool IsArticleValid()
         {
             return !string.IsNullOrWhiteSpace(textBoxArt.Text) &&
                    textBoxArt.Text != Resources.DeleteArticleWatermark;
         }
+
         /// <summary>
         /// Обработчик нажатия кнопки Отмена
         /// </summary>
@@ -158,7 +182,7 @@ namespace AutomechanicsProject.Formes
         {
             var hasInput = !string.IsNullOrWhiteSpace(textBoxArt.Text) &&
                            textBoxArt.Text != Resources.DeleteArticleWatermark &&
-                           !productId.HasValue;
+                           !_productId.HasValue;
             if (hasInput)
             {
                 var result = MessageBox.Show(
@@ -167,22 +191,26 @@ namespace AutomechanicsProject.Formes
                     MessageBoxButtons.YesNo,
                     MessageBoxIcon.Question);
 
-                if (result != DialogResult.Yes) return;
+                if (result != DialogResult.Yes)
+                {
+                    return;
+                }
             }
 
             DialogResult = DialogResult.Cancel;
             Close();
         }
+
         /// <summary>
         /// Метод получения товара
         /// </summary>
         private Product GetProduct()
         {
-            if (productId.HasValue)
+            if (_productId.HasValue)
             {
-                return db.Products
+                return _db.Products
                     .Include(p => p.Category)
-                    .FirstOrDefault(p => p.Id == productId.Value);
+                    .FirstOrDefault(p => p.Id == _productId.Value);
             }
 
             return FindProductByArticle(textBoxArt.Text);

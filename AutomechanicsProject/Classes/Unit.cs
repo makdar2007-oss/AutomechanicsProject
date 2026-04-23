@@ -30,7 +30,7 @@ namespace AutomechanicsProject.Classes
         public string ShortName { get; set; }
 
         /// <summary>
-        /// Отображаемое имя (полное + краткое)
+        /// Отображаемое имя 
         /// </summary>
         [NotMapped]
         public string DisplayName => $"{Name} ({ShortName})";

@@ -1,0 +1,26 @@
+{
+  "Currency": "RUB",
+  "Products": [
+    {
+      "Article": "OIL-FILTER-001",
+      "SupplierName": "СпецТрансКомплект",
+      "Quantity": 50,
+      "Price": 350.00,
+      "ExpiryDate": "2026-04-27"
+    },
+    {
+      "Article": "AIR-FILTER-002",
+      "SupplierName": "Мотор-Лайн",
+      "Quantity": 30,
+      "Price": 450.00,
+      "ExpiryDate": "2026-05-04"
+    },
+    {
+      "Article": "BRAKE-PAD-001",
+      "SupplierName": "Дизель-Холл",
+      "Quantity": 20,
+      "Price": 1200.00,
+      "ExpiryDate": "2027-03-04"
+    }
+  ]
+}

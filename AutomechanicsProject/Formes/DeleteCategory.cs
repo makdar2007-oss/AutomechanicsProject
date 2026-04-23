@@ -1,6 +1,7 @@
 ﻿using AutomechanicsProject.Classes;
+using AutomechanicsProject.Dtos.UI;
 using AutomechanicsProject.Properties;
-using Microsoft.EntityFrameworkCore;
+using NLog;
 using System;
 using System.Linq;
 using System.Windows.Forms;
@@ -12,16 +13,18 @@ namespace AutomechanicsProject.Formes
     /// </summary>
     public partial class DeleteCategory : Form
     {
-        private readonly DateBase db;
+        private readonly DateBase _db;
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
+
         /// <summary>
         /// Инициализирует новый экземпляр формы удаления категории
         /// </summary>
-        public DeleteCategory()
+        public DeleteCategory(DateBase database)
         {
             InitializeComponent();
-            db = new DateBase();
-            Load += DeleteCategory_Load;
+            _db = database ?? throw new ArgumentNullException(nameof(database));
         }
+
         /// <summary>
         /// Обработчик загрузки формы
         /// </summary>
@@ -29,6 +32,7 @@ namespace AutomechanicsProject.Formes
         {
             LoadCategories();
         }
+
         /// <summary>
         /// Загружает список категорий для удаления
         /// </summary>
@@ -36,19 +40,16 @@ namespace AutomechanicsProject.Formes
         {
             try
             {
-                var categories = db.Categories
+                var categories = _db.Categories
                     .OrderBy(c => c.Name)
-                    .Select(c => new
+                    .Select(c => new ComboItemDto
                     {
-                        c.Id,
-                        DisplayName = $"{c.Name} (товаров: {db.Products.Count(p => p.CategoryId == c.Id)})"
+                        Id = c.Id,
+                        Text = $"{c.Name} (товаров: {_db.Products.Count(p => p.CategoryId == c.Id)})"
                     })
                     .ToList();
-
-                comboBoxCategory.DisplayMember = "DisplayName";
-                comboBoxCategory.ValueMember = "Id";
                 comboBoxCategory.DataSource = categories;
-
+                comboBoxCategory.SelectedIndex = -1;
                 var hasCategories = comboBoxCategory.Items.Count > 0;
                 comboBoxCategory.SelectedIndex = hasCategories ? -1 : -1;
 
@@ -57,11 +58,12 @@ namespace AutomechanicsProject.Formes
             }
             catch (Exception ex)
             {
-                Program.LogError("Ошибка при загрузке категорий в DeleteCategory", ex);
+                logger.Error("Ошибка при загрузке категорий в форму 'Удаление категории'", ex);
                 MessageBox.Show(Resources.ErrorLoadCategories, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
         /// <summary>
         /// Обработчик нажатия кнопки Удалить
         /// </summary>
@@ -75,9 +77,9 @@ namespace AutomechanicsProject.Formes
             }
             try
             {
-                var selectedItem = (dynamic)comboBoxCategory.SelectedItem;
-                var categoryId = (Guid)selectedItem.Id;
-                var category = db.Categories
+                var selectedItem = (ComboItemDto)comboBoxCategory.SelectedItem;
+                var categoryId = selectedItem.Id;
+                var category = _db.Categories
                     .FirstOrDefault(c => c.Id == categoryId);
 
                 if (category == null)
@@ -86,11 +88,11 @@ namespace AutomechanicsProject.Formes
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
-                var products = db.Products.Where(p => p.CategoryId == categoryId).ToList();
+                var products = _db.Products.Where(p => p.CategoryId == categoryId).ToList();
                 if (products.Any())
                 {
                     var productIds = products.Select(p => p.Id).ToList();
-                    var hasShipments = db.ShipmentItems.Any(si => productIds.Contains(si.ProductId));
+                    var hasShipments = _db.ShipmentItems.Any(si => productIds.Contains(si.ProductId));
 
                     if (hasShipments)
                     {
@@ -108,15 +110,19 @@ namespace AutomechanicsProject.Formes
                     MessageBoxButtons.YesNo,
                     products.Any() ? MessageBoxIcon.Warning : MessageBoxIcon.Question);
 
-                if (result != DialogResult.Yes) return;
+                if (result != DialogResult.Yes)
+                {
+                    return;
+                }
+
                 if (products.Any())
                 {
-                    db.Products.RemoveRange(products);
-                    Program.LogInfo($"Удалено {products.Count} товаров из категории '{category.Name}'");
+                    _db.Products.RemoveRange(products);
+                    logger.Info($"Удалено {products.Count} товаров из категории '{category.Name}'");
                 }
-                db.Categories.Remove(category);
-                db.SaveChanges();
-                Program.LogInfo($"Категория '{category.Name}' успешно удалена");
+                _db.Categories.Remove(category);
+                _db.SaveChanges();
+                logger.Info($"Категория '{category.Name}' успешно удалена");
 
                 var successMessage = products.Any()
                     ? string.Format(Resources.SuccessCategoryAndProductsDeleted, category.Name, products.Count)
@@ -129,11 +135,12 @@ namespace AutomechanicsProject.Formes
             }
             catch (Exception ex)
             {
-                Program.LogError("Ошибка при удалении категории", ex);
+                logger.Error("Ошибка при удалении категории", ex);
                 MessageBox.Show(Resources.ErrorDeleteCategory, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
         /// <summary>
         /// Обработчик нажатия кнопки Отмена
         /// </summary>

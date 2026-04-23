@@ -4,74 +4,103 @@ using AutomechanicsProject.Properties;
 using System;
 using System.Linq;
 using System.Windows.Forms;
+using NLog;
 
 namespace AutomechanicsProject.Formes
 {
     /// <summary>
-    /// Форма для добавления новой категории товаров
+    /// Форма для добавления категории
     /// </summary>
     public partial class AddCategory : Form
     {
-        private readonly DateBase db;
+        private readonly DateBase _db;
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-        /// <summary>
-        /// Инициализирует новый экземпляр формы добавления категории
-        /// </summary>
-        public AddCategory()
+        public AddCategory(DateBase database)
         {
             InitializeComponent();
-            db = new DateBase();
+            _db = database ?? throw new ArgumentNullException(nameof(database));
             TextBoxHelper.SetupWatermarkTextBox(textBoxAddCategory, Resources.CategoryAddWatermark);
+
         }
 
         /// <summary>
         /// Обработчик нажатия кнопки "Добавить"
-        /// Сохранение новой категории в базу данных
         /// </summary>
         private void buttonAdd_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(textBoxAddCategory.Text) ||
-                textBoxAddCategory.Text == Resources.CategoryAddWatermark)
+            var categoryName = GetValidatedCategoryName();
+            if (categoryName == null)
             {
-                MessageBox.Show(Resources.ErrorFillCategory, Resources.TitleWarning,
+                return;
+            }
+
+            if (CategoryExists(categoryName))
+            {
+                MessageBox.Show(Resources.ErrorCategoryExists, Resources.TitleWarning,
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
+            AddNewCategory(categoryName);
+        }
+
+        /// <summary>
+        /// Проверяет название категории из текстового поля
+        /// </summary>
+        internal string GetValidatedCategoryName()
+        {
+            if (Validation.IsWatermark(textBoxAddCategory.Text, Resources.CategoryAddWatermark))
+            {
+                MessageBox.Show(Resources.ErrorFillCategory, Resources.TitleWarning,
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return null;
+            }
+
+            return textBoxAddCategory.Text.Trim();
+        }
+
+        /// <summary>
+        /// Проверка на наличие категории с таким же названием
+        /// </summary>
+        internal bool CategoryExists(string categoryName)
+        {
+            return _db.Categories.Any(c => c.Name.ToLower() == categoryName.ToLower());
+        }
+
+        /// <summary>
+        /// Создает и сохраняет новую категорию
+        /// </summary>
+        private void AddNewCategory(string categoryName)
+        {
             try
             {
-                var categoryName = textBoxAddCategory.Text.Trim();
-                var categoryExists = db.Categories.Any(c => c.Name.ToLower() == categoryName.ToLower());
-
-                if (categoryExists)
-                {
-                    MessageBox.Show(Resources.ErrorCategoryExists, Resources.TitleWarning,
-                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
                 var newCategory = new Category
                 {
                     Id = Guid.NewGuid(),
                     Name = categoryName
                 };
-                db.Categories.Add(newCategory);
-                db.SaveChanges();
-                Program.LogInfo($"Категория '{categoryName}' успешно добавлена");
-                MessageBox.Show(string.Format(Resources.SuccessCategoryAdded, categoryName), Resources.TitleSuccess,
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                _db.Categories.Add(newCategory);
+                _db.SaveChanges();
+
+                logger.Info($"Категория '{categoryName}' успешно добавлена");
+                MessageBox.Show(string.Format(Resources.SuccessCategoryAdded, categoryName),
+                    Resources.TitleSuccess, MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                 DialogResult = DialogResult.OK;
                 Close();
             }
             catch (Exception ex)
             {
-                Program.LogError($"Ошибка при добавлении категории '{textBoxAddCategory.Text}'", ex);
+                logger.Error($"Ошибка при добавлении категори '{categoryName}'", ex);
                 MessageBox.Show(Resources.ErrorAddCategory, Resources.TitleError,
-                  MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
         /// <summary>
-        /// Закрывает форму без сохранения
+        /// Обработчик нажатия кнопки "Отмена"
         /// </summary>
         private void ButtonCancel_Click(object sender, EventArgs e)
         {

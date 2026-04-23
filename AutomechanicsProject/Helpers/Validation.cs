@@ -3,7 +3,7 @@ using System.Drawing;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Linq;
-using AutomechanicsProject.Properties; // Добавляем using для ресурсов
+using AutomechanicsProject.Properties;
 
 /// <summary>
 /// Вспомогательный класс для валидации данных в формах
@@ -19,7 +19,9 @@ public static class Validation
         foreach (var (text, watermark) in fields)
         {
             if (IsWatermark(text, watermark))
+            {
                 return false;
+            }
         }
         return true;
     }
@@ -54,8 +56,9 @@ public static class Validation
     public static bool IsValidRussianName(string text)
     {
         if (string.IsNullOrWhiteSpace(text))
+        {
             return false;
-
+        }
         string pattern = @"^[а-яА-ЯёЁ\s\-]+$";
         return Regex.IsMatch(text, pattern);
     }
@@ -66,7 +69,9 @@ public static class Validation
     public static bool IsValidLogin(string text)
     {
         if (string.IsNullOrWhiteSpace(text))
+        {
             return false;
+        }
 
         string pattern = @"^[a-zA-Z0-9_]+$";
         return Regex.IsMatch(text, pattern);
@@ -78,7 +83,9 @@ public static class Validation
     public static bool IsValidLoginLength(string text)
     {
         if (string.IsNullOrWhiteSpace(text))
+        {
             return false;
+        }
 
         return text.Length >= 3 && text.Length <= 20;
     }
@@ -89,7 +96,9 @@ public static class Validation
     public static bool IsValidNameLength(string text)
     {
         if (string.IsNullOrWhiteSpace(text))
+        {
             return false;
+        }
 
         return text.Length >= 2 && text.Length <= 100;
     }
@@ -100,16 +109,21 @@ public static class Validation
     public static bool IsValidPassword(string password)
     {
         if (string.IsNullOrWhiteSpace(password))
+        {
             return false;
-
+        }
         if (password.Length < 6)
+        {
             return false;
-
+        }
         if (!password.Any(char.IsDigit))
+        {
             return false;
-
+        }
         if (!password.Any(char.IsLetter))
+        {
             return false;
+        }
 
         return true;
     }
@@ -247,4 +261,21 @@ public static class Validation
             }
         }
     }
+
+    /// <summary>
+    /// Проверяет, что выбран элемент в ComboBox
+    /// </summary>
+    public static bool IsComboBoxSelected(ComboBox comboBox)
+    {
+        return comboBox.SelectedItem != null;
+    }
+
+    /// <summary>
+    /// Проверяет, что поле заполнено 
+    /// </summary>
+    public static bool IsFieldFilled(string text, string watermark)
+    {
+        return !IsWatermark(text, watermark);
+    }
+
 }

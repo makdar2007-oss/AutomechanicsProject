@@ -42,10 +42,16 @@ namespace AutomechanicsProject.Classes
         public Guid UnitId { get; set; }
 
         /// <summary>
-        /// Цена товара
+        /// Цена продажи товара
         /// </summary>
         [Column("price")]
         public decimal Price { get; set; }
+
+        /// <summary>
+        /// Цена закупки товара
+        /// </summary>
+        [Column("purchase_price")]
+        public decimal PurchasePrice { get; set; }
 
         /// <summary>
         /// Текущий остаток товара на складе
@@ -76,5 +82,11 @@ namespace AutomechanicsProject.Classes
         /// </summary>
         [ForeignKey("UnitId")]
         public virtual Unit Unit { get; set; }
+
+        /// <summary>
+        /// Флаг на наличие срока годности
+        /// </summary>
+        [Column("has_expiry_date")]
+        public bool HasExpiryDate { get; set; }
     }
 }

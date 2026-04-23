@@ -1,29 +1,32 @@
 ﻿using AutomechanicsProject.Classes;
+using AutomechanicsProject.Dtos.UI;
 using AutomechanicsProject.Helpers;
 using AutomechanicsProject.Properties;
-using Microsoft.EntityFrameworkCore;
+using NLog;
 using System;
 using System.Linq;
 using System.Windows.Forms;
-
 namespace AutomechanicsProject.Formes
+
 {
     /// <summary>
     /// Форма для редактирования категории товаров
     /// </summary>
     public partial class EditCategory : Form
     {
-        private readonly DateBase db;
+        private readonly DateBase _db;
         private Category selectedCategory;
+        private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         /// <summary>
         /// Инициализирует новый экземпляр формы редактирования категории
         /// </summary>
-        public EditCategory()
+        public EditCategory(DateBase database)
         {
             InitializeComponent();
-            db = new DateBase();
-            Load += EditCategory_Load;
+            _db = database ?? throw new ArgumentNullException(nameof(database));
+
+            TextBoxHelper.SetupWatermarkTextBox(textBoxNewName, Resources.EditCategoryWatermark);
         }
 
         /// <summary>
@@ -32,15 +35,6 @@ namespace AutomechanicsProject.Formes
         private void EditCategory_Load(object sender, EventArgs e)
         {
             LoadCategories();
-            SetupWatermarks();
-        }
-
-        /// <summary>
-        /// Настраивает водяные знаки для полей ввода
-        /// </summary>
-        private void SetupWatermarks()
-        {
-            TextBoxHelper.SetupWatermarkTextBox(textBoxNewName, Resources.EditCategoryWatermark);
         }
 
         /// <summary>
@@ -50,30 +44,24 @@ namespace AutomechanicsProject.Formes
         {
             try
             {
-                var categories = db.Categories
+                var categories = _db.Categories
                     .OrderBy(c => c.Name)
-                    .Select(c => new
+                    .Select(c => new ComboItemDto
                     {
-                        c.Id,
-                        DisplayName = $"{c.Name} (товаров: {db.Products.Count(p => p.CategoryId == c.Id)})"
+                        Id = c.Id,
+                        Text = string.Format(Resources.CategoryItemFormat, c.Name, _db.Products.Count(p => p.CategoryId == c.Id))
                     })
                     .ToList();
 
-                comboBoxCategory.DisplayMember = "DisplayName";
-                comboBoxCategory.ValueMember = "Id";
                 comboBoxCategory.DataSource = categories;
-
                 var hasCategories = comboBoxCategory.Items.Count > 0;
                 comboBoxCategory.SelectedIndex = -1;
-                buttonEdit.Enabled = false;
-                textBoxNewName.Enabled = false;
                 textBoxNewName.Text = Resources.EditCategoryWatermark;
-                textBoxNewName.ForeColor = System.Drawing.Color.Gray;
                 selectedCategory = null;
             }
             catch (Exception ex)
             {
-                Program.LogError("Ошибка при загрузке категорий в EditCategory", ex);
+                logger.Error("Ошибка при загрузке категорий в форму 'Редактирование категории'", ex);
                 MessageBox.Show(Resources.ErrorLoadCategories, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -85,10 +73,10 @@ namespace AutomechanicsProject.Formes
         {
             if (comboBoxCategory.SelectedItem != null)
             {
-                var selectedItem = (dynamic)comboBoxCategory.SelectedItem;
-                var categoryId = (Guid)selectedItem.Id;
+                var selectedItem = (ComboItemDto)comboBoxCategory.SelectedItem;
+                var categoryId = selectedItem.Id;
 
-                selectedCategory = db.Categories
+                selectedCategory = _db.Categories
                     .FirstOrDefault(c => c.Id == categoryId);
 
                 if (selectedCategory != null)
@@ -139,7 +127,7 @@ namespace AutomechanicsProject.Formes
 
             try
             {
-                var categoryExists = db.Categories
+                var categoryExists = _db.Categories
                     .Any(c => c.Name == newName && c.Id != selectedCategory.Id);
 
                 if (categoryExists)
@@ -151,16 +139,16 @@ namespace AutomechanicsProject.Formes
 
                 var oldName = selectedCategory.Name;
                 selectedCategory.Name = newName;
-                db.SaveChanges();
+                _db.SaveChanges();
 
-                Program.LogInfo($"Категория '{oldName}' переименована в '{newName}'");
+                logger.Info($"Категория '{oldName}' переименована в '{newName}'");
                 MessageBox.Show(string.Format(Resources.SuccessCategoryRenamed, oldName, newName),
                     Resources.TitleSuccess, MessageBoxButtons.OK, MessageBoxIcon.Information);
                 LoadCategories();
             }
             catch (Exception ex)
             {
-                Program.LogError($"Ошибка при редактировании категории ID {selectedCategory?.Id}", ex);
+                logger.Error($"Ошибка при редактировании категории", ex);
                 MessageBox.Show(Resources.ErrorEditCategory, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -182,9 +170,11 @@ namespace AutomechanicsProject.Formes
                     MessageBoxButtons.YesNo,
                     MessageBoxIcon.Question);
 
-                if (result != DialogResult.Yes) return;
+                if (result != DialogResult.Yes)
+                {
+                    return;
+                }
             }
-
             DialogResult = DialogResult.Cancel;
             Close();
         }

@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using AutomechanicsProject.Properties;
+using System.Drawing;
 
 namespace AutomechanicsProject.Formes
 {
@@ -54,114 +55,124 @@ namespace AutomechanicsProject.Formes
             this.panelRedact.Controls.Add(this.textBoxArt);
             this.panelRedact.Controls.Add(this.labelRedact);
             this.panelRedact.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelRedact.Font = new System.Drawing.Font("Jost", 7.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.panelRedact.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.panelRedact.Location = new System.Drawing.Point(0, 0);
+            this.panelRedact.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.panelRedact.Name = "panelRedact";
-            this.panelRedact.Size = new System.Drawing.Size(935, 804);
+            this.panelRedact.Size = new System.Drawing.Size(623, 515);
             this.panelRedact.TabIndex = 0;
             // 
             // buttonRedact
             // 
-            this.buttonRedact.Font = new System.Drawing.Font("Jost", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.buttonRedact.Location = new System.Drawing.Point(595, 574);
+            this.buttonRedact.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.buttonRedact.Location = new System.Drawing.Point(372, 367);
+            this.buttonRedact.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.buttonRedact.Name = "buttonRedact";
-            this.buttonRedact.Size = new System.Drawing.Size(254, 83);
+            this.buttonRedact.Size = new System.Drawing.Size(194, 53);
             this.buttonRedact.TabIndex = 7;
-            this.buttonRedact.Text = "Редактировать";
+            this.buttonRedact.Text = Resources.RedactProduct_ButtonRedact_Text;
             this.buttonRedact.UseVisualStyleBackColor = true;
             this.buttonRedact.Click += new System.EventHandler(this.ButtonRedact_Click);
             // 
             // buttonCancel
             // 
             this.buttonCancel.BackColor = System.Drawing.SystemColors.Menu;
-            this.buttonCancel.Font = new System.Drawing.Font("Jost", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.buttonCancel.Location = new System.Drawing.Point(35, 574);
+            this.buttonCancel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.buttonCancel.Location = new System.Drawing.Point(23, 367);
+            this.buttonCancel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.buttonCancel.Name = "buttonCancel";
-            this.buttonCancel.Size = new System.Drawing.Size(254, 83);
+            this.buttonCancel.Size = new System.Drawing.Size(169, 53);
             this.buttonCancel.TabIndex = 6;
-            this.buttonCancel.Text = "Отмена";
+            this.buttonCancel.Text = Resources.RedactProduct_ButtonCancel_Text;
             this.buttonCancel.UseVisualStyleBackColor = false;
             this.buttonCancel.Click += new System.EventHandler(this.ButtonCancel_Click);
             // 
             // textBoxPrice
             // 
             this.textBoxPrice.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.textBoxPrice.Font = new System.Drawing.Font("Jost", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBoxPrice.Location = new System.Drawing.Point(144, 487);
+            this.textBoxPrice.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.textBoxPrice.ForeColor = System.Drawing.Color.Black;
+            this.textBoxPrice.Location = new System.Drawing.Point(96, 312);
+            this.textBoxPrice.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.textBoxPrice.Name = "textBoxPrice";
-            this.textBoxPrice.Size = new System.Drawing.Size(599, 54);
+            this.textBoxPrice.Size = new System.Drawing.Size(400, 30);
             this.textBoxPrice.TabIndex = 5;
-            this.textBoxPrice.Text = "Цена";
+            this.textBoxPrice.Text = Resources.RedactProduct_TextBoxPrice_Watermark;
             this.textBoxPrice.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.textBoxPrice.ForeColor = Color.Black;
             // 
             // comboBoxUnit
             // 
             this.comboBoxUnit.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxUnit.Font = new System.Drawing.Font("Jost", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.comboBoxUnit.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.comboBoxUnit.ForeColor = System.Drawing.Color.Black;
             this.comboBoxUnit.FormattingEnabled = true;
-            this.comboBoxUnit.Location = new System.Drawing.Point(144, 409);
+            this.comboBoxUnit.Location = new System.Drawing.Point(96, 262);
+            this.comboBoxUnit.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.comboBoxUnit.Name = "comboBoxUnit";
-            this.comboBoxUnit.Size = new System.Drawing.Size(599, 54);
+            this.comboBoxUnit.Size = new System.Drawing.Size(401, 33);
             this.comboBoxUnit.TabIndex = 4;
-            this.comboBoxUnit.Text = "Выберите единицу измерения";
-            this.comboBoxUnit.ForeColor = Color.Black;
             // 
             // textBoxCategory
             // 
             this.textBoxCategory.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.textBoxCategory.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBoxCategory.Location = new System.Drawing.Point(144, 335);
+            this.textBoxCategory.ForeColor = System.Drawing.Color.Black;
+            this.textBoxCategory.Location = new System.Drawing.Point(96, 214);
+            this.textBoxCategory.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.textBoxCategory.Name = "textBoxCategory";
             this.textBoxCategory.ReadOnly = true;
-            this.textBoxCategory.Size = new System.Drawing.Size(599, 44);
+            this.textBoxCategory.Size = new System.Drawing.Size(400, 30);
             this.textBoxCategory.TabIndex = 3;
-            this.textBoxCategory.Text = "Категория";
+            this.textBoxCategory.Text = Resources.RedactProduct_TextBoxCategory_Watermark;
             this.textBoxCategory.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.textBoxCategory.ForeColor = Color.Black;
             // 
             // textBoxName
             // 
             this.textBoxName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.textBoxName.Font = new System.Drawing.Font("Jost", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBoxName.Location = new System.Drawing.Point(144, 259);
+            this.textBoxName.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.textBoxName.ForeColor = System.Drawing.Color.Black;
+            this.textBoxName.Location = new System.Drawing.Point(96, 166);
+            this.textBoxName.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.textBoxName.Name = "textBoxName";
-            this.textBoxName.Size = new System.Drawing.Size(599, 54);
+            this.textBoxName.Size = new System.Drawing.Size(400, 30);
             this.textBoxName.TabIndex = 2;
-            this.textBoxName.Text = "Название";
+            this.textBoxName.Text = Resources.RedactProduct_TextBoxName_Watermark;
             this.textBoxName.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.textBoxName.ForeColor = Color.Black;
             // 
             // textBoxArt
             // 
             this.textBoxArt.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.textBoxArt.Font = new System.Drawing.Font("Jost", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBoxArt.Location = new System.Drawing.Point(144, 167);
+            this.textBoxArt.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.textBoxArt.ForeColor = System.Drawing.Color.Black;
+            this.textBoxArt.Location = new System.Drawing.Point(96, 107);
+            this.textBoxArt.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.textBoxArt.Name = "textBoxArt";
-            this.textBoxArt.Size = new System.Drawing.Size(599, 54);
+            this.textBoxArt.Size = new System.Drawing.Size(400, 30);
             this.textBoxArt.TabIndex = 1;
-            this.textBoxArt.Text = "Артикул";
+            this.textBoxArt.Text = Resources.RedactProduct_TextBoxArt_Watermark;
+            this.textBoxArt.ReadOnly = true;
             this.textBoxArt.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.textBoxArt.ForeColor = Color.Black;
             // 
             // labelRedact
             // 
             this.labelRedact.AutoSize = true;
-            this.labelRedact.Font = new System.Drawing.Font("Jost", 19.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelRedact.Location = new System.Drawing.Point(169, 51);
+            this.labelRedact.Font = new System.Drawing.Font("Microsoft Sans Serif", 19.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelRedact.Location = new System.Drawing.Point(113, 33);
+            this.labelRedact.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.labelRedact.Name = "labelRedact";
-            this.labelRedact.Size = new System.Drawing.Size(507, 77);
+            this.labelRedact.Size = new System.Drawing.Size(359, 39);
             this.labelRedact.TabIndex = 0;
-            this.labelRedact.Text = "Редактировать товар";
+            this.labelRedact.Text = Resources.RedactProduct_LabelTitle_Text;
             // 
             // RedactProduct
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(935, 804);
+            this.ClientSize = new System.Drawing.Size(623, 515);
             this.Controls.Add(this.panelRedact);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Text = Resources.RedactProduct_Form_Title;
             this.Name = "RedactProduct";
-            this.Text = "RedactProduct";
             this.panelRedact.ResumeLayout(false);
             this.panelRedact.PerformLayout();
             this.ResumeLayout(false);

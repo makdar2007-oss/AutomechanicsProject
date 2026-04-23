@@ -1,0 +1,1355 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AuthLoginWatermark" xml:space="preserve">
+    <value>Исемне языгыз</value>
+  </data>
+  <data name="AuthPasswordWatermark" xml:space="preserve">
+    <value>Серсүзне языгыз</value>
+  </data>
+  <data name="CategoryAddWatermark" xml:space="preserve">
+    <value>Атаманы языгыз</value>
+  </data>
+  <data name="CategorySelectWatermark" xml:space="preserve">
+    <value>Категорияне сайлагыз</value>
+  </data>
+  <data name="DeleteArticleWatermark" xml:space="preserve">
+    <value>Товар артикулын языгыз</value>
+  </data>
+  <data name="EditArticleWatermark" xml:space="preserve">
+    <value>Артикул</value>
+  </data>
+  <data name="EditCategoryWatermark" xml:space="preserve">
+    <value>Атаманы языгыз</value>
+  </data>
+  <data name="EditNameWatermark" xml:space="preserve">
+    <value>Атамасы</value>
+  </data>
+  <data name="EditPriceWatermark" xml:space="preserve">
+    <value>Бәясе</value>
+  </data>
+  <data name="ProductArticleWatermark" xml:space="preserve">
+    <value>Артикулны языгыз</value>
+  </data>
+  <data name="ProductNameWatermark" xml:space="preserve">
+    <value>Атаманы языгыз</value>
+  </data>
+  <data name="ProductPriceWatermark" xml:space="preserve">
+    <value>Бәяне языгыз</value>
+  </data>
+  <data name="RegConfirmPasswordWatermark" xml:space="preserve">
+    <value>Серсүзне кабатлагыз</value>
+  </data>
+  <data name="RegLastnameWatermark" xml:space="preserve">
+    <value>Атисезне языгыз</value>
+  </data>
+  <data name="RegLoginWatermark" xml:space="preserve">
+    <value>Логинны языгыз</value>
+  </data>
+  <data name="RegNameWatermark" xml:space="preserve">
+    <value>Исемне языгыз</value>
+  </data>
+  <data name="RegPasswordWatermark" xml:space="preserve">
+    <value>Серсүзне языгыз</value>
+  </data>
+  <data name="RegSurnameWatermark" xml:space="preserve">
+    <value>Фамилияне языгыз</value>
+  </data>
+  <data name="SearchWatermark" xml:space="preserve">
+    <value>Эзләү:</value>
+  </data>
+  <data name="ShipmentQuantityWatermark" xml:space="preserve">
+    <value>Товар санын языгыз</value>
+  </data>
+  <data name="UnitSelectWatermark" xml:space="preserve">
+    <value>Үлчәү берәмлеген сайлагыз</value>
+  </data>
+  <data name="SQuantityWatermark" xml:space="preserve">
+    <value>Товар санын языгыз</value>
+  </data>
+  <data name="SPriceWatermark" xml:space="preserve">
+    <value>Бәяне языгыз</value>
+  </data>
+  <data name="SProductWatermark" xml:space="preserve">
+    <value>Исемлектән товарны сайлагыз</value>
+  </data>
+  <data name="SSupplierWatermark" xml:space="preserve">
+    <value>Тәэмин итүчене сайлагыз</value>
+  </data>
+  <data name="SCurrencyWatermark" xml:space="preserve">
+    <value>Сатып алу валютасын сайлагыз</value>
+  </data>
+  <data name="ShipmentRecipientWatermark" xml:space="preserve">
+    <value>Алучыны сайлагыз</value>
+  </data>
+  <data name="ShipmentTypeWatermark" xml:space="preserve">
+    <value>Йөкләү төрен сайлагыз</value>
+  </data>
+  <data name="ShipmentExpiryDateWatermark" xml:space="preserve">
+    <value>Яраклылык мөддәтен сайлагыз</value>
+  </data>
+  <data name="NoExpiryDateWatermark" xml:space="preserve">
+    <value>Яраклылык мөддәте юк</value>
+  </data>
+  <data name="ButtonConfirmSupply" xml:space="preserve">
+    <value>Тәэминатны расларга</value>
+  </data>
+  <data name="ConfirmCancelAddProduct" xml:space="preserve">
+    <value>Товар өстәүне бетерергә телисезме?
+
+Кертелгән барлык мәгълүматлар югалачак.</value>
+  </data>
+  <data name="ConfirmCancelDelete" xml:space="preserve">
+    <value>Бетерүне баш тартырга телисезме?</value>
+  </data>
+  <data name="ConfirmCancelEdit" xml:space="preserve">
+    <value>Сездә сакланмаган үзгәртүләр бар.
+
+Сез чыннан да төзәтүне баш тартырга телисезме?</value>
+  </data>
+  <data name="ConfirmCancelEditWithDetails" xml:space="preserve">
+    <value>Сездә сакланмаган үзгәртүләр бар.
+
+Сез чыннан да төзәтүне баш тартырга телисезме?</value>
+  </data>
+  <data name="ConfirmCancelShipment" xml:space="preserve">
+    <value>Йөкләү исемлегендә өстәлгән товарлар бар.
+
+Сез чыннан да йөкләүне булдыруны баш тартырга телисезме?</value>
+  </data>
+  <data name="ConfirmCancelSupply" xml:space="preserve">
+    <value>Тәэминатны бетерергә? Барлык мәгълүматлар югалачак.</value>
+  </data>
+  <data name="ConfirmDeleteCategory" xml:space="preserve">
+    <value>Сез чыннан да "{0}" категориясен бетерәсезме?</value>
+  </data>
+  <data name="ConfirmDeleteCategoryWithProducts" xml:space="preserve">
+    <value>"{0}" категориясендә {1} товар бар.
+
+Сез категорияне һәм андагы барлык товарларны бетерүгә ышанычлымы?
+Бу гамәлне кире кайтарып булмый.</value>
+  </data>
+  <data name="ConfirmDeleteProduct" xml:space="preserve">
+    <value>Сез чыннан да товарны бетерәсезме?
+
+Артикул: {0}
+Атамасы: {1}
+Категория: {2}
+Бәясе: {3:F2}
+Калдык: {4} {5}
+
+Бу гамәлне кире кайтарып булмый!</value>
+  </data>
+  <data name="ConfirmRemoveShipmentItem" xml:space="preserve">
+    <value>Йөкләү исемлегеннән "{0}" товарын бетерәсезме?</value>
+  </data>
+  <data name="ConfirmShipment" xml:space="preserve">
+    <value>Йөкләүне расларга?
+
+Алучы: {0}
+Позицияләр саны: {1}
+Гомуми сумма: {2:C2}</value>
+  </data>
+  <data name="ConfirmSupplyFormat" xml:space="preserve">
+    <value>Тәэминатны расларга?
+Гомуми сумма: {0}</value>
+  </data>
+  <data name="CurrencyBYN" xml:space="preserve">
+    <value>Беларусь сумы</value>
+  </data>
+  <data name="CurrencyChangeConfirm" xml:space="preserve">
+    <value>Валюта {0} тан {1} га үзгәртелде
+Курс: 1 RUB = {2:F4} {3} 
+
+Барлык бәяләр {4} гә яңадан исәпләнәчәк.
+Дәвам итәргә?</value>
+  </data>
+  <data name="CurrencyChangeTitle" xml:space="preserve">
+    <value>Валютаны үзгәртү</value>
+  </data>
+  <data name="CurrencyCNY" xml:space="preserve">
+    <value>Кытай юане</value>
+  </data>
+  <data name="CurrencyEUR" xml:space="preserve">
+    <value>Евро</value>
+  </data>
+  <data name="CurrencyGBP" xml:space="preserve">
+    <value>Британия фунты</value>
+  </data>
+  <data name="CurrencyJPY" xml:space="preserve">
+    <value>Япония иенасы</value>
+  </data>
+  <data name="CurrencyKZT" xml:space="preserve">
+    <value>Казакъстан тәңкәсе</value>
+  </data>
+  <data name="CurrencyRUB" xml:space="preserve">
+    <value>Россия сумы</value>
+  </data>
+  <data name="CurrencyUSD" xml:space="preserve">
+    <value>АКШ доллары</value>
+  </data>
+  <data name="DebugSavingCache" xml:space="preserve">
+    <value>Кэшны саклыйм: {0}</value>
+  </data>
+  <data name="StatusError" xml:space="preserve">
+    <value>Хата</value>
+  </data>
+  <data name="ErrorImportFailed" xml:space="preserve">
+    <value>Мәгълүмат импорты вакытында хата. Операция туктатылды. Хаталар журналында мәгълүмат.</value>
+  </data>
+  <data name="ErrorCreateShipment" xml:space="preserve">
+    <value>Йөкләүне рәсмиләштерү мөмкин булмады.</value>
+  </data>
+  <data name="ErrorAutoWriteOff" xml:space="preserve">
+    <value>Вакыты үткән товарларны автоматик рәвештә бетерү вакытында хата.</value>
+  </data>
+  <data name="ErrorCurrencyFixed" xml:space="preserve">
+    <value>Тәэминатта позицияләр өстәгәннән соң валютаны үзгәртеп булмый.</value>
+  </data>
+  <data name="ErrorExpiryDateRequired" xml:space="preserve">
+    <value>Яраклылык мөддәте үткән заманда була алмый</value>
+  </data>
+  <data name="ErrorExpiryDateExceedsProduct" xml:space="preserve">
+    <value>Тәэминаттагы яраклылык мөддәте товарның яраклылык мөддәтеннән ({0}) артып китә алмый</value>
+  </data>
+  <data name="ErrorNoExpiryDateAllowed" xml:space="preserve">
+    <value>Сайланган товарның яраклылык мөддәте юк. Дата кыры буш булырга тиеш.</value>
+  </data>
+  <data name="ErrorAddCategory" xml:space="preserve">
+    <value>Категорияне өстәү мөмкин булмады. Соңрак кабатлагыз.</value>
+  </data>
+  <data name="ErrorAddProduct" xml:space="preserve">
+    <value>Товар өстәүдә хата</value>
+  </data>
+  <data name="ErrorAuthFailed" xml:space="preserve">
+    <value>Системага керүдә хата</value>
+  </data>
+  <data name="ErrorAuthInvalid" xml:space="preserve">
+    <value>Логин яки серсүз дөрес түгел!</value>
+  </data>
+  <data name="ErrorCannotDeleteCategoryWithShipments" xml:space="preserve">
+    <value>Категорияне бетерү мөмкин түгел, чөнки кайбер товарлар йөкләүләрдә кулланыла.
+Беренчедән, бәйле йөкләүләрне бетегез.</value>
+  </data>
+  <data name="ErrorCategoryExists" xml:space="preserve">
+    <value>Мондый атамалы категория инде бар!</value>
+  </data>
+  <data name="ErrorCategoryNotFound" xml:space="preserve">
+    <value>Категория мәгълүматлар базасында табылмады!</value>
+  </data>
+  <data name="ErrorDeleteCategory" xml:space="preserve">
+    <value>Категорияне бетерү мөмкин булмады. Соңрак кабатлагыз.</value>
+  </data>
+  <data name="ErrorDeleteProduct" xml:space="preserve">
+    <value>Товарны бетерү мөмкин булмады. Соңрак кабатлагыз.</value>
+  </data>
+  <data name="ErrorEditCategory" xml:space="preserve">
+    <value>Категорияне төзәтү мөмкин булмады. Соңрак кабатлагыз.</value>
+  </data>
+  <data name="ErrorEditProduct" xml:space="preserve">
+    <value>Товарны төзәтүдә хата</value>
+  </data>
+  <data name="ErrorEnterArticle" xml:space="preserve">
+    <value>Товар артикулын языгыз!</value>
+  </data>
+  <data name="ErrorEnterCorrectPrice" xml:space="preserve">
+    <value>Дөрес бәяне языгыз!</value>
+  </data>
+  <data name="ErrorEnterCorrectQuantity" xml:space="preserve">
+    <value>Дөрес санны языгыз (бөтен уңай сан)!</value>
+  </data>
+  <data name="ErrorEnterValidPrice" xml:space="preserve">
+    <value>Дөрес сатып алу бәясен языгыз!</value>
+  </data>
+  <data name="ErrorEnterValidQuantity" xml:space="preserve">
+    <value>Дөрес товар санын языгыз!</value>
+  </data>
+  <data name="ErrorExportToCsvWithMessage" xml:space="preserve">
+    <value>Мәгълүмат экспорты вакытында хата.</value>
+  </data>
+  <data name="ErrorFillCategory" xml:space="preserve">
+    <value>Категория атамасын языгыз!</value>
+  </data>
+  <data name="ErrorFillFields" xml:space="preserve">
+    <value>Барлык мәҗбүри кырларны тутырыгыз!</value>
+  </data>
+  <data name="ErrorFixFormErrors" xml:space="preserve">
+    <value>Зинһар, формадагы хаталарны төзәтегез.
+Алсу төскә буялган кырлар дөрес тутырылмаган.</value>
+  </data>
+  <data name="ErrorFormatColumnsMessage" xml:space="preserve">
+    <value>Таблицаны күрсәтүдә хата. Кайбер баганалар дөрес күрсәтелмәскә мөмкин.</value>
+  </data>
+  <data name="ErrorHighlightRow" xml:space="preserve">
+    <value>Юлны бүлгеләүдә хата</value>
+  </data>
+  <data name="ErrorImportNoData" xml:space="preserve">
+    <value>Файл импорт өчен мәгълүмат үз эченә алмый!</value>
+  </data>
+  <data name="ErrorImportNotFound" xml:space="preserve">
+    <value>Каталогта табылмады</value>
+  </data>
+  <data name="ErrorInsufficientStockWithDetails" xml:space="preserve">
+    <value>Складда товар җитми!
+Мөмкин булган: {0} {1}</value>
+  </data>
+  <data name="ErrorLoadCategories" xml:space="preserve">
+    <value>Категорияләрне йөкләү мөмкин булмады</value>
+  </data>
+  <data name="ErrorLoadProduct" xml:space="preserve">
+    <value>Товарны йөкләү мөмкин булмады</value>
+  </data>
+  <data name="ErrorLoadProductData" xml:space="preserve">
+    <value>Товар мәгълүматларын йөкләү мөмкин булмады</value>
+  </data>
+  <data name="ErrorLoadProducts" xml:space="preserve">
+    <value>Товарларны йөкләү мөмкин булмады</value>
+  </data>
+  <data name="ErrorLoadProductsList" xml:space="preserve">
+    <value>Товарлар исемлеген йөкләү мөмкин булмады. Соңрак кабатлагыз.</value>
+  </data>
+  <data name="ErrorLoadRecipients" xml:space="preserve">
+    <value>Алучылар исемлеген йөкләү мөмкин булмады</value>
+  </data>
+  <data name="ErrorLoadReportFormat" xml:space="preserve">
+    <value>Отчетны йөкләүдә хата</value>
+  </data>
+  <data name="ErrorLoadShipmentHistory" xml:space="preserve">
+    <value>Йөкләү тарихын йөкләү мөмкин булмады.</value>
+  </data>
+  <data name="ErrorLoadSuppliers" xml:space="preserve">
+    <value>Тәэмин итүчеләрне йөкләүдә хата</value>
+  </data>
+  <data name="ErrorLoadUnits" xml:space="preserve">
+    <value>Үлчәү берәмлекләре исемлеген йөкләү мөмкин булмады</value>
+  </data>
+  <data name="ErrorLogout" xml:space="preserve">
+    <value>Системадан чыгуда хата</value>
+  </data>
+  <data name="ErrorNoAccess" xml:space="preserve">
+    <value>Сезнең системага керү хокукыгыз юк! Администраторга мөрәҗәгать итегез.</value>
+  </data>
+  <data name="ErrorNoDataToExport" xml:space="preserve">
+    <value>Экспорт өчен мәгълүмат юк</value>
+  </data>
+  <data name="ErrorNoItemsInShipment" xml:space="preserve">
+    <value>Йөкләү исемлегенә товарлар өстәгез!</value>
+  </data>
+  <data name="ErrorNoPositions" xml:space="preserve">
+    <value>Ким дигәндә бер позиция өстәгез!</value>
+  </data>
+  <data name="ErrorNoProducts" xml:space="preserve">
+    <value>Мәгълүматлар базасында товарлар юк! Каталог аша таварлар өстәгез.</value>
+  </data>
+  <data name="ErrorNoSuppliers" xml:space="preserve">
+    <value>Мәгълүматлар базасында тәэмин итүчеләр юк! Тәэмин итүчеләр өстәгез.</value>
+  </data>
+  <data name="ErrorOpenAddCategoryForm" xml:space="preserve">
+    <value>Категория өстәү формасын ачу мөмкин булмады</value>
+  </data>
+  <data name="ErrorOpenAddProductForm" xml:space="preserve">
+    <value>Товар өстәү формасын ачу мөмкин булмады</value>
+  </data>
+  <data name="ErrorOpenCurrencyForm" xml:space="preserve">
+    <value>Валюта сайлау формасын ачуда хата</value>
+  </data>
+  <data name="ErrorOpenDeleteCategoryForm" xml:space="preserve">
+    <value>Категорияне бетерү мөмкин булмады</value>
+  </data>
+  <data name="ErrorOpenEditCategoryForm" xml:space="preserve">
+    <value>Категория төзәтү формасын ачу мөмкин булмады</value>
+  </data>
+  <data name="ErrorOpenHistory" xml:space="preserve">
+    <value>Тарихны ачу мөмкин булмады</value>
+  </data>
+  <data name="ErrorOpenShipmentForm" xml:space="preserve">
+    <value>Йөкләү формасын ачу мөмкин булмады</value>
+  </data>
+  <data name="ErrorProductInShipments" xml:space="preserve">
+    <value>"{0}" товарын бетерү мөмкин түгел, чөнки ул {1} йөкләүдә кулланыла.</value>
+  </data>
+  <data name="ErrorProductNotFound" xml:space="preserve">
+    <value>"{0}" артикуллы товар табылмады!</value>
+  </data>
+  <data name="ErrorProductNotFoundGeneric" xml:space="preserve">
+    <value>Товар табылмады!</value>
+  </data>
+  <data name="ErrorRegistration" xml:space="preserve">
+    <value>Теркәлүдә хата. Соңрак кабатлагыз.</value>
+  </data>
+  <data name="ErrorRoleNotFound" xml:space="preserve">
+    <value>Хата: 'Кладовщик' роле табылмады!
+Администраторга мөрәҗәгать итегез.</value>
+  </data>
+  <data name="ErrorSelectCategory" xml:space="preserve">
+    <value>Категорияне сайлагыз!</value>
+  </data>
+  <data name="ErrorSelectCategoryForDelete" xml:space="preserve">
+    <value>Бетерү өчен категорияне сайлагыз!</value>
+  </data>
+  <data name="ErrorSelectProduct" xml:space="preserve">
+    <value>Исемлектән товарны сайлагыз!</value>
+  </data>
+  <data name="ErrorSelectRecipient" xml:space="preserve">
+    <value>Исемлектән алучыны сайлагыз!</value>
+  </data>
+  <data name="ErrorSelectSupplier" xml:space="preserve">
+    <value>Зинһар, тәэмин итүчене сайлагыз!</value>
+  </data>
+  <data name="ErrorSelectUnit" xml:space="preserve">
+    <value>Үлчәү берәмлеген сайлагыз!</value>
+  </data>
+  <data name="ErrorSupplyFailed" xml:space="preserve">
+    <value>Тәэминатны раслау вакытында хата.</value>
+  </data>
+  <data name="ErrorUpdateProduct" xml:space="preserve">
+    <value>Товарны яңарту мөмкин булмады. Соңрак кабатлагыз.</value>
+  </data>
+  <data name="ErrorUserExists" xml:space="preserve">
+    <value>Мондый логинлы кулланучы инде бар!</value>
+  </data>
+  <data name="ErrorUserNotAuthorized" xml:space="preserve">
+    <value>Хата: кулланучы авторизациядән үтмәгән!</value>
+  </data>
+  <data name="ErrorWithDetails" xml:space="preserve">
+    <value>Хата.</value>
+  </data>
+  <data name="ErrorSurnameLength" xml:space="preserve">
+    <value>Фамилия 2 дән 100 га кадәр символдан торырга тиеш.</value>
+  </data>
+  <data name="ErrorEnterSurname" xml:space="preserve">
+    <value>Фамилияне языгыз</value>
+  </data>
+  <data name="ErrorInvalidSurname" xml:space="preserve">
+    <value>Фамилия тик рус хәрефләре, сызыкча һәм буш урыннан торырга тиеш.</value>
+  </data>
+  <data name="ErrorEnterName" xml:space="preserve">
+    <value>Исемне языгыз</value>
+  </data>
+  <data name="ErrorInvalidName" xml:space="preserve">
+    <value>Исем тик рус хәрефләре, сызыкча һәм буш урыннан торырга тиеш.</value>
+  </data>
+  <data name="ErrorNameLength" xml:space="preserve">
+    <value>Исем 2 дән 100 га кадәр символдан торырга тиеш.</value>
+  </data>
+  <data name="ErrorInvalidLastname" xml:space="preserve">
+    <value>Атисез тик рус хәрефләре, сызыкча һәм буш урыннан торырга тиеш.</value>
+  </data>
+  <data name="ErrorLastnameLength" xml:space="preserve">
+    <value>Атисез 2 дән 100 га кадәр символдан торырга тиеш.</value>
+  </data>
+  <data name="ErrorEnterLogin" xml:space="preserve">
+    <value>Логинны языгыз</value>
+  </data>
+  <data name="ErrorInvalidLogin" xml:space="preserve">
+    <value>Логин тик инглиз хәрефләре, саннар һәм аскы сызыкчадан торырга тиеш.</value>
+  </data>
+  <data name="ErrorLoginLength" xml:space="preserve">
+    <value>Логин 3 тән 20 га кадәр символдан торырга тиеш.</value>
+  </data>
+  <data name="ErrorEnterPassword" xml:space="preserve">
+    <value>Серсүзне языгыз</value>
+  </data>
+  <data name="ErrorInvalidPassword" xml:space="preserve">
+    <value>Серсүз ким дигәндә 6 символдан торырга тиеш, ким дигәндә бер сан һәм бер хәреф булырга тиеш.</value>
+  </data>
+  <data name="ErrorConfirmPassword" xml:space="preserve">
+    <value>Серсүзне раслагыз</value>
+  </data>
+  <data name="ErrorPasswordMismatch" xml:space="preserve">
+    <value>Серсүзләр тәңгәл килми!</value>
+  </data>
+  <data name="ErrorGeneric" xml:space="preserve">
+    <value>Хата килеп чыкты. Соңрак кабатлагыз.</value>
+  </data>
+  <data name="ErrorCurrencyRatesLoad" xml:space="preserve">
+    <value>Валюта курсларын йөкләүдә тәнкыйть хата</value>
+  </data>
+  <data name="CategoryNone" xml:space="preserve">
+    <value>Категориясез</value>
+  </data>
+  <data name="InfoCategoryNameNotChanged" xml:space="preserve">
+    <value>Категория атамасы үзгәрмәде</value>
+  </data>
+  <data name="InfoHistoryEmpty" xml:space="preserve">
+    <value>Периодны дөрес итеп билгеләгез</value>
+  </data>
+  <data name="InfoNoDataForPeriod" xml:space="preserve">
+    <value>Тарих өчен мәгълүмат юк</value>
+  </data>
+  <data name="InfoNoPositionsToDisplay" xml:space="preserve">
+    <value>Күрсәтү өчен позицияләр юк</value>
+  </data>
+  <data name="InfoNoProductsForShipment" xml:space="preserve">
+    <value>Йөкләү өчен складта товарлар юк!</value>
+  </data>
+  <data name="InfoNoRecipientsAvailable" xml:space="preserve">
+    <value>Мөмкин булган алучылар юк!
+Компанияләр өстәү өчен администраторга мөрәҗәгать итегез.</value>
+  </data>
+  <data name="InfoUsingCachedCurrencies" xml:space="preserve">
+    <value>Сакланган валюта курслары кулланыла (интернетка тоташу юк)</value>
+  </data>
+  <data name="InfoCurrencyRatesLoaded" xml:space="preserve">
+    <value>Валюта курслары уңышлы йөкләнде</value>
+  </data>
+  <data name="JsonFileFilter" xml:space="preserve">
+    <value>JSON файллар (*.json)|*.json|Барлык файллар (*.*)|*.*</value>
+  </data>
+  <data name="ImportSupplyTitle" xml:space="preserve">
+    <value>JSON файлдан тәэминат мәгълүматларын импортлау</value>
+  </data>
+  <data name="SaveCsvFileTitle" xml:space="preserve">
+    <value>CSV файлны саклау</value>
+  </data>
+  <data name="LoadingCurrencies" xml:space="preserve">
+    <value>Валюта курсларын йөкләү...</value>
+  </data>
+  <data name="WarningNoDataForPeriod" xml:space="preserve">
+    <value>Периодны дөрес итеп билгеләгез</value>
+  </data>
+  <data name="WarningNoHistoryForPeriod" xml:space="preserve">
+    <value>Периодны дөрес итеп билгеләгез</value>
+  </data>
+  <data name="NoCategoriesForDelete" xml:space="preserve">
+    <value>Бетерү өчен мөмкин булган категорияләр юк</value>
+  </data>
+  <data name="NoCurrenciesAvailable" xml:space="preserve">
+    <value>Мөмкин булган валюталар юк</value>
+  </data>
+  <data name="PleaseSelectCurrency" xml:space="preserve">
+    <value>Зинһар, валютаны сайлагыз</value>
+  </data>
+  <data name="ProductAlreadyInList" xml:space="preserve">
+    <value>"{0}" товары исемлеккә инде өстәлгән.
+Агымдагы сан: {1} {2}
+
+Санны яңа кыйммәт белән алыштырырга?</value>
+  </data>
+  <data name="SelectCategoryForDelete" xml:space="preserve">
+    <value>Бетерү өчен категорияне сайлагыз</value>
+  </data>
+  <data name="SelectCategoryForEdit" xml:space="preserve">
+    <value>Төзәтү өчен категорияне сайлагыз</value>
+  </data>
+  <data name="SelectProductForDelete" xml:space="preserve">
+    <value>Бетерү өчен товарны сайлагыз</value>
+  </data>
+  <data name="SelectProductForEdit" xml:space="preserve">
+    <value>Төзәтү өчен товарны сайлагыз</value>
+  </data>
+  <data name="ShipmentHistoryTitle" xml:space="preserve">
+    <value>Йөкләү тарихы - Йөкләнгән: {0} бер. | Бетерелгән: {1} бер. | Сумма: {2:C2} | Табыш: {3:C2} | Зыян: {4:C2}</value>
+  </data>
+  <data name="StatusSaving" xml:space="preserve">
+    <value>Саклау...</value>
+  </data>
+  <data name="StorekeeperRoleName" xml:space="preserve">
+    <value>Кладовщик</value>
+  </data>
+  <data name="SupplyStatusCompleted" xml:space="preserve">
+    <value>Рәсмиләштерелде</value>
+  </data>
+  <data name="UnknownSupplier" xml:space="preserve">
+    <value>Күрсәтелмәгән</value>
+  </data>
+  <data name="WarningShipmentsWithoutItems" xml:space="preserve">
+    <value>{0} йөкләү табылды, ләкин берсендә дә позицияләр юк!</value>
+  </data>
+  <data name="WarningNoProductExpiryDate" xml:space="preserve">
+    <value>Сайланган товарның яраклылык мөддәте юк. Тәэминат датасы таләп ителми.</value>
+  </data>
+  <data name="WarningCurrencyRatesFallback" xml:space="preserve">
+    <value>Актуаль валюта курсларын йөкләү мөмкин булмады. Резерв кыйммәтләр кулланыла.</value>
+  </data>
+  <data name="WarningCurrencyRatesFailed" xml:space="preserve">
+    <value>Валюта курсларын йөкләү хатасы: {0}</value>
+  </data>
+  <data name="WarningUsingCachedRates" xml:space="preserve">
+    <value>Сакланган валюта курслары кулланыла (интернетка тоташу юк)</value>
+  </data>
+  <data name="SuccessAutoWriteOffMessage" xml:space="preserve">
+    <value>{0} вакыты үткән товар бетерелде.</value>
+  </data>
+  <data name="SuccessCategoryAdded" xml:space="preserve">
+    <value>"{0}" категориясе уңышлы өстәлде!</value>
+  </data>
+  <data name="SuccessCategoryAndProductsDeleted" xml:space="preserve">
+    <value>"{0}" категориясе һәм андагы барлык ({1}) товарлар уңышлы бетерелде!</value>
+  </data>
+  <data name="SuccessCategoryDeleted" xml:space="preserve">
+    <value>"{0}" категориясе уңышлы бетерелде!</value>
+  </data>
+  <data name="SuccessCategoryRenamed" xml:space="preserve">
+    <value>"{0}" категориясе "{1}" итеп үзгәртелде!</value>
+  </data>
+  <data name="SuccessExportFormat" xml:space="preserve">
+    <value>Мәгълүмат файлга уңышлы экспортланды: {0}</value>
+  </data>
+  <data name="SuccessImportFormat" xml:space="preserve">
+    <value>{0} товар уңышлы импортланды!</value>
+  </data>
+  <data name="SuccessProductAdded" xml:space="preserve">
+    <value>Товар уңышлы өстәлде!</value>
+  </data>
+  <data name="SuccessProductAddedToList" xml:space="preserve">
+    <value>Товар йөкләү исемлегенә өстәлде</value>
+  </data>
+  <data name="SuccessProductDeleted" xml:space="preserve">
+    <value>Товар уңышлы бетерелде!</value>
+  </data>
+  <data name="SuccessProductUpdated" xml:space="preserve">
+    <value>Товар уңышлы яңартылды!</value>
+  </data>
+  <data name="SuccessRegistrationWithDetails" xml:space="preserve">
+    <value>Теркәлү уңышлы!
+
+Логин: {0}
+ТТФ: {1}
+
+Хәзер сез системага керә аласыз.</value>
+  </data>
+  <data name="SuccessShipmentCreatedWithDetails" xml:space="preserve">
+    <value>Йөкләү уңышлы рәсмиләштерелде!
+
+Алучы: {0}
+Позицияләр саны: {1}
+Гомуми сумма: {2:C2}</value>
+  </data>
+  <data name="SuccessSupplyFormat" xml:space="preserve">
+    <value>Тәэминат рәсмиләштерелде!
+
+Номер: {0}
+Дата: {1}
+Тәэминаттагы товарлар: {2}
+Гомуми сумма: {3}</value>
+  </data>
+  <data name="TitleAutoWriteOff" xml:space="preserve">
+    <value>Автоматик бетерү</value>
+  </data>
+  <data name="TitleConfirmation" xml:space="preserve">
+    <value>Раслау</value>
+  </data>
+  <data name="TitleDeleteConfirmation" xml:space="preserve">
+    <value>Бетерүне раслау</value>
+  </data>
+  <data name="TitleError" xml:space="preserve">
+    <value>Хата</value>
+  </data>
+  <data name="TitleInformation" xml:space="preserve">
+    <value>Мәгълүмат</value>
+  </data>
+  <data name="TitleProductAlreadyInList" xml:space="preserve">
+    <value>Товар инде исемлектә</value>
+  </data>
+  <data name="TitleRemoveConfirmation" xml:space="preserve">
+    <value>Бетерүне раслау</value>
+  </data>
+  <data name="TitleSuccess" xml:space="preserve">
+    <value>Уңыш</value>
+  </data>
+  <data name="TitleWarning" xml:space="preserve">
+    <value>Игътибар</value>
+  </data>
+  <data name="Unit_Piece_Short" xml:space="preserve">
+    <value>дат</value>
+  </data>
+  <data name="BatchNumberFormat" xml:space="preserve">
+    <value>Партия_{0:yyyyMM}</value>
+  </data>
+  <data name="CategoryDisplayFormat_WithCount" xml:space="preserve">
+    <value>{0} (товарлар: {1})</value>
+  </data>
+  <data name="CategoryItemFormat" xml:space="preserve">
+    <value>{0} (товарлар: {1})</value>
+  </data>
+  <data name="ComboItemFormat" xml:space="preserve">
+    <value>{0} - {1} (калдык: {2} дат.)</value>
+  </data>
+  <data name="ConfirmDeleteSupplyItem" xml:space="preserve">
+    <value>Сез чыннан да "{0} - {1}" товарын тәэминат исемлегеннән бетерәсезме?</value>
+  </data>
+  <data name="CurrencyFormat_Rub" xml:space="preserve">
+    <value>{0:N2} сум</value>
+  </data>
+  <data name="ExpiryDisplayFormat_WithBalance" xml:space="preserve">
+    <value>Мөддәт: {0:dd.MM.yyyy} (калдык: {1})</value>
+  </data>
+  <data name="FileNameDateFormat" xml:space="preserve">
+    <value>yyyyMMdd_HHmmss</value>
+  </data>
+  <data name="NoExpiryDisplayFormat" xml:space="preserve">
+    <value>Мөддәтсез (калдык: {0})</value>
+  </data>
+  <data name="ProductDisplayFormat_WithBalance" xml:space="preserve">
+    <value>{0} - {1} (калдык: {2} {3})</value>
+  </data>
+  <data name="RussianRuble" xml:space="preserve">
+    <value>Россия сумы</value>
+  </data>
+  <data name="SaveFileDefaultExt_CSV" xml:space="preserve">
+    <value>csv</value>
+  </data>
+  <data name="SaveFileFileNameTemplate_Report" xml:space="preserve">
+    <value>Отчет_{0}</value>
+  </data>
+  <data name="SaveFileFilter_CSV" xml:space="preserve">
+    <value>CSV файллар (*.csv)|*.csv|Барлык файллар (*.*)|*.*</value>
+  </data>
+  <data name="ShipmentForm_TitleFormat" xml:space="preserve">
+    <value>Йөкләүне формалаштыру - Гомуми сумма: {0:F2}, Табыш: {1:F2}</value>
+  </data>
+  <data name="SupplierNotFoundFormat" xml:space="preserve">
+    <value>{0} ('{1}' тәэмин итүчесе табылмады)</value>
+  </data>
+  <data name="TitleConfirmDelete" xml:space="preserve">
+    <value>Бетерүне раслау</value>
+  </data>
+  <data name="ShipmentType_Supply" xml:space="preserve">
+    <value>Тәэминат</value>
+  </data>
+  <data name="ColumnArticle" xml:space="preserve">
+    <value>Артикул</value>
+  </data>
+  <data name="ColumnName" xml:space="preserve">
+    <value>Атамасы</value>
+  </data>
+  <data name="ColumnCategory" xml:space="preserve">
+    <value>Категория</value>
+  </data>
+  <data name="ColumnUnit" xml:space="preserve">
+    <value>Үлчәү бер.</value>
+  </data>
+  <data name="ColumnExpiryDate" xml:space="preserve">
+    <value>Яраклылык мөддәте</value>
+  </data>
+  <data name="ColumnPrice" xml:space="preserve">
+    <value>Сатып алу бәясе</value>
+  </data>
+  <data name="ColumnPurchasePrice" xml:space="preserve">
+    <value>Бәясе</value>
+  </data>
+  <data name="ColumnPurchasePriceFormat" xml:space="preserve">
+    <value>Бәясе ({0})</value>
+  </data>
+  <data name="ColumnBalance" xml:space="preserve">
+    <value>Калдык</value>
+  </data>
+  <data name="History_Number" xml:space="preserve">
+    <value>№</value>
+  </data>
+  <data name="History_Article" xml:space="preserve">
+    <value>Артикул</value>
+  </data>
+  <data name="History_Name" xml:space="preserve">
+    <value>Атамасы</value>
+  </data>
+  <data name="History_Quantity" xml:space="preserve">
+    <value>Сан</value>
+  </data>
+  <data name="History_Price" xml:space="preserve">
+    <value>Бәясе</value>
+  </data>
+  <data name="History_Profit" xml:space="preserve">
+    <value>Табыш</value>
+  </data>
+  <data name="History_Total" xml:space="preserve">
+    <value>Сумма</value>
+  </data>
+  <data name="History_Recipient" xml:space="preserve">
+    <value>Алучы</value>
+  </data>
+  <data name="History_Storekeeper" xml:space="preserve">
+    <value>Сакчы</value>
+  </data>
+  <data name="History_Date" xml:space="preserve">
+    <value>Дата</value>
+  </data>
+  <data name="Report_Article" xml:space="preserve">
+    <value>Артикул</value>
+  </data>
+  <data name="Report_Name" xml:space="preserve">
+    <value>Атамасы</value>
+  </data>
+  <data name="Report_Quantity" xml:space="preserve">
+    <value>Сан</value>
+  </data>
+  <data name="Report_Price" xml:space="preserve">
+    <value>Бәясе</value>
+  </data>
+  <data name="Report_Profit" xml:space="preserve">
+    <value>Табыш</value>
+  </data>
+  <data name="Report_Total" xml:space="preserve">
+    <value>Сумма</value>
+  </data>
+  <data name="Report_Recipient" xml:space="preserve">
+    <value>Алучы</value>
+  </data>
+  <data name="Report_Storekeeper" xml:space="preserve">
+    <value>Сакчы</value>
+  </data>
+  <data name="Report_Date" xml:space="preserve">
+    <value>Дата</value>
+  </data>
+  <data name="NotListed" xml:space="preserve">
+    <value>Күрсәтелмәгән</value>
+  </data>
+  <data name="ND" xml:space="preserve">
+    <value>Б/М</value>
+  </data>
+  <data name="AddCategory_Title" xml:space="preserve">
+    <value>Категория өстәү</value>
+  </data>
+  <data name="AddCategory_LabelText" xml:space="preserve">
+    <value>Категория өстәү</value>
+  </data>
+  <data name="AddCategory_ButtonAddText" xml:space="preserve">
+    <value>Өстәү</value>
+  </data>
+  <data name="AddCategory_ButtonCancelText" xml:space="preserve">
+    <value>Кире кагу</value>
+  </data>
+  <data name="AddProduct_Title" xml:space="preserve">
+    <value>Товар өстәү</value>
+  </data>
+  <data name="AddProduct_LabelText" xml:space="preserve">
+    <value>Товар өстәү</value>
+  </data>
+  <data name="AddProduct_GroupBoxExpiry_Text" xml:space="preserve">
+    <value>Яраклылык мөддәте</value>
+  </data>
+  <data name="AddProduct_RadioButtonHasExpiry_Text" xml:space="preserve">
+    <value>Мөддәте бар</value>
+  </data>
+  <data name="AddProduct_RadioButtonNoExpiry_Text" xml:space="preserve">
+    <value>Мөддәте юк</value>
+  </data>
+  <data name="AddProduct_ButtonAddText" xml:space="preserve">
+    <value>Өстәү</value>
+  </data>
+  <data name="AddProduct_ButtonCancelText" xml:space="preserve">
+    <value>Кире кагу</value>
+  </data>
+  <data name="AddProduct_TextBoxArt_Watermark" xml:space="preserve">
+    <value>Артикулны языгыз</value>
+  </data>
+  <data name="AddProduct_TextBoxArt_DefaultText" xml:space="preserve">
+    <value>Артикулны языгыз</value>
+  </data>
+  <data name="AdminForm_Title" xml:space="preserve">
+    <value>Төп форма</value>
+  </data>
+  <data name="AdminForm_ButtonExitText" xml:space="preserve">
+    <value>Чыгу</value>
+  </data>
+  <data name="AdminForm_ButtonReportText" xml:space="preserve">
+    <value>Отчет</value>
+  </data>
+  <data name="AdminForm_ButtonCurrencyText" xml:space="preserve">
+    <value>Валюта сайлау</value>
+  </data>
+  <data name="AdminForm_ButtonSupplyText" xml:space="preserve">
+    <value>Тәэминат</value>
+  </data>
+  <data name="AdminForm_ButtonHistoryText" xml:space="preserve">
+    <value>Йөкләү тарихы</value>
+  </data>
+  <data name="AdminForm_TextBoxSearch_Text" xml:space="preserve">
+    <value>Эзләү:</value>
+  </data>
+  <data name="AdminForm_ToolStripAddText" xml:space="preserve">
+    <value>Өстәү</value>
+  </data>
+  <data name="AdminForm_ToolStripEditText" xml:space="preserve">
+    <value>Төзәтү</value>
+  </data>
+  <data name="AdminForm_ToolStripDeleteText" xml:space="preserve">
+    <value>Бетерү</value>
+  </data>
+  <data name="AdminForm_ToolStripProductText" xml:space="preserve">
+    <value>Товар</value>
+  </data>
+  <data name="AdminForm_ToolStripCategoryText" xml:space="preserve">
+    <value>Категория</value>
+  </data>
+  <data name="AdminForm_ToolStripAdminText" xml:space="preserve">
+    <value>Администратор</value>
+  </data>
+  <data name="Auth_Form_Title" xml:space="preserve">
+    <value>Авторизация</value>
+  </data>
+  <data name="Auth_LabelEnter_Text" xml:space="preserve">
+    <value>Керү</value>
+  </data>
+  <data name="Auth_LabelLogin_Text" xml:space="preserve">
+    <value>Логин</value>
+  </data>
+  <data name="Auth_LabelPassword_Text" xml:space="preserve">
+    <value>Серсүз</value>
+  </data>
+  <data name="Auth_ButtonEnter_Text" xml:space="preserve">
+    <value>Керү</value>
+  </data>
+  <data name="Auth_ButtonRegister_Text" xml:space="preserve">
+    <value>Аккаунт юк? Теркәлү</value>
+  </data>
+  <data name="Currency_Form_Title" xml:space="preserve">
+    <value>Валюта сайлау</value>
+  </data>
+  <data name="Currency_TextBox_Text" xml:space="preserve">
+    <value>Валюта сайлау</value>
+  </data>
+  <data name="Currency_ButtonChoose_Text" xml:space="preserve">
+    <value>Сайлау</value>
+  </data>
+  <data name="Currency_ButtonCancel_Text" xml:space="preserve">
+    <value>Кире кагу</value>
+  </data>
+  <data name="Shipment_Form_Title" xml:space="preserve">
+    <value>Йөкләүне формалаштыру</value>
+  </data>
+  <data name="Shipment_LabelTitle_Text" xml:space="preserve">
+    <value>Йөкләүне формалаштыру</value>
+  </data>
+  <data name="Shipment_LabelType_Text" xml:space="preserve">
+    <value>Йөкләү төре</value>
+  </data>
+  <data name="Shipment_LabelSelectProduct_Text" xml:space="preserve">
+    <value>Товарны сайлагыз:</value>
+  </data>
+  <data name="Shipment_LabelQuantity_Text" xml:space="preserve">
+    <value>Товар санын языгыз:</value>
+  </data>
+  <data name="Shipment_LabelRecipient_Text" xml:space="preserve">
+    <value>Алучыны сайлагыз:</value>
+  </data>
+  <data name="Shipment_LabelExpiry_Text" xml:space="preserve">
+    <value>Яраклылык мөддәте:</value>
+  </data>
+  <data name="Shipment_ButtonAdd_Text" xml:space="preserve">
+    <value>Исемлеккә өстәү</value>
+  </data>
+  <data name="Shipment_ButtonShipment_Text" xml:space="preserve">
+    <value>Йөкләүне расларга</value>
+  </data>
+  <data name="Shipment_ButtonCancel_Text" xml:space="preserve">
+    <value>Кире кагу</value>
+  </data>
+  <data name="Shipment_LabelTotalCaption_Text" xml:space="preserve">
+    <value>Йомгаклау:</value>
+  </data>
+  <data name="ShipmentType_Shipment" xml:space="preserve">
+    <value>Йөкләү</value>
+  </data>
+  <data name="ShipmentType_WriteOff" xml:space="preserve">
+    <value>Бетерү</value>
+  </data>
+  <data name="ShipmentType_Defect" xml:space="preserve">
+    <value>Акчарлак</value>
+  </data>
+  <data name="Supply_Form_Title" xml:space="preserve">
+    <value>Тәэминатны формалаштыру</value>
+  </data>
+  <data name="Supply_LabelTitle_Text" xml:space="preserve">
+    <value>Тәэминат</value>
+  </data>
+  <data name="Supply_LabelProduct_Text" xml:space="preserve">
+    <value>Исемлектән товарны сайлагыз:</value>
+  </data>
+  <data name="Supply_LabelQuantity_Text" xml:space="preserve">
+    <value>Санны языгыз:</value>
+  </data>
+  <data name="Supply_LabelExpiry_Text" xml:space="preserve">
+    <value>Яраклылык мөддәте:</value>
+  </data>
+  <data name="Supply_LabelSupplier_Text" xml:space="preserve">
+    <value>Тәэмин итүчене сайлагыз:</value>
+  </data>
+  <data name="Supply_LabelCurrency_Text" xml:space="preserve">
+    <value>Сатып алу валютасы:</value>
+  </data>
+  <data name="Supply_LabelPrice_Text" xml:space="preserve">
+    <value>Бәяне языгыз:</value>
+  </data>
+  <data name="Supply_ButtonAddToList_Text" xml:space="preserve">
+    <value>Исемлеккә өстәү</value>
+  </data>
+  <data name="Supply_ButtonConfirmSupply_Text" xml:space="preserve">
+    <value>Тәэминатны расларга</value>
+  </data>
+  <data name="Supply_ButtonCancel_Text" xml:space="preserve">
+    <value>Кире кагу</value>
+  </data>
+  <data name="Supply_ButtonImport_Text" xml:space="preserve">
+    <value>Файл импорты</value>
+  </data>
+  <data name="Supply_LabelTotalCaption_Text" xml:space="preserve">
+    <value>Йомгаклау:</value>
+  </data>
+  <data name="Supply_DataGridView_ColumnArticle" xml:space="preserve">
+    <value>Артикул</value>
+  </data>
+  <data name="Supply_DataGridView_ColumnName" xml:space="preserve">
+    <value>Атамасы</value>
+  </data>
+  <data name="Supply_DataGridView_ColumnQuantity" xml:space="preserve">
+    <value>Сан</value>
+  </data>
+  <data name="Supply_DataGridView_ColumnPrice" xml:space="preserve">
+    <value>Бәясе</value>
+  </data>
+  <data name="Supply_DataGridView_ColumnTotal" xml:space="preserve">
+    <value>Сумма</value>
+  </data>
+  <data name="Supply_DataGridView_ColumnSupplier" xml:space="preserve">
+    <value>Тәэмин итүче</value>
+  </data>
+  <data name="Supply_DataGridView_ColumnExpiry" xml:space="preserve">
+    <value>Яраклылык мөддәте</value>
+  </data>
+  <data name="DeleteCategory_Form_Title" xml:space="preserve">
+    <value>Категорияне бетерү</value>
+  </data>
+  <data name="DeleteCategory_LabelTitle_Text" xml:space="preserve">
+    <value>Категорияне бетерү</value>
+  </data>
+  <data name="DeleteCategory_ButtonDelete_Text" xml:space="preserve">
+    <value>Бетерү</value>
+  </data>
+  <data name="DeleteCategory_ButtonCancel_Text" xml:space="preserve">
+    <value>Кире кагу</value>
+  </data>
+  <data name="DeleteProduct_Form_Title" xml:space="preserve">
+    <value>Товарны бетерү</value>
+  </data>
+  <data name="DeleteProduct_LabelTitle_Text" xml:space="preserve">
+    <value>Товарны бетерү</value>
+  </data>
+  <data name="DeleteProduct_ButtonDelete_Text" xml:space="preserve">
+    <value>Бетерү</value>
+  </data>
+  <data name="DeleteProduct_ButtonCancel_Text" xml:space="preserve">
+    <value>Кире кагу</value>
+  </data>
+  <data name="DeleteProduct_TextBoxArt_Watermark" xml:space="preserve">
+    <value>Товар артикулын языгыз</value>
+  </data>
+  <data name="DeleteProductWithDetails" xml:space="preserve">
+    <value>Товарны бетерү: {0} - {1}</value>
+  </data>
+  <data name="EditCategory_Form_Title" xml:space="preserve">
+    <value>Категорияне төзәтү</value>
+  </data>
+  <data name="EditCategory_LabelTitle_Text" xml:space="preserve">
+    <value>Категорияне төзәтү</value>
+  </data>
+  <data name="EditCategory_ButtonEdit_Text" xml:space="preserve">
+    <value>Төзәтү</value>
+  </data>
+  <data name="EditCategory_ButtonCancel_Text" xml:space="preserve">
+    <value>Кире кагу</value>
+  </data>
+  <data name="EditCategory_TextBoxNewName_Watermark" xml:space="preserve">
+    <value>Атаманы языгыз</value>
+  </data>
+  <data name="RedactProduct_Form_Title" xml:space="preserve">
+    <value>Товарны төзәтү</value>
+  </data>
+  <data name="RedactProduct_LabelTitle_Text" xml:space="preserve">
+    <value>Товарны төзәтү</value>
+  </data>
+  <data name="RedactProduct_TextBoxArt_Watermark" xml:space="preserve">
+    <value>Артикул</value>
+  </data>
+  <data name="RedactProduct_TextBoxName_Watermark" xml:space="preserve">
+    <value>Атамасы</value>
+  </data>
+  <data name="RedactProduct_TextBoxCategory_Watermark" xml:space="preserve">
+    <value>Категория</value>
+  </data>
+  <data name="RedactProduct_TextBoxPrice_Watermark" xml:space="preserve">
+    <value>Бәясе</value>
+  </data>
+  <data name="RedactProduct_ButtonRedact_Text" xml:space="preserve">
+    <value>Төзәтү</value>
+  </data>
+  <data name="RedactProduct_ButtonCancel_Text" xml:space="preserve">
+    <value>Кире кагу</value>
+  </data>
+  <data name="Registration_Form_Title" xml:space="preserve">
+    <value>Теркәлү</value>
+  </data>
+  <data name="Registration_LabelTitle_Text" xml:space="preserve">
+    <value>Теркәлү</value>
+  </data>
+  <data name="Registration_LabelSurname_Text" xml:space="preserve">
+    <value>Фамилия</value>
+  </data>
+  <data name="Registration_LabelName_Text" xml:space="preserve">
+    <value>Исем</value>
+  </data>
+  <data name="Registration_LabelLastname_Text" xml:space="preserve">
+    <value>Атисез</value>
+  </data>
+  <data name="Registration_LabelLogin_Text" xml:space="preserve">
+    <value>Логин</value>
+  </data>
+  <data name="Registration_LabelPassword_Text" xml:space="preserve">
+    <value>Серсүз</value>
+  </data>
+  <data name="Registration_LabelConfirmPassword_Text" xml:space="preserve">
+    <value>Серсүзне раслау</value>
+  </data>
+  <data name="Registration_ButtonRegister_Text" xml:space="preserve">
+    <value>Теркәлү</value>
+  </data>
+  <data name="Registration_ButtonEnter_Text" xml:space="preserve">
+    <value>Инде аккаунт бар? Керү</value>
+  </data>
+  <data name="Registration_TextBoxSurname_Watermark" xml:space="preserve">
+    <value>Фамилияне языгыз</value>
+  </data>
+  <data name="Registration_TextBoxName_Watermark" xml:space="preserve">
+    <value>Исемне языгыз</value>
+  </data>
+  <data name="Registration_TextBoxLastname_Watermark" xml:space="preserve">
+    <value>Атисезне языгыз</value>
+  </data>
+  <data name="Registration_TextBoxLogin_Watermark" xml:space="preserve">
+    <value>Логинны языгыз</value>
+  </data>
+  <data name="Registration_TextBoxPassword_Watermark" xml:space="preserve">
+    <value>Серсүзне языгыз</value>
+  </data>
+  <data name="Registration_TextBoxConfirmPassword_Watermark" xml:space="preserve">
+    <value>Серсүзне кабатлагыз</value>
+  </data>
+  <data name="Report_Form_Title" xml:space="preserve">
+    <value>Отчет</value>
+  </data>
+  <data name="Report_LabelTitle_Text" xml:space="preserve">
+    <value>Отчет</value>
+  </data>
+  <data name="Report_LabelPeriod_Text" xml:space="preserve">
+    <value>Периодны сайлагыз:</value>
+  </data>
+  <data name="Report_LabelFrom_Text" xml:space="preserve">
+    <value>башлап</value>
+  </data>
+  <data name="Report_LabelTo_Text" xml:space="preserve">
+    <value>кадәр</value>
+  </data>
+  <data name="Report_ButtonExport_Text" xml:space="preserve">
+    <value>Файл экспорты</value>
+  </data>
+  <data name="Report_LabelTotalAmount_Text" xml:space="preserve">
+    <value>Сумма (RUB):</value>
+  </data>
+  <data name="Report_LabelProfit_Text" xml:space="preserve">
+    <value>Табыш (RUB):</value>
+  </data>
+  <data name="Report_ColumnNumber" xml:space="preserve">
+    <value>№</value>
+  </data>
+  <data name="Report_ColumnArticle" xml:space="preserve">
+    <value>Артикул</value>
+  </data>
+  <data name="Report_ColumnName" xml:space="preserve">
+    <value>Атамасы</value>
+  </data>
+  <data name="Report_ColumnQuantity" xml:space="preserve">
+    <value>Сан</value>
+  </data>
+  <data name="Report_ColumnPrice" xml:space="preserve">
+    <value>Бәясе</value>
+  </data>
+  <data name="Report_ColumnProfit" xml:space="preserve">
+    <value>Табыш</value>
+  </data>
+  <data name="Report_ColumnTotal" xml:space="preserve">
+    <value>Сумма</value>
+  </data>
+  <data name="Report_ColumnRecipient" xml:space="preserve">
+    <value>Алучы</value>
+  </data>
+  <data name="Report_ColumnStorekeeper" xml:space="preserve">
+    <value>Сакчы</value>
+  </data>
+  <data name="Report_ColumnDate" xml:space="preserve">
+    <value>Дата</value>
+  </data>
+  <data name="History_Form_Title" xml:space="preserve">
+    <value>Йөкләү тарихы</value>
+  </data>
+  <data name="History_TextBox_Text" xml:space="preserve">
+    <value>Йөкләү тарихы</value>
+  </data>
+  <data name="History_LabelFrom_Text" xml:space="preserve">
+    <value>башлап</value>
+  </data>
+  <data name="History_LabelTo_Text" xml:space="preserve">
+    <value>кадәр</value>
+  </data>
+  <data name="History_ButtonApplyFilter_Text" xml:space="preserve">
+    <value>Куллану</value>
+  </data>
+  <data name="Storekeeper_Form_Title" xml:space="preserve">
+    <value>Сакчы - Склад белән идарә итү</value>
+  </data>
+  <data name="Storekeeper_ButtonExitText" xml:space="preserve">
+    <value>Чыгу</value>
+  </data>
+  <data name="Storekeeper_ButtonCurrencyText" xml:space="preserve">
+    <value>Валюта сайлау</value>
+  </data>
+  <data name="Storekeeper_ButtonSupplyText" xml:space="preserve">
+    <value>Тәэминат</value>
+  </data>
+  <data name="Storekeeper_ButtonShipmentText" xml:space="preserve">
+    <value>Йөкләүне рәсмиләштерү</value>
+  </data>
+  <data name="Storekeeper_TextBoxSearch_Text" xml:space="preserve">
+    <value>Эзләү:</value>
+  </data>
+  <data name="Storekeeper_ToolStripText" xml:space="preserve">
+    <value>Сакчы</value>
+  </data>
+  <data name="DataGridView_ColumnArticle" xml:space="preserve">
+    <value>Артикул</value>
+  </data>
+  <data name="DataGridView_ColumnName" xml:space="preserve">
+    <value>Атамасы</value>
+  </data>
+  <data name="DataGridView_ColumnCategory" xml:space="preserve">
+    <value>Категория</value>
+  </data>
+  <data name="DataGridView_ColumnUnit" xml:space="preserve">
+    <value>Үлчәү бер.</value>
+  </data>
+  <data name="DataGridView_ColumnExpiryDate" xml:space="preserve">
+    <value>Яраклылык мөддәте</value>
+  </data>
+  <data name="DataGridView_ColumnPrice" xml:space="preserve">
+    <value>Бәясе</value>
+  </data>
+  <data name="DataGridView_ColumnBalance" xml:space="preserve">
+    <value>Калдык</value>
+  </data>
+</root>
