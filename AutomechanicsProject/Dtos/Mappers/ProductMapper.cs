@@ -48,7 +48,7 @@ namespace AutomechanicsProject.Mappers
             } 
                 
 
-            var today = DateTime.Today;
+            var today = MoscowTime.Today;
             var requiresDiscount = entity.ExpiryDate.HasValue &&
                                    entity.ExpiryDate.Value > today &&
                                    (entity.ExpiryDate.Value - today).Days <= 30;

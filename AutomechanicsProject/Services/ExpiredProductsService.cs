@@ -12,7 +12,7 @@ namespace AutomechanicsProject.Services
         /// </summary>
         public static int AutoWriteOffExpiredProducts(DateBase db)
         {
-            var today = DateTime.Today;
+            var today = MoscowTime.Today;
 
             var expiredProducts = db.Products
                 .Where(p => p.ExpiryDate.HasValue
@@ -33,7 +33,7 @@ namespace AutomechanicsProject.Services
                 var shipment = new Shipment
                 {
                     Id = Guid.NewGuid(),
-                    Date = DateTime.Now,
+                    Date = MoscowTime.Now,
                     UserId = writeOffAddressId,
                     CreatedByUserId = writeOffUserId,
                     ShipmentType = "Списание",

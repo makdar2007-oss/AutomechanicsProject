@@ -2779,6 +2779,39 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на В отгрузке {0} металлических позиций,
+        ///которые НЕ были сданы на металлолом.
+        ///
+        ///Возврат не получен..
+        /// </summary>
+        public static string ScrapMetal_NoReturnMessage {
+            get {
+                return ResourceManager.GetString("ScrapMetal_NoReturnMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Сдано на металлолом: {0} позиций
+        ///Получено возврата: {1:F2} ₽
+        ///
+        ///Убыток от брака уменьшен на эту сумму..
+        /// </summary>
+        public static string ScrapMetal_ReturnMessage {
+            get {
+                return ResourceManager.GetString("ScrapMetal_ReturnMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Металлолом.
+        /// </summary>
+        public static string ScrapMetal_Title {
+            get {
+                return ResourceManager.GetString("ScrapMetal_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Выберите валюту закупки.
         /// </summary>
         public static string SCurrencyWatermark {

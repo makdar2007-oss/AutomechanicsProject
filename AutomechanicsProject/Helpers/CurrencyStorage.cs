@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
+using AutomechanicsProject.Classes;
 
 namespace AutomechanicsProject.Helpers
 {
@@ -36,7 +37,7 @@ namespace AutomechanicsProject.Helpers
                 {
                     ExchangeRates = rates,
                     LastSelectedCurrency = selectedCurrency,
-                    LastUpdate = DateTime.Now
+                    LastUpdate = MoscowTime.Now
                 };
 
                 var json = JsonSerializer.Serialize(cache);
@@ -66,7 +67,7 @@ namespace AutomechanicsProject.Helpers
                         var selectedCurrency = root.GetProperty("LastSelectedCurrency").GetString();
                         var lastUpdate = root.GetProperty("LastUpdate").GetDateTime();
 
-                        if (rates != null && selectedCurrency != null && (DateTime.Now - lastUpdate).TotalHours < 24)
+                        if (rates != null && selectedCurrency != null && (MoscowTime.Now - lastUpdate).TotalHours < 24)
                         {
                             return (rates, selectedCurrency, lastUpdate);
 

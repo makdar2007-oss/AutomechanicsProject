@@ -88,5 +88,11 @@ namespace AutomechanicsProject.Classes
         /// </summary>
         [Column("has_expiry_date")]
         public bool HasExpiryDate { get; set; }
+
+        /// <summary>
+        /// Является ли товар металлическим (можно сдать на металлолом)
+        /// </summary>
+        [Column("is_metal")]
+        public bool IsMetal { get; set; }
     }
 }

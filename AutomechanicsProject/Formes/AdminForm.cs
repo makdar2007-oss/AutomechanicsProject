@@ -372,7 +372,7 @@ namespace AutomechanicsProject.Formes
         {
             try
             {
-                var today = DateTime.Today;
+                var today = MoscowTime.Today;
 
                 var products = _db.Products
                     .AsNoTracking()
@@ -441,8 +441,8 @@ namespace AutomechanicsProject.Formes
             decimal priceInRub = product.PurchasePrice;
 
             if (product.ExpiryDate.HasValue &&
-                product.ExpiryDate.Value.Date >= DateTime.Today &&
-                (product.ExpiryDate.Value.Date - DateTime.Today).Days <= 30)
+                product.ExpiryDate.Value.Date >= MoscowTime.Today &&
+                (product.ExpiryDate.Value.Date - MoscowTime.Today).Days <= 30)
             {
                 priceInRub = priceInRub * 0.9m; 
             }
@@ -555,7 +555,7 @@ namespace AutomechanicsProject.Formes
         /// </summary>
         private void DataGridViewStore_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
         {
-            var today = DateTime.Today;
+            var today = MoscowTime.Today;
 
             foreach (DataGridViewRow row in dataGridViewMainForm.Rows)
             {
