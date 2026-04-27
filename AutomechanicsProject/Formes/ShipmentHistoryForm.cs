@@ -32,8 +32,8 @@ namespace AutomechanicsProject.Formes
         /// </summary>
         private void ShipmentHistoryForm_Load(object sender, EventArgs e)
         {
-            dateTimePickerFrom.Value = DateTime.Now.AddMonths(-1);
-            dateTimePickerTo.Value = DateTime.Now;
+            dateTimePickerFrom.Value = MoscowTime.Now.AddMonths(-1);
+            dateTimePickerTo.Value = MoscowTime.Now;
             LoadShipmentHistory();
         }
 

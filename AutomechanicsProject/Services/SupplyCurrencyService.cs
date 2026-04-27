@@ -33,7 +33,7 @@ namespace AutomechanicsProject.Services
                 logger.Error($"Ошибка получения валюты для товара {productId}", ex);
             }
 
-            return (CurrencyCodes.RUB, 1.00m, DateTime.Now);
+            return (CurrencyCodes.RUB, 1.00m, MoscowTime.Now);
         }
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace AutomechanicsProject.Services
         {
             var (currency, rate, date) = GetProductCurrency(productId, db);
 
-            if (currency == CurrencyCodes.RUB && rate == 1.00m && date == DateTime.Now)
+            if (currency == CurrencyCodes.RUB && rate == 1.00m && date == MoscowTime.Now)
             {
                 var hasSupply = db.SupplyPositions.Any(sp => sp.ProductId == productId);
                 if (!hasSupply)

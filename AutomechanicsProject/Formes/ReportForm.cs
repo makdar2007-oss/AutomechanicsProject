@@ -34,8 +34,8 @@ namespace AutomechanicsProject.Formes
         /// </summary>
         private void ReportForm_Load(object sender, EventArgs e)
         {
-            dateTimePickerFrom.Value = DateTime.Now.AddMonths(-1);
-            dateTimePickerTo.Value = DateTime.Now;
+            dateTimePickerFrom.Value = MoscowTime.Now.AddMonths(-1);
+            dateTimePickerTo.Value = MoscowTime.Now;
             LoadReport();
         }
 
@@ -46,10 +46,14 @@ namespace AutomechanicsProject.Formes
         {
             try
             {
-                DateTime startDate = dateTimePickerFrom.Value.Date;
-                DateTime endDate = dateTimePickerTo.Value.Date.AddDays(1);
+                DateTime selectedFromDate = dateTimePickerFrom.Value;
+                DateTime selectedToDate = dateTimePickerTo.Value;
 
-                if (startDate > endDate)
+                DateTime moscowStartDate = MoscowTime.ConvertToMoscow(selectedFromDate).Date;
+                DateTime moscowEndDate = MoscowTime.ConvertToMoscow(selectedToDate).Date.AddDays(1);
+
+
+                if (moscowStartDate > moscowEndDate)
                 {
                     MessageBox.Show(Resources.WarningNoDataForPeriod,
                         Resources.TitleWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -60,15 +64,13 @@ namespace AutomechanicsProject.Formes
                     .Include(s => s.User)
                     .Include(s => s.CreatedByUser)
                     .Include(s => s.Items)
-                    .Where(s => s.Date.Date >= startDate && s.Date.Date < endDate)
-                    .OrderByDescending(s => s.Date)
+                    .Where(s => s.Date >= moscowStartDate && s.Date < moscowEndDate).OrderByDescending(s => s.Date)
                     .ToList();
 
                 var supplies = _db.Supplies
                     .Include(s => s.User)
                     .Include(s => s.Positions)
-                    .Where(s => s.DateCreated.Date >= startDate && s.DateCreated.Date < endDate)
-                    .ToList();
+                    .Where(s => s.DateCreated >= moscowStartDate && s.DateCreated < moscowEndDate).ToList();
 
                 if (shipments.Count == 0 && supplies.Count == 0)
                 {
@@ -91,7 +93,9 @@ namespace AutomechanicsProject.Formes
                             : 0m,
                         Profit = (s.ShipmentType == ShipmentTypeEnum.Shipment.ToString())
                             ? (item.PurchasePrice - item.Price) * item.Quantity
-                            : -(item.Price * Math.Abs(item.Quantity)),
+                            : (s.ShipmentType == ShipmentTypeEnum.Defect.ToString())
+                            ? -(item.PurchasePrice * Math.Abs(item.Quantity)) + (item.ScrapReturn)  
+                            : -(item.PurchasePrice * Math.Abs(item.Quantity)),  
                         Total = (s.ShipmentType == ShipmentTypeEnum.Shipment.ToString())
                             ? item.PurchasePrice * item.Quantity
                             : 0m,
@@ -101,7 +105,8 @@ namespace AutomechanicsProject.Formes
                         ? Resources.ShipmentType_Defect
                         : Resources.ShipmentType_WriteOff,
                         Storekeeper = s.CreatedByUser?.FullName ?? Resources.NotListed,
-                        Date = s.Date.ToString("dd.MM.yyyy HH:mm"),
+                        Date = MoscowTime.Format(s.Date),
+                        ScrapReturn = item.ScrapReturn,
                         Type = Resources.ShipmentType_Shipment
                     }))
                     .ToList();
@@ -118,7 +123,8 @@ namespace AutomechanicsProject.Formes
                         Total = item.Price * item.Quantity,
                         Recipient = item.SupplierName ?? Resources.NotListed,
                         Storekeeper = s.User?.FullName ?? Resources.NotListed,
-                        Date = s.DateCreated.ToString("dd.MM.yyyy HH:mm"),
+                        Date = MoscowTime.Format(s.DateCreated),
+                        ScrapReturn = 0m,
                         Type = Resources.ShipmentType_Supply
                     }))
                     .ToList();
@@ -147,7 +153,7 @@ namespace AutomechanicsProject.Formes
                         Total = item.Total.ToString("F2"),
                         item.Recipient,
                         item.Storekeeper,
-                        item.Date
+                        item.Date,
                     })
                     .ToList();
 
@@ -289,7 +295,7 @@ namespace AutomechanicsProject.Formes
                     saveFileDialog.DefaultExt = Resources.SaveFileDefaultExt_CSV;
                     saveFileDialog.FileName = string.Format(
                         Resources.SaveFileFileNameTemplate_Report,
-                        DateTime.Now.ToString(Resources.FileNameDateFormat));                   
+                        MoscowTime.Now.ToString(Resources.FileNameDateFormat));                   
                         saveFileDialog.Title = Resources.SaveCsvFileTitle;
                     if (saveFileDialog.ShowDialog() == DialogResult.OK)
                     {

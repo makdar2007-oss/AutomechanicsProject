@@ -46,5 +46,10 @@ namespace AutomechanicsProject.ViewModels
         /// Уникальный идентификатор товара
         /// </summary>
         public Guid UnitId { get; set; }
+
+        /// <summary>
+        /// Является ли товар металлическим
+        /// </summary>
+        public bool IsMetal { get; set; }
     }
 }

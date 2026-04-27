@@ -71,5 +71,23 @@ namespace AutomechanicsProject.Classes
         /// </summary>
         [ForeignKey("ShipmentId")]
         public virtual Shipment Shipment { get; set; }
+
+        /// <summary>
+        /// Сумма возврата от сдачи на металлолом (для брака)
+        /// </summary>
+        [Column("scrap_return")]
+        public decimal ScrapReturn { get; set; }
+
+        // <summary>
+        /// Временный флаг для UI: сдавать ли товар на металлолом (только для брака)
+        /// </summary>
+        [NotMapped]
+        public bool ScrapMetal { get; set; } = false;
+
+        /// <summary>
+        /// Временный флаг для UI: является ли товар металлическим (из Product)
+        /// </summary>
+        [NotMapped]
+        public bool IsMetal { get; set; } = false;
     }
 }   

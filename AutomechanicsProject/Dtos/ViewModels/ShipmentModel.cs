@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 
 namespace AutomechanicsProject.ViewModels
 {
@@ -48,6 +49,30 @@ namespace AutomechanicsProject.ViewModels
         /// </summary>
         [DisplayName("Получатель")]
         public string RecipientName { get; set; }
+
+        /// <summary>
+        /// Идентификатор товара (для связи с оригинальным списком)
+        /// </summary>
+        [Browsable(false)]
+        public Guid ProductId { get; set; }
+
+        /// <summary>
+        /// Является ли товар металлическим
+        /// </summary>
+        [Browsable(false)]
+        public bool IsMetal { get; set; }
+
+        /// <summary>
+        /// Был ли товар сдан на металлолом
+        /// </summary>
+        [Browsable(false)]
+        public bool IsScrapped { get; set; }
+
+        /// <summary>
+        /// Отметка о сдаче на металлолом (для UI)
+        /// </summary>
+        [DisplayName("Металлолом")]
+        public bool ScrapMetal { get; set; }
 
         /// <summary>
         /// Отображение общей суммы в формате валюты

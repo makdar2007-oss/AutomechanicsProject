@@ -373,7 +373,7 @@ namespace AutomechanicsProject.Formes
 
             if (selectedProduct.HasExpiryDate)
             {
-                if (!dateTimePickerExpiry.Checked || dateTimePickerExpiry.Value < DateTime.Now.Date)
+                if (!dateTimePickerExpiry.Checked || dateTimePickerExpiry.Value < MoscowTime.Now.Date)
                 {
                     MessageBox.Show(Resources.ErrorExpiryDateRequired, Resources.TitleWarning,
                         MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -809,13 +809,13 @@ namespace AutomechanicsProject.Formes
                     {
                         Id = Guid.NewGuid(),
                         OrderNumber = GenerateOrderNumber(),
-                        DateCreated = DateTime.Now,
+                        DateCreated = MoscowTime.Now,
                         UserId = GetCurrentUserId(),
                         Status = Resources.SupplyStatusCompleted,
                         TotalAmount = totalInRUB,
                         CurrencyCode = currentCurrency,
                         ExchangeRate = currentCurrencyRate,
-                        RateDate = DateTime.Now,
+                        RateDate = MoscowTime.Now,
                     };
 
                     using (var transaction = _db.Database.BeginTransaction())
@@ -858,7 +858,7 @@ namespace AutomechanicsProject.Formes
                                         product.ExpiryDate = pos.ExpiryDate;
                                     }
 
-                                    product.BatchNumber = string.Format(Resources.BatchNumberFormat, DateTime.Now);
+                                    product.BatchNumber = string.Format(Resources.BatchNumberFormat, MoscowTime.Now);
                                 }
                             }
                             _db.SaveChanges();
@@ -899,7 +899,7 @@ namespace AutomechanicsProject.Formes
         /// </summary>
         private string GenerateOrderNumber()
         {
-            return $"PO-{DateTime.Now:yyyyMMddHHmmss}-{new Random().Next(1000, 9999)}";
+            return $"PO-{MoscowTime.Now:yyyyMMddHHmmss}-{new Random().Next(1000, 9999)}";
         }
 
         /// <summary>

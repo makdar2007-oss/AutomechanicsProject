@@ -62,11 +62,20 @@ namespace AutomechanicsProject.Formes
             comboBoxExpiry.DropDownStyle = ComboBoxStyle.DropDown;
             comboBoxExpiry.Text = Resources.NoExpiryDateWatermark;
             comboBoxExpiry.ForeColor = Color.Gray;
+            dataGridViewShipment.ReadOnly = false;
+            foreach (DataGridViewColumn col in dataGridViewShipment.Columns)
+            {
+                if (col.Name != "ScrapMetal")
+                {
+                    col.ReadOnly = true;
+                }
+            }
 
             LoadProducts();
             LoadRecipients();
 
             comboBox1.SelectedIndexChanged += ComboBox1_SelectedIndexChanged;
+            dataGridViewShipment.CurrentCellDirtyStateChanged += DataGridViewShipment_CurrentCellDirtyStateChanged;
         }
 
         /// <summary>
@@ -213,7 +222,8 @@ namespace AutomechanicsProject.Formes
                         p.Balance,
                         p.Price,
                         UnitName = p.Unit != null ? p.Unit.Name : Resources.Unit_Piece_Short,
-                        p.UnitId
+                        p.UnitId,
+                        p.IsMetal
                     })
                     .ToList();
 
@@ -232,7 +242,8 @@ namespace AutomechanicsProject.Formes
                         Price = g.First().Price,
                         Balance = g.Sum(x => x.Balance),
                         UnitName = g.First().UnitName,
-                        UnitId = g.First().UnitId
+                        UnitId = g.First().UnitId,
+                        IsMetal = g.First().IsMetal
                     })
                     .ToList();
 
@@ -429,6 +440,9 @@ namespace AutomechanicsProject.Formes
         /// </summary>
         private bool AddOrUpdateShipmentItem(Guid productId, string productName, string article, int quantity, decimal price, decimal purchasePrice, string unitName)
         {
+            var product = db.Products.FirstOrDefault(p => p.Id == productId);
+            bool isMetal = product?.IsMetal ?? false;
+
             var existingItem = shipmentItems.FirstOrDefault(i => i.ProductId == productId);
 
             if (existingItem != null)
@@ -442,6 +456,7 @@ namespace AutomechanicsProject.Formes
                 if (result == DialogResult.Yes)
                 {
                     existingItem.Quantity = quantity;
+                    existingItem.IsMetal = isMetal;
                     return true;
                 }
                 return false;
@@ -455,7 +470,9 @@ namespace AutomechanicsProject.Formes
                 Article = article,
                 Quantity = quantity,
                 Price = price,
-                PurchasePrice = purchasePrice
+                PurchasePrice = purchasePrice,
+                IsMetal = isMetal,          
+                ScrapMetal = false
             });
             return true;
         }
@@ -520,9 +537,26 @@ namespace AutomechanicsProject.Formes
             {
                 var itemTotal = item.Quantity * item.PurchasePrice;
                 var itemCost = item.Quantity * item.Price;
-                var profit = (currentShipmentType == ShipmentTypeEnum.Shipment)
-                ? itemTotal - itemCost
-                : 0;
+                decimal profit;
+
+                if (currentShipmentType == ShipmentTypeEnum.Shipment)
+                {
+                    profit = itemTotal - itemCost;
+                }
+                else if (currentShipmentType == ShipmentTypeEnum.Defect)
+                {
+                    decimal scrapReturn = (item.IsMetal && item.ScrapMetal)
+                        ? itemTotal * 0.5m
+                        : 0;
+
+                    profit = -(item.Quantity * item.PurchasePrice) + scrapReturn;
+
+                    item.ScrapReturn = scrapReturn;
+                }
+                else 
+                {
+                    profit = -(item.Quantity * item.Price);
+                }
 
                 totalAmount += itemTotal;
                 totalCost += itemCost;
@@ -537,11 +571,33 @@ namespace AutomechanicsProject.Formes
                     Price = item.PurchasePrice,
                     Profit = profit,
                     Total = itemTotal,
-                    RecipientName = recipientName
+                    RecipientName = recipientName,
+                    ProductId = item.ProductId,
+                    IsMetal = item.IsMetal,
+                    IsScrapped = (currentShipmentType == ShipmentTypeEnum.Defect) && item.IsMetal && item.ScrapMetal,
+                    ScrapMetal = item.ScrapMetal
                 };
             }).ToList();
 
             dataGridViewShipment.DataSource = displayList;
+
+            if (dataGridViewShipment.Columns["ScrapMetal"] != null)
+            {
+                dataGridViewShipment.Columns["ScrapMetal"].Visible = (currentShipmentType == ShipmentTypeEnum.Defect);
+            }
+
+            if (currentShipmentType == ShipmentTypeEnum.Defect)
+            {
+                foreach (DataGridViewRow row in dataGridViewShipment.Rows)
+                {
+                    if (row.DataBoundItem is ShipmentViewModel vm && !vm.IsMetal)
+                    {
+                        row.Cells["ScrapMetal"].ReadOnly = true;
+                        row.Cells["ScrapMetal"].Style.BackColor = System.Drawing.Color.LightGray;
+                        row.Cells["ScrapMetal"].Value = false;
+                    }
+                }
+            }
 
             UpdateDisplay(totalProfit);
         }
@@ -618,7 +674,7 @@ namespace AutomechanicsProject.Formes
                     var shipment = new Shipment
                     {
                         Id = Guid.NewGuid(),
-                        Date = DateTime.Now,
+                        Date = MoscowTime.Now,
                         UserId = recipientId.Value,
                         CreatedByUserId = Program.CurrentUser?.Id ?? Guid.Empty,
                         TotalAmount = totalAmount,
@@ -637,11 +693,12 @@ namespace AutomechanicsProject.Formes
                             ProductId = item.ProductId,
                             Quantity = currentShipmentType == ShipmentTypeEnum.Shipment ? item.Quantity : -Math.Abs(item.Quantity),
                             Price = item.Price,
-                            PurchasePrice = currentShipmentType == ShipmentTypeEnum.Shipment
+                            PurchasePrice = (currentShipmentType == ShipmentTypeEnum.Shipment || currentShipmentType == ShipmentTypeEnum.Defect)
                             ? item.PurchasePrice
                             : 0,
                             ProductName = item.ProductName,
-                            Article = item.Article
+                            Article = item.Article,
+                            ScrapReturn = (currentShipmentType == ShipmentTypeEnum.Defect) ? item.ScrapReturn : 0
                         };
 
                         db.ShipmentItems.Add(shipmentItem);
@@ -655,6 +712,33 @@ namespace AutomechanicsProject.Formes
 
                     db.SaveChanges();
                     transaction.Commit();
+
+                    if (currentShipmentType == ShipmentTypeEnum.Defect)
+                    {
+                        decimal totalScrapReturn = shipmentItems
+                            .Where(i => i.IsMetal && i.ScrapMetal)
+                            .Sum(i => i.PurchasePrice * i.Quantity * 0.5m);  
+
+                        int scrapItemsCount = shipmentItems.Count(i => i.IsMetal && i.ScrapMetal);
+                        int metalItemsNotScrapped = shipmentItems.Count(i => i.IsMetal && !i.ScrapMetal);
+
+                        if (totalScrapReturn > 0)
+                        {
+                            MessageBox.Show(
+                                string.Format(Resources.ScrapMetal_ReturnMessage, scrapItemsCount, totalScrapReturn),
+                                Resources.ScrapMetal_Title,
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Information);
+                        }
+                        else if (metalItemsNotScrapped > 0)
+                        {
+                            MessageBox.Show(
+                                string.Format(Resources.ScrapMetal_NoReturnMessage, metalItemsNotScrapped),
+                                Resources.ScrapMetal_Title,
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Information);
+                        }
+                    }
 
                     logger.Info($"Отгрузка успешно оформлена! Получатель: {recipientName}, Количество позиций: {shipmentItems.Count}, Общая сумма: {totalAmount:C2}");
 
@@ -733,6 +817,28 @@ namespace AutomechanicsProject.Formes
             {
                 shipmentItems.Remove(itemToRemove);
                 RefreshShipmentList();
+            }
+        }
+
+        /// <summary>
+        /// Обработчик изменения чекбокса для металлолома 
+        /// </summary>
+        private void DataGridViewShipment_CurrentCellDirtyStateChanged(object sender, EventArgs e)
+        {
+            if (dataGridViewShipment.CurrentCell is DataGridViewCheckBoxCell &&
+                dataGridViewShipment.IsCurrentCellDirty)
+            {
+                dataGridViewShipment.CommitEdit(DataGridViewDataErrorContexts.Commit);
+
+                if (dataGridViewShipment.CurrentRow?.DataBoundItem is ShipmentViewModel viewModel)
+                {
+                    var item = shipmentItems.FirstOrDefault(i => i.ProductId == viewModel.ProductId);
+                    if (item != null)
+                    {
+                        item.ScrapMetal = viewModel.ScrapMetal;
+                        RefreshShipmentList();
+                    }
+                }
             }
         }
     }

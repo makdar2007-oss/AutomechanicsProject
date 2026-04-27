@@ -245,6 +245,7 @@
     <Compile Include="Classes\ExchangeRateResponse.cs" />
     <Compile Include="Classes\ImportFileData.cs" />
     <Compile Include="Classes\ImportProductItem.cs" />
+    <Compile Include="Classes\MoscowTime.cs" />
     <Compile Include="Classes\Product.cs" />
     <Compile Include="Dtos\UI\ProductDisplayItem.cs" />
     <Compile Include="Classes\Role.cs" />

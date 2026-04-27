@@ -1246,4 +1246,21 @@
 	<data name="DataGridView_ColumnBalance" xml:space="preserve">
     <value>Остаток</value>
   </data>
+	
+	
+	<data name="ScrapMetal_Title" xml:space="preserve">
+    <value>Металлолом</value>
+</data>
+	<data name="ScrapMetal_ReturnMessage" xml:space="preserve">
+    <value>Сдано на металлолом: {0} позиций
+Получено возврата: {1:F2} ₽
+
+Убыток от брака уменьшен на эту сумму.</value>
+</data>
+	<data name="ScrapMetal_NoReturnMessage" xml:space="preserve">
+    <value>В отгрузке {0} металлических позиций,
+которые НЕ были сданы на металлолом.
+
+Возврат не получен.</value>
+</data>
 </root>
