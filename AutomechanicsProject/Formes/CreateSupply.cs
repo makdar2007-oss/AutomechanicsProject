@@ -2,6 +2,8 @@
 using AutomechanicsProject.Dtos.UI;
 using AutomechanicsProject.Helpers;
 using AutomechanicsProject.Properties;
+using AutomechanicsProject.Services;
+using AutomechanicsProject.Services.Interfaces;
 using AutomechanicsProject.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using NLog;
@@ -20,6 +22,7 @@ namespace AutomechanicsProject.Formes
     public partial class CreateSupply : Form
     {
         private readonly DateBase _db;
+        private readonly ISupplyService _supplyService;
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
         private List<SupplyPosition> positions = new List<SupplyPosition>();
         private string currentCurrency = CurrencyCodes.RUB;
@@ -31,10 +34,13 @@ namespace AutomechanicsProject.Formes
         private List<ProductComboViewModel> allProductsForSearch;
         private SearchableComboBoxHelper.ComboBoxState comboBoxState;
 
-        public CreateSupply(DateBase database)
+        public CreateSupply(DateBase database, ISupplyService supplyService)
         {
             InitializeComponent();
+
             _db = database ?? throw new ArgumentNullException(nameof(database));
+            _supplyService = supplyService ?? throw new ArgumentNullException(nameof(supplyService));
+
             this.Load += new System.EventHandler(this.CreateSupply_Load);
         }
 
@@ -805,73 +811,20 @@ namespace AutomechanicsProject.Formes
 
                 try
                 {
-                    Supply supply = new Supply
-                    {
-                        Id = Guid.NewGuid(),
-                        OrderNumber = GenerateOrderNumber(),
-                        DateCreated = MoscowTime.Now,
-                        UserId = GetCurrentUserId(),
-                        Status = Resources.SupplyStatusCompleted,
-                        TotalAmount = totalInRUB,
-                        CurrencyCode = currentCurrency,
-                        ExchangeRate = currentCurrencyRate,
-                        RateDate = MoscowTime.Now,
-                    };
 
-                    using (var transaction = _db.Database.BeginTransaction())
-                    {
-                        try
-                        {
-                            _db.Supplies.Add(supply);
-                            _db.SaveChanges();
+                    var supply = _supplyService.CreateSupply(
+                        positions,
+                        GetCurrentUserId(),
+                        currentCurrency,
+                        currentCurrencyRate
+);
 
-                            foreach (var pos in positions)
-                            {
-                                var supplyPosition = new SupplyPosition
-                                {
-                                    Id = Guid.NewGuid(),
-                                    SupplyId = supply.Id,
-                                    ProductId = pos.ProductId,
-                                    Quantity = pos.Quantity,
-                                    Price = pos.Price,
-                                    ProductName = pos.ProductName,
-                                    Article = pos.Article,
-                                    SupplierId = pos.SupplierId,
-                                    SupplierName = pos.SupplierName,
-                                    ExpiryDate = pos.ExpiryDate
-                                };
-                                _db.SupplyPositions.Add(supplyPosition);
-                            }
-                            _db.SaveChanges();
-
-                            foreach (var pos in positions)
-                            {
-                                var product = _db.Products.Find(pos.ProductId);
-                                if (product != null)
-                                {
-                                    product.Balance += pos.Quantity;
-
-                                    product.Price = pos.Price;
-
-                                    if (pos.ExpiryDate.HasValue)
-                                    {
-                                        product.ExpiryDate = pos.ExpiryDate;
-                                    }
-
-                                    product.BatchNumber = string.Format(Resources.BatchNumberFormat, MoscowTime.Now);
-                                }
-                            }
-                            _db.SaveChanges();
-                            transaction.Commit();
-                        }
-                        catch (Exception)
-                        {
-                            transaction.Rollback();
-                            throw;
-                        }
-                    }
-
-                    MessageBox.Show(string.Format(Resources.SuccessSupplyFormat, supply.OrderNumber, supply.DateCreated.ToString("dd.MM.yyyy HH:mm"), positions.Count, displayTotalText),
+                    MessageBox.Show(
+                        string.Format(Resources.SuccessSupplyFormat,
+                            supply.OrderNumber,
+                            supply.DateCreated.ToString("dd.MM.yyyy HH:mm"),
+                            positions.Count,
+                            displayTotalText),
                         Resources.TitleSuccess,
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Information);

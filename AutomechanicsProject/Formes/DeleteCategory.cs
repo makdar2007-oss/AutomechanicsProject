@@ -53,7 +53,7 @@ namespace AutomechanicsProject.Formes
                 var hasCategories = comboBoxCategory.Items.Count > 0;
                 comboBoxCategory.SelectedIndex = hasCategories ? -1 : -1;
 
-                label1.Text = hasCategories ? Resources.SelectCategoryForDelete : Resources.NoCategoriesForDelete;
+                
                 buttonDelete.Enabled = hasCategories;
             }
             catch (Exception ex)
@@ -92,14 +92,7 @@ namespace AutomechanicsProject.Formes
                 if (products.Any())
                 {
                     var productIds = products.Select(p => p.Id).ToList();
-                    var hasShipments = _db.ShipmentItems.Any(si => productIds.Contains(si.ProductId));
-
-                    if (hasShipments)
-                    {
-                        MessageBox.Show(Resources.ErrorCannotDeleteCategoryWithShipments,
-                            Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return;
-                    }
+                    
                 }
                 var confirmMessage = products.Any()
                     ? string.Format(Resources.ConfirmDeleteCategoryWithProducts, category.Name, products.Count)

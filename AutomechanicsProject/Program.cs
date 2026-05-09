@@ -4,6 +4,8 @@ using NLog;
 using System;
 using System.IO;
 using System.Windows.Forms;
+using AutomechanicsProject.Config;
+using Castle.Windsor;
 
 namespace AutomechanicsProject
 {
@@ -11,26 +13,35 @@ namespace AutomechanicsProject
     {
         public static Users CurrentUser { get; set; }
         private static readonly NLog.Logger logger = LogManager.GetCurrentClassLogger();
+        public static IWindsorContainer Container { get; set; }
+
+
+
+        
 
         [STAThread]
+
+        
         static void Main()
         {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-
             try
             {
-                logger.Info("Приложение запущено");
-                var db = new DateBase();
-                Application.Run(new Autorization(db));
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
+
+                var container = WindsorConfig.Register();
+                Program.Container = container;
+
+                var form = container.Resolve<Autorization>();
+
+                Application.Run(form);
             }
             catch (Exception ex)
             {
-                logger.Error("Критическая ошибка при запуске приложения", ex);
-                MessageBox.Show("Произошла критическая ошибка. Приложение будет закрыто.",
-                    "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ex.ToString(), "CRITICAL ERROR",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            finally { LogManager.Shutdown(); }
         }
+
     }
 }

@@ -114,7 +114,7 @@ namespace AutomechanicsProject.Formes
         /// </summary>
         private void OpenAuthorization()
         {
-            var authForm = new Autorization(_db);
+            var authForm = Program.Container.Resolve<Autorization>();
             authForm.Show();
             Close();
         }

@@ -4,13 +4,17 @@ using AutomechanicsProject.Helpers;
 using AutomechanicsProject.Mappers;
 using AutomechanicsProject.Properties;
 using AutomechanicsProject.Services;
+using AutomechanicsProject.Services.Interfaces;
+using Castle.Windsor;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using NLog;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using NLog;
-using System.Drawing;
+
 
 namespace AutomechanicsProject.Formes
 {
@@ -21,15 +25,18 @@ namespace AutomechanicsProject.Formes
     public partial class AdminForm : Form
     {
         private readonly DateBase _db;
+        private readonly IProductService _productService;
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         /// <summary>
         /// Инициализирует новый экземпляр формы администратора
         /// </summary>
-        public AdminForm(DateBase database)
+        public AdminForm(DateBase database, IProductService productService)
         {
             InitializeComponent();
+
             _db = database ?? throw new ArgumentNullException(nameof(database));
+            _productService = productService ?? throw new ArgumentNullException(nameof(productService));
 
             TextBoxHelper.SetupWatermarkTextBox(textBoxSearch, Resources.SearchWatermark);
             dataGridViewMainForm.DataBindingComplete += DataGridViewStore_DataBindingComplete;
@@ -39,7 +46,6 @@ namespace AutomechanicsProject.Formes
 
             Logger.Info("AdminForm успешно инициализирована");
         }
-
         /// <summary>
         /// Открывает форму редактирования категории
         /// </summary>
@@ -47,7 +53,7 @@ namespace AutomechanicsProject.Formes
         {
             try
             {
-                using (var editCategoryForm = new EditCategory(_db))
+                using (var editCategoryForm = Program.Container.Resolve<EditCategory>())
                 {
                     if (editCategoryForm.ShowDialog() == DialogResult.OK)
                     {
@@ -57,7 +63,7 @@ namespace AutomechanicsProject.Formes
             }
             catch (Exception ex)
             {
-                Logger.Error("ОШибка при отркытии формы редактирования категории", ex);
+                Logger.Error("Ошибка при отркытии формы редактирования категории", ex);
                 MessageBox.Show(Resources.ErrorOpenEditCategoryForm, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -161,7 +167,7 @@ namespace AutomechanicsProject.Formes
                 Logger.Info("Пользователь вышел из системы, валюта сброшена");
 
                 Close();
-                var loginForm = new Autorization(_db);
+                var loginForm = Program.Container.Resolve<Autorization>();
                 loginForm.ShowDialog();
             }
             catch (Exception)
@@ -227,7 +233,7 @@ namespace AutomechanicsProject.Formes
         {
             try
             {
-                using (var historyForm = new ShipmentHistoryForm(_db))
+                using (var historyForm = Program.Container.Resolve<ShipmentHistoryForm>())
                 {
                     historyForm.ShowDialog();
                 }
@@ -243,11 +249,14 @@ namespace AutomechanicsProject.Formes
         /// <summary>
         /// Открывает форму добавления товара
         /// </summary>
+        /// <summary>
+        /// Открывает форму добавления товара
+        /// </summary>
         private void OpenAddProductForm()
         {
             try
             {
-                using (var addProductForm = new AddProduct(_db))
+                using (var addProductForm = Program.Container.Resolve<AddProduct>())
                 {
                     if (addProductForm.ShowDialog() == DialogResult.OK)
                     {
@@ -263,16 +272,15 @@ namespace AutomechanicsProject.Formes
             }
         }
 
-        /// <summary>
         /// Открывает форму добавления категории
         /// </summary>
         private void OpenAddCategoryForm()
         {
             try
             {
-                using (var addCategoryForm = new AddCategory(_db))
+                using (var form = Program.Container.Resolve<AddCategory>())
                 {
-                    if (addCategoryForm.ShowDialog() == DialogResult.OK)
+                    if (form.ShowDialog() == DialogResult.OK)
                     {
                         RefreshProductList();
                     }
@@ -285,6 +293,8 @@ namespace AutomechanicsProject.Formes
                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+
 
         /// <summary>
         /// Открывает форму редактирования товара
@@ -300,7 +310,7 @@ namespace AutomechanicsProject.Formes
             }
             try
             {
-                using (var editForm = new RedactProduct(_db, product.Id))
+                using (var editForm = Program.Container.Resolve<RedactProduct>())
                 {
                     if (editForm.ShowDialog() == DialogResult.OK)
                     {
@@ -317,18 +327,27 @@ namespace AutomechanicsProject.Formes
         /// <summary>
         /// Открывает форму удаления для выбранного товара
         /// </summary>
+        /// <summary>
+        /// Открывает форму удаления для выбранного товара
+        /// </summary>
         private void OpenDeleteProductForm()
         {
             var product = GetSelectedProduct();
+
             if (product == null)
             {
                 MessageBox.Show(Resources.SelectProductForDelete, Resources.TitleInformation,
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
+
             try
             {
-                using (var deleteForm = new DeleteProduct(_db, product.Id))
+                using (var deleteForm = Program.Container.Resolve<DeleteProduct>(
+                    new Castle.MicroKernel.Arguments
+                    {
+            { "id", product.Id }
+                    }))
                 {
                     if (deleteForm.ShowDialog() == DialogResult.OK)
                     {
@@ -349,7 +368,7 @@ namespace AutomechanicsProject.Formes
         {
             try
             {
-                using (var deleteCategoryForm = new DeleteCategory(_db))
+                using (var deleteCategoryForm = Program.Container.Resolve<DeleteCategory>())
                 {
                     if (deleteCategoryForm.ShowDialog() == DialogResult.OK)
                     {
@@ -374,13 +393,10 @@ namespace AutomechanicsProject.Formes
             {
                 var today = MoscowTime.Today;
 
-                var products = _db.Products
-                    .AsNoTracking()
-                    .Include(p => p.Category)
-                    .Include(p => p.Unit)
-                    .Where(p => p.Balance > 0)
-                    .ToList();
-
+                var products = _productService.GetAllProducts();
+                
+                    
+            
                 var productList = new List<ProductListItemDto>();
 
                 foreach (var product in products)
@@ -444,7 +460,7 @@ namespace AutomechanicsProject.Formes
                 product.ExpiryDate.Value.Date >= MoscowTime.Today &&
                 (product.ExpiryDate.Value.Date - MoscowTime.Today).Days <= 30)
             {
-                priceInRub = priceInRub * 0.9m; 
+                priceInRub = priceInRub * 0.9m;
             }
 
             return ChoosingCurrency.ConvertPrice(priceInRub);
@@ -580,8 +596,8 @@ namespace AutomechanicsProject.Formes
                     {
                         if (expiryDate.Value <= today)
                         {
-                            row.DefaultCellStyle.BackColor = System.Drawing.Color.DarkRed;
-                            row.DefaultCellStyle.ForeColor = System.Drawing.Color.White;
+                            row.DefaultCellStyle.BackColor = System.Drawing.Color.Coral;
+                            row.DefaultCellStyle.ForeColor = System.Drawing.Color.Black;
                         }
                         else if ((expiryDate.Value - today).Days <= 30)
                         {
@@ -610,7 +626,7 @@ namespace AutomechanicsProject.Formes
         /// </summary>
         private void buttonCurrency_Click(object sender, EventArgs e)
         {
-            using (var currencyForm = new ChoosingCurrency())
+            using (var currencyForm = Program.Container.Resolve<ChoosingCurrency>())
             {
                 if (currencyForm.ShowDialog() == DialogResult.OK)
                 {
@@ -624,7 +640,7 @@ namespace AutomechanicsProject.Formes
         /// </summary>
         private void buttonSupply_Click(object sender, EventArgs e)
         {
-            using (CreateSupply supplyForm = new CreateSupply(_db))
+            using (CreateSupply supplyForm = Program.Container.Resolve<CreateSupply>())
             {
                 if (supplyForm.ShowDialog() == DialogResult.OK)
                 {
@@ -638,7 +654,7 @@ namespace AutomechanicsProject.Formes
         /// </summary>
         private void buttonReport_Click(object sender, EventArgs e)
         {
-            using (var reportForm = new ReportForm(_db))
+            using (var reportForm = Program.Container.Resolve<ReportForm>())
             {
                 reportForm.ShowDialog();
             }
@@ -679,7 +695,7 @@ namespace AutomechanicsProject.Formes
         /// </summary>
         private void DataGridViewMainForm_CellMouseLeave(object sender, DataGridViewCellEventArgs e)
         {
-            
+
             if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
             {
                 dataGridViewMainForm.Rows[e.RowIndex].Cells[e.ColumnIndex].ToolTipText = null;

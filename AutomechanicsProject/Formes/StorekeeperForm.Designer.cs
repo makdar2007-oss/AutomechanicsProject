@@ -58,9 +58,8 @@ namespace AutomechanicsProject.Formes
             this.panelStorekeeper.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelStorekeeper.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.panelStorekeeper.Location = new System.Drawing.Point(0, 0);
-            this.panelStorekeeper.Margin = new System.Windows.Forms.Padding(2);
             this.panelStorekeeper.Name = "panelStorekeeper";
-            this.panelStorekeeper.Size = new System.Drawing.Size(882, 739);
+            this.panelStorekeeper.Size = new System.Drawing.Size(1323, 1155);
             this.panelStorekeeper.TabIndex = 0;
             // 
             // buttonExit
@@ -71,12 +70,11 @@ namespace AutomechanicsProject.Formes
             this.buttonExit.FlatAppearance.BorderSize = 0;
             this.buttonExit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonExit.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.buttonExit.Location = new System.Drawing.Point(728, 0);
-            this.buttonExit.Margin = new System.Windows.Forms.Padding(2);
+            this.buttonExit.Location = new System.Drawing.Point(1092, 0);
             this.buttonExit.Name = "buttonExit";
-            this.buttonExit.Size = new System.Drawing.Size(155, 30);
+            this.buttonExit.Size = new System.Drawing.Size(232, 66);
             this.buttonExit.TabIndex = 3;
-            this.buttonExit.Text = Resources.Storekeeper_ButtonExitText;
+            this.buttonExit.Text = global::AutomechanicsProject.Properties.Resources.Storekeeper_ButtonExitText;
             this.buttonExit.UseVisualStyleBackColor = false;
             this.buttonExit.Click += new System.EventHandler(this.ButtonExit_Click);
             // 
@@ -88,10 +86,9 @@ namespace AutomechanicsProject.Formes
             this.panelSearch.Controls.Add(this.buttonSupply);
             this.panelSearch.Controls.Add(this.buttonShipment);
             this.panelSearch.Controls.Add(this.textBoxSearch);
-            this.panelSearch.Location = new System.Drawing.Point(0, 36);
-            this.panelSearch.Margin = new System.Windows.Forms.Padding(2);
+            this.panelSearch.Location = new System.Drawing.Point(0, 56);
             this.panelSearch.Name = "panelSearch";
-            this.panelSearch.Size = new System.Drawing.Size(882, 74);
+            this.panelSearch.Size = new System.Drawing.Size(1323, 116);
             this.panelSearch.TabIndex = 6;
             // 
             // buttonCurrency
@@ -101,13 +98,12 @@ namespace AutomechanicsProject.Formes
             this.buttonCurrency.BackColor = System.Drawing.SystemColors.Control;
             this.buttonCurrency.FlatAppearance.BorderSize = 0;
             this.buttonCurrency.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonCurrency.Location = new System.Drawing.Point(241, 24);
-            this.buttonCurrency.Margin = new System.Windows.Forms.Padding(2);
-            this.buttonCurrency.MinimumSize = new System.Drawing.Size(120, 35);
+            this.buttonCurrency.Location = new System.Drawing.Point(362, 38);
+            this.buttonCurrency.MinimumSize = new System.Drawing.Size(180, 55);
             this.buttonCurrency.Name = "buttonCurrency";
-            this.buttonCurrency.Size = new System.Drawing.Size(159, 35);
+            this.buttonCurrency.Size = new System.Drawing.Size(229, 55);
             this.buttonCurrency.TabIndex = 5;
-            this.buttonCurrency.Text = Resources.Storekeeper_ButtonCurrencyText;
+            this.buttonCurrency.Text = global::AutomechanicsProject.Properties.Resources.Storekeeper_ButtonCurrencyText;
             this.buttonCurrency.UseVisualStyleBackColor = false;
             this.buttonCurrency.Click += new System.EventHandler(this.ButtonCurrency_Click);
             // 
@@ -118,13 +114,12 @@ namespace AutomechanicsProject.Formes
             this.buttonSupply.BackColor = System.Drawing.SystemColors.Control;
             this.buttonSupply.FlatAppearance.BorderSize = 0;
             this.buttonSupply.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonSupply.Location = new System.Drawing.Point(427, 24);
-            this.buttonSupply.Margin = new System.Windows.Forms.Padding(2);
-            this.buttonSupply.MinimumSize = new System.Drawing.Size(100, 35);
+            this.buttonSupply.Location = new System.Drawing.Point(640, 38);
+            this.buttonSupply.MinimumSize = new System.Drawing.Size(150, 55);
             this.buttonSupply.Name = "buttonSupply";
-            this.buttonSupply.Size = new System.Drawing.Size(109, 35);
+            this.buttonSupply.Size = new System.Drawing.Size(164, 55);
             this.buttonSupply.TabIndex = 6;
-            this.buttonSupply.Text = Resources.Storekeeper_ButtonSupplyText;
+            this.buttonSupply.Text = global::AutomechanicsProject.Properties.Resources.Storekeeper_ButtonSupplyText;
             this.buttonSupply.UseVisualStyleBackColor = false;
             this.buttonSupply.Click += new System.EventHandler(this.buttonSupply_Click_1);
             // 
@@ -135,25 +130,23 @@ namespace AutomechanicsProject.Formes
             this.buttonShipment.BackColor = System.Drawing.SystemColors.Control;
             this.buttonShipment.FlatAppearance.BorderSize = 0;
             this.buttonShipment.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonShipment.Location = new System.Drawing.Point(567, 24);
-            this.buttonShipment.Margin = new System.Windows.Forms.Padding(2);
-            this.buttonShipment.MinimumSize = new System.Drawing.Size(150, 35);
+            this.buttonShipment.Location = new System.Drawing.Point(850, 38);
+            this.buttonShipment.MinimumSize = new System.Drawing.Size(225, 55);
             this.buttonShipment.Name = "buttonShipment";
-            this.buttonShipment.Size = new System.Drawing.Size(214, 35);
+            this.buttonShipment.Size = new System.Drawing.Size(306, 55);
             this.buttonShipment.TabIndex = 4;
-            this.buttonShipment.Text = Resources.Storekeeper_ButtonShipmentText;
+            this.buttonShipment.Text = global::AutomechanicsProject.Properties.Resources.Storekeeper_ButtonShipmentText;
             this.buttonShipment.UseVisualStyleBackColor = false;
             this.buttonShipment.Click += new System.EventHandler(this.ButtonShipment_Click);
             // 
             // textBoxSearch
             // 
             this.textBoxSearch.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBoxSearch.Location = new System.Drawing.Point(19, 26);
-            this.textBoxSearch.Margin = new System.Windows.Forms.Padding(2);
+            this.textBoxSearch.Location = new System.Drawing.Point(28, 41);
             this.textBoxSearch.Name = "textBoxSearch";
-            this.textBoxSearch.Size = new System.Drawing.Size(200, 30);
+            this.textBoxSearch.Size = new System.Drawing.Size(298, 44);
             this.textBoxSearch.TabIndex = 2;
-            this.textBoxSearch.Text = Resources.Storekeeper_TextBoxSearch_Text;
+            this.textBoxSearch.Text = "Поиск:";
             this.textBoxSearch.TextChanged += new System.EventHandler(this.TextBoxSearch_TextChanged);
             // 
             // panelData
@@ -162,14 +155,15 @@ namespace AutomechanicsProject.Formes
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panelData.Controls.Add(this.dataGridViewStore);
-            this.panelData.Location = new System.Drawing.Point(0, 110);
-            this.panelData.Margin = new System.Windows.Forms.Padding(2);
+            this.panelData.Location = new System.Drawing.Point(0, 172);
             this.panelData.Name = "panelData";
-            this.panelData.Size = new System.Drawing.Size(882, 628);
+            this.panelData.Size = new System.Drawing.Size(1323, 981);
             this.panelData.TabIndex = 5;
             // 
             // dataGridViewStore
             // 
+            this.dataGridViewStore.AllowUserToAddRows = false;
+            this.dataGridViewStore.AllowUserToDeleteRows = false;
             this.dataGridViewStore.AllowUserToResizeRows = false;
             this.dataGridViewStore.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
@@ -179,33 +173,29 @@ namespace AutomechanicsProject.Formes
             this.dataGridViewStore.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dataGridViewStore.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewStore.Location = new System.Drawing.Point(0, 0);
-            this.dataGridViewStore.Margin = new System.Windows.Forms.Padding(2);
+            this.dataGridViewStore.MultiSelect = false;
             this.dataGridViewStore.Name = "dataGridViewStore";
+            this.dataGridViewStore.ReadOnly = true;
             this.dataGridViewStore.RowHeadersVisible = false;
             this.dataGridViewStore.RowHeadersWidth = 82;
             this.dataGridViewStore.RowTemplate.Height = 35;
             this.dataGridViewStore.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewStore.Size = new System.Drawing.Size(882, 628);
+            this.dataGridViewStore.Size = new System.Drawing.Size(1323, 981);
             this.dataGridViewStore.TabIndex = 1;
-            this.dataGridViewStore.ShowCellToolTips = true;
-            this.dataGridViewStore.MultiSelect = false;
-            this.dataGridViewStore.RowHeadersVisible = false;
-            this.dataGridViewStore.AllowUserToAddRows = false;
-            this.dataGridViewStore.AllowUserToDeleteRows = false;
-            this.dataGridViewStore.ReadOnly = true;
             this.dataGridViewStore.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.DataGridViewStore_DataBindingComplete);
             // 
             // menuStripStorekeeper
             // 
             this.menuStripStorekeeper.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.menuStripStorekeeper.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.menuStripStorekeeper.GripMargin = new System.Windows.Forms.Padding(2, 2, 0, 2);
             this.menuStripStorekeeper.ImageScalingSize = new System.Drawing.Size(32, 32);
             this.menuStripStorekeeper.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripTextBoxStorekeeper});
             this.menuStripStorekeeper.Location = new System.Drawing.Point(0, 0);
             this.menuStripStorekeeper.Name = "menuStripStorekeeper";
-            this.menuStripStorekeeper.Padding = new System.Windows.Forms.Padding(4, 1, 0, 1);
-            this.menuStripStorekeeper.Size = new System.Drawing.Size(882, 30);
+            this.menuStripStorekeeper.Padding = new System.Windows.Forms.Padding(6, 2, 0, 2);
+            this.menuStripStorekeeper.Size = new System.Drawing.Size(1323, 48);
             this.menuStripStorekeeper.TabIndex = 1;
             // 
             // toolStripTextBoxStorekeeper
@@ -214,20 +204,19 @@ namespace AutomechanicsProject.Formes
             this.toolStripTextBoxStorekeeper.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.toolStripTextBoxStorekeeper.Name = "toolStripTextBoxStorekeeper";
             this.toolStripTextBoxStorekeeper.ReadOnly = true;
-            this.toolStripTextBoxStorekeeper.Size = new System.Drawing.Size(335, 28);
-            this.toolStripTextBoxStorekeeper.Text = Resources.Storekeeper_ToolStripText;
-            //
+            this.toolStripTextBoxStorekeeper.Size = new System.Drawing.Size(500, 44);
+            this.toolStripTextBoxStorekeeper.Text = "Кладовщик";
+            // 
             // StorekeeperForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(882, 739);
+            this.ClientSize = new System.Drawing.Size(1323, 1155);
             this.Controls.Add(this.panelStorekeeper);
             this.MainMenuStrip = this.menuStripStorekeeper;
-            this.Margin = new System.Windows.Forms.Padding(2);
-            this.MinimumSize = new System.Drawing.Size(900, 400);
+            this.MinimumSize = new System.Drawing.Size(1337, 585);
             this.Name = "StorekeeperForm";
-            this.Text = Resources.Storekeeper_Form_Title;
+            this.Text = "Кладовщик - Управление складом";
             this.panelStorekeeper.ResumeLayout(false);
             this.panelStorekeeper.PerformLayout();
             this.panelSearch.ResumeLayout(false);

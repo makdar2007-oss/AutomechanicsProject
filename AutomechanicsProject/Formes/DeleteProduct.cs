@@ -7,6 +7,7 @@ using System;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using AutomechanicsProject.Services.Interfaces;
 
 namespace AutomechanicsProject.Formes
 {
@@ -16,23 +17,34 @@ namespace AutomechanicsProject.Formes
     public partial class DeleteProduct : Form
     {
         private readonly DateBase _db;
+        private readonly IProductService _productService;
         private readonly Guid? _productId;
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         /// <summary>
         /// Инициализирует форму удаления товара (поиск по артикулу)
         /// </summary>
-        public DeleteProduct(DateBase database)
+        public DeleteProduct(DateBase database, IProductService productService)
         {
             InitializeComponent();
+
             _db = database ?? throw new ArgumentNullException(nameof(database));
-            TextBoxHelper.SetupWatermarkTextBox(textBoxArt, Resources.DeleteArticleWatermark);
+
+            _productService = productService ??
+                throw new ArgumentNullException(nameof(productService));
+
+            TextBoxHelper.SetupWatermarkTextBox(
+                textBoxArt,
+                Resources.DeleteArticleWatermark);
         }
 
         /// <summary>
         /// Инициализирует форму удаления товара по ID
         /// </summary>
-        public DeleteProduct(DateBase database, Guid id) : this(database)
+        public DeleteProduct(
+             DateBase database,
+             IProductService productService,
+             Guid id) : this(database, productService)
         {
             _productId = id;
             LoadProductById();
@@ -108,20 +120,13 @@ namespace AutomechanicsProject.Formes
                     return;
                 }
 
-                if (HasShipments(product, out int shipmentsCount))
-                {
-                    MessageBox.Show(string.Format(Resources.ErrorProductInShipments, product.Article, shipmentsCount),
-                        Resources.TitleWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
 
                 if (!ConfirmDelete(product))
                 {
                     return;
                 }
 
-                _db.Products.Remove(product);
-                _db.SaveChanges();
+                _productService.DeleteProduct(product.Id);
 
                 logger.Info($"Товар '{product.Article} - {product.Name}' удален");
 
@@ -133,9 +138,13 @@ namespace AutomechanicsProject.Formes
             }
             catch (Exception ex)
             {
-                logger.Error("ошибка при удалении товара", ex);
-                MessageBox.Show(Resources.ErrorDeleteProduct, Resources.TitleError,
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                logger.Error(ex);
+
+                MessageBox.Show(
+                    ex.ToString(),
+                    "DEBUG ERROR",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
         }
 
@@ -157,14 +166,7 @@ namespace AutomechanicsProject.Formes
             return result == DialogResult.Yes;
         }
 
-        /// <summary>
-        /// Проверка использования в отгрузках
-        /// </summary>
-        private bool HasShipments(Product product, out int count)
-        {
-            count = _db.ShipmentItems.Count(si => si.ProductId == product.Id);
-            return count > 0;
-        }
+        
 
         /// <summary>
         /// Проверка валидности артикула

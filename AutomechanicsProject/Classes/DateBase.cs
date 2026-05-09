@@ -78,6 +78,11 @@ namespace AutomechanicsProject.Classes
         /// </summary>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<ShipmentItem>()
+            .HasOne(si => si.Product)
+            .WithMany()
+            .HasForeignKey(si => si.ProductId)
+            .OnDelete(DeleteBehavior.SetNull);
             modelBuilder.HasPostgresExtension("uuid-ossp");
 
             modelBuilder.Entity<Role>(entity =>

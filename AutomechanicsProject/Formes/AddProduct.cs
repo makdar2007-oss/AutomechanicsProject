@@ -4,6 +4,7 @@ using AutomechanicsProject.Dtos.UI;
 using AutomechanicsProject.Helpers;
 using AutomechanicsProject.Mappers;
 using AutomechanicsProject.Properties;
+using AutomechanicsProject.Services.Interfaces;
 using NLog;
 using System;
 using System.Collections.Generic;
@@ -18,16 +19,25 @@ namespace AutomechanicsProject.Formes
     public partial class AddProduct : Form
     {
         private readonly DateBase _db;
+
+        /// <summary>
+        /// Сервис товаров
+        /// </summary>
+        private readonly IProductService _productService;
+
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         /// <summary>
-        /// Инициализирует новый экземпляр формы добавления товара
+        /// Конструктор формы
         /// </summary>
-        public AddProduct(DateBase database)
+        public AddProduct(DateBase database, IProductService productService)
         {
             InitializeComponent();
+
             _db = database ?? throw new ArgumentNullException(nameof(database));
-            SetupReadOnlyFields();
+            _productService = productService ?? throw new ArgumentNullException(nameof(productService));
+
+           
             LoadCategories();
             LoadUnits();
             GenerateAndSetArticle();
@@ -52,16 +62,9 @@ namespace AutomechanicsProject.Formes
             }
         }
 
-        /// <summary>
-        /// Устанавливает поле только для чтения
-        /// </summary>
-        private void SetupReadOnlyFields()
-        {
-            textBoxArt.ReadOnly = true;
-        }
 
         /// <summary>
-        /// Загружает список категорий из базы данных в выпадающий список
+        /// Загружает категории
         /// </summary>
         private void LoadCategories()
         {
@@ -75,32 +78,27 @@ namespace AutomechanicsProject.Formes
                         Text = c.Name
                     })
                     .ToList();
+
                 comboBoxCategory.DataSource = categories;
                 comboBoxCategory.SelectedIndex = -1;
             }
             catch (Exception ex)
             {
-                Logger.Error("Ошибка при загрузке категорий в форму 'Редактирование категорий'", ex);
+                Logger.Error("Ошибка при загрузке категорий", ex);
                 MessageBox.Show(Resources.ErrorLoadCategories, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         /// <summary>
-        /// Загружает список единиц измерения из базы данных в выпадающий список
+        /// Загружает единицы измерения
         /// </summary>
         private void LoadUnits()
         {
             try
             {
-                var units = _db.Units
-                    .OrderBy(u => u.Name)
-                    .Select(u => new ComboItemDto
-                    {
-                        Id = u.Id,
-                        Text = $"{u.Name} ({u.ShortName})"
-                    })
-                    .ToList();
+                var units = _productService.GetUnitsForCombo();
+
                 comboBoxUnit.DataSource = units;
                 comboBoxUnit.SelectedIndex = -1;
             }
@@ -113,8 +111,7 @@ namespace AutomechanicsProject.Formes
         }
 
         /// <summary>
-        /// Обработчик нажатия кнопки "Добавить"
-        /// Сохранение нового товара в базу данных
+        /// Нажатие кнопки добавить
         /// </summary>
         private void ButtonAdd_Click(object sender, EventArgs e)
         {
@@ -122,14 +119,17 @@ namespace AutomechanicsProject.Formes
             {
                 return;
             }
+
             if (!ValidatePrice(out var price))
             {
                 return;
             }
+
             if (!ValidateCategory())
             {
                 return;
             }
+
             if (!ValidateUnit())
             {
                 return;
@@ -139,9 +139,9 @@ namespace AutomechanicsProject.Formes
         }
 
         /// <summary>
-        /// Проверка формата цены
+        /// Проверка цены
         /// </summary>
-        internal bool ValidatePrice(out decimal price)
+        private bool ValidatePrice(out decimal price)
         {
             if (!Validation.ValidatePrice(textBoxPrice.Text, out price))
             {
@@ -149,13 +149,14 @@ namespace AutomechanicsProject.Formes
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
             }
+
             return true;
         }
 
         /// <summary>
-        /// Проверка выбора категории
+        /// Проверка категории
         /// </summary>
-        internal bool ValidateCategory()
+        private bool ValidateCategory()
         {
             if (comboBoxCategory.SelectedItem == null)
             {
@@ -163,13 +164,14 @@ namespace AutomechanicsProject.Formes
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
             }
+
             return true;
         }
 
         /// <summary>
-        /// Проверка выбора ед измерения
+        /// Проверка единицы измерения
         /// </summary>
-        internal bool ValidateUnit()
+        private bool ValidateUnit()
         {
             if (comboBoxUnit.SelectedItem == null)
             {
@@ -177,11 +179,12 @@ namespace AutomechanicsProject.Formes
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
             }
+
             return true;
         }
 
         /// <summary>
-        /// Добавление товара 
+        /// Добавляет товар
         /// </summary>
         private void AddNewProduct(decimal price)
         {
@@ -189,11 +192,10 @@ namespace AutomechanicsProject.Formes
             {
                 var selectedCategory = (ComboItemDto)comboBoxCategory.SelectedItem;
                 var selectedUnit = (ComboItemDto)comboBoxUnit.SelectedItem;
-                var article = GenerateArticle();
 
                 var createDto = new CreateProductDto
                 {
-                    Article = article,
+                    Article = GenerateArticle(),
                     Name = textBoxName.Text.Trim(),
                     CategoryId = selectedCategory.Id,
                     UnitId = selectedUnit.Id,
@@ -201,12 +203,10 @@ namespace AutomechanicsProject.Formes
                     HasExpiryDate = radioButtonHasExpiry.Checked
                 };
 
-                var product = ProductMapper.ToEntity(createDto);
+                _productService.AddProduct(createDto);
 
-                _db.Products.Add(product);
-                _db.SaveChanges();
+                Logger.Info($"Товар '{createDto.Article} - {createDto.Name}' добавлен");
 
-                Logger.Info($"Товар '{product.Article} - {product.Name}' успешно добавлен");
                 MessageBox.Show(Resources.SuccessProductAdded, Resources.TitleSuccess,
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
 
@@ -220,9 +220,9 @@ namespace AutomechanicsProject.Formes
         }
 
         /// <summary>
-        /// Выполняет валидацию обязательных полей формы
+        /// Проверка полей
         /// </summary>
-        internal bool ValidateFields()
+        private bool ValidateFields()
         {
             if (Validation.IsWatermark(textBoxName.Text, Resources.ProductNameWatermark) ||
                 Validation.IsWatermark(textBoxPrice.Text, Resources.ProductPriceWatermark))
@@ -231,106 +231,47 @@ namespace AutomechanicsProject.Formes
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
             }
+
             return true;
         }
 
         /// <summary>
-        /// Обработчик нажатия кнопки Отмена
-        /// Запрашивает подтверждение и закрывает форму без сохранения
+        /// Отмена
         /// </summary>
         private void buttonCancel_Click(object sender, EventArgs e)
         {
-            var hasInput = !((textBoxName.Text == Resources.ProductNameWatermark || string.IsNullOrWhiteSpace(textBoxName.Text)) &&
-                   (comboBoxCategory.Text == Resources.CategorySelectWatermark || string.IsNullOrWhiteSpace(comboBoxCategory.Text)) &&
-                   (comboBoxUnit.Text == Resources.UnitSelectWatermark || string.IsNullOrWhiteSpace(comboBoxUnit.Text)) &&
-                   (textBoxPrice.Text == Resources.ProductPriceWatermark || string.IsNullOrWhiteSpace(textBoxPrice.Text)));
-
-            if (hasInput && !FormHelper.ShowCancelConfirmation(Resources.ConfirmCancelAddProduct))
-            {
-                return;
-            }
             DialogResult = DialogResult.Cancel;
             Close();
         }
 
         /// <summary>
-        /// Генерация артикула товара
+        /// Генерация артикула
         /// </summary>
         private string GenerateArticle()
         {
+            if (comboBoxCategory.SelectedItem == null)
+            {
+                return _productService.GenerateDefaultArticle();
+            }
+
             var selectedCategory = (ComboItemDto)comboBoxCategory.SelectedItem;
-
-            if (selectedCategory == null)
-            {
-                return GenerateDefaultArticle();
-            }
-
-            string categoryPrefix = GetCategoryPrefix(selectedCategory.Text);
-
-            var lastProduct = _db.Products
-                .Where(p => p.Article.StartsWith(categoryPrefix))
-                .OrderByDescending(p => p.Article)
-                .FirstOrDefault();
-
-            if (lastProduct != null && lastProduct.Article.StartsWith(categoryPrefix))
-            {
-                string numberPart = lastProduct.Article.Substring(categoryPrefix.Length);
-                if (int.TryParse(numberPart, out int num))
-                {
-                    return $"{categoryPrefix}{(num + 1):D4}";
-                }
-            }
-
-            return $"{categoryPrefix}0001";
+            return _productService.GenerateArticle(selectedCategory.Text);
         }
 
         /// <summary>
-        /// Генерация обычного артикула (без категории)
-        /// </summary>
-        private string GenerateDefaultArticle()
-        {
-            var lastProduct = _db.Products
-                .Where(p => p.Article.StartsWith("ART-"))
-                .OrderByDescending(p => p.Article)
-                .FirstOrDefault();
-
-            if (lastProduct != null && lastProduct.Article.StartsWith("ART-"))
-            {
-                string lastNumber = lastProduct.Article.Substring(4);
-                if (int.TryParse(lastNumber, out int num))
-                {
-                    return $"ART-{(num + 1):D4}";
-                }
-            }
-
-            return "ART-0001";
-        }
-
-        /// <summary>
-        /// Устанавливает сгенерированный артикул
+        /// Устанавливает артикул
         /// </summary>
         private void GenerateAndSetArticle()
         {
             try
             {
-                string newArticle = GenerateArticle();
-                textBoxArt.Text = newArticle;
-                textBoxArt.ForeColor = System.Drawing.SystemColors.WindowText;
+                textBoxArt.Text = GenerateArticle();
             }
             catch (Exception ex)
             {
-                Logger.Error("Ошибка при генерации артикула", ex);
+                Logger.Error("Ошибка генерации артикула", ex);
                 textBoxArt.Text = Resources.StatusError;
             }
-        }
-
-        /// <summary>
-        /// Получение префикса для категории
-        /// </summary>
-        private string GetCategoryPrefix(string categoryName)
-        {
-            string shortPrefix = categoryName.Length >= 3 ? categoryName.Substring(0, 3).ToUpper() : categoryName.ToUpper();
-            return $"{shortPrefix}-";
         }
     }
 }

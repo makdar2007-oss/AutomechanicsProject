@@ -2,11 +2,9 @@
 using AutomechanicsProject.Formes;
 using AutomechanicsProject.Helpers;
 using AutomechanicsProject.Properties;
-using Microsoft.EntityFrameworkCore;
+using AutomechanicsProject.Services.Interfaces;
 using NLog;
 using System;
-using System.Drawing;
-using System.Linq;
 using System.Windows.Forms;
 
 namespace AutomechanicsProject
@@ -16,22 +14,28 @@ namespace AutomechanicsProject
     /// </summary>
     public partial class Autorization : Form
     {
-        private readonly DateBase _db;
+        /// <summary>
+        /// Сервис авторизации
+        /// </summary>
+        private readonly IAuthService _authService;
+
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         /// <summary>
-        /// Инициализирует новый экземпляр формы авторизации
+        /// Конструктор
         /// </summary>
-        public Autorization(DateBase database)
+        public Autorization(IAuthService authService)
         {
             InitializeComponent();
-            _db = database ?? throw new ArgumentNullException(nameof(database));
+
+            _authService = authService ?? throw new ArgumentNullException(nameof(authService));
+
             TextBoxHelper.SetupWatermarkTextBox(textBoxLogin, Resources.AuthLoginWatermark);
             TextBoxHelper.SetupPasswordTextBox(textBoxPassword, Resources.AuthPasswordWatermark);
         }
 
         /// <summary>
-        /// Обработчик нажатия клавиш в текстовых полях
+        /// Нажатие Enter
         /// </summary>
         private void TextBox_KeyDown(object sender, KeyEventArgs e)
         {
@@ -43,17 +47,17 @@ namespace AutomechanicsProject
         }
 
         /// <summary>
-        /// Обработчик перехода на форму регистрации
+        /// Переход на регистрацию
         /// </summary>
         private void linkRegisterClick(object sender, EventArgs e)
         {
-            new Registration(_db).Show();
+            var form = Program.Container.Resolve<Registration>();
+            form.Show();
             Hide();
         }
 
         /// <summary>
-        /// Обработчик нажатия кнопки "Войти"
-        /// Выполняет аутентификацию пользователя и открывает соответствующую главную форму
+        /// Нажатие кнопки "Войти"
         /// </summary>
         private void BtnLoginClick(object sender, EventArgs e)
         {
@@ -77,9 +81,7 @@ namespace AutomechanicsProject
 
             try
             {
-                var user = _db.Users
-                    .Include(u => u.Role)
-                    .FirstOrDefault(u => u.Login == textBoxLogin.Text);
+                var user = _authService.Login(textBoxLogin.Text, textBoxPassword.Text);
 
                 if (user == null)
                 {
@@ -90,34 +92,8 @@ namespace AutomechanicsProject
                     return;
                 }
 
-                bool isValid;
-
-                if (user.Password.StartsWith("$2"))
-                {
-                    isValid = PasswordHelper.VerifyPassword(textBoxPassword.Text, user.Password);
-                }
-                else
-                {
-                    isValid = textBoxPassword.Text == user.Password;
-
-                    if (isValid)
-                    {
-                        user.Password = PasswordHelper.HashPassword(textBoxPassword.Text);
-                        _db.SaveChanges();
-                        logger.Info($"Пароль для пользователя {user.Login} был хеширован");
-                    }
-                }
-
-                if (!isValid)
-                {
-                    Validation.HighlightError(textBoxPassword, true);
-
-                    MessageBox.Show(Resources.ErrorAuthInvalid, Resources.TitleWarning,
-                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-
                 Program.CurrentUser = user;
+
                 OpenMainForm(user);
             }
             catch (Exception ex)
@@ -127,25 +103,28 @@ namespace AutomechanicsProject
         }
 
         /// <summary>
-        /// Открывает главную форму в зависимости от роли пользователя
+        /// Открывает главную форму
         /// </summary>
         private void OpenMainForm(Users user)
         {
             Form nextForm = null;
+
             if (user.Role != null)
             {
                 switch (user.Role.Type)
                 {
                     case RoleType.Administrator:
-                        nextForm = new AdminForm(_db);
+                        nextForm = Program.Container.Resolve<AdminForm>();
                         logger.Info("Открыта форма администратора для {0}", user.FullName);
                         break;
+
                     case RoleType.Storekeeper:
-                            nextForm = new StorekeeperForm(_db);
+                        nextForm = Program.Container.Resolve<StorekeeperForm>();
                         logger.Info("Открыта форма кладовщика для {0}", user.FullName);
                         break;
                 }
             }
+
             if (nextForm != null)
             {
                 nextForm.Show();
@@ -155,7 +134,8 @@ namespace AutomechanicsProject
             {
                 MessageBox.Show(Resources.ErrorNoAccess, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
-                logger.Warn($"Пользователь {user.FullName} не имеет назначенной роли");
+
+                logger.Warn($"Пользователь {user.FullName} не имеет роли");
             }
         }
     }
