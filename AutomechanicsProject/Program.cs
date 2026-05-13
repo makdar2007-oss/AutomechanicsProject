@@ -1,23 +1,20 @@
-﻿using AutomechanicsProject.Classes;
+﻿using AutomechanicsProject.Config;
 using AutomechanicsProject.Formes;
+using AutomechanicsProject.Services.Interfaces;
+using Castle.Windsor;
 using NLog;
 using System;
 using System.IO;
 using System.Windows.Forms;
-using AutomechanicsProject.Config;
-using Castle.Windsor;
 
 namespace AutomechanicsProject
 {
     internal static class Program
     {
-        public static Users CurrentUser { get; set; }
-        private static readonly NLog.Logger logger = LogManager.GetCurrentClassLogger();
-        public static IWindsorContainer Container { get; set; }
-
-
-
         
+        private static readonly NLog.Logger logger = LogManager.GetCurrentClassLogger();
+        
+
 
         [STAThread]
 
@@ -30,9 +27,19 @@ namespace AutomechanicsProject
                 Application.SetCompatibleTextRenderingDefault(false);
 
                 var container = WindsorConfig.Register();
-                Program.Container = container;
+                
 
-                var form = container.Resolve<Autorization>();
+                var form = new Autorization(
+                    container.Resolve<IAuthService>(),
+                    container.Resolve<IProductService>(),
+                    container.Resolve<ICategoryService>(),
+                    container.Resolve<ISupplyService>(),
+                    container.Resolve<IReportService>(),
+                    container.Resolve<IShipmentService>(),
+                    container.Resolve<IExpiredProductsService>(),
+                    container.Resolve<ISupplyCurrencyService>(),
+                    container.Resolve<ICurrentUserService>(),
+                    container.Resolve<ICurrencySettingsService>());
 
                 Application.Run(form);
             }

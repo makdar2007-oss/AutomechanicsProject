@@ -1,5 +1,4 @@
-﻿using AutomechanicsProject.Classes;
-using AutomechanicsProject.Dtos.Service;
+﻿using AutomechanicsProject.Dtos.Service;
 using AutomechanicsProject.Dtos.UI;
 using AutomechanicsProject.Helpers;
 using AutomechanicsProject.Mappers;
@@ -18,7 +17,7 @@ namespace AutomechanicsProject.Formes
     /// </summary>
     public partial class AddProduct : Form
     {
-        private readonly DateBase _db;
+        
 
         /// <summary>
         /// Сервис товаров
@@ -30,14 +29,15 @@ namespace AutomechanicsProject.Formes
         /// <summary>
         /// Конструктор формы
         /// </summary>
-        public AddProduct(DateBase database, IProductService productService)
+        /// <summary>
+        /// Конструктор формы
+        /// </summary>
+        public AddProduct(IProductService productService)
         {
             InitializeComponent();
 
-            _db = database ?? throw new ArgumentNullException(nameof(database));
             _productService = productService ?? throw new ArgumentNullException(nameof(productService));
 
-           
             LoadCategories();
             LoadUnits();
             GenerateAndSetArticle();
@@ -70,23 +70,19 @@ namespace AutomechanicsProject.Formes
         {
             try
             {
-                var categories = _db.Categories
-                    .OrderBy(c => c.Name)
-                    .Select(c => new ComboItemDto
-                    {
-                        Id = c.Id,
-                        Text = c.Name
-                    })
-                    .ToList();
+                var categories = _productService.GetCategoriesForCombo();
 
                 comboBoxCategory.DataSource = categories;
                 comboBoxCategory.SelectedIndex = -1;
             }
             catch (Exception ex)
             {
-                Logger.Error("Ошибка при загрузке категорий", ex);
-                MessageBox.Show(Resources.ErrorLoadCategories, Resources.TitleError,
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Logger.Error(ex, "Ошибка при загрузке категорий");
+
+                MessageBox.Show(Resources.ErrorLoadCategories,
+                    Resources.TitleError,
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
         }
 
@@ -104,7 +100,7 @@ namespace AutomechanicsProject.Formes
             }
             catch (Exception ex)
             {
-                Logger.Error("Ошибка при загрузке единиц измерения", ex);
+                Logger.Error(ex, "Ошибка при загрузке единиц измерения");
                 MessageBox.Show(Resources.ErrorLoadUnits, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -269,7 +265,7 @@ namespace AutomechanicsProject.Formes
             }
             catch (Exception ex)
             {
-                Logger.Error("Ошибка генерации артикула", ex);
+                Logger.Error(ex, "Ошибка генерации артикула");
                 textBoxArt.Text = Resources.StatusError;
             }
         }

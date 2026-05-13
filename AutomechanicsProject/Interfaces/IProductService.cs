@@ -56,6 +56,20 @@ namespace AutomechanicsProject.Services.Interfaces
         /// Получает товары для отгрузки
         /// </summary>
         List<ProductComboViewModel> GetProductsForShipment();
+
+        /// <summary>
+        /// Получает все товары
+        /// </summary>
         List<Product> GetAllProducts();
+
+        /// <summary>
+        /// Обновляет товар
+        /// </summary>
+        void UpdateProduct(Product product);
+
+        /// <summary>
+        /// Возвращает id категории по названию или создает новую категорию
+        /// </summary>
+        Guid GetOrCreateCategoryId(string categoryName);
     }
 }

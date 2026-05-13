@@ -1,24 +1,38 @@
 ﻿using AutomechanicsProject.Classes;
 using AutomechanicsProject.Formes;
+using AutomechanicsProject.Services.Interfaces;
 using NLog;
 using System;
 using System.Linq;
-using AutomechanicsProject.Services.Interfaces;
 
 namespace AutomechanicsProject.Services
 {
-    public static class SupplyCurrencyService
+    /// <summary>
+    /// Сервис для работы с валютой поставок
+    /// </summary>
+    public class SupplyCurrencyService : ISupplyCurrencyService
     {
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
+        private readonly DateBase _db;
+        private readonly ICurrencySettingsService _currencySettingsService;
+
+        /// <summary>
+        /// Создает сервис валюты поставок
+        /// </summary>
+        public SupplyCurrencyService(DateBase db, ICurrencySettingsService currencySettingsService)
+        {
+            _db = db;
+            _currencySettingsService = currencySettingsService;
+        }
 
         /// <summary>
         /// Получает информацию о валюте для товара по его ID
         /// </summary>
-        public static (string CurrencyCode, decimal ExchangeRate, DateTime RateDate) GetProductCurrency(Guid productId, DateBase db)
+        public (string CurrencyCode, decimal ExchangeRate, DateTime RateDate) GetProductCurrency(Guid productId)
         {
             try
             {
-                var lastSupply = db.SupplyPositions
+                var lastSupply = _db.SupplyPositions
                     .Where(sp => sp.ProductId == productId)
                     .OrderByDescending(sp => sp.Supply.DateCreated)
                     .Select(sp => sp.Supply)
@@ -31,31 +45,32 @@ namespace AutomechanicsProject.Services
             }
             catch (Exception ex)
             {
-                logger.Error($"Ошибка получения валюты для товара {productId}", ex);
+                logger.Error(ex, $"Ошибка получения валюты для товара {productId}");
             }
 
             return (CurrencyCodes.RUB, 1.00m, MoscowTime.Now);
         }
 
         /// <summary>
-        /// Получает текст для ToolTip при наведении на товар
+        /// Получает текст для подсказки при наведении на товар
         /// </summary>
-        public static string GetTooltipText(Guid productId, string productName, DateBase db)
+        public string GetTooltipText(Guid productId, string productName)
         {
-            var (currency, rate, date) = GetProductCurrency(productId, db);
+            var (currency, rate, date) = GetProductCurrency(productId);
 
             if (currency == CurrencyCodes.RUB && rate == 1.00m && date == MoscowTime.Now)
             {
-                var hasSupply = db.SupplyPositions.Any(sp => sp.ProductId == productId);
+                var hasSupply = _db.SupplyPositions.Any(sp => sp.ProductId == productId);
+
                 if (!hasSupply)
                 {
-                    return $"{productName}\nНет данных о поставках\nЦена отображается в {ChoosingCurrency.SelectedCurrencyCode}";
+                    return $"{productName}\nНет данных о поставках\nЦена отображается в {_currencySettingsService.SelectedCurrencyCode}";
                 }
             }
 
             if (currency == CurrencyCodes.RUB || rate == 1.00m)
             {
-                return $"{productName}\nЗакупка в рублях\nТекущая валюта: {ChoosingCurrency.SelectedCurrencyCode}";
+                return $"{productName}\nЗакупка в рублях\nТекущая валюта: {_currencySettingsService.SelectedCurrencyCode}";
             }
 
             return $"{productName}\n" +

@@ -381,9 +381,13 @@
     <Compile Include="Helpers\Validation.cs" />
     <Compile Include="Interfaces\IAuthService.cs" />
     <Compile Include="Interfaces\ICategoryService.cs" />
+    <Compile Include="Interfaces\ICurrencySettingsService.cs" />
+    <Compile Include="Interfaces\ICurrentUserService.cs" />
+    <Compile Include="Interfaces\IExpiredProductsService.cs" />
     <Compile Include="Interfaces\IProductService.cs" />
     <Compile Include="Interfaces\IReportService.cs" />
     <Compile Include="Interfaces\IShipmentService.cs" />
+    <Compile Include="Interfaces\ISupplyCurrencyService.cs" />
     <Compile Include="Interfaces\ISupplyService.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -399,6 +403,8 @@
     </Compile>
     <Compile Include="Services\AuthService.cs" />
     <Compile Include="Services\CategoryService.cs" />
+    <Compile Include="Services\CurrencySettingsService.cs" />
+    <Compile Include="Services\CurrentUserService.cs" />
     <Compile Include="Services\ExpiredProductsService.cs" />
     <Compile Include="Services\ProductService.cs" />
     <Compile Include="Services\ReportService.cs" />

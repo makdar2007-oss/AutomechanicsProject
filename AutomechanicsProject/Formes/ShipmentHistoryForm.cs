@@ -6,6 +6,7 @@ using System.Linq;
 using System.Windows.Forms;
 using NLog;
 using AutomechanicsProject.Enum;
+using AutomechanicsProject.Services.Interfaces;
 
 namespace AutomechanicsProject.Formes
 {
@@ -14,16 +15,17 @@ namespace AutomechanicsProject.Formes
     /// </summary>
     public partial class ShipmentHistoryForm : Form
     {
-        private readonly DateBase _db;
+        private readonly IShipmentService _shipmentService;
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         /// <summary>
         /// Инициализирует новый экземпляр формы истории отгрузок
         /// </summary>
-        public ShipmentHistoryForm(DateBase database)
+        public ShipmentHistoryForm(IShipmentService shipmentService)
         {
             InitializeComponent();
-            _db = database ?? throw new ArgumentNullException(nameof(database));
+
+            _shipmentService = shipmentService ?? throw new ArgumentNullException(nameof(shipmentService));
         }
 
         /// <summary>
@@ -54,13 +56,7 @@ namespace AutomechanicsProject.Formes
                     return;
                 }
 
-                var shipments = _db.Shipments
-                    .Include(s => s.User)
-                    .Include(s => s.CreatedByUser)
-                    .Include(s => s.Items)
-                    .Where(s => s.Date >= startDate && s.Date <= endDate)
-                    .OrderByDescending(s => s.Date)
-                    .ToList();
+                var shipments = _shipmentService.GetShipmentsForHistory(startDate, endDate);
 
                 if (shipments.Count == 0)
                 {
@@ -164,7 +160,7 @@ namespace AutomechanicsProject.Formes
             }
             catch (Exception ex)
             {
-                logger.Error("Не удалось загрузить историю отгрузок", ex);
+                logger.Error(ex, "Не удалось загрузить историю отгрузок");
                 MessageBox.Show(Resources.ErrorLoadShipmentHistory,
                     Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }

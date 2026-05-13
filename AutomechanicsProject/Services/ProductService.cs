@@ -112,11 +112,22 @@ namespace AutomechanicsProject.Services
         }
 
         /// <summary>
+        /// Обновляет товар
+        /// </summary>
+        public void UpdateProduct(Product product)
+        {
+            _db.SaveChanges();
+        }
+
+        /// <summary>
         /// Получает товар по id
         /// </summary>
         public Product GetProductById(Guid id)
         {
-            return _db.Products.FirstOrDefault(p => p.Id == id);
+            return _db.Products
+                .Include(p => p.Category)
+                .Include(p => p.Unit)
+                .FirstOrDefault(p => p.Id == id);
         }
 
         /// <summary>
@@ -124,7 +135,10 @@ namespace AutomechanicsProject.Services
         /// </summary>
         public Product GetProductByArticle(string article)
         {
-            return _db.Products.FirstOrDefault(p => p.Article == article.Trim());
+            return _db.Products
+                .Include(p => p.Category)
+                .Include(p => p.Unit)
+                .FirstOrDefault(p => p.Article == article.Trim());
         }
 
         /// <summary>
@@ -191,6 +205,29 @@ namespace AutomechanicsProject.Services
             return $"{prefix}-";
 
         }
+        /// <summary>
+        /// Возвращает id категории по названию или создает новую категорию
+        /// </summary>
+        public Guid GetOrCreateCategoryId(string categoryName)
+        {
+            var category = _db.Categories.FirstOrDefault(c => c.Name == categoryName);
+
+            if (category == null)
+            {
+                category = new Category
+                {
+                    Id = Guid.NewGuid(),
+                    Name = categoryName
+                };
+
+                _db.Categories.Add(category);
+            }
+
+            return category.Id;
+        }
+        /// <summary>
+        /// Получает список товаров с остатком на складе
+        /// </summary>
         public List<Product> GetAllProducts()
         {
             return _db.Products
@@ -199,6 +236,8 @@ namespace AutomechanicsProject.Services
                 .Where(p => p.Balance > 0)
                 .AsNoTracking()
                 .ToList();
+        
+
         }
     }
 }

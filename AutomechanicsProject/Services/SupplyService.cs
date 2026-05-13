@@ -4,6 +4,9 @@ using AutomechanicsProject.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using AutomechanicsProject.Dtos.UI;
+using AutomechanicsProject.ViewModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace AutomechanicsProject.Services
 {
@@ -21,7 +24,41 @@ namespace AutomechanicsProject.Services
         {
             _db = db;
         }
-
+        /// <summary>
+        /// Получает товары для формы поставки
+        /// </summary>
+        public List<ProductDisplayItem> GetProductsForSupply()
+        {
+            return _db.Products
+                .OrderBy(p => p.Name)
+                .Select(p => new ProductDisplayItem
+                {
+                    Id = p.Id,
+                    Article = p.Article,
+                    Name = p.Name,
+                    Balance = p.Balance,
+                    IsActive = p.Balance > 0,
+                    HasExpiryDate = p.HasExpiryDate,
+                    ProductExpiryDate = p.ExpiryDate
+                })
+                .AsNoTracking()
+                .ToList();
+        }
+        /// <summary>
+        /// Получает поставщиков для выпадающего списка
+        /// </summary>
+        public List<ComboItemDto> GetSuppliersForCombo()
+        {
+            return _db.Suppliers
+                .OrderBy(s => s.Name)
+                .Select(s => new ComboItemDto
+                {
+                    Id = s.Id,
+                    Text = s.Name
+                })
+                .AsNoTracking()
+                .ToList();
+        }
         /// <summary>
         /// Создаёт поставку
         /// </summary>

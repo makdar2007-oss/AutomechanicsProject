@@ -19,19 +19,46 @@ namespace AutomechanicsProject.Formes
     /// </summary>
     public partial class StorekeeperForm : Form
     {
-        private readonly DateBase db;
         private readonly IProductService _productService;
+        private readonly IAuthService _authService;
+        private readonly IShipmentService _shipmentService;
+        private readonly ISupplyService _supplyService;
+        private readonly IExpiredProductsService _expiredProductsService;
+        private readonly ISupplyCurrencyService _supplyCurrencyService;
+        private readonly ICategoryService _categoryService;
+        private readonly IReportService _reportService;
+        private readonly ICurrentUserService _currentUserService;
+        private readonly ICurrencySettingsService _currencySettingsService;
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         /// <summary>
         /// Инициализирует новый экземпляр формы кладовщика
         /// </summary>
-        public StorekeeperForm(DateBase database, IProductService productService)
+        public StorekeeperForm(
+             IProductService productService,
+             ICategoryService categoryService,
+             IAuthService authService,
+             IShipmentService shipmentService,
+             ISupplyService supplyService,
+             IReportService reportService,
+             IExpiredProductsService expiredProductsService,
+             ISupplyCurrencyService supplyCurrencyService,
+            ICurrentUserService currentUserService,
+            ICurrencySettingsService currencySettingsService)
         {
             InitializeComponent();
 
-            db = database ?? throw new ArgumentNullException(nameof(database));
+            
             _productService = productService ?? throw new ArgumentNullException(nameof(productService));
+            _authService = authService ?? throw new ArgumentNullException(nameof(authService));
+            _shipmentService = shipmentService ?? throw new ArgumentNullException(nameof(shipmentService));
+            _supplyService = supplyService ?? throw new ArgumentNullException(nameof(supplyService));
+            _expiredProductsService = expiredProductsService ?? throw new ArgumentNullException(nameof(expiredProductsService));
+            _supplyCurrencyService = supplyCurrencyService ?? throw new ArgumentNullException(nameof(supplyCurrencyService));
+            _categoryService = categoryService ?? throw new ArgumentNullException(nameof(categoryService));
+            _reportService = reportService ?? throw new ArgumentNullException(nameof(reportService));
+            _currentUserService = currentUserService ?? throw new ArgumentNullException(nameof(currentUserService));
+            _currencySettingsService = currencySettingsService ?? throw new ArgumentNullException(nameof(currencySettingsService));
 
             AutoWriteOffExpiredProducts();
 
@@ -81,7 +108,7 @@ namespace AutomechanicsProject.Formes
                 }
                 catch (Exception ex)
                 {
-                    logger.Error("Ошибка при подсветке строки", ex);
+                    logger.Error(ex,"Ошибка при подсветке строки");
                 }
             }
         }
@@ -93,7 +120,7 @@ namespace AutomechanicsProject.Formes
         {
             try
             {
-                var count = ExpiredProductsService.AutoWriteOffExpiredProducts(db);
+                var count = _expiredProductsService.AutoWriteOffExpiredProducts();
 
                 if (count > 0)
                 {
@@ -113,7 +140,7 @@ namespace AutomechanicsProject.Formes
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
 
-                logger.Error("Ошибка при списании товаров с истекшим сроком годности", ex);
+                logger.Error(ex,"Ошибка при списании товаров с истекшим сроком годности");
             }
         }
 
@@ -124,7 +151,7 @@ namespace AutomechanicsProject.Formes
         {
             try
             {
-                using (var currencyForm = Program.Container.Resolve<ChoosingCurrency>())
+                using (var currencyForm = new ChoosingCurrency(_currencySettingsService))
                 {
                     if (currencyForm.ShowDialog() == DialogResult.OK)
                     {
@@ -135,7 +162,7 @@ namespace AutomechanicsProject.Formes
             }
             catch (Exception ex)
             {
-                logger.Error("Ошибка при открытии формы выбора валюты", ex);
+                logger.Error(ex,"Ошибка при открытии формы выбора валюты");
                 MessageBox.Show(Resources.ErrorOpenCurrencyForm, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -148,7 +175,7 @@ namespace AutomechanicsProject.Formes
         {
             try
             {
-                using (var shipmentForm = Program.Container.Resolve<CreateShipment>())
+                using (var shipmentForm = new CreateShipment(_shipmentService, _currentUserService))
                 {
                     if (shipmentForm.ShowDialog() == DialogResult.OK)
                     {
@@ -170,19 +197,27 @@ namespace AutomechanicsProject.Formes
         {
             try
             {
-                ChoosingCurrency.SelectedCurrencyCode = CurrencyCodes.RUB;
-                ChoosingCurrency.CurrentExchangeRate = 1m;
-                ChoosingCurrency.SelectedCurrencyName = Resources.RussianRuble;
+                _currencySettingsService.ResetToRub();
                 logger.Info("Пользователь вышел из системы, валюта сброшена");
 
                 Close();
-                var loginForm = Program.Container.Resolve<Autorization>();
+                var loginForm = new Autorization(
+                _authService,
+                _productService,
+                _categoryService,
+                _supplyService,
+                _reportService,
+                _shipmentService,
+                _expiredProductsService,
+                _supplyCurrencyService,
+                _currentUserService,
+                _currencySettingsService);
                 loginForm.ShowDialog();
 
             }
             catch (Exception ex)
             {
-                logger.Error("Ошибка при выходе из системы", ex);
+                logger.Error(ex, "Ошибка при выходе из системы");
                 MessageBox.Show(Resources.ErrorLogout, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -278,7 +313,7 @@ namespace AutomechanicsProject.Formes
                 priceInRub = priceInRub * 0.9m;
             }
 
-            return ChoosingCurrency.ConvertPrice(priceInRub);
+            return _currencySettingsService.ConvertPrice(priceInRub);
         }
 
         /// <summary>
@@ -286,14 +321,14 @@ namespace AutomechanicsProject.Formes
         /// </summary>
         private decimal GetPurchasePriceBySupplyRate(Guid productId, decimal priceInRub)
         {
-            if (ChoosingCurrency.SelectedCurrencyCode == CurrencyCodes.RUB)
+            if (_currencySettingsService.SelectedCurrencyCode == CurrencyCodes.RUB)
             {
                 return priceInRub;
             }
 
             try
             {
-                var (supplyCurrency, supplyRate, _) = SupplyCurrencyService.GetProductCurrency(productId, db);
+                var (supplyCurrency, supplyRate, _) = _supplyCurrencyService.GetProductCurrency(productId);
 
                 if (supplyCurrency != CurrencyCodes.RUB && supplyRate != 1.00m)
                 {
@@ -301,15 +336,15 @@ namespace AutomechanicsProject.Formes
 
                     decimal priceInRubAgain = priceInSupplyCurrency / supplyRate;
 
-                    return ChoosingCurrency.ConvertPrice(priceInRubAgain);
+                    return _currencySettingsService.ConvertPrice(priceInRubAgain);
                 }
 
-                return ChoosingCurrency.ConvertPrice(priceInRub);
+                return _currencySettingsService.ConvertPrice(priceInRub);
             }
             catch (Exception ex)
             {
                 logger.Error($"Ошибка конвертации цены для товара {productId}", ex);
-                return ChoosingCurrency.ConvertPrice(priceInRub);
+                return _currencySettingsService.ConvertPrice(priceInRub);
             }
         }
 
@@ -359,7 +394,7 @@ namespace AutomechanicsProject.Formes
 
             if (dataGridViewStore.Columns["PurchasePrice"] != null)
             {
-                dataGridViewStore.Columns["PurchasePrice"].HeaderText = string.Format(Resources.ColumnPurchasePriceFormat, ChoosingCurrency.SelectedCurrencyCode);
+                dataGridViewStore.Columns["PurchasePrice"].HeaderText = string.Format(Resources.ColumnPurchasePriceFormat, _currencySettingsService.SelectedCurrencyCode);
             }
 
             if (dataGridViewStore.Columns["Price"] != null)
@@ -456,7 +491,7 @@ namespace AutomechanicsProject.Formes
             catch (Exception ex)
             {
                 toolStripTextBoxStorekeeper.Text = Resources.StatusError;
-                logger.Error("Ошибка при загрузке формы кладовщика", ex);
+                logger.Error(ex,"Ошибка при загрузке формы кладовщика");
             }
         }
 
@@ -465,7 +500,7 @@ namespace AutomechanicsProject.Formes
         /// </summary>
         private void buttonSupply_Click_1(object sender, EventArgs e)
         {
-            using (var supplyForm = Program.Container.Resolve<CreateSupply>())
+            using (CreateSupply supplyForm = new CreateSupply(_supplyService, _currentUserService))
             {
                 if (supplyForm.ShowDialog() == DialogResult.OK)
                 {
@@ -473,6 +508,7 @@ namespace AutomechanicsProject.Formes
                 }
             }
         }
+        
 
         /// <summary>
         /// Показывает информацию о курсе при наведении на ячейку "ЦенаЗакупки"
@@ -488,10 +524,10 @@ namespace AutomechanicsProject.Formes
                     var article = dataGridViewStore.Rows[e.RowIndex].Cells["Article"]?.Value?.ToString();
                     if (!string.IsNullOrEmpty(article))
                     {
-                        var product = db.Products.FirstOrDefault(p => p.Article == article);
+                        var product = _productService.GetProductByArticle(article);
                         if (product != null)
                         {
-                            var tooltipText = SupplyCurrencyService.GetTooltipText(product.Id, product.Name, db);
+                            var tooltipText = _supplyCurrencyService.GetTooltipText(product.Id, product.Name);
                             dataGridViewStore.Rows[e.RowIndex].Cells[e.ColumnIndex].ToolTipText = tooltipText;
                         }
                     }

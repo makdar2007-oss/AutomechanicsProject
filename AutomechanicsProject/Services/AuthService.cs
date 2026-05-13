@@ -8,15 +8,24 @@ using AutomechanicsProject.Services.Interfaces;
 
 namespace AutomechanicsProject.Services
 {
+    /// <summary>
+    /// Сервис для авторизации и регистрации пользователей
+    /// </summary>
     public class AuthService : IAuthService
     {
         private readonly DateBase _db;
 
+        /// <summary>
+        /// Создает сервис авторизации
+        /// </summary>
         public AuthService(DateBase db)
         {
             _db = db;
         }
 
+        /// <summary>
+        /// Выполняет вход пользователя по логину и паролю
+        /// </summary>
         public Users Login(string login, string password)
         {
             var user = _db.Users
@@ -46,6 +55,9 @@ namespace AutomechanicsProject.Services
             return isValid ? user : null;
         }
 
+        /// <summary>
+        /// Регистрирует нового пользователя с ролью кладовщика
+        /// </summary>
         public void Register(string surname, string name, string lastname, string login, string password)
         {
             if (_db.Users.Any(u => u.Login == login))

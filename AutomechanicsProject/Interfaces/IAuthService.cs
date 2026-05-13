@@ -11,5 +11,10 @@ namespace AutomechanicsProject.Services.Interfaces
         /// Выполняет вход пользователя
         /// </summary>
         Users Login(string login, string password);
+
+        /// <summary>
+        /// Регистрирует нового пользователя
+        /// </summary>
+        void Register(string surname, string name, string lastname, string login, string password);
     }
 }

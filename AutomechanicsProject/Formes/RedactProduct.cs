@@ -2,11 +2,10 @@
 using AutomechanicsProject.Dtos.UI;
 using AutomechanicsProject.Helpers;
 using AutomechanicsProject.Properties;
-using Microsoft.EntityFrameworkCore;
 using NLog;
 using System;
-using System.Linq;
 using System.Windows.Forms;
+using AutomechanicsProject.Services.Interfaces;
 
 namespace AutomechanicsProject.Formes
 {
@@ -15,7 +14,7 @@ namespace AutomechanicsProject.Formes
     /// </summary>
     public partial class RedactProduct : Form
     {
-        private readonly DateBase db;
+        private readonly IProductService _productService;
         private readonly Guid productId;
         private Product currentProduct;
         private bool hasChanges;
@@ -24,10 +23,11 @@ namespace AutomechanicsProject.Formes
         /// <summary>
         /// Инициализирует новый экземпляр формы редактирования товара
         /// </summary>
-        public RedactProduct(DateBase database, Guid id)
+        public RedactProduct(IProductService productService, Guid id)
         {
             InitializeComponent();
-            db = database ?? throw new ArgumentNullException(nameof(database));
+
+            _productService = productService ?? throw new ArgumentNullException(nameof(productService));
             productId = id;
 
             TextBoxHelper.SetupWatermarkTextBox(textBoxArt, Resources.EditArticleWatermark);
@@ -47,20 +47,14 @@ namespace AutomechanicsProject.Formes
         }
 
         /// <summary>
-        /// Загружает список единиц измерения из базы данных в выпадающий список
+        /// Загружает список единиц измерения в выпадающий список
         /// </summary>
         private void LoadUnits()
         {
             try
             {
-                var units = db.Units
-                    .OrderBy(u => u.Name)
-                    .Select(u => new ComboItemDto
-                    {
-                        Id = u.Id,
-                        Text = $"{u.Name} ({u.ShortName})"
-                    })
-                    .ToList();
+                var units = _productService.GetUnitsForCombo();
+
                 comboBoxUnit.DisplayMember = "Text";
                 comboBoxUnit.ValueMember = "Id";
                 comboBoxUnit.DataSource = units;
@@ -68,9 +62,12 @@ namespace AutomechanicsProject.Formes
             }
             catch (Exception ex)
             {
-                logger.Error("Ошибка при загрузке единиц измерения", ex);
-                MessageBox.Show(Resources.ErrorLoadUnits, Resources.TitleError,
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                logger.Error(ex, "Ошибка при загрузке единиц измерения");
+
+                MessageBox.Show(Resources.ErrorLoadUnits,
+                    Resources.TitleError,
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
         }
 
@@ -81,10 +78,7 @@ namespace AutomechanicsProject.Formes
         {
             try
             {
-                currentProduct = db.Products
-                    .Include(p => p.Category)
-                    .Include(p => p.Unit)
-                    .FirstOrDefault(p => p.Id == productId);
+                currentProduct = _productService.GetProductById(productId);
 
                 if (currentProduct == null)
                 {
@@ -156,24 +150,14 @@ namespace AutomechanicsProject.Formes
                 currentProduct.Name = textBoxName.Text.Trim();
 
                 var categoryName = textBoxCategory.Text.Trim();
-                var category = db.Categories.FirstOrDefault(c => c.Name == categoryName);
-                if (category == null)
-                {
-                    category = new Category
-                    {
-                        Id = Guid.NewGuid(),
-                        Name = categoryName
-                    };
-                    db.Categories.Add(category);
-                }
-                currentProduct.CategoryId = category.Id;
+                currentProduct.CategoryId = _productService.GetOrCreateCategoryId(categoryName);
 
                 var selectedUnit = (ComboItemDto)comboBoxUnit.SelectedItem;
                 currentProduct.UnitId = selectedUnit.Id;
 
                 currentProduct.Price = price;
 
-                db.SaveChanges();
+                _productService.UpdateProduct(currentProduct);
 
                 logger.Info($"Товар '{currentProduct.Article} - {currentProduct.Name}' обновлен");
                 MessageBox.Show(Resources.SuccessProductUpdated, Resources.TitleSuccess,

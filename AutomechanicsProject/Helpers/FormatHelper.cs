@@ -58,13 +58,6 @@ namespace AutomechanicsProject.Helpers
             return $"{article} - {name} ({price:F2} {currencyCode})";
         }
 
-        /// <summary>
-        /// Форматирует цену с валютой
-        /// </summary>
-        public static string FormatPrice(decimal price)
-        {
-            return $"{price:F2} {ChoosingCurrency.SelectedCurrencyCode}";
-        }
 
         /// <summary>
         /// Форматирует цену с указанием валюты

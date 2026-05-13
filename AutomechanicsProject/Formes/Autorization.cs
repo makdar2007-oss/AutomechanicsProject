@@ -18,17 +18,45 @@ namespace AutomechanicsProject
         /// Сервис авторизации
         /// </summary>
         private readonly IAuthService _authService;
+        private readonly IProductService _productService;
+        private readonly ICategoryService _categoryService;
+        private readonly ISupplyService _supplyService;
+        private readonly IReportService _reportService;
+        private readonly IShipmentService _shipmentService;
+        private readonly IExpiredProductsService _expiredProductsService;
+        private readonly ISupplyCurrencyService _supplyCurrencyService;
+        private readonly ICurrentUserService _currentUserService;
+        private readonly ICurrencySettingsService _currencySettingsService;
 
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         /// <summary>
         /// Конструктор
         /// </summary>
-        public Autorization(IAuthService authService)
+        public Autorization(
+             IAuthService authService,
+             IProductService productService,
+             ICategoryService categoryService,
+             ISupplyService supplyService,
+             IReportService reportService,
+             IShipmentService shipmentService,
+             IExpiredProductsService expiredProductsService,
+             ISupplyCurrencyService supplyCurrencyService,
+             ICurrentUserService currentUserService,
+             ICurrencySettingsService currencySettingsService)
         {
             InitializeComponent();
 
             _authService = authService ?? throw new ArgumentNullException(nameof(authService));
+            _productService = productService ?? throw new ArgumentNullException(nameof(productService));
+            _categoryService = categoryService ?? throw new ArgumentNullException(nameof(categoryService));
+            _supplyService = supplyService ?? throw new ArgumentNullException(nameof(supplyService));
+            _reportService = reportService ?? throw new ArgumentNullException(nameof(reportService));
+            _shipmentService = shipmentService ?? throw new ArgumentNullException(nameof(shipmentService));
+            _expiredProductsService = expiredProductsService ?? throw new ArgumentNullException(nameof(expiredProductsService));
+            _supplyCurrencyService = supplyCurrencyService ?? throw new ArgumentNullException(nameof(supplyCurrencyService));
+            _currentUserService = currentUserService ?? throw new ArgumentNullException(nameof(currentUserService));
+            _currencySettingsService = currencySettingsService ?? throw new ArgumentNullException(nameof(currencySettingsService));
 
             TextBoxHelper.SetupWatermarkTextBox(textBoxLogin, Resources.AuthLoginWatermark);
             TextBoxHelper.SetupPasswordTextBox(textBoxPassword, Resources.AuthPasswordWatermark);
@@ -51,7 +79,17 @@ namespace AutomechanicsProject
         /// </summary>
         private void linkRegisterClick(object sender, EventArgs e)
         {
-            var form = Program.Container.Resolve<Registration>();
+            var form = new Registration(
+                _authService,
+                _productService,
+                _categoryService,
+                _supplyService,
+                _reportService,
+                _shipmentService,
+                _expiredProductsService,
+                _supplyCurrencyService,
+                _currentUserService,
+                _currencySettingsService);
             form.Show();
             Hide();
         }
@@ -92,7 +130,7 @@ namespace AutomechanicsProject
                     return;
                 }
 
-                Program.CurrentUser = user;
+                _currentUserService.SetCurrentUser(user);
 
                 OpenMainForm(user);
             }
@@ -114,12 +152,32 @@ namespace AutomechanicsProject
                 switch (user.Role.Type)
                 {
                     case RoleType.Administrator:
-                        nextForm = Program.Container.Resolve<AdminForm>();
+                        nextForm = new AdminForm(
+                            _productService,
+                            _categoryService,
+                            _authService,
+                            _supplyService,
+                            _reportService,
+                            _shipmentService,
+                            _expiredProductsService,
+                            _supplyCurrencyService,
+                            _currentUserService,
+                            _currencySettingsService);
                         logger.Info("Открыта форма администратора для {0}", user.FullName);
                         break;
 
                     case RoleType.Storekeeper:
-                        nextForm = Program.Container.Resolve<StorekeeperForm>();
+                        nextForm = new StorekeeperForm(
+                            _productService,
+                            _categoryService,
+                            _authService,
+                            _shipmentService,
+                            _supplyService,
+                            _reportService,
+                            _expiredProductsService,
+                            _supplyCurrencyService,
+                            _currentUserService,
+                            _currencySettingsService);
                         logger.Info("Открыта форма кладовщика для {0}", user.FullName);
                         break;
                 }
@@ -138,5 +196,7 @@ namespace AutomechanicsProject
                 logger.Warn($"Пользователь {user.FullName} не имеет роли");
             }
         }
+
+        
     }
 }

@@ -24,33 +24,37 @@ namespace AutomechanicsProject.Formes
     /// </summary>
     public partial class CreateShipment : Form
     {
-        private readonly DateBase db;
+       
         /// <summary>
         /// Сервис отгрузок
         /// </summary>
         private readonly IShipmentService _shipmentService;
+        private readonly ICurrentUserService _currentUserService;
         private List<ShipmentItem> shipmentItems;
         private decimal totalAmount;
         private int totalItemsCount;
         private List<ProductComboViewModel> allProducts;
         private SearchableComboBoxHelper.ComboBoxState comboBoxState;
-        private List<Product> availableProducts;
         private bool isShipmentTypeLocked = false;
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
         private ShipmentTypeEnum currentShipmentType = ShipmentTypeEnum.Shipment;
 
-        
+
         /// <summary>
         /// Инициализирует новый экземпляр формы создания отгрузки
         /// </summary>
-        public CreateShipment(DateBase database, IShipmentService shipmentService)
+        public CreateShipment(
+            IShipmentService shipmentService,
+            ICurrentUserService currentUserService)
         {
             InitializeComponent();
-            db = database ?? throw new ArgumentNullException(nameof(database));
+
             _shipmentService = shipmentService ?? throw new ArgumentNullException(nameof(shipmentService));
+            _currentUserService = currentUserService ?? throw new ArgumentNullException(nameof(currentUserService));
             shipmentItems = new List<ShipmentItem>();
             totalAmount = 0;
             allProducts = new List<ProductComboViewModel>();
+
 
             TextBoxHelper.SetupWatermarkTextBox(textBoxUnit, Resources.ShipmentQuantityWatermark);
             TextBoxHelper.SetupWatermarkComboBox(comboBoxProduct, Resources.SProductWatermark);
@@ -157,31 +161,12 @@ namespace AutomechanicsProject.Formes
         /// <summary>
         /// Загружает доступные сроки годности для выбранного товара
         /// </summary>
+     
         private void LoadExpiryDatesForProduct(Guid productId)
         {
             try
             {
-                var selectedProduct = db.Products
-                    .Include(p => p.Unit)
-                    .FirstOrDefault(p => p.Id == productId);
-
-                if (selectedProduct == null)
-                {
-                    return;
-                }
-
-                var productsWithSameName = db.Products
-                    .Include(p => p.Unit)
-                    .Where(p => p.Name == selectedProduct.Name && p.Balance > 0)
-                    .Select(p => new ExpiryItemDto
-                    {
-                        ProductId = p.Id,
-                        DisplayText = FormatHelper.FormatExpiryDateDisplay(p.ExpiryDate, p.Balance),
-                        ExpiryDate = p.ExpiryDate,
-                        Balance = p.Balance
-                    })
-                    .OrderBy(p => p.ExpiryDate)
-                    .ToList();
+                var productsWithSameName = _shipmentService.GetExpiryDatesForProduct(productId);
 
                 if (productsWithSameName.Count >= 1)
                 {
@@ -207,7 +192,7 @@ namespace AutomechanicsProject.Formes
             }
             catch (Exception ex)
             {
-                logger.Error("Ошибка при загрузке сроков годности", ex);
+                logger.Error(ex, "Ошибка при загрузке сроков годности");
                 comboBoxExpiry.Enabled = false;
             }
         }
@@ -219,96 +204,60 @@ namespace AutomechanicsProject.Formes
         {
             try
             {
-                var productsList = db.Products
-                    .Where(p => p.Balance > 0)
-                    .Select(p => new
-                    {
-                        p.Id,
-                        p.Article,
-                        p.Name,
-                        p.Balance,
-                        p.Price,
-                        UnitName = p.Unit != null ? p.Unit.Name : Resources.Unit_Piece_Short,
-                        p.UnitId,
-                        p.IsMetal
-                    })
-                    .ToList();
-
-                var products = productsList
-                    .GroupBy(p => p.Name)
-                    .Select(g => new ProductComboViewModel
-                    {
-                        Id = g.First().Id,
-                        Text = FormatHelper.FormatProductWithBalance(
-                            g.First().Article,
-                            g.Key,
-                            g.Sum(x => x.Balance),
-                            g.First().UnitName),
-                        Article = g.First().Article,
-                        Name = g.Key,
-                        Price = g.First().Price,
-                        Balance = g.Sum(x => x.Balance),
-                        UnitName = g.First().UnitName,
-                        UnitId = g.First().UnitId,
-                        IsMetal = g.First().IsMetal
-                    })
-                    .ToList();
-
-                allProducts = products;
+                allProducts = _shipmentService.GetProductsForShipment();
 
                 if (allProducts.Any())
                 {
                     SetupSearchableComboBox();
                 }
 
-                if (products.Count == 0)
+                if (allProducts.Count == 0)
                 {
-                    MessageBox.Show(Resources.InfoNoProductsForShipment, Resources.TitleInformation,
-                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show(Resources.InfoNoProductsForShipment,
+                        Resources.TitleInformation,
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
                 }
             }
             catch (Exception ex)
             {
-                logger.Error("Ошибка при загрузке товаров в отгрузку", ex);
-                MessageBox.Show(Resources.ErrorLoadProducts, Resources.TitleError,
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                logger.Error(ex, "Ошибка при загрузке товаров в отгрузку");
+
+                MessageBox.Show(Resources.ErrorLoadProducts,
+                    Resources.TitleError,
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
         }
 
         /// <summary>
-        /// Загружает список получателей 
+        /// Загружает список получателей
         /// </summary>
         private void LoadRecipients()
         {
             try
             {
-                var excludedNames = new[] { Resources.ShipmentType_Defect, Resources.ShipmentType_WriteOff, "-", "" };
+                var recipients = _shipmentService.GetRecipientsForCombo();
 
-                var recipients = db.Addresses
-                    .Where(a => a.CompanyName != null &&
-                       !excludedNames.Contains(a.CompanyName.Trim()))
-                    .OrderBy(a => a.CompanyName)
-                    .Select(a => new ComboItemDto
-                    {
-                        Id = a.Id,
-                        Text = a.CompanyName
-                    })
-                    .ToList();
                 comboBoxRecipient1.DataSource = recipients;
-
                 buttonShipment.Enabled = recipients.Count > 0;
 
                 if (recipients.Count == 0)
                 {
-                    MessageBox.Show(Resources.InfoNoRecipientsAvailable, Resources.TitleInformation,
-                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show(Resources.InfoNoRecipientsAvailable,
+                        Resources.TitleInformation,
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
                 }
             }
             catch (Exception ex)
             {
-                logger.Error("Ошибка при загрузке списка получателей", ex);
-                MessageBox.Show(Resources.ErrorLoadRecipients, Resources.TitleError,
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                logger.Error(ex, "Ошибка при загрузке списка получателей");
+
+                MessageBox.Show(Resources.ErrorLoadRecipients,
+                    Resources.TitleError,
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
         }
 
@@ -376,7 +325,7 @@ namespace AutomechanicsProject.Formes
                 var selectedExpiry = (ExpiryItemDto)comboBoxExpiry.SelectedItem;
                 Guid actualProductId = selectedExpiry.ProductId;
 
-                var productWithExpiry = db.Products.FirstOrDefault(p => p.Id == actualProductId);
+                var productWithExpiry = _shipmentService.GetProductForShipmentById(actualProductId);
 
                 if (productWithExpiry != null)
                 {
@@ -388,8 +337,6 @@ namespace AutomechanicsProject.Formes
                         textBoxUnit.Focus();
                         return false;
                     }
-
-                    db.SaveChanges();
 
                     return AddOrUpdateShipmentItem(
                         productWithExpiry.Id,
@@ -404,7 +351,7 @@ namespace AutomechanicsProject.Formes
             }
 
             var selectedProduct = (ProductComboViewModel)comboBoxProduct.SelectedItem;
-            var productToShip = db.Products.FirstOrDefault(p => p.Name == selectedProduct.Name && p.Balance > 0);
+            var productToShip = _shipmentService.GetProductForShipmentByName(selectedProduct.Name);
 
             if (productToShip == null)
             {
@@ -421,7 +368,7 @@ namespace AutomechanicsProject.Formes
                 return false;
             }
 
-            db.SaveChanges();
+            
 
             return AddOrUpdateShipmentItem(
                 productToShip.Id,
@@ -451,8 +398,7 @@ namespace AutomechanicsProject.Formes
         /// </summary>
         private bool AddOrUpdateShipmentItem(Guid productId, string productName, string article, int quantity, decimal price, decimal purchasePrice, string unitName)
         {
-            var product = db.Products.FirstOrDefault(p => p.Id == productId);
-            bool isMetal = product?.IsMetal ?? false;
+            bool isMetal = _shipmentService.IsProductMetal(productId);
 
             var existingItem = shipmentItems.FirstOrDefault(i => i.ProductId == productId);
 
@@ -690,7 +636,7 @@ namespace AutomechanicsProject.Formes
 
             try
             {
-                if (Program.CurrentUser == null)
+                if (_currentUserService.CurrentUser == null)
                 {
                     MessageBox.Show("Текущий пользователь не найден.");
                     return;
@@ -698,7 +644,7 @@ namespace AutomechanicsProject.Formes
                 _shipmentService.CreateShipment(
                 shipmentItems,
                 recipientId,
-                Program.CurrentUser.Id,
+                _currentUserService.CurrentUser.Id,
                 totalAmount,
                 currentShipmentType
 );
@@ -740,11 +686,10 @@ namespace AutomechanicsProject.Formes
             }
             catch (Exception ex)
             {
-                logger.Error(ex);
+                logger.Error(ex, "Ошибка при создании отгрузки");
 
-                MessageBox.Show(
-                    ex.ToString(),
-                    "DEBUG ERROR",
+                MessageBox.Show(Resources.ErrorCreateShipment,
+                    Resources.TitleError,
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
             }

@@ -5,7 +5,6 @@ using AutomechanicsProject.Mappers;
 using AutomechanicsProject.Properties;
 using AutomechanicsProject.Services;
 using AutomechanicsProject.Services.Interfaces;
-using Castle.Windsor;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using NLog;
@@ -24,19 +23,46 @@ namespace AutomechanicsProject.Formes
     /// </summary>
     public partial class AdminForm : Form
     {
-        private readonly DateBase _db;
         private readonly IProductService _productService;
+        private readonly ICategoryService _categoryService;
+        private readonly IAuthService _authService;
+        private readonly ISupplyService _supplyService;
+        private readonly IReportService _reportService;
+        private readonly IShipmentService _shipmentService;
+        private readonly IExpiredProductsService _expiredProductsService;
+        private readonly ISupplyCurrencyService _supplyCurrencyService;
+        private readonly ICurrentUserService _currentUserService;
+        private readonly ICurrencySettingsService _currencySettingsService;
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         /// <summary>
         /// Инициализирует новый экземпляр формы администратора
         /// </summary>
-        public AdminForm(DateBase database, IProductService productService)
+        public AdminForm(
+            IProductService productService,
+            ICategoryService categoryService,
+            IAuthService authService,
+            ISupplyService supplyService,
+            IReportService reportService,
+            IShipmentService shipmentService,
+            IExpiredProductsService expiredProductsService,
+            ISupplyCurrencyService supplyCurrencyService,
+            ICurrentUserService currentUserService,
+            ICurrencySettingsService currencySettingsService)
         {
             InitializeComponent();
 
-            _db = database ?? throw new ArgumentNullException(nameof(database));
+            
             _productService = productService ?? throw new ArgumentNullException(nameof(productService));
+            _categoryService = categoryService ?? throw new ArgumentNullException(nameof(categoryService));
+            _authService = authService ?? throw new ArgumentNullException(nameof(authService));
+            _supplyService = supplyService ?? throw new ArgumentNullException(nameof(supplyService));
+            _reportService = reportService ?? throw new ArgumentNullException(nameof(reportService));
+            _shipmentService = shipmentService ?? throw new ArgumentNullException(nameof(shipmentService));
+            _expiredProductsService = expiredProductsService ?? throw new ArgumentNullException(nameof(expiredProductsService));
+            _supplyCurrencyService = supplyCurrencyService ?? throw new ArgumentNullException(nameof(supplyCurrencyService));
+            _currentUserService = currentUserService ?? throw new ArgumentNullException(nameof(currentUserService));
+            _currencySettingsService = currencySettingsService ?? throw new ArgumentNullException(nameof(currencySettingsService));
 
             TextBoxHelper.SetupWatermarkTextBox(textBoxSearch, Resources.SearchWatermark);
             dataGridViewMainForm.DataBindingComplete += DataGridViewStore_DataBindingComplete;
@@ -46,6 +72,7 @@ namespace AutomechanicsProject.Formes
 
             Logger.Info("AdminForm успешно инициализирована");
         }
+
         /// <summary>
         /// Открывает форму редактирования категории
         /// </summary>
@@ -53,7 +80,7 @@ namespace AutomechanicsProject.Formes
         {
             try
             {
-                using (var editCategoryForm = Program.Container.Resolve<EditCategory>())
+                using (var editCategoryForm = new EditCategory(_categoryService))
                 {
                     if (editCategoryForm.ShowDialog() == DialogResult.OK)
                     {
@@ -63,7 +90,7 @@ namespace AutomechanicsProject.Formes
             }
             catch (Exception ex)
             {
-                Logger.Error("Ошибка при отркытии формы редактирования категории", ex);
+                Logger.Error(ex, "Ошибка при открытии формы редактирования категории");
                 MessageBox.Show(Resources.ErrorOpenEditCategoryForm, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -76,7 +103,7 @@ namespace AutomechanicsProject.Formes
         {
             try
             {
-                var count = ExpiredProductsService.AutoWriteOffExpiredProducts(_db);
+                var count = _expiredProductsService.AutoWriteOffExpiredProducts();
 
                 if (count > 0)
                 {
@@ -91,7 +118,7 @@ namespace AutomechanicsProject.Formes
             }
             catch (Exception ex)
             {
-                Logger.Error("Ошибка при списании товаров", ex);
+                Logger.Error(ex, "Ошибка при списании товаров");
 
                 MessageBox.Show(Resources.ErrorAutoWriteOff, Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -107,7 +134,7 @@ namespace AutomechanicsProject.Formes
 
         /// <summary>
         /// Получает выбранный товар из таблицы
-        /// </summary>>
+        /// </summary>
         private Product GetSelectedProduct()
         {
             if (dataGridViewMainForm.SelectedRows.Count == 0)
@@ -126,12 +153,12 @@ namespace AutomechanicsProject.Formes
 
                 if (!string.IsNullOrEmpty(article))
                 {
-                    return _db.Products.FirstOrDefault(p => p.Article == article);
+                    return _productService.GetProductByArticle(article);
                 }
             }
             catch (Exception ex)
             {
-                Logger.Error("Ошибка при получении выбранного товара", ex);
+                Logger.Error(ex, "Ошибка при получении выбранного товара");
             }
 
             return null;
@@ -150,7 +177,7 @@ namespace AutomechanicsProject.Formes
             catch (Exception ex)
             {
                 toolStripTextBoxAdmin.Text = Resources.StatusError;
-                Logger.Error("Ошибка при загрузке формы администратора", ex);
+                Logger.Error(ex, "Ошибка при загрузке формы администратора");
             }
         }
 
@@ -161,13 +188,21 @@ namespace AutomechanicsProject.Formes
         {
             try
             {
-                ChoosingCurrency.SelectedCurrencyCode = CurrencyCodes.RUB;
-                ChoosingCurrency.CurrentExchangeRate = 1m;
-                ChoosingCurrency.SelectedCurrencyName = Resources.RussianRuble;
+                _currencySettingsService.ResetToRub();
                 Logger.Info("Пользователь вышел из системы, валюта сброшена");
 
                 Close();
-                var loginForm = Program.Container.Resolve<Autorization>();
+                var loginForm = new Autorization(
+                    _authService,
+                    _productService,
+                    _categoryService,
+                    _supplyService,
+                    _reportService,
+                    _shipmentService,
+                    _expiredProductsService,
+                    _supplyCurrencyService,
+                    _currentUserService,
+                    _currencySettingsService);
                 loginForm.ShowDialog();
             }
             catch (Exception)
@@ -233,14 +268,14 @@ namespace AutomechanicsProject.Formes
         {
             try
             {
-                using (var historyForm = Program.Container.Resolve<ShipmentHistoryForm>())
+                using (var historyForm = new ShipmentHistoryForm(_shipmentService))
                 {
                     historyForm.ShowDialog();
                 }
             }
             catch (Exception ex)
             {
-                Logger.Error("Ошибка при отркытии формы истории", ex);
+                Logger.Error(ex, "Ошибка при отркытии формы истории");
                 MessageBox.Show(Resources.ErrorOpenHistory, Resources.TitleError,
                      MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -256,7 +291,7 @@ namespace AutomechanicsProject.Formes
         {
             try
             {
-                using (var addProductForm = Program.Container.Resolve<AddProduct>())
+                using (var addProductForm = new AddProduct(_productService))
                 {
                     if (addProductForm.ShowDialog() == DialogResult.OK)
                     {
@@ -266,7 +301,7 @@ namespace AutomechanicsProject.Formes
             }
             catch (Exception ex)
             {
-                Logger.Error("Ошибка при открытии формы добавления товара", ex);
+                Logger.Error(ex,"Ошибка при открытии формы добавления товара");
                 MessageBox.Show(Resources.ErrorOpenAddProductForm, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -278,7 +313,7 @@ namespace AutomechanicsProject.Formes
         {
             try
             {
-                using (var form = Program.Container.Resolve<AddCategory>())
+                using (var form = new AddCategory(_categoryService))
                 {
                     if (form.ShowDialog() == DialogResult.OK)
                     {
@@ -288,7 +323,7 @@ namespace AutomechanicsProject.Formes
             }
             catch (Exception ex)
             {
-                Logger.Error("Ошибка при открытии формы добавления категории", ex);
+                Logger.Error(ex, "Ошибка при открытии формы добавления категории");
                 MessageBox.Show(Resources.ErrorOpenAddCategoryForm, Resources.TitleError,
                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -310,7 +345,7 @@ namespace AutomechanicsProject.Formes
             }
             try
             {
-                using (var editForm = Program.Container.Resolve<RedactProduct>())
+                using (var editForm = new RedactProduct(_productService, product.Id))
                 {
                     if (editForm.ShowDialog() == DialogResult.OK)
                     {
@@ -343,11 +378,7 @@ namespace AutomechanicsProject.Formes
 
             try
             {
-                using (var deleteForm = Program.Container.Resolve<DeleteProduct>(
-                    new Castle.MicroKernel.Arguments
-                    {
-            { "id", product.Id }
-                    }))
+                using (var deleteForm = new DeleteProduct(_productService, product.Id))
                 {
                     if (deleteForm.ShowDialog() == DialogResult.OK)
                     {
@@ -368,7 +399,7 @@ namespace AutomechanicsProject.Formes
         {
             try
             {
-                using (var deleteCategoryForm = Program.Container.Resolve<DeleteCategory>())
+                using (var deleteCategoryForm = new DeleteCategory(_categoryService))
                 {
                     if (deleteCategoryForm.ShowDialog() == DialogResult.OK)
                     {
@@ -378,7 +409,7 @@ namespace AutomechanicsProject.Formes
             }
             catch (Exception ex)
             {
-                Logger.Error("Ошибка при удалении категории", ex);
+                Logger.Error(ex, "Ошибка при удалении категории");
                 MessageBox.Show(Resources.ErrorOpenDeleteCategoryForm, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -443,7 +474,7 @@ namespace AutomechanicsProject.Formes
             }
             catch (Exception ex)
             {
-                Logger.Error("Ошибка при загрузке товаров", ex);
+                Logger.Error(ex,"Ошибка при загрузке товаров");
                 MessageBox.Show(Resources.ErrorLoadProductsList, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -463,7 +494,7 @@ namespace AutomechanicsProject.Formes
                 priceInRub = priceInRub * 0.9m;
             }
 
-            return ChoosingCurrency.ConvertPrice(priceInRub);
+            return _currencySettingsService.ConvertPrice(priceInRub);
         }
 
         /// <summary>
@@ -518,7 +549,7 @@ namespace AutomechanicsProject.Formes
             {
                 dataGridViewMainForm.Columns["PurchasePrice"].DefaultCellStyle.Format = "F2";
                 dataGridViewMainForm.Columns["PurchasePrice"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-                dataGridViewMainForm.Columns["PurchasePrice"].HeaderText = string.Format(Resources.ColumnPurchasePriceFormat, ChoosingCurrency.SelectedCurrencyCode);
+                dataGridViewMainForm.Columns["PurchasePrice"].HeaderText = string.Format(Resources.ColumnPurchasePriceFormat, _currencySettingsService.SelectedCurrencyCode);
             }
 
             if (dataGridViewMainForm.Columns["Price"] != null)
@@ -539,14 +570,14 @@ namespace AutomechanicsProject.Formes
         /// </summary>
         private decimal GetPurchasePriceBySupplyRate(Guid productId, decimal priceInRub)
         {
-            if (ChoosingCurrency.SelectedCurrencyCode == CurrencyCodes.RUB)
+            if (_currencySettingsService.SelectedCurrencyCode == CurrencyCodes.RUB)
             {
                 return priceInRub;
             }
 
             try
             {
-                var (supplyCurrency, supplyRate, _) = SupplyCurrencyService.GetProductCurrency(productId, _db);
+                var (supplyCurrency, supplyRate, _) = _supplyCurrencyService.GetProductCurrency(productId);
 
                 if (supplyCurrency != CurrencyCodes.RUB && supplyRate != 1.00m)
                 {
@@ -554,15 +585,15 @@ namespace AutomechanicsProject.Formes
 
                     decimal priceInRubAgain = priceInSupplyCurrency / supplyRate;
 
-                    return ChoosingCurrency.ConvertPrice(priceInRubAgain);
+                    return _currencySettingsService.ConvertPrice(priceInRubAgain);
                 }
 
-                return ChoosingCurrency.ConvertPrice(priceInRub);
+                return _currencySettingsService.ConvertPrice(priceInRub);
             }
             catch (Exception ex)
             {
                 Logger.Error($"Ошибка конвертации цены для товара {productId}", ex);
-                return ChoosingCurrency.ConvertPrice(priceInRub);
+                return _currencySettingsService.ConvertPrice(priceInRub);
             }
         }
 
@@ -607,7 +638,7 @@ namespace AutomechanicsProject.Formes
                 }
                 catch (Exception ex)
                 {
-                    Logger.Error("Ошибка при подсветке строки", ex);
+                    Logger.Error(ex, "Ошибка при подсветке строки");
                 }
             }
         }
@@ -626,11 +657,13 @@ namespace AutomechanicsProject.Formes
         /// </summary>
         private void buttonCurrency_Click(object sender, EventArgs e)
         {
-            using (var currencyForm = Program.Container.Resolve<ChoosingCurrency>())
+
+            using (var currencyForm = new ChoosingCurrency(_currencySettingsService))
             {
                 if (currencyForm.ShowDialog() == DialogResult.OK)
                 {
                     RefreshProductList();
+                    Logger.Info("Валюта изменена");
                 }
             }
         }
@@ -640,7 +673,7 @@ namespace AutomechanicsProject.Formes
         /// </summary>
         private void buttonSupply_Click(object sender, EventArgs e)
         {
-            using (CreateSupply supplyForm = Program.Container.Resolve<CreateSupply>())
+            using (CreateSupply supplyForm = new CreateSupply(_supplyService, _currentUserService))
             {
                 if (supplyForm.ShowDialog() == DialogResult.OK)
                 {
@@ -654,7 +687,7 @@ namespace AutomechanicsProject.Formes
         /// </summary>
         private void buttonReport_Click(object sender, EventArgs e)
         {
-            using (var reportForm = Program.Container.Resolve<ReportForm>())
+            using (var reportForm = new ReportForm(_reportService))
             {
                 reportForm.ShowDialog();
             }
@@ -674,10 +707,10 @@ namespace AutomechanicsProject.Formes
                     var article = dataGridViewMainForm.Rows[e.RowIndex].Cells["Article"]?.Value?.ToString();
                     if (!string.IsNullOrEmpty(article))
                     {
-                        var product = _db.Products.FirstOrDefault(p => p.Article == article);
+                        var product = _productService.GetProductByArticle(article);
                         if (product != null)
                         {
-                            var tooltipText = SupplyCurrencyService.GetTooltipText(product.Id, product.Name, _db);
+                            var tooltipText = _supplyCurrencyService.GetTooltipText(product.Id, product.Name);
 
                             dataGridViewMainForm.Rows[e.RowIndex].Cells[e.ColumnIndex].ToolTipText = tooltipText;
                         }

@@ -4,6 +4,12 @@ using AutomechanicsProject.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
+using AutomechanicsProject.Dtos;
+using AutomechanicsProject.Dtos.UI;
+using AutomechanicsProject.Helpers;
+using AutomechanicsProject.Properties;
+using AutomechanicsProject.ViewModels;
 
 namespace AutomechanicsProject.Services
 {
@@ -21,7 +27,127 @@ namespace AutomechanicsProject.Services
         {
             _db = db;
         }
+        /// <summary>
+        /// Получает товары для формы отгрузки
+        /// </summary>
+        public List<ProductComboViewModel> GetProductsForShipment()
+        {
+            var productsList = _db.Products
+                .Where(p => p.Balance > 0)
+                .Select(p => new
+                {
+                    p.Id,
+                    p.Article,
+                    p.Name,
+                    p.Balance,
+                    p.Price,
+                    UnitName = p.Unit != null ? p.Unit.Name : Resources.Unit_Piece_Short,
+                    p.UnitId,
+                    p.IsMetal
+                })
+                .ToList();
 
+            return productsList
+                .GroupBy(p => p.Name)
+                .Select(g => new ProductComboViewModel
+                {
+                    Id = g.First().Id,
+                    Text = FormatHelper.FormatProductWithBalance(
+                        g.First().Article,
+                        g.Key,
+                        g.Sum(x => x.Balance),
+                        g.First().UnitName),
+                    Article = g.First().Article,
+                    Name = g.Key,
+                    Price = g.First().Price,
+                    Balance = g.Sum(x => x.Balance),
+                    UnitName = g.First().UnitName,
+                    UnitId = g.First().UnitId,
+                    IsMetal = g.First().IsMetal
+                })
+                .ToList();
+        }
+
+        /// <summary>
+        /// Получает получателей для выпадающего списка
+        /// </summary>
+        public List<ComboItemDto> GetRecipientsForCombo()
+        {
+            var excludedNames = new[]
+            {
+        Resources.ShipmentType_Defect,
+        Resources.ShipmentType_WriteOff,
+        "-",
+        ""
+    };
+
+            return _db.Addresses
+                .Where(a => a.CompanyName != null &&
+                            !excludedNames.Contains(a.CompanyName.Trim()))
+                .OrderBy(a => a.CompanyName)
+                .Select(a => new ComboItemDto
+                {
+                    Id = a.Id,
+                    Text = a.CompanyName
+                })
+                .ToList();
+        }
+
+        /// <summary>
+        /// Получает сроки годности для выбранного товара
+        /// </summary>
+        public List<ExpiryItemDto> GetExpiryDatesForProduct(Guid productId)
+        {
+            var selectedProduct = _db.Products
+                .FirstOrDefault(p => p.Id == productId);
+
+            if (selectedProduct == null)
+            {
+                return new List<ExpiryItemDto>();
+            }
+
+            return _db.Products
+                .Where(p => p.Name == selectedProduct.Name && p.Balance > 0)
+                .Select(p => new ExpiryItemDto
+                {
+                    ProductId = p.Id,
+                    DisplayText = FormatHelper.FormatExpiryDateDisplay(p.ExpiryDate, p.Balance),
+                    ExpiryDate = p.ExpiryDate,
+                    Balance = p.Balance
+                })
+                .OrderBy(p => p.ExpiryDate)
+                .ToList();
+        }
+
+        /// <summary>
+        /// Получает товар для отгрузки по id
+        /// </summary>
+        public Product GetProductForShipmentById(Guid productId)
+        {
+            return _db.Products
+                .Include(p => p.Unit)
+                .FirstOrDefault(p => p.Id == productId);
+        }
+
+        /// <summary>
+        /// Получает товар для отгрузки по названию
+        /// </summary>
+        public Product GetProductForShipmentByName(string productName)
+        {
+            return _db.Products
+                .Include(p => p.Unit)
+                .FirstOrDefault(p => p.Name == productName && p.Balance > 0);
+        }
+
+        /// <summary>
+        /// Проверяет, является ли товар металлом
+        /// </summary>
+        public bool IsProductMetal(Guid productId)
+        {
+            var product = _db.Products.FirstOrDefault(p => p.Id == productId);
+
+            return product?.IsMetal ?? false;
+        }
         /// <summary>
         /// Создаёт отгрузку
         /// </summary>
@@ -78,9 +204,23 @@ namespace AutomechanicsProject.Services
                     }
                 }
 
+
                 _db.SaveChanges();
                 transaction.Commit();
             }
+        }
+        /// <summary>
+        /// Возвращает отгрузки за период для истории
+        /// </summary>
+        public List<Shipment> GetShipmentsForHistory(DateTime from, DateTime to)
+        {
+            return _db.Shipments
+                .Include(s => s.User)
+                .Include(s => s.CreatedByUser)
+                .Include(s => s.Items)
+                .Where(s => s.Date >= from && s.Date <= to)
+                .OrderByDescending(s => s.Date)
+                .ToList();
         }
     }
 }

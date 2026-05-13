@@ -2,6 +2,7 @@
 using AutomechanicsProject.Services.Interfaces;
 using System;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace AutomechanicsProject.Services
 {
@@ -21,21 +22,26 @@ namespace AutomechanicsProject.Services
         }
 
         /// <summary>
-        /// Получает отгрузки
+        /// Получает отгрузки за период
         /// </summary>
         public IQueryable<Shipment> GetShipments(DateTime from, DateTime to)
         {
             return _db.Shipments
-                .Where(s => s.Date >= from && s.Date <= to);
+                .Include(s => s.User)
+                .Include(s => s.CreatedByUser)
+                .Include(s => s.Items)
+                .Where(s => s.Date >= from && s.Date < to);
         }
 
         /// <summary>
-        /// Получает поставки
+        /// Получает поставки за период
         /// </summary>
         public IQueryable<Supply> GetSupplies(DateTime from, DateTime to)
         {
             return _db.Supplies
-                .Where(s => s.DateCreated >= from && s.DateCreated <= to);
+                .Include(s => s.User)
+                .Include(s => s.Positions)
+                .Where(s => s.DateCreated >= from && s.DateCreated < to);
         }
     }
 }

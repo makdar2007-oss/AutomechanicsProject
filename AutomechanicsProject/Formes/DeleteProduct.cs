@@ -1,11 +1,9 @@
 ﻿using AutomechanicsProject.Classes;
 using AutomechanicsProject.Helpers;
 using AutomechanicsProject.Properties;
-using Microsoft.EntityFrameworkCore;
 using NLog;
 using System;
 using System.Drawing;
-using System.Linq;
 using System.Windows.Forms;
 using AutomechanicsProject.Services.Interfaces;
 
@@ -16,19 +14,17 @@ namespace AutomechanicsProject.Formes
     /// </summary>
     public partial class DeleteProduct : Form
     {
-        private readonly DateBase _db;
+       
         private readonly IProductService _productService;
         private readonly Guid? _productId;
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         /// <summary>
-        /// Инициализирует форму удаления товара (поиск по артикулу)
+        /// Инициализирует форму удаления товара по артикулу
         /// </summary>
-        public DeleteProduct(DateBase database, IProductService productService)
+        public DeleteProduct(IProductService productService)
         {
             InitializeComponent();
-
-            _db = database ?? throw new ArgumentNullException(nameof(database));
 
             _productService = productService ??
                 throw new ArgumentNullException(nameof(productService));
@@ -41,10 +37,7 @@ namespace AutomechanicsProject.Formes
         /// <summary>
         /// Инициализирует форму удаления товара по ID
         /// </summary>
-        public DeleteProduct(
-             DateBase database,
-             IProductService productService,
-             Guid id) : this(database, productService)
+        public DeleteProduct(IProductService productService, Guid id) : this(productService)
         {
             _productId = id;
             LoadProductById();
@@ -62,9 +55,7 @@ namespace AutomechanicsProject.Formes
                     return;
                 }
 
-                var product = _db.Products
-                    .Include(p => p.Category)
-                    .FirstOrDefault(p => p.Id == _productId.Value);
+                var product = _productService.GetProductById(_productId.Value);
 
                 if (product != null)
                 {
@@ -92,9 +83,7 @@ namespace AutomechanicsProject.Formes
                 return null;
             }
 
-            return _db.Products
-                .Include(p => p.Category)
-                .FirstOrDefault(p => p.Article == article.Trim());
+            return _productService.GetProductByArticle(article);
         }
 
         /// <summary>
@@ -138,11 +127,10 @@ namespace AutomechanicsProject.Formes
             }
             catch (Exception ex)
             {
-                logger.Error(ex);
+                logger.Error(ex, "Ошибка при удалении товара");
 
-                MessageBox.Show(
-                    ex.ToString(),
-                    "DEBUG ERROR",
+                MessageBox.Show(Resources.ErrorDeleteProduct,
+                    Resources.TitleError,
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
             }
@@ -210,9 +198,7 @@ namespace AutomechanicsProject.Formes
         {
             if (_productId.HasValue)
             {
-                return _db.Products
-                    .Include(p => p.Category)
-                    .FirstOrDefault(p => p.Id == _productId.Value);
+                return _productService.GetProductById(_productId.Value);
             }
 
             return FindProductByArticle(textBoxArt.Text);
