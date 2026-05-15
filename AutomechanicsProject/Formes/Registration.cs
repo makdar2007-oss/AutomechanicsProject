@@ -27,6 +27,7 @@ namespace AutomechanicsProject.Formes
         private readonly ISupplyCurrencyService _supplyCurrencyService;
         private readonly ICurrentUserService _currentUserService;
         private readonly ICurrencySettingsService _currencySettingsService;
+        private readonly IWarehouseHeatmapService _warehouseHeatmapService;
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         /// <summary>
@@ -42,7 +43,8 @@ namespace AutomechanicsProject.Formes
             IExpiredProductsService expiredProductsService,
             ISupplyCurrencyService supplyCurrencyService,
             ICurrentUserService currentUserService,
-            ICurrencySettingsService currencySettingsService)
+            ICurrencySettingsService currencySettingsService,
+            IWarehouseHeatmapService warehouseHeatmapService)
         {
             InitializeComponent();
 
@@ -134,7 +136,8 @@ namespace AutomechanicsProject.Formes
                 _expiredProductsService,
                 _supplyCurrencyService,
                 _currentUserService,
-                _currencySettingsService);
+                _currencySettingsService,
+                 _warehouseHeatmapService);
             authForm.Show();
             Close();
         }

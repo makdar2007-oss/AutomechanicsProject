@@ -252,6 +252,7 @@
     <Compile Include="Classes\ImportProductItem.cs" />
     <Compile Include="Classes\MoscowTime.cs" />
     <Compile Include="Classes\Product.cs" />
+    <Compile Include="Classes\WarehouseCell.cs" />
     <Compile Include="Config\WindsorConfig.cs" />
     <Compile Include="Dtos\UI\ProductDisplayItem.cs" />
     <Compile Include="Classes\Role.cs" />
@@ -278,6 +279,7 @@
     <Compile Include="Dtos\ViewModels\ProductComboViewModel.cs" />
     <Compile Include="Dtos\ViewModels\ProductViewModel.cs" />
     <Compile Include="Dtos\ViewModels\ShipmentModel.cs" />
+    <Compile Include="Dtos\ViewModels\WarehouseCellViewModel.cs" />
     <Compile Include="Enum\ShipmentType.cs" />
     <Compile Include="Formes\ChoosingCurrency.cs">
       <SubType>Form</SubType>
@@ -302,6 +304,12 @@
     </Compile>
     <Compile Include="Formes\ReportForm.Designer.cs">
       <DependentUpon>ReportForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Formes\WarehouseHeatmapForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formes\WarehouseHeatmapForm.Designer.cs">
+      <DependentUpon>WarehouseHeatmapForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Helpers\CurrencyHelper.cs" />
     <Compile Include="Helpers\CurrencyStorage.cs" />
@@ -389,6 +397,7 @@
     <Compile Include="Interfaces\IShipmentService.cs" />
     <Compile Include="Interfaces\ISupplyCurrencyService.cs" />
     <Compile Include="Interfaces\ISupplyService.cs" />
+    <Compile Include="Interfaces\IWarehouseHeatmapService.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -411,6 +420,7 @@
     <Compile Include="Services\ShipmentService.cs" />
     <Compile Include="Services\SupplyCurrencyService.cs" />
     <Compile Include="Services\SupplyService.cs" />
+    <Compile Include="Services\WarehouseHeatmapService.cs" />
     <Compile Include="Settings.cs" />
     <EmbeddedResource Include="Formes\AddCategory.resx">
       <DependentUpon>AddCategory.cs</DependentUpon>
@@ -456,6 +466,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Formes\StorekeeperForm.resx">
       <DependentUpon>StorekeeperForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formes\WarehouseHeatmapForm.resx">
+      <DependentUpon>WarehouseHeatmapForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

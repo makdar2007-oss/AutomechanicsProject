@@ -66,6 +66,11 @@ namespace AutomechanicsProject.Classes
         public DbSet<SupplyPosition> SupplyPositions { get; set; }
 
         /// <summary>
+        /// Возвращает или задает ячейки склада
+        /// </summary>
+        public DbSet<WarehouseCell> WarehouseCells { get; set; }
+
+        /// <summary>
         /// Настраивает подключение к базе данных.
         /// </summary>
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -186,11 +191,19 @@ namespace AutomechanicsProject.Classes
                     .IsRequired()
                     .HasMaxLength(255);
 
+                entity.Property(e => e.IsDeleted)
+                    .HasColumnName("is_deleted")
+                    .HasDefaultValue(false);
+
                 entity.HasIndex(e => e.Name).IsUnique();
             });
 
             modelBuilder.Entity<Product>(entity =>
             {
+                entity.Property(e => e.IsDeleted)
+                .HasColumnName("is_deleted")
+                .HasDefaultValue(false);
+
                 entity.ToTable("product");
                 entity.HasKey(e => e.Id);
 
@@ -225,6 +238,10 @@ namespace AutomechanicsProject.Classes
                 entity.Property(e => e.Balance)
                     .HasColumnName("balance")
                     .HasDefaultValue(0);
+
+                entity.Property(e => e.IsDeleted)
+                .HasColumnName("is_deleted")
+                .HasDefaultValue(false);
 
                 entity.HasOne(p => p.Category)
                     .WithMany(c => c.Products)
@@ -332,6 +349,31 @@ namespace AutomechanicsProject.Classes
                     .WithMany()
                     .HasForeignKey(si => si.ProductId)
                     .OnDelete(DeleteBehavior.Restrict);
+            });
+            modelBuilder.Entity<WarehouseCell>(entity =>
+            {
+                entity.ToTable("warehouse_cells");
+
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.Id)
+                    .HasColumnName("id");
+
+                entity.Property(e => e.Row)
+                    .HasColumnName("row_number")
+                    .IsRequired();
+
+                entity.Property(e => e.Column)
+                    .HasColumnName("column_number")
+                    .IsRequired();
+
+                entity.Property(e => e.ProductId)
+                    .HasColumnName("product_id");
+
+                entity.HasOne(e => e.Product)
+                    .WithMany()
+                    .HasForeignKey(e => e.ProductId)
+                    .OnDelete(DeleteBehavior.SetNull);
             });
 
             base.OnModelCreating(modelBuilder);

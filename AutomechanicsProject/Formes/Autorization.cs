@@ -2,6 +2,7 @@
 using AutomechanicsProject.Formes;
 using AutomechanicsProject.Helpers;
 using AutomechanicsProject.Properties;
+using AutomechanicsProject.Services;
 using AutomechanicsProject.Services.Interfaces;
 using NLog;
 using System;
@@ -27,6 +28,7 @@ namespace AutomechanicsProject
         private readonly ISupplyCurrencyService _supplyCurrencyService;
         private readonly ICurrentUserService _currentUserService;
         private readonly ICurrencySettingsService _currencySettingsService;
+        private readonly IWarehouseHeatmapService _warehouseHeatmapService;
 
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
@@ -43,7 +45,8 @@ namespace AutomechanicsProject
              IExpiredProductsService expiredProductsService,
              ISupplyCurrencyService supplyCurrencyService,
              ICurrentUserService currentUserService,
-             ICurrencySettingsService currencySettingsService)
+             ICurrencySettingsService currencySettingsService,
+             IWarehouseHeatmapService warehouseHeatmapService)
         {
             InitializeComponent();
 
@@ -57,6 +60,7 @@ namespace AutomechanicsProject
             _supplyCurrencyService = supplyCurrencyService ?? throw new ArgumentNullException(nameof(supplyCurrencyService));
             _currentUserService = currentUserService ?? throw new ArgumentNullException(nameof(currentUserService));
             _currencySettingsService = currencySettingsService ?? throw new ArgumentNullException(nameof(currencySettingsService));
+            _warehouseHeatmapService = warehouseHeatmapService ?? throw new ArgumentNullException(nameof(warehouseHeatmapService));
 
             TextBoxHelper.SetupWatermarkTextBox(textBoxLogin, Resources.AuthLoginWatermark);
             TextBoxHelper.SetupPasswordTextBox(textBoxPassword, Resources.AuthPasswordWatermark);
@@ -89,7 +93,8 @@ namespace AutomechanicsProject
                 _expiredProductsService,
                 _supplyCurrencyService,
                 _currentUserService,
-                _currencySettingsService);
+                _currencySettingsService,
+                _warehouseHeatmapService);
             form.Show();
             Hide();
         }
@@ -162,7 +167,8 @@ namespace AutomechanicsProject
                             _expiredProductsService,
                             _supplyCurrencyService,
                             _currentUserService,
-                            _currencySettingsService);
+                            _currencySettingsService,
+                            _warehouseHeatmapService);
                         logger.Info("Открыта форма администратора для {0}", user.FullName);
                         break;
 
@@ -177,7 +183,8 @@ namespace AutomechanicsProject
                             _expiredProductsService,
                             _supplyCurrencyService,
                             _currentUserService,
-                            _currencySettingsService);
+                            _currencySettingsService,
+                            _warehouseHeatmapService);
                         logger.Info("Открыта форма кладовщика для {0}", user.FullName);
                         break;
                 }

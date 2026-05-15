@@ -32,7 +32,8 @@ namespace AutomechanicsProject.Services
             var today = MoscowTime.Today;
 
             var expiredProducts = _db.Products
-                .Where(p => p.ExpiryDate.HasValue
+                .Where(p => !p.IsDeleted
+                    && p.ExpiryDate.HasValue
                     && p.ExpiryDate.Value <= today
                     && p.Balance > 0)
                 .ToList();

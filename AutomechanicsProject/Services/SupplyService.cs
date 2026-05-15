@@ -30,6 +30,7 @@ namespace AutomechanicsProject.Services
         public List<ProductDisplayItem> GetProductsForSupply()
         {
             return _db.Products
+                .Where(p => !p.IsDeleted)
                 .OrderBy(p => p.Name)
                 .Select(p => new ProductDisplayItem
                 {
@@ -93,17 +94,19 @@ namespace AutomechanicsProject.Services
 
                     _db.SupplyPositions.Add(position);
 
-                    var product = _db.Products.FirstOrDefault(p => p.Id == position.ProductId);
+                    var product = _db.Products.FirstOrDefault(p => p.Id == position.ProductId && !p.IsDeleted);
 
-                    if (product != null)
+                    if (product == null)
                     {
-                        product.Balance += position.Quantity;
-                        product.Price = position.Price;
+                        throw new Exception("Товар не найден или был удален");
+                    }
 
-                        if (position.ExpiryDate.HasValue)
-                        {
-                            product.ExpiryDate = position.ExpiryDate;
-                        }
+                    product.Balance += position.Quantity;
+                    product.Price = position.Price;
+
+                    if (position.ExpiryDate.HasValue)
+                    {
+                        product.ExpiryDate = position.ExpiryDate;
                     }
                 }
 

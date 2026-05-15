@@ -29,6 +29,7 @@ namespace AutomechanicsProject.Formes
         private readonly IReportService _reportService;
         private readonly ICurrentUserService _currentUserService;
         private readonly ICurrencySettingsService _currencySettingsService;
+        private readonly IWarehouseHeatmapService _warehouseHeatmapService;
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         /// <summary>
@@ -43,8 +44,9 @@ namespace AutomechanicsProject.Formes
              IReportService reportService,
              IExpiredProductsService expiredProductsService,
              ISupplyCurrencyService supplyCurrencyService,
-            ICurrentUserService currentUserService,
-            ICurrencySettingsService currencySettingsService)
+             ICurrentUserService currentUserService,
+             ICurrencySettingsService currencySettingsService,
+             IWarehouseHeatmapService warehouseHeatmapService)
         {
             InitializeComponent();
 
@@ -59,6 +61,7 @@ namespace AutomechanicsProject.Formes
             _reportService = reportService ?? throw new ArgumentNullException(nameof(reportService));
             _currentUserService = currentUserService ?? throw new ArgumentNullException(nameof(currentUserService));
             _currencySettingsService = currencySettingsService ?? throw new ArgumentNullException(nameof(currencySettingsService));
+            _warehouseHeatmapService = warehouseHeatmapService ?? throw new ArgumentNullException(nameof(warehouseHeatmapService));
 
             AutoWriteOffExpiredProducts();
 
@@ -211,7 +214,8 @@ namespace AutomechanicsProject.Formes
                 _expiredProductsService,
                 _supplyCurrencyService,
                 _currentUserService,
-                _currencySettingsService);
+                _currencySettingsService,
+                _warehouseHeatmapService);
                 loginForm.ShowDialog();
 
             }

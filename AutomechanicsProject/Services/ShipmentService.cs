@@ -19,21 +19,24 @@ namespace AutomechanicsProject.Services
     public class ShipmentService : IShipmentService
     {
         private readonly DateBase _db;
+        private readonly IWarehouseHeatmapService _warehouseHeatmapService;
 
         /// <summary>
-        /// Конструктор
+        /// Создает сервис отгрузок
         /// </summary>
-        public ShipmentService(DateBase db)
+        public ShipmentService(DateBase db, IWarehouseHeatmapService warehouseHeatmapService)
         {
             _db = db;
+            _warehouseHeatmapService = warehouseHeatmapService ?? throw new ArgumentNullException(nameof(warehouseHeatmapService));
         }
+
         /// <summary>
-        /// Получает товары для формы отгрузки
+        /// Получает неудаленные товары для формы отгрузки
         /// </summary>
         public List<ProductComboViewModel> GetProductsForShipment()
         {
             var productsList = _db.Products
-                .Where(p => p.Balance > 0)
+                .Where(p => !p.IsDeleted && p.Balance > 0)
                 .Select(p => new
                 {
                     p.Id,
@@ -94,12 +97,12 @@ namespace AutomechanicsProject.Services
         }
 
         /// <summary>
-        /// Получает сроки годности для выбранного товара
+        /// Получает сроки годности для выбранного неудаленного товара
         /// </summary>
         public List<ExpiryItemDto> GetExpiryDatesForProduct(Guid productId)
         {
             var selectedProduct = _db.Products
-                .FirstOrDefault(p => p.Id == productId);
+                .FirstOrDefault(p => p.Id == productId && !p.IsDeleted);
 
             if (selectedProduct == null)
             {
@@ -107,7 +110,9 @@ namespace AutomechanicsProject.Services
             }
 
             return _db.Products
-                .Where(p => p.Name == selectedProduct.Name && p.Balance > 0)
+                .Where(p => !p.IsDeleted &&
+                            p.Name == selectedProduct.Name &&
+                            p.Balance > 0)
                 .Select(p => new ExpiryItemDto
                 {
                     ProductId = p.Id,
@@ -119,38 +124,43 @@ namespace AutomechanicsProject.Services
                 .ToList();
         }
 
+       
         /// <summary>
-        /// Получает товар для отгрузки по id
+        /// Получает неудаленный товар для отгрузки по id
         /// </summary>
         public Product GetProductForShipmentById(Guid productId)
         {
             return _db.Products
                 .Include(p => p.Unit)
-                .FirstOrDefault(p => p.Id == productId);
+                .FirstOrDefault(p => p.Id == productId && !p.IsDeleted);
         }
 
         /// <summary>
-        /// Получает товар для отгрузки по названию
+        /// Получает неудаленный товар для отгрузки по названию
         /// </summary>
         public Product GetProductForShipmentByName(string productName)
         {
             return _db.Products
                 .Include(p => p.Unit)
-                .FirstOrDefault(p => p.Name == productName && p.Balance > 0);
+                .FirstOrDefault(p => p.Name == productName &&
+                                     !p.IsDeleted &&
+                                     p.Balance > 0);
         }
 
         /// <summary>
-        /// Проверяет, является ли товар металлом
+        /// Проверяет, является ли неудаленный товар металлом
         /// </summary>
         public bool IsProductMetal(Guid productId)
         {
-            var product = _db.Products.FirstOrDefault(p => p.Id == productId);
+            var product = _db.Products.FirstOrDefault(p => p.Id == productId && !p.IsDeleted);
 
             return product?.IsMetal ?? false;
         }
+
         /// <summary>
         /// Создаёт отгрузку
         /// </summary>
+       
         public void CreateShipment(
             List<ShipmentItem> items,
             Guid? recipientId,
@@ -175,6 +185,11 @@ namespace AutomechanicsProject.Services
 
                 foreach (var item in items)
                 {
+                    if (!item.ProductId.HasValue)
+                    {
+                        throw new Exception("Товар не найден");
+                    }
+
                     var shipmentItem = new ShipmentItem
                     {
                         Id = Guid.NewGuid(),
@@ -196,17 +211,26 @@ namespace AutomechanicsProject.Services
 
                     _db.ShipmentItems.Add(shipmentItem);
 
-                    var product = _db.Products.Find(item.ProductId);
+                    var product = _db.Products.FirstOrDefault(p => p.Id == item.ProductId.Value && !p.IsDeleted);
 
-                    if (product != null)
+                    if (product == null)
                     {
-                        product.Balance -= Math.Abs(item.Quantity);
+                        throw new Exception("Товар не найден или был удален");
                     }
-                }
 
+                    product.Balance -= Math.Abs(item.Quantity);
+                }
 
                 _db.SaveChanges();
                 transaction.Commit();
+            }
+
+            foreach (var item in items)
+            {
+                if (item.ProductId.HasValue)
+                {
+                    _warehouseHeatmapService.EnsureProductHasCell(item.ProductId.Value);
+                }
             }
         }
         /// <summary>

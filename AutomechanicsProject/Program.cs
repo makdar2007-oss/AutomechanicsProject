@@ -39,7 +39,8 @@ namespace AutomechanicsProject
                     container.Resolve<IExpiredProductsService>(),
                     container.Resolve<ISupplyCurrencyService>(),
                     container.Resolve<ICurrentUserService>(),
-                    container.Resolve<ICurrencySettingsService>());
+                    container.Resolve<ICurrencySettingsService>(),
+                    container.Resolve<IWarehouseHeatmapService>());
 
                 Application.Run(form);
             }

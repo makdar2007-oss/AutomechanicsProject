@@ -13,21 +13,24 @@ namespace AutomechanicsProject.Services
     public class CategoryService : ICategoryService
     {
         private readonly DateBase _db;
+        private readonly IWarehouseHeatmapService _warehouseHeatmapService;
 
         /// <summary>
         /// Создает сервис категорий
         /// </summary>
-        public CategoryService(DateBase db)
+        public CategoryService(DateBase db, IWarehouseHeatmapService warehouseHeatmapService)
         {
             _db = db;
+            _warehouseHeatmapService = warehouseHeatmapService ?? throw new ArgumentNullException(nameof(warehouseHeatmapService));
         }
 
         /// <summary>
-        /// Возвращает список категорий для выпадающего списка
+        /// Возвращает список неудаленных категорий для выпадающего списка
         /// </summary>
         public List<ComboItemDto> GetCategoriesForCombo()
         {
             return _db.Categories
+                .Where(c => !c.IsDeleted)
                 .OrderBy(c => c.Name)
                 .Select(c => new ComboItemDto
                 {
@@ -36,17 +39,19 @@ namespace AutomechanicsProject.Services
                 })
                 .ToList();
         }
+
         /// <summary>
-        /// Возвращает список категорий с количеством товаров для выпадающего списка
+        /// Возвращает список неудаленных категорий с количеством неудаленных товаров для выпадающего списка
         /// </summary>
         public List<ComboItemDto> GetCategoriesWithProductCountForCombo()
         {
             return _db.Categories
+                .Where(c => !c.IsDeleted)
                 .OrderBy(c => c.Name)
                 .Select(c => new ComboItemDto
                 {
                     Id = c.Id,
-                    Text = $"{c.Name} (товаров: {_db.Products.Count(p => p.CategoryId == c.Id)})"
+                    Text = $"{c.Name} (товаров: {_db.Products.Count(p => p.CategoryId == c.Id && !p.IsDeleted)})"
                 })
                 .ToList();
         }
@@ -67,30 +72,51 @@ namespace AutomechanicsProject.Services
         }
 
         /// <summary>
-        /// Возвращает количество товаров в категории
+        /// Возвращает количество неудаленных товаров в категории
         /// </summary>
         public int GetProductsCountByCategory(Guid categoryId)
         {
-            return _db.Products.Count(p => p.CategoryId == categoryId);
-        }
-        /// <summary>
-        /// Проверяет, существует ли категория с таким названием
-        /// </summary>
-        public bool CategoryExists(string categoryName)
-        {
-            return _db.Categories
-                .Any(c => c.Name.ToLower() == categoryName.ToLower());
+            return _db.Products.Count(p => p.CategoryId == categoryId && !p.IsDeleted);
         }
 
         /// <summary>
-        /// Добавляет новую категорию
+        /// Проверяет, существует ли неудаленная категория с таким названием
+        /// </summary>
+        public bool CategoryExists(string categoryName)
+        {
+            var name = categoryName.Trim().ToLower();
+
+            return _db.Categories
+                .Any(c => c.Name.ToLower() == name && !c.IsDeleted);
+        }
+
+        /// <summary>
+        /// Добавляет новую категорию или восстанавливает удаленную
         /// </summary>
         public void AddCategory(string categoryName)
         {
-            var category = new Category
+            var name = categoryName.Trim();
+
+            var category = _db.Categories
+                .FirstOrDefault(c => c.Name.ToLower() == name.ToLower());
+
+            if (category != null)
+            {
+                if (!category.IsDeleted)
+                {
+                    throw new Exception("Категория с таким названием уже существует");
+                }
+
+                category.IsDeleted = false;
+                _db.SaveChanges();
+                return;
+            }
+
+            category = new Category
             {
                 Id = Guid.NewGuid(),
-                Name = categoryName.Trim()
+                Name = name,
+                IsDeleted = false
             };
 
             _db.Categories.Add(category);
@@ -98,30 +124,41 @@ namespace AutomechanicsProject.Services
         }
 
         /// <summary>
-        /// Изменяет название выбранной категории
+        /// Изменяет название выбранной неудаленной категории
         /// </summary>
         public void EditCategory(Guid categoryId, string newName)
         {
-            var category = _db.Categories.FirstOrDefault(c => c.Id == categoryId);
+            var category = _db.Categories
+                .FirstOrDefault(c => c.Id == categoryId && !c.IsDeleted);
 
             if (category == null)
+            {
                 throw new Exception("Категория не найдена");
+            }
 
-            bool nameExists = _db.Categories.Any(c => c.Name == newName && c.Id != categoryId);
+            var name = newName.Trim();
+
+            var nameExists = _db.Categories.Any(c =>
+                c.Name == name &&
+                c.Id != categoryId &&
+                !c.IsDeleted);
 
             if (nameExists)
+            {
                 throw new Exception("Категория с таким названием уже существует");
+            }
 
-            category.Name = newName.Trim();
+            category.Name = name;
             _db.SaveChanges();
         }
 
         /// <summary>
-        /// Удаляет выбранную категорию
+        /// Помечает категорию и ее товары как удаленные
         /// </summary>
         public void DeleteCategory(Guid categoryId)
         {
-            var category = _db.Categories.FirstOrDefault(c => c.Id == categoryId);
+            var category = _db.Categories
+                .FirstOrDefault(c => c.Id == categoryId && !c.IsDeleted);
 
             if (category == null)
             {
@@ -129,16 +166,19 @@ namespace AutomechanicsProject.Services
             }
 
             var products = _db.Products
-                .Where(p => p.CategoryId == categoryId)
+                .Where(p => p.CategoryId == categoryId && !p.IsDeleted)
                 .ToList();
 
-            if (products.Any())
+            foreach (var product in products)
             {
-                _db.Products.RemoveRange(products);
+                product.IsDeleted = true;
             }
 
-            _db.Categories.Remove(category);
+            category.IsDeleted = true;
+
             _db.SaveChanges();
+
+            _warehouseHeatmapService.FreeDeletedProductCells();
         }
     }
 }

@@ -17,21 +17,24 @@ namespace AutomechanicsProject.Services
     public class ProductService : IProductService
     {
         private readonly DateBase _db;
+        private readonly IWarehouseHeatmapService _warehouseHeatmapService;
 
         /// <summary>
-        /// Конструктор сервиса
+        /// Создает сервис товаров
         /// </summary>
-        public ProductService(DateBase db)
+        public ProductService(DateBase db, IWarehouseHeatmapService warehouseHeatmapService)
         {
             _db = db;
+            _warehouseHeatmapService = warehouseHeatmapService ?? throw new ArgumentNullException(nameof(warehouseHeatmapService));
         }
 
         /// <summary>
-        /// Получает список категорий для ComboBox
+        /// Получает список неудаленных категорий для ComboBox
         /// </summary>
         public List<ComboItemDto> GetCategoriesForCombo()
         {
             return _db.Categories
+                .Where(c => !c.IsDeleted)
                 .OrderBy(c => c.Name)
                 .Select(c => new ComboItemDto
                 {
@@ -61,7 +64,7 @@ namespace AutomechanicsProject.Services
         /// </summary>
         public string GenerateArticle(string categoryName)
         {
-            string prefix = GetCategoryPrefix(categoryName);
+            var prefix = GetCategoryPrefix(categoryName);
 
             var lastProduct = _db.Products
                 .Where(p => p.Article.StartsWith(prefix))
@@ -70,10 +73,12 @@ namespace AutomechanicsProject.Services
 
             if (lastProduct != null)
             {
-                string numberPart = lastProduct.Article.Substring(prefix.Length);
+                var numberPart = lastProduct.Article.Substring(prefix.Length);
 
-                if (int.TryParse(numberPart, out int number))
+                if (int.TryParse(numberPart, out var number))
+                {
                     return $"{prefix}{(number + 1):D4}";
+                }
             }
 
             return $"{prefix}0001";
@@ -91,10 +96,12 @@ namespace AutomechanicsProject.Services
 
             if (lastProduct != null)
             {
-                string numberPart = lastProduct.Article.Substring(4);
+                var numberPart = lastProduct.Article.Substring(4);
 
-                if (int.TryParse(numberPart, out int number))
+                if (int.TryParse(numberPart, out var number))
+                {
                     return $"ART-{(number + 1):D4}";
+                }
             }
 
             return "ART-0001";
@@ -120,40 +127,47 @@ namespace AutomechanicsProject.Services
         }
 
         /// <summary>
-        /// Получает товар по id
+        /// Получает неудаленный товар по id
         /// </summary>
         public Product GetProductById(Guid id)
         {
             return _db.Products
                 .Include(p => p.Category)
                 .Include(p => p.Unit)
-                .FirstOrDefault(p => p.Id == id);
+                .FirstOrDefault(p => p.Id == id && !p.IsDeleted);
         }
 
         /// <summary>
-        /// Получает товар по артикулу
+        /// Получает неудаленный товар по артикулу
         /// </summary>
         public Product GetProductByArticle(string article)
         {
             return _db.Products
                 .Include(p => p.Category)
                 .Include(p => p.Unit)
-                .FirstOrDefault(p => p.Article == article.Trim());
+                .FirstOrDefault(p => p.Article == article.Trim() && !p.IsDeleted);
         }
 
         /// <summary>
-        /// Удаляет товар
+        /// Помечает товар как удаленный
         /// </summary>
         public void DeleteProduct(Guid productId)
         {
             var product = _db.Products.FirstOrDefault(p => p.Id == productId);
 
             if (product == null)
+            {
                 throw new Exception("Товар не найден");
+            }
 
+            if (product.IsDeleted)
+            {
+                throw new Exception("Товар уже удален");
+            }
 
-            _db.Products.Remove(product);
+            product.IsDeleted = true;
             _db.SaveChanges();
+            _warehouseHeatmapService.FreeDeletedProductCells();
         }
 
         /// <summary>
@@ -162,7 +176,7 @@ namespace AutomechanicsProject.Services
         public List<ProductComboViewModel> GetProductsForShipment()
         {
             var productsList = _db.Products
-                .Where(p => p.Balance > 0)
+                .Where(p => !p.IsDeleted && p.Balance > 0)
                 .Select(p => new
                 {
                     p.Id,
@@ -210,34 +224,40 @@ namespace AutomechanicsProject.Services
         /// </summary>
         public Guid GetOrCreateCategoryId(string categoryName)
         {
-            var category = _db.Categories.FirstOrDefault(c => c.Name == categoryName);
+            var name = categoryName.Trim();
+
+            var category = _db.Categories.FirstOrDefault(c => c.Name == name);
 
             if (category == null)
             {
                 category = new Category
                 {
                     Id = Guid.NewGuid(),
-                    Name = categoryName
+                    Name = name,
+                    IsDeleted = false
                 };
 
                 _db.Categories.Add(category);
             }
+            else if (category.IsDeleted)
+            {
+                category.IsDeleted = false;
+            }
 
             return category.Id;
         }
+
         /// <summary>
-        /// Получает список товаров с остатком на складе
+        /// Получает список неудаленных товаров с остатком на складе
         /// </summary>
         public List<Product> GetAllProducts()
         {
             return _db.Products
                 .Include(p => p.Category)
                 .Include(p => p.Unit)
-                .Where(p => p.Balance > 0)
+                .Where(p => !p.IsDeleted && p.Balance > 0)
                 .AsNoTracking()
                 .ToList();
-        
-
         }
     }
 }

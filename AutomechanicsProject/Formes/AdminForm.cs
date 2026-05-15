@@ -33,6 +33,7 @@ namespace AutomechanicsProject.Formes
         private readonly ISupplyCurrencyService _supplyCurrencyService;
         private readonly ICurrentUserService _currentUserService;
         private readonly ICurrencySettingsService _currencySettingsService;
+        private readonly IWarehouseHeatmapService _warehouseHeatmapService;
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         /// <summary>
@@ -48,7 +49,8 @@ namespace AutomechanicsProject.Formes
             IExpiredProductsService expiredProductsService,
             ISupplyCurrencyService supplyCurrencyService,
             ICurrentUserService currentUserService,
-            ICurrencySettingsService currencySettingsService)
+            ICurrencySettingsService currencySettingsService,
+            IWarehouseHeatmapService warehouseHeatmapService)
         {
             InitializeComponent();
 
@@ -63,6 +65,7 @@ namespace AutomechanicsProject.Formes
             _supplyCurrencyService = supplyCurrencyService ?? throw new ArgumentNullException(nameof(supplyCurrencyService));
             _currentUserService = currentUserService ?? throw new ArgumentNullException(nameof(currentUserService));
             _currencySettingsService = currencySettingsService ?? throw new ArgumentNullException(nameof(currencySettingsService));
+            _warehouseHeatmapService = warehouseHeatmapService ?? throw new ArgumentNullException(nameof(warehouseHeatmapService));
 
             TextBoxHelper.SetupWatermarkTextBox(textBoxSearch, Resources.SearchWatermark);
             dataGridViewMainForm.DataBindingComplete += DataGridViewStore_DataBindingComplete;
@@ -202,7 +205,8 @@ namespace AutomechanicsProject.Formes
                     _expiredProductsService,
                     _supplyCurrencyService,
                     _currentUserService,
-                    _currencySettingsService);
+                    _currencySettingsService,
+                    _warehouseHeatmapService);
                 loginForm.ShowDialog();
             }
             catch (Exception)
@@ -732,6 +736,18 @@ namespace AutomechanicsProject.Formes
             if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
             {
                 dataGridViewMainForm.Rows[e.RowIndex].Cells[e.ColumnIndex].ToolTipText = null;
+            }
+        }
+
+        
+        /// <summary>
+        /// Открывает тепловую карту склада
+        /// </summary>
+        private void buttonWarehouse_Click(object sender, EventArgs e)
+        {
+            using (var warehouseForm = new WarehouseHeatmapForm(_warehouseHeatmapService))
+            {
+                warehouseForm.ShowDialog();
             }
         }
     }

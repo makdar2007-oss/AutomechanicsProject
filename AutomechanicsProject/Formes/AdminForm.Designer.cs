@@ -34,6 +34,7 @@ namespace AutomechanicsProject.Formes
             this.panelAdmin = new System.Windows.Forms.Panel();
             this.buttonExit = new System.Windows.Forms.Button();
             this.panelSearchHIstory = new System.Windows.Forms.Panel();
+            this.buttonWarehouse = new System.Windows.Forms.Button();
             this.buttonReport = new System.Windows.Forms.Button();
             this.buttonCurrency = new System.Windows.Forms.Button();
             this.buttonSupply = new System.Windows.Forms.Button();
@@ -69,9 +70,8 @@ namespace AutomechanicsProject.Formes
             this.panelAdmin.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelAdmin.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.panelAdmin.Location = new System.Drawing.Point(0, 0);
-            this.panelAdmin.Margin = new System.Windows.Forms.Padding(2);
             this.panelAdmin.Name = "panelAdmin";
-            this.panelAdmin.Size = new System.Drawing.Size(882, 739);
+            this.panelAdmin.Size = new System.Drawing.Size(1427, 1206);
             this.panelAdmin.TabIndex = 0;
             // 
             // buttonExit
@@ -82,12 +82,11 @@ namespace AutomechanicsProject.Formes
             this.buttonExit.FlatAppearance.BorderSize = 0;
             this.buttonExit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonExit.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.buttonExit.Location = new System.Drawing.Point(709, 0);
-            this.buttonExit.Margin = new System.Windows.Forms.Padding(2);
+            this.buttonExit.Location = new System.Drawing.Point(1168, 0);
             this.buttonExit.Name = "buttonExit";
-            this.buttonExit.Size = new System.Drawing.Size(173, 28);
+            this.buttonExit.Size = new System.Drawing.Size(260, 44);
             this.buttonExit.TabIndex = 3;
-            this.buttonExit.Text = Resources.AdminForm_ButtonExitText;
+            this.buttonExit.Text = global::AutomechanicsProject.Properties.Resources.AdminForm_ButtonExitText;
             this.buttonExit.UseVisualStyleBackColor = false;
             this.buttonExit.Click += new System.EventHandler(this.ButtonExit_Click);
             // 
@@ -95,27 +94,38 @@ namespace AutomechanicsProject.Formes
             // 
             this.panelSearchHIstory.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.panelSearchHIstory.Controls.Add(this.buttonWarehouse);
             this.panelSearchHIstory.Controls.Add(this.buttonReport);
             this.panelSearchHIstory.Controls.Add(this.buttonCurrency);
             this.panelSearchHIstory.Controls.Add(this.buttonSupply);
             this.panelSearchHIstory.Controls.Add(this.buttonhistory);
             this.panelSearchHIstory.Controls.Add(this.textBoxSearch);
-            this.panelSearchHIstory.Location = new System.Drawing.Point(0, 36);
-            this.panelSearchHIstory.Margin = new System.Windows.Forms.Padding(2);
+            this.panelSearchHIstory.Location = new System.Drawing.Point(0, 56);
             this.panelSearchHIstory.Name = "panelSearchHIstory";
-            this.panelSearchHIstory.Size = new System.Drawing.Size(882, 74);
+            this.panelSearchHIstory.Size = new System.Drawing.Size(1427, 116);
             this.panelSearchHIstory.TabIndex = 6;
+            // 
+            // buttonWarehouse
+            // 
+            this.buttonWarehouse.Location = new System.Drawing.Point(1271, 30);
+            this.buttonWarehouse.Name = "buttonWarehouse";
+            this.buttonWarehouse.Size = new System.Drawing.Size(153, 62);
+            this.buttonWarehouse.TabIndex = 7;
+            this.buttonWarehouse.Text = "Склад";
+            this.buttonWarehouse.UseVisualStyleBackColor = true;
+            this.buttonWarehouse.Click += new System.EventHandler(this.buttonWarehouse_Click);
             // 
             // buttonReport
             // 
             this.buttonReport.AutoSize = true;
             this.buttonReport.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.buttonReport.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.buttonReport.Location = new System.Drawing.Point(214, 19);
+            this.buttonReport.Location = new System.Drawing.Point(321, 30);
+            this.buttonReport.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.buttonReport.Name = "buttonReport";
-            this.buttonReport.Size = new System.Drawing.Size(83, 35);
+            this.buttonReport.Size = new System.Drawing.Size(112, 47);
             this.buttonReport.TabIndex = 6;
-            this.buttonReport.Text = Resources.AdminForm_ButtonReportText;
+            this.buttonReport.Text = global::AutomechanicsProject.Properties.Resources.AdminForm_ButtonReportText;
             this.buttonReport.UseVisualStyleBackColor = true;
             this.buttonReport.Click += new System.EventHandler(this.buttonReport_Click);
             // 
@@ -126,12 +136,11 @@ namespace AutomechanicsProject.Formes
             this.buttonCurrency.BackColor = System.Drawing.SystemColors.Control;
             this.buttonCurrency.FlatAppearance.BorderSize = 0;
             this.buttonCurrency.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonCurrency.Location = new System.Drawing.Point(316, 19);
-            this.buttonCurrency.Margin = new System.Windows.Forms.Padding(2);
+            this.buttonCurrency.Location = new System.Drawing.Point(474, 30);
             this.buttonCurrency.Name = "buttonCurrency";
-            this.buttonCurrency.Size = new System.Drawing.Size(159, 35);
+            this.buttonCurrency.Size = new System.Drawing.Size(229, 47);
             this.buttonCurrency.TabIndex = 5;
-            this.buttonCurrency.Text = Resources.AdminForm_ButtonCurrencyText;
+            this.buttonCurrency.Text = global::AutomechanicsProject.Properties.Resources.AdminForm_ButtonCurrencyText;
             this.buttonCurrency.UseVisualStyleBackColor = false;
             this.buttonCurrency.Click += new System.EventHandler(this.buttonCurrency_Click);
             // 
@@ -142,12 +151,11 @@ namespace AutomechanicsProject.Formes
             this.buttonSupply.BackColor = System.Drawing.SystemColors.Control;
             this.buttonSupply.FlatAppearance.BorderSize = 0;
             this.buttonSupply.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonSupply.Location = new System.Drawing.Point(500, 19);
-            this.buttonSupply.Margin = new System.Windows.Forms.Padding(2);
+            this.buttonSupply.Location = new System.Drawing.Point(750, 30);
             this.buttonSupply.Name = "buttonSupply";
-            this.buttonSupply.Size = new System.Drawing.Size(109, 35);
+            this.buttonSupply.Size = new System.Drawing.Size(164, 47);
             this.buttonSupply.TabIndex = 1;
-            this.buttonSupply.Text = Resources.AdminForm_ButtonSupplyText;
+            this.buttonSupply.Text = global::AutomechanicsProject.Properties.Resources.AdminForm_ButtonSupplyText;
             this.buttonSupply.UseVisualStyleBackColor = false;
             this.buttonSupply.Click += new System.EventHandler(this.buttonSupply_Click);
             // 
@@ -158,24 +166,21 @@ namespace AutomechanicsProject.Formes
             this.buttonhistory.BackColor = System.Drawing.SystemColors.Control;
             this.buttonhistory.FlatAppearance.BorderSize = 0;
             this.buttonhistory.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonhistory.Location = new System.Drawing.Point(638, 19);
-            this.buttonhistory.Margin = new System.Windows.Forms.Padding(2);
+            this.buttonhistory.Location = new System.Drawing.Point(957, 30);
             this.buttonhistory.Name = "buttonhistory";
-            this.buttonhistory.Size = new System.Drawing.Size(190, 35);
+            this.buttonhistory.Size = new System.Drawing.Size(281, 47);
             this.buttonhistory.TabIndex = 4;
-            this.buttonhistory.Text = Resources.AdminForm_ButtonHistoryText;
+            this.buttonhistory.Text = global::AutomechanicsProject.Properties.Resources.AdminForm_ButtonHistoryText;
             this.buttonhistory.UseVisualStyleBackColor = false;
             this.buttonhistory.Click += new System.EventHandler(this.ButtonHistory_Click);
             // 
             // textBoxSearch
             // 
             this.textBoxSearch.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBoxSearch.Location = new System.Drawing.Point(19, 22);
-            this.textBoxSearch.Margin = new System.Windows.Forms.Padding(2);
+            this.textBoxSearch.Location = new System.Drawing.Point(28, 34);
             this.textBoxSearch.Name = "textBoxSearch";
-            this.textBoxSearch.Size = new System.Drawing.Size(180, 30);
+            this.textBoxSearch.Size = new System.Drawing.Size(268, 44);
             this.textBoxSearch.TabIndex = 2;
-            this.buttonhistory.Text = Resources.AdminForm_ButtonHistoryText;    
             this.textBoxSearch.TextChanged += new System.EventHandler(this.TextBoxSearch_TextChanged);
             // 
             // panelAdminData
@@ -184,23 +189,14 @@ namespace AutomechanicsProject.Formes
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panelAdminData.Controls.Add(this.dataGridViewMainForm);
-            this.panelAdminData.Location = new System.Drawing.Point(0, 110);
-            this.panelAdminData.Margin = new System.Windows.Forms.Padding(2);
+            this.panelAdminData.Location = new System.Drawing.Point(0, 172);
             this.panelAdminData.Name = "panelAdminData";
-            this.panelAdminData.Size = new System.Drawing.Size(882, 629);
+            this.panelAdminData.Size = new System.Drawing.Size(1427, 1034);
             this.panelAdminData.TabIndex = 5;
             // 
             // dataGridViewMainForm
             // 
-            this.toolStripTextBoxAdmin.Text = Resources.AdminForm_ToolStripAdminText;
-            this.dataGridViewMainForm.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridViewMainForm.AllowUserToResizeColumns = false;
-            this.dataGridViewMainForm.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewMainForm.MultiSelect = false;
-            this.dataGridViewMainForm.ShowCellToolTips = true;
-            this.dataGridViewMainForm.CellMouseEnter += DataGridViewMainForm_CellMouseEnter;
-            this.dataGridViewMainForm.CellMouseLeave += DataGridViewMainForm_CellMouseLeave;
-            this.dataGridViewMainForm.DataBindingComplete += DataGridViewStore_DataBindingComplete;
             this.dataGridViewMainForm.AllowUserToResizeRows = false;
             this.dataGridViewMainForm.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
@@ -210,18 +206,19 @@ namespace AutomechanicsProject.Formes
             this.dataGridViewMainForm.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dataGridViewMainForm.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewMainForm.Location = new System.Drawing.Point(0, 0);
-            this.dataGridViewMainForm.Margin = new System.Windows.Forms.Padding(2);
+            this.dataGridViewMainForm.MultiSelect = false;
             this.dataGridViewMainForm.Name = "dataGridViewMainForm";
             this.dataGridViewMainForm.RowHeadersVisible = false;
             this.dataGridViewMainForm.RowHeadersWidth = 82;
             this.dataGridViewMainForm.RowTemplate.Height = 35;
             this.dataGridViewMainForm.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewMainForm.Size = new System.Drawing.Size(882, 629);
+            this.dataGridViewMainForm.Size = new System.Drawing.Size(1427, 1034);
             this.dataGridViewMainForm.TabIndex = 1;
             // 
             // menuStripMainForm
             // 
             this.menuStripMainForm.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.menuStripMainForm.GripMargin = new System.Windows.Forms.Padding(2, 2, 0, 2);
             this.menuStripMainForm.ImageScalingSize = new System.Drawing.Size(32, 32);
             this.menuStripMainForm.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripComboBoxAdd,
@@ -230,8 +227,7 @@ namespace AutomechanicsProject.Formes
             this.toolStripTextBoxAdmin});
             this.menuStripMainForm.Location = new System.Drawing.Point(0, 0);
             this.menuStripMainForm.Name = "menuStripMainForm";
-            this.menuStripMainForm.Padding = new System.Windows.Forms.Padding(4, 1, 0, 1);
-            this.menuStripMainForm.Size = new System.Drawing.Size(882, 30);
+            this.menuStripMainForm.Size = new System.Drawing.Size(1427, 44);
             this.menuStripMainForm.TabIndex = 1;
             // 
             // toolStripComboBoxAdd
@@ -240,21 +236,21 @@ namespace AutomechanicsProject.Formes
             this.ProductToolStripMenuItem,
             this.CategoryToolStripMenuItem});
             this.toolStripComboBoxAdd.Name = "toolStripComboBoxAdd";
-            this.toolStripComboBoxAdd.Size = new System.Drawing.Size(113, 28);
-            this.toolStripComboBoxAdd.Text = Resources.AdminForm_ToolStripAddText;
+            this.toolStripComboBoxAdd.Size = new System.Drawing.Size(165, 40);
+            this.toolStripComboBoxAdd.Text = global::AutomechanicsProject.Properties.Resources.AdminForm_ToolStripAddText;
             // 
             // ProductToolStripMenuItem
             // 
             this.ProductToolStripMenuItem.Name = "ProductToolStripMenuItem";
-            this.ProductToolStripMenuItem.Size = new System.Drawing.Size(193, 28);
-            this.ProductToolStripMenuItem.Text = Resources.AdminForm_ToolStripProductText;
+            this.ProductToolStripMenuItem.Size = new System.Drawing.Size(294, 44);
+            this.ProductToolStripMenuItem.Text = global::AutomechanicsProject.Properties.Resources.AdminForm_ToolStripProductText;
             this.ProductToolStripMenuItem.Click += new System.EventHandler(this.ProductToolStripMenuItem_Click);
             // 
             // CategoryToolStripMenuItem
             // 
             this.CategoryToolStripMenuItem.Name = "CategoryToolStripMenuItem";
-            this.CategoryToolStripMenuItem.Size = new System.Drawing.Size(193, 28);
-            this.CategoryToolStripMenuItem.Text = Resources.AdminForm_ToolStripCategoryText;
+            this.CategoryToolStripMenuItem.Size = new System.Drawing.Size(294, 44);
+            this.CategoryToolStripMenuItem.Text = global::AutomechanicsProject.Properties.Resources.AdminForm_ToolStripCategoryText;
             this.CategoryToolStripMenuItem.Click += new System.EventHandler(this.CategoryToolStripMenuItem_Click);
             // 
             // toolStripComboBox2
@@ -263,21 +259,21 @@ namespace AutomechanicsProject.Formes
             this.ProductToolStripMenuItem1,
             this.CategoryToolStripMenuItem1});
             this.toolStripComboBox2.Name = "toolStripComboBox2";
-            this.toolStripComboBox2.Size = new System.Drawing.Size(163, 28);
-            this.toolStripComboBox2.Text = Resources.AdminForm_ToolStripEditText;
+            this.toolStripComboBox2.Size = new System.Drawing.Size(238, 40);
+            this.toolStripComboBox2.Text = global::AutomechanicsProject.Properties.Resources.AdminForm_ToolStripEditText;
             // 
             // ProductToolStripMenuItem1
             // 
             this.ProductToolStripMenuItem1.Name = "ProductToolStripMenuItem1";
-            this.ProductToolStripMenuItem1.Size = new System.Drawing.Size(193, 28);
-            this.ProductToolStripMenuItem1.Text = Resources.AdminForm_ToolStripProductText;
+            this.ProductToolStripMenuItem1.Size = new System.Drawing.Size(294, 44);
+            this.ProductToolStripMenuItem1.Text = global::AutomechanicsProject.Properties.Resources.AdminForm_ToolStripProductText;
             this.ProductToolStripMenuItem1.Click += new System.EventHandler(this.ProductToolStripMenuItem1_Click);
             // 
             // CategoryToolStripMenuItem1
             // 
             this.CategoryToolStripMenuItem1.Name = "CategoryToolStripMenuItem1";
-            this.CategoryToolStripMenuItem1.Size = new System.Drawing.Size(193, 28);
-            this.CategoryToolStripMenuItem1.Text = Resources.AdminForm_ToolStripCategoryText;
+            this.CategoryToolStripMenuItem1.Size = new System.Drawing.Size(294, 44);
+            this.CategoryToolStripMenuItem1.Text = global::AutomechanicsProject.Properties.Resources.AdminForm_ToolStripCategoryText;
             this.CategoryToolStripMenuItem1.Click += new System.EventHandler(this.CategoryToolStripMenuItem1_Click);
             // 
             // toolStripComboBox3
@@ -286,21 +282,21 @@ namespace AutomechanicsProject.Formes
             this.ProductToolStripMenuItem2,
             this.CategoryToolStripMenuItem2});
             this.toolStripComboBox3.Name = "toolStripComboBox3";
-            this.toolStripComboBox3.Size = new System.Drawing.Size(100, 28);
-            this.toolStripComboBox3.Text = Resources.AdminForm_ToolStripDeleteText;
+            this.toolStripComboBox3.Size = new System.Drawing.Size(148, 40);
+            this.toolStripComboBox3.Text = global::AutomechanicsProject.Properties.Resources.AdminForm_ToolStripDeleteText;
             // 
             // ProductToolStripMenuItem2
             // 
             this.ProductToolStripMenuItem2.Name = "ProductToolStripMenuItem2";
-            this.ProductToolStripMenuItem2.Size = new System.Drawing.Size(193, 28);
-            this.ProductToolStripMenuItem2.Text = Resources.AdminForm_ToolStripProductText;
+            this.ProductToolStripMenuItem2.Size = new System.Drawing.Size(294, 44);
+            this.ProductToolStripMenuItem2.Text = global::AutomechanicsProject.Properties.Resources.AdminForm_ToolStripProductText;
             this.ProductToolStripMenuItem2.Click += new System.EventHandler(this.ProductToolStripMenuItem2_Click);
             // 
             // CategoryToolStripMenuItem2
             // 
             this.CategoryToolStripMenuItem2.Name = "CategoryToolStripMenuItem2";
-            this.CategoryToolStripMenuItem2.Size = new System.Drawing.Size(193, 28);
-            this.CategoryToolStripMenuItem2.Text = Resources.AdminForm_ToolStripCategoryText;
+            this.CategoryToolStripMenuItem2.Size = new System.Drawing.Size(294, 44);
+            this.CategoryToolStripMenuItem2.Text = global::AutomechanicsProject.Properties.Resources.AdminForm_ToolStripCategoryText;
             this.CategoryToolStripMenuItem2.Click += new System.EventHandler(this.CategoryToolStripMenuItem2_Click);
             // 
             // toolStripTextBoxAdmin
@@ -309,20 +305,19 @@ namespace AutomechanicsProject.Formes
             this.toolStripTextBoxAdmin.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.toolStripTextBoxAdmin.Name = "toolStripTextBoxAdmin";
             this.toolStripTextBoxAdmin.ReadOnly = true;
-            this.toolStripTextBoxAdmin.Size = new System.Drawing.Size(335, 28);
-            this.toolStripTextBoxAdmin.Text = Resources.AdminForm_ToolStripAdminText;
+            this.toolStripTextBoxAdmin.Size = new System.Drawing.Size(500, 40);
+            this.toolStripTextBoxAdmin.Text = "Администратор";
             // 
             // AdminForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(882, 739);
+            this.ClientSize = new System.Drawing.Size(1427, 1206);
             this.Controls.Add(this.panelAdmin);
             this.MainMenuStrip = this.menuStripMainForm;
-            this.Margin = new System.Windows.Forms.Padding(2);
-            this.MinimumSize = new System.Drawing.Size(900, 400);
+            this.MinimumSize = new System.Drawing.Size(1337, 585);
             this.Name = "AdminForm";
-            this.Text = Resources.AdminForm_Title;
+            this.Text = "Главная форма";
             this.Load += new System.EventHandler(this.AdminForm_Load);
             this.panelAdmin.ResumeLayout(false);
             this.panelAdmin.PerformLayout();
@@ -359,5 +354,6 @@ namespace AutomechanicsProject.Formes
         private System.Windows.Forms.Button buttonSupply;
         private System.Windows.Forms.Button buttonCurrency;
         private System.Windows.Forms.Button buttonReport;
+        private Button buttonWarehouse;
     }
 }
