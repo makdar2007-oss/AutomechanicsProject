@@ -1,21 +1,39 @@
-﻿using System;
+﻿using AutomechanicsProject.Classes;
+using AutomechanicsProject.Enum;
+using AutomechanicsProject.Services.Interfaces;
+using System;
 using System.Linq;
-using System.Windows.Forms;
-using AutomechanicsProject.Classes;
 
 namespace AutomechanicsProject.Services
 {
-    public static class ExpiredProductsService
+    
+    /// <summary>
+    /// Сервис для работы с просроченными товарами
+    /// </summary>
+    public class ExpiredProductsService : IExpiredProductsService
     {
+        private readonly DateBase _db;
+        private readonly ICurrentUserService _currentUserService;
+
+        /// <summary>
+        /// Создает сервис просроченных товаров
+        /// </summary>
+        public ExpiredProductsService(DateBase db, ICurrentUserService currentUserService)
+        {
+            _db = db;
+            _currentUserService = currentUserService;
+        }
+
         /// <summary>
         /// Выполняет автоматическое списание просроченных товаров
         /// </summary>
-        public static int AutoWriteOffExpiredProducts(DateBase db)
+        public int AutoWriteOffExpiredProducts()
         {
             var today = MoscowTime.Today;
 
-            var expiredProducts = db.Products
-                .Where(p => p.ExpiryDate.HasValue
+            var expiredProducts = _db.Products
+                .Where(p => !p.IsDeleted
+                    && p.ExpiryDate.HasValue
                     && p.ExpiryDate.Value <= today
                     && p.Balance > 0)
                 .ToList();
@@ -25,40 +43,45 @@ namespace AutomechanicsProject.Services
                 return 0;
             }
 
-            var writeOffUserId = new Guid("4adf792a-247b-435d-a15e-37314224c761");
-            var writeOffAddressId = new Guid("dc40ff88-af12-4841-b101-9da423f7f777");
+            if (_currentUserService.CurrentUser == null)
+            {
+                throw new InvalidOperationException("Текущий пользователь не найден");
+            }
 
             foreach (var product in expiredProducts)
             {
+                var quantity = product.Balance;
+
                 var shipment = new Shipment
                 {
                     Id = Guid.NewGuid(),
                     Date = MoscowTime.Now,
-                    UserId = writeOffAddressId,
-                    CreatedByUserId = writeOffUserId,
-                    ShipmentType = "Списание",
-                    TotalAmount = -(product.PurchasePrice * product.Balance)
+                    UserId = null,
+                    CreatedByUserId = _currentUserService.CurrentUser.Id,
+                    ShipmentType = ShipmentTypeEnum.WriteOff.ToString(),
+                    TotalAmount = -(product.PurchasePrice * quantity)
                 };
 
-                db.Shipments.Add(shipment);
-                db.SaveChanges();
+                _db.Shipments.Add(shipment);
+                _db.SaveChanges();
 
                 var shipmentItem = new ShipmentItem
                 {
                     ShipmentId = shipment.Id,
+                    ProductId = product.Id,
                     Product = product,
                     Article = product.Article,
                     ProductName = product.Name,
-                    Quantity = -product.Balance,
+                    Quantity = -quantity,
                     Price = product.Price,
-                    PurchasePrice = 0
+                    PurchasePrice = product.PurchasePrice
                 };
 
-                db.ShipmentItems.Add(shipmentItem);
+                _db.ShipmentItems.Add(shipmentItem);
                 product.Balance = 0;
             }
 
-            db.SaveChanges();
+            _db.SaveChanges();
 
             return expiredProducts.Count;
         }

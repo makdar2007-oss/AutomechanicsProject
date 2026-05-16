@@ -34,5 +34,10 @@ namespace AutomechanicsProject.Classes
         /// </summary>
         [NotMapped]
         public string DisplayName => $"{Name} (товаров: {Products?.Count ?? 0})";
+
+        /// <summary>
+        /// Показывает, удалена ли категория из каталога
+        /// </summary>
+        public bool IsDeleted { get; set; }
     }
 }

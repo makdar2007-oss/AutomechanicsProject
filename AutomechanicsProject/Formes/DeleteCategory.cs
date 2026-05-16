@@ -5,6 +5,7 @@ using NLog;
 using System;
 using System.Linq;
 using System.Windows.Forms;
+using AutomechanicsProject.Services.Interfaces;
 
 namespace AutomechanicsProject.Formes
 {
@@ -13,16 +14,17 @@ namespace AutomechanicsProject.Formes
     /// </summary>
     public partial class DeleteCategory : Form
     {
-        private readonly DateBase _db;
+        private readonly ICategoryService _categoryService;
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-        /// <summary>
+        //// <summary>
         /// Инициализирует новый экземпляр формы удаления категории
         /// </summary>
-        public DeleteCategory(DateBase database)
+        public DeleteCategory(ICategoryService categoryService)
         {
             InitializeComponent();
-            _db = database ?? throw new ArgumentNullException(nameof(database));
+
+            _categoryService = categoryService ?? throw new ArgumentNullException(nameof(categoryService));
         }
 
         /// <summary>
@@ -36,111 +38,93 @@ namespace AutomechanicsProject.Formes
         /// <summary>
         /// Загружает список категорий для удаления
         /// </summary>
+       
         private void LoadCategories()
         {
             try
             {
-                var categories = _db.Categories
-                    .OrderBy(c => c.Name)
-                    .Select(c => new ComboItemDto
-                    {
-                        Id = c.Id,
-                        Text = $"{c.Name} (товаров: {_db.Products.Count(p => p.CategoryId == c.Id)})"
-                    })
-                    .ToList();
-                comboBoxCategory.DataSource = categories;
-                comboBoxCategory.SelectedIndex = -1;
-                var hasCategories = comboBoxCategory.Items.Count > 0;
-                comboBoxCategory.SelectedIndex = hasCategories ? -1 : -1;
+                var categories = _categoryService.GetCategoriesWithProductCountForCombo();
 
-                label1.Text = hasCategories ? Resources.SelectCategoryForDelete : Resources.NoCategoriesForDelete;
-                buttonDelete.Enabled = hasCategories;
+                comboBoxCategory.DataSource = categories;
+                comboBoxCategory.DisplayMember = "Text";
+                comboBoxCategory.ValueMember = "Id";
+                comboBoxCategory.SelectedIndex = -1;
+
+                buttonDelete.Enabled = categories.Count > 0;
             }
             catch (Exception ex)
             {
-                logger.Error("Ошибка при загрузке категорий в форму 'Удаление категории'", ex);
-                MessageBox.Show(Resources.ErrorLoadCategories, Resources.TitleError,
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                logger.Error(ex, "Ошибка при загрузке категорий в форму удаления категории");
+
+                MessageBox.Show(Resources.ErrorLoadCategories,
+                    Resources.TitleError,
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
+        
         }
 
         /// <summary>
-        /// Обработчик нажатия кнопки Удалить
+        /// Обработчик нажатия кнопки удаления категории
         /// </summary>
         private void ButtonDelete_Click(object sender, EventArgs e)
         {
             if (comboBoxCategory.SelectedItem == null)
             {
-                MessageBox.Show(Resources.ErrorSelectCategoryForDelete, Resources.TitleWarning,
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(Resources.ErrorSelectCategoryForDelete,
+                    Resources.TitleWarning,
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
                 return;
             }
+
             try
             {
                 var selectedItem = (ComboItemDto)comboBoxCategory.SelectedItem;
                 var categoryId = selectedItem.Id;
-                var category = _db.Categories
-                    .FirstOrDefault(c => c.Id == categoryId);
+                var categoryName = _categoryService.GetCategoryNameById(categoryId);
+                var productsCount = _categoryService.GetProductsCountByCategory(categoryId);
 
-                if (category == null)
-                {
-                    MessageBox.Show(Resources.ErrorCategoryNotFound, Resources.TitleError,
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-                var products = _db.Products.Where(p => p.CategoryId == categoryId).ToList();
-                if (products.Any())
-                {
-                    var productIds = products.Select(p => p.Id).ToList();
-                    var hasShipments = _db.ShipmentItems.Any(si => productIds.Contains(si.ProductId));
-
-                    if (hasShipments)
-                    {
-                        MessageBox.Show(Resources.ErrorCannotDeleteCategoryWithShipments,
-                            Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return;
-                    }
-                }
-                var confirmMessage = products.Any()
-                    ? string.Format(Resources.ConfirmDeleteCategoryWithProducts, category.Name, products.Count)
-                    : string.Format(Resources.ConfirmDeleteCategory, category.Name);
+                var confirmMessage = productsCount > 0
+                    ? string.Format(Resources.ConfirmDeleteCategoryWithProducts, categoryName, productsCount)
+                    : string.Format(Resources.ConfirmDeleteCategory, categoryName);
 
                 var result = MessageBox.Show(confirmMessage,
-                    products.Any() ? Resources.TitleDeleteConfirmation : Resources.TitleConfirmation,
+                    productsCount > 0 ? Resources.TitleDeleteConfirmation : Resources.TitleConfirmation,
                     MessageBoxButtons.YesNo,
-                    products.Any() ? MessageBoxIcon.Warning : MessageBoxIcon.Question);
+                    productsCount > 0 ? MessageBoxIcon.Warning : MessageBoxIcon.Question);
 
                 if (result != DialogResult.Yes)
                 {
                     return;
                 }
 
-                if (products.Any())
-                {
-                    _db.Products.RemoveRange(products);
-                    logger.Info($"Удалено {products.Count} товаров из категории '{category.Name}'");
-                }
-                _db.Categories.Remove(category);
-                _db.SaveChanges();
-                logger.Info($"Категория '{category.Name}' успешно удалена");
+                _categoryService.DeleteCategory(categoryId);
 
-                var successMessage = products.Any()
-                    ? string.Format(Resources.SuccessCategoryAndProductsDeleted, category.Name, products.Count)
-                    : string.Format(Resources.SuccessCategoryDeleted, category.Name);
+                logger.Info($"Категория '{categoryName}' успешно удалена");
 
-                MessageBox.Show(successMessage, Resources.TitleSuccess,
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                var successMessage = productsCount > 0
+                    ? string.Format(Resources.SuccessCategoryAndProductsDeleted, categoryName, productsCount)
+                    : string.Format(Resources.SuccessCategoryDeleted, categoryName);
+
+                MessageBox.Show(successMessage,
+                    Resources.TitleSuccess,
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+
                 DialogResult = DialogResult.OK;
                 Close();
             }
             catch (Exception ex)
             {
-                logger.Error("Ошибка при удалении категории", ex);
-                MessageBox.Show(Resources.ErrorDeleteCategory, Resources.TitleError,
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                logger.Error(ex, "Ошибка при удалении категории");
+
+                MessageBox.Show(Resources.ErrorDeleteCategory,
+                    Resources.TitleError,
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
         }
-
         /// <summary>
         /// Обработчик нажатия кнопки Отмена
         /// </summary>

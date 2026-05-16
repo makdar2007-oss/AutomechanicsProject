@@ -12,6 +12,9 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using AutomechanicsProject.Enum;
+using AutomechanicsProject.Services.Interfaces;
+
+
 
 namespace AutomechanicsProject.Formes
 {
@@ -21,29 +24,37 @@ namespace AutomechanicsProject.Formes
     /// </summary>
     public partial class CreateShipment : Form
     {
-        private readonly DateBase db;
+       
+        /// <summary>
+        /// Сервис отгрузок
+        /// </summary>
+        private readonly IShipmentService _shipmentService;
+        private readonly ICurrentUserService _currentUserService;
         private List<ShipmentItem> shipmentItems;
         private decimal totalAmount;
         private int totalItemsCount;
         private List<ProductComboViewModel> allProducts;
         private SearchableComboBoxHelper.ComboBoxState comboBoxState;
-        private List<Product> availableProducts;
         private bool isShipmentTypeLocked = false;
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
-        private static readonly Guid WriteOffUserId = Guid.Parse("dc40ff88-af12-4841-b101-9da423f7f777");
-        private static readonly Guid DefectUserId = Guid.Parse("fda70302-e336-4a5d-9783-eff33827adc8");
         private ShipmentTypeEnum currentShipmentType = ShipmentTypeEnum.Shipment;
+
 
         /// <summary>
         /// Инициализирует новый экземпляр формы создания отгрузки
         /// </summary>
-        public CreateShipment(DateBase database)
+        public CreateShipment(
+            IShipmentService shipmentService,
+            ICurrentUserService currentUserService)
         {
             InitializeComponent();
-            db = database ?? throw new ArgumentNullException(nameof(database));
+
+            _shipmentService = shipmentService ?? throw new ArgumentNullException(nameof(shipmentService));
+            _currentUserService = currentUserService ?? throw new ArgumentNullException(nameof(currentUserService));
             shipmentItems = new List<ShipmentItem>();
             totalAmount = 0;
             allProducts = new List<ProductComboViewModel>();
+
 
             TextBoxHelper.SetupWatermarkTextBox(textBoxUnit, Resources.ShipmentQuantityWatermark);
             TextBoxHelper.SetupWatermarkComboBox(comboBoxProduct, Resources.SProductWatermark);
@@ -74,7 +85,7 @@ namespace AutomechanicsProject.Formes
             LoadProducts();
             LoadRecipients();
 
-            comboBox1.SelectedIndexChanged += ComboBox1_SelectedIndexChanged;
+            comboBox1.SelectedIndexChanged += ComboBox_SelectedIndexChanged;
             dataGridViewShipment.CurrentCellDirtyStateChanged += DataGridViewShipment_CurrentCellDirtyStateChanged;
         }
 
@@ -109,7 +120,7 @@ namespace AutomechanicsProject.Formes
         /// <summary>
         /// Выбор типа отгрузки
         /// </summary>
-        private void ComboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        private void ComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (isShipmentTypeLocked)
             {
@@ -150,31 +161,12 @@ namespace AutomechanicsProject.Formes
         /// <summary>
         /// Загружает доступные сроки годности для выбранного товара
         /// </summary>
+     
         private void LoadExpiryDatesForProduct(Guid productId)
         {
             try
             {
-                var selectedProduct = db.Products
-                    .Include(p => p.Unit)
-                    .FirstOrDefault(p => p.Id == productId);
-
-                if (selectedProduct == null)
-                {
-                    return;
-                }
-
-                var productsWithSameName = db.Products
-                    .Include(p => p.Unit)
-                    .Where(p => p.Name == selectedProduct.Name && p.Balance > 0)
-                    .Select(p => new ExpiryItemDto
-                    {
-                        ProductId = p.Id,
-                        DisplayText = FormatHelper.FormatExpiryDateDisplay(p.ExpiryDate, p.Balance),
-                        ExpiryDate = p.ExpiryDate,
-                        Balance = p.Balance
-                    })
-                    .OrderBy(p => p.ExpiryDate)
-                    .ToList();
+                var productsWithSameName = _shipmentService.GetExpiryDatesForProduct(productId);
 
                 if (productsWithSameName.Count >= 1)
                 {
@@ -200,7 +192,7 @@ namespace AutomechanicsProject.Formes
             }
             catch (Exception ex)
             {
-                logger.Error("Ошибка при загрузке сроков годности", ex);
+                logger.Error(ex, "Ошибка при загрузке сроков годности");
                 comboBoxExpiry.Enabled = false;
             }
         }
@@ -212,96 +204,60 @@ namespace AutomechanicsProject.Formes
         {
             try
             {
-                var productsList = db.Products
-                    .Where(p => p.Balance > 0)
-                    .Select(p => new
-                    {
-                        p.Id,
-                        p.Article,
-                        p.Name,
-                        p.Balance,
-                        p.Price,
-                        UnitName = p.Unit != null ? p.Unit.Name : Resources.Unit_Piece_Short,
-                        p.UnitId,
-                        p.IsMetal
-                    })
-                    .ToList();
-
-                var products = productsList
-                    .GroupBy(p => p.Name)
-                    .Select(g => new ProductComboViewModel
-                    {
-                        Id = g.First().Id,
-                        Text = FormatHelper.FormatProductWithBalance(
-                            g.First().Article,
-                            g.Key,
-                            g.Sum(x => x.Balance),
-                            g.First().UnitName),
-                        Article = g.First().Article,
-                        Name = g.Key,
-                        Price = g.First().Price,
-                        Balance = g.Sum(x => x.Balance),
-                        UnitName = g.First().UnitName,
-                        UnitId = g.First().UnitId,
-                        IsMetal = g.First().IsMetal
-                    })
-                    .ToList();
-
-                allProducts = products;
+                allProducts = _shipmentService.GetProductsForShipment();
 
                 if (allProducts.Any())
                 {
                     SetupSearchableComboBox();
                 }
 
-                if (products.Count == 0)
+                if (allProducts.Count == 0)
                 {
-                    MessageBox.Show(Resources.InfoNoProductsForShipment, Resources.TitleInformation,
-                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show(Resources.InfoNoProductsForShipment,
+                        Resources.TitleInformation,
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
                 }
             }
             catch (Exception ex)
             {
-                logger.Error("Ошибка при загрузке товаров в отгрузку", ex);
-                MessageBox.Show(Resources.ErrorLoadProducts, Resources.TitleError,
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                logger.Error(ex, "Ошибка при загрузке товаров в отгрузку");
+
+                MessageBox.Show(Resources.ErrorLoadProducts,
+                    Resources.TitleError,
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
         }
 
         /// <summary>
-        /// Загружает список получателей 
+        /// Загружает список получателей
         /// </summary>
         private void LoadRecipients()
         {
             try
             {
-                var excludedNames = new[] { Resources.ShipmentType_Defect, Resources.ShipmentType_WriteOff, "-", "" };
+                var recipients = _shipmentService.GetRecipientsForCombo();
 
-                var recipients = db.Addresses
-                    .Where(a => a.CompanyName != null &&
-                       !excludedNames.Contains(a.CompanyName.Trim()))
-                    .OrderBy(a => a.CompanyName)
-                    .Select(a => new ComboItemDto
-                    {
-                        Id = a.Id,
-                        Text = a.CompanyName
-                    })
-                    .ToList();
                 comboBoxRecipient1.DataSource = recipients;
-
                 buttonShipment.Enabled = recipients.Count > 0;
 
                 if (recipients.Count == 0)
                 {
-                    MessageBox.Show(Resources.InfoNoRecipientsAvailable, Resources.TitleInformation,
-                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show(Resources.InfoNoRecipientsAvailable,
+                        Resources.TitleInformation,
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
                 }
             }
             catch (Exception ex)
             {
-                logger.Error("Ошибка при загрузке списка получателей", ex);
-                MessageBox.Show(Resources.ErrorLoadRecipients, Resources.TitleError,
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                logger.Error(ex, "Ошибка при загрузке списка получателей");
+
+                MessageBox.Show(Resources.ErrorLoadRecipients,
+                    Resources.TitleError,
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
         }
 
@@ -344,10 +300,14 @@ namespace AutomechanicsProject.Formes
                 return false;
             }
 
-            if (currentShipmentType == ShipmentTypeEnum.Shipment && comboBoxRecipient1.SelectedItem == null)
+            if (currentShipmentType == ShipmentTypeEnum.Shipment &&
+                (comboBoxRecipient1.SelectedItem == null ||
+                 comboBoxRecipient1.Text == Resources.ShipmentRecipientWatermark ||
+                 string.IsNullOrWhiteSpace(comboBoxRecipient1.Text)))
             {
                 MessageBox.Show(Resources.ErrorSelectRecipient, Resources.TitleWarning,
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
                 comboBoxRecipient1.Focus();
                 return false;
             }
@@ -365,7 +325,7 @@ namespace AutomechanicsProject.Formes
                 var selectedExpiry = (ExpiryItemDto)comboBoxExpiry.SelectedItem;
                 Guid actualProductId = selectedExpiry.ProductId;
 
-                var productWithExpiry = db.Products.FirstOrDefault(p => p.Id == actualProductId);
+                var productWithExpiry = _shipmentService.GetProductForShipmentById(actualProductId);
 
                 if (productWithExpiry != null)
                 {
@@ -377,8 +337,6 @@ namespace AutomechanicsProject.Formes
                         textBoxUnit.Focus();
                         return false;
                     }
-
-                    db.SaveChanges();
 
                     return AddOrUpdateShipmentItem(
                         productWithExpiry.Id,
@@ -393,7 +351,7 @@ namespace AutomechanicsProject.Formes
             }
 
             var selectedProduct = (ProductComboViewModel)comboBoxProduct.SelectedItem;
-            var productToShip = db.Products.FirstOrDefault(p => p.Name == selectedProduct.Name && p.Balance > 0);
+            var productToShip = _shipmentService.GetProductForShipmentByName(selectedProduct.Name);
 
             if (productToShip == null)
             {
@@ -410,7 +368,7 @@ namespace AutomechanicsProject.Formes
                 return false;
             }
 
-            db.SaveChanges();
+            
 
             return AddOrUpdateShipmentItem(
                 productToShip.Id,
@@ -440,8 +398,7 @@ namespace AutomechanicsProject.Formes
         /// </summary>
         private bool AddOrUpdateShipmentItem(Guid productId, string productName, string article, int quantity, decimal price, decimal purchasePrice, string unitName)
         {
-            var product = db.Products.FirstOrDefault(p => p.Id == productId);
-            bool isMetal = product?.IsMetal ?? false;
+            bool isMetal = _shipmentService.IsProductMetal(productId);
 
             var existingItem = shipmentItems.FirstOrDefault(i => i.ProductId == productId);
 
@@ -471,7 +428,7 @@ namespace AutomechanicsProject.Formes
                 Quantity = quantity,
                 Price = price,
                 PurchasePrice = purchasePrice,
-                IsMetal = isMetal,          
+                IsMetal = isMetal,
                 ScrapMetal = false
             });
             return true;
@@ -490,9 +447,12 @@ namespace AutomechanicsProject.Formes
                 SearchableComboBoxHelper.ClearAndReloadProducts(comboBoxProduct, comboBoxState);
             }
 
-            comboBoxRecipient1.SelectedIndex = -1;
-            comboBoxRecipient1.Text = Resources.ShipmentRecipientWatermark;
-            comboBoxRecipient1.ForeColor = Color.Gray;
+            if (currentShipmentType != ShipmentTypeEnum.Shipment)
+            {
+                comboBoxRecipient1.SelectedIndex = -1;
+                comboBoxRecipient1.Text = Resources.ShipmentRecipientWatermark;
+                comboBoxRecipient1.ForeColor = Color.Gray;
+            }
 
             comboBoxExpiry.Enabled = false;
             comboBoxExpiry.Text = Resources.NoExpiryDateWatermark;
@@ -553,7 +513,7 @@ namespace AutomechanicsProject.Formes
 
                     item.ScrapReturn = scrapReturn;
                 }
-                else 
+                else
                 {
                     profit = -(item.Quantity * item.Price);
                 }
@@ -572,7 +532,7 @@ namespace AutomechanicsProject.Formes
                     Profit = profit,
                     Total = itemTotal,
                     RecipientName = recipientName,
-                    ProductId = item.ProductId,
+                    ProductId = item.ProductId ?? Guid.Empty,
                     IsMetal = item.IsMetal,
                     IsScrapped = (currentShipmentType == ShipmentTypeEnum.Defect) && item.IsMetal && item.ScrapMetal,
                     ScrapMetal = item.ScrapMetal
@@ -634,26 +594,33 @@ namespace AutomechanicsProject.Formes
             {
                 case ShipmentTypeEnum.WriteOff:
                     recipientName = Resources.ShipmentType_WriteOff;
-                    recipientId = WriteOffUserId;
+                    recipientId = null;
                     displayTotal = -totalAmount;
                     break;
                 case ShipmentTypeEnum.Defect:
                     recipientName = Resources.ShipmentType_Defect;
-                    recipientId = DefectUserId;
+                    recipientId = null;
                     displayTotal = -totalAmount;
                     break;
                 default:
-                    if (comboBoxRecipient1.SelectedItem == null)
                     {
-                        MessageBox.Show(Resources.ErrorSelectRecipient, Resources.TitleWarning,
-                            MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        return;
+                        var selectedRecipient = comboBoxRecipient1.SelectedItem as ComboItemDto;
+
+                        if (selectedRecipient == null)
+                        {
+                            MessageBox.Show(Resources.ErrorSelectRecipient,
+                                Resources.TitleWarning,
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning);
+
+                            return;
+                        }
+
+                        recipientName = selectedRecipient.Text;
+                        recipientId = selectedRecipient.Id;
+                        displayTotal = totalAmount;
+                        break;
                     }
-                    var selectedRecipient = (ComboItemDto)comboBoxRecipient1.SelectedItem;
-                    recipientName = selectedRecipient.Text;
-                    recipientId = selectedRecipient.Id;
-                    displayTotal = totalAmount;
-                    break;
             }
 
             var confirmResult = MessageBox.Show(
@@ -669,91 +636,62 @@ namespace AutomechanicsProject.Formes
 
             try
             {
-                using (var transaction = db.Database.BeginTransaction())
+                if (_currentUserService.CurrentUser == null)
                 {
-                    var shipment = new Shipment
-                    {
-                        Id = Guid.NewGuid(),
-                        Date = MoscowTime.Now,
-                        UserId = recipientId.Value,
-                        CreatedByUserId = Program.CurrentUser?.Id ?? Guid.Empty,
-                        TotalAmount = totalAmount,
-                        ShipmentType = currentShipmentType.ToString()
-                    };
-
-                    db.Shipments.Add(shipment);
-                    db.SaveChanges();
-
-                    foreach (var item in shipmentItems)
-                    {
-                        var shipmentItem = new ShipmentItem
-                        {
-                            Id = Guid.NewGuid(),
-                            ShipmentId = shipment.Id,
-                            ProductId = item.ProductId,
-                            Quantity = currentShipmentType == ShipmentTypeEnum.Shipment ? item.Quantity : -Math.Abs(item.Quantity),
-                            Price = item.Price,
-                            PurchasePrice = (currentShipmentType == ShipmentTypeEnum.Shipment || currentShipmentType == ShipmentTypeEnum.Defect)
-                            ? item.PurchasePrice
-                            : 0,
-                            ProductName = item.ProductName,
-                            Article = item.Article,
-                            ScrapReturn = (currentShipmentType == ShipmentTypeEnum.Defect) ? item.ScrapReturn : 0
-                        };
-
-                        db.ShipmentItems.Add(shipmentItem);
-
-                        var product = db.Products.Find(item.ProductId);
-                        if (product != null)
-                        {
-                            product.Balance -= item.Quantity;
-                        }
-                    }
-
-                    db.SaveChanges();
-                    transaction.Commit();
-
-                    if (currentShipmentType == ShipmentTypeEnum.Defect)
-                    {
-                        decimal totalScrapReturn = shipmentItems
-                            .Where(i => i.IsMetal && i.ScrapMetal)
-                            .Sum(i => i.PurchasePrice * i.Quantity * 0.5m);  
-
-                        int scrapItemsCount = shipmentItems.Count(i => i.IsMetal && i.ScrapMetal);
-                        int metalItemsNotScrapped = shipmentItems.Count(i => i.IsMetal && !i.ScrapMetal);
-
-                        if (totalScrapReturn > 0)
-                        {
-                            MessageBox.Show(
-                                string.Format(Resources.ScrapMetal_ReturnMessage, scrapItemsCount, totalScrapReturn),
-                                Resources.ScrapMetal_Title,
-                                MessageBoxButtons.OK,
-                                MessageBoxIcon.Information);
-                        }
-                        else if (metalItemsNotScrapped > 0)
-                        {
-                            MessageBox.Show(
-                                string.Format(Resources.ScrapMetal_NoReturnMessage, metalItemsNotScrapped),
-                                Resources.ScrapMetal_Title,
-                                MessageBoxButtons.OK,
-                                MessageBoxIcon.Information);
-                        }
-                    }
-
-                    logger.Info($"Отгрузка успешно оформлена! Получатель: {recipientName}, Количество позиций: {shipmentItems.Count}, Общая сумма: {totalAmount:C2}");
-
-                    MessageBox.Show(string.Format(Resources.SuccessShipmentCreatedWithDetails, recipientName, shipmentItems.Count, totalAmount),
-                        Resources.TitleSuccess, MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                    DialogResult = DialogResult.OK;
-                    Close();
+                    MessageBox.Show("Текущий пользователь не найден.");
+                    return;
                 }
+                _shipmentService.CreateShipment(
+                shipmentItems,
+                recipientId,
+                _currentUserService.CurrentUser.Id,
+                totalAmount,
+                currentShipmentType
+);
+
+                if (currentShipmentType == ShipmentTypeEnum.Defect)
+                {
+                    decimal totalScrapReturn = shipmentItems
+                        .Where(i => i.IsMetal && i.ScrapMetal)
+                        .Sum(i => i.PurchasePrice * i.Quantity * 0.5m);
+
+                    int scrapItemsCount = shipmentItems.Count(i => i.IsMetal && i.ScrapMetal);
+                    int metalItemsNotScrapped = shipmentItems.Count(i => i.IsMetal && !i.ScrapMetal);
+
+                    if (totalScrapReturn > 0)
+                    {
+                        MessageBox.Show(
+                            string.Format(Resources.ScrapMetal_ReturnMessage, scrapItemsCount, totalScrapReturn),
+                            Resources.ScrapMetal_Title,
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Information);
+                    }
+                    else if (metalItemsNotScrapped > 0)
+                    {
+                        MessageBox.Show(
+                            string.Format(Resources.ScrapMetal_NoReturnMessage, metalItemsNotScrapped),
+                            Resources.ScrapMetal_Title,
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Information);
+                    }
+                }
+
+                logger.Info($"Отгрузка успешно оформлена! Получатель: {recipientName}, Количество позиций: {shipmentItems.Count}, Общая сумма: {totalAmount:C2}");
+
+                MessageBox.Show(string.Format(Resources.SuccessShipmentCreatedWithDetails, recipientName, shipmentItems.Count, totalAmount),
+                    Resources.TitleSuccess, MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                DialogResult = DialogResult.OK;
+                Close();
             }
             catch (Exception ex)
             {
-                logger.Error($"Не удалось оформить отгрузку", ex);
+                logger.Error(ex, "Ошибка при создании отгрузки");
+
                 MessageBox.Show(Resources.ErrorCreateShipment,
-                    Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Resources.TitleError,
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
         }
 

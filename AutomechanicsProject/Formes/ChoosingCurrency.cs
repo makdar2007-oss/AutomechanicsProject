@@ -9,6 +9,7 @@ using System.IO;
 using System.Net.Http;
 using System.Text.Json;
 using System.Windows.Forms;
+using AutomechanicsProject.Services.Interfaces;
 
 namespace AutomechanicsProject.Formes
 {
@@ -23,14 +24,15 @@ namespace AutomechanicsProject.Formes
         "currency_cache.json");
         private List<CurrencyInfo> currencies;
         private Dictionary<string, decimal> exchangeRates;
-        public static string SelectedCurrencyCode = CurrencyCodes.RUB;
-        public static decimal CurrentExchangeRate = 1m;
-        public static string SelectedCurrencyName = Resources.RussianRuble;
+        private readonly ICurrencySettingsService _currencySettingsService;
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-        public ChoosingCurrency()
+        public ChoosingCurrency(ICurrencySettingsService currencySettingsService)
         {
             InitializeComponent();
+
+            _currencySettingsService = currencySettingsService ?? throw new ArgumentNullException(nameof(currencySettingsService));
+
             LoadCurrencies();
         }
 
@@ -60,7 +62,7 @@ namespace AutomechanicsProject.Formes
             }
             catch (Exception ex)
             {
-                logger.Error("Ошибка при загрузке курсов валют", ex);
+                logger.Error(ex, "Ошибка при загрузке курсов валют");
 
                 if (!LoadFromCache())
                 {
@@ -76,7 +78,7 @@ namespace AutomechanicsProject.Formes
         /// </summary>
         private void SaveToCache(Dictionary<string, decimal> rates)
         {
-            CurrencyStorage.SaveRates(rates, SelectedCurrencyCode);
+            CurrencyStorage.SaveRates(rates, _currencySettingsService.SelectedCurrencyCode);
         }
 
         /// <summary>
@@ -101,7 +103,7 @@ namespace AutomechanicsProject.Formes
             }
             catch (Exception ex)
             {
-                logger.Error("Ошибка загрузки кэша курсов валют", ex);
+                logger.Error(ex, "Ошибка загрузки кэша курсов валют");
             }
             return false;
         }
@@ -136,7 +138,7 @@ namespace AutomechanicsProject.Formes
 
             for (int i = 0; i < currencies.Count; i++)
             {
-                if (currencies[i].Code == SelectedCurrencyCode)
+                if (currencies[i].Code == _currencySettingsService.SelectedCurrencyCode)
                 {
                     comboBoxCurrency.SelectedIndex = i;
                     break;
@@ -157,12 +159,14 @@ namespace AutomechanicsProject.Formes
             if (comboBoxCurrency.SelectedIndex >= 0 && comboBoxCurrency.SelectedIndex < currencies.Count)
             {
                 var selected = currencies[comboBoxCurrency.SelectedIndex];
-                var oldCurrency = SelectedCurrencyCode;
-                var oldRate = CurrentExchangeRate;
+                var oldCurrency = _currencySettingsService.SelectedCurrencyCode;
+                var oldRate = _currencySettingsService.CurrentExchangeRate;
+                var oldName = _currencySettingsService.SelectedCurrencyName;
 
-                SelectedCurrencyCode = selected.Code;
-                CurrentExchangeRate = selected.Rate;
-                SelectedCurrencyName = CurrencyHelper.GetCurrencyName(selected.Code);
+                _currencySettingsService.SetCurrency(
+                    selected.Code,
+                    CurrencyHelper.GetCurrencyName(selected.Code),
+                    selected.Rate);
 
                 if (exchangeRates != null)
                 {
@@ -172,10 +176,10 @@ namespace AutomechanicsProject.Formes
                 DialogResult result = MessageBox.Show(
                     string.Format(Resources.CurrencyChangeConfirm,
                         CurrencyHelper.GetCurrencyName(oldCurrency),
-                        SelectedCurrencyName,
-                        CurrentExchangeRate,
-                        SelectedCurrencyCode,
-                        SelectedCurrencyCode),
+                        _currencySettingsService.SelectedCurrencyName,
+                        _currencySettingsService.CurrentExchangeRate,
+                        _currencySettingsService.SelectedCurrencyCode,
+                        _currencySettingsService.SelectedCurrencyCode),
                     Resources.CurrencyChangeTitle,
                     MessageBoxButtons.YesNo,
                     MessageBoxIcon.Question);
@@ -187,9 +191,7 @@ namespace AutomechanicsProject.Formes
                 }
                 else
                 {
-                    SelectedCurrencyCode = oldCurrency;
-                    CurrentExchangeRate = oldRate;
-                    SelectedCurrencyName = CurrencyHelper.GetCurrencyName(oldCurrency);
+                    _currencySettingsService.SetCurrency(oldCurrency, oldName, oldRate);
                 }
             }
             else
@@ -208,28 +210,7 @@ namespace AutomechanicsProject.Formes
             Close();
         }
 
-        /// <summary>
-        /// Конвертирует цену из рублей в выбранную валюту
-        /// </summary>
-        public static decimal ConvertPrice(decimal priceInRub)
-        {
-            if (SelectedCurrencyCode == CurrencyCodes.RUB)
-            {
-                return priceInRub;
-            }
-
-            return priceInRub * CurrentExchangeRate;
-        }
-
-        /// <summary>
-        /// Форматирует цену с символом валюты
-        /// </summary>
-        public static string FormatPrice(decimal price)
-        {
-            var currencySymbol = GetCurrencySymbol(SelectedCurrencyCode);
-            return $"{price:F2} {currencySymbol}";
-        }
-
+  
         /// <summary>
         /// Возвращает символ валюты по её коду
         /// </summary>

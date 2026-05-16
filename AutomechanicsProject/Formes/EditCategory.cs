@@ -6,7 +6,10 @@ using NLog;
 using System;
 using System.Linq;
 using System.Windows.Forms;
+using AutomechanicsProject.Services.Interfaces;
+
 namespace AutomechanicsProject.Formes
+
 
 {
     /// <summary>
@@ -14,17 +17,19 @@ namespace AutomechanicsProject.Formes
     /// </summary>
     public partial class EditCategory : Form
     {
-        private readonly DateBase _db;
-        private Category selectedCategory;
+        private readonly ICategoryService _categoryService;
+        private Guid? selectedCategoryId;
+        private string selectedCategoryName;
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         /// <summary>
         /// Инициализирует новый экземпляр формы редактирования категории
         /// </summary>
-        public EditCategory(DateBase database)
+        public EditCategory(ICategoryService categoryService)
         {
             InitializeComponent();
-            _db = database ?? throw new ArgumentNullException(nameof(database));
+
+            _categoryService = categoryService ?? throw new ArgumentNullException(nameof(categoryService));
 
             TextBoxHelper.SetupWatermarkTextBox(textBoxNewName, Resources.EditCategoryWatermark);
         }
@@ -40,30 +45,34 @@ namespace AutomechanicsProject.Formes
         /// <summary>
         /// Загружает список категорий для выбора
         /// </summary>
+        
         private void LoadCategories()
         {
             try
             {
-                var categories = _db.Categories
-                    .OrderBy(c => c.Name)
-                    .Select(c => new ComboItemDto
-                    {
-                        Id = c.Id,
-                        Text = string.Format(Resources.CategoryItemFormat, c.Name, _db.Products.Count(p => p.CategoryId == c.Id))
-                    })
-                    .ToList();
+                var categories = _categoryService.GetCategoriesWithProductCountForCombo();
 
                 comboBoxCategory.DataSource = categories;
-                var hasCategories = comboBoxCategory.Items.Count > 0;
+                comboBoxCategory.DisplayMember = "Text";
+                comboBoxCategory.ValueMember = "Id";
+
                 comboBoxCategory.SelectedIndex = -1;
                 textBoxNewName.Text = Resources.EditCategoryWatermark;
-                selectedCategory = null;
+                textBoxNewName.ForeColor = System.Drawing.Color.Gray;
+                textBoxNewName.Enabled = false;
+                buttonEdit.Enabled = false;
+
+                selectedCategoryId = null;
+                selectedCategoryName = null;
             }
             catch (Exception ex)
             {
-                logger.Error("Ошибка при загрузке категорий в форму 'Редактирование категории'", ex);
-                MessageBox.Show(Resources.ErrorLoadCategories, Resources.TitleError,
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                logger.Error(ex, "Ошибка при загрузке категорий в форму редактирования категории");
+
+                MessageBox.Show(Resources.ErrorLoadCategories,
+                    Resources.TitleError,
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
         }
         /// <summary>
@@ -74,18 +83,14 @@ namespace AutomechanicsProject.Formes
             if (comboBoxCategory.SelectedItem != null)
             {
                 var selectedItem = (ComboItemDto)comboBoxCategory.SelectedItem;
-                var categoryId = selectedItem.Id;
 
-                selectedCategory = _db.Categories
-                    .FirstOrDefault(c => c.Id == categoryId);
+                selectedCategoryId = selectedItem.Id;
+                selectedCategoryName = _categoryService.GetCategoryNameById(selectedItem.Id);
 
-                if (selectedCategory != null)
-                {
-                    textBoxNewName.Text = selectedCategory.Name;
-                    textBoxNewName.ForeColor = System.Drawing.Color.Black;
-                    textBoxNewName.Enabled = true;
-                    buttonEdit.Enabled = true;
-                }
+                textBoxNewName.Text = selectedCategoryName;
+                textBoxNewName.ForeColor = System.Drawing.Color.Black;
+                textBoxNewName.Enabled = true;
+                buttonEdit.Enabled = true;
             }
             else
             {
@@ -93,7 +98,9 @@ namespace AutomechanicsProject.Formes
                 textBoxNewName.ForeColor = System.Drawing.Color.Gray;
                 textBoxNewName.Enabled = false;
                 buttonEdit.Enabled = false;
-                selectedCategory = null;
+
+                selectedCategoryId = null;
+                selectedCategoryName = null;
             }
         }
 
@@ -102,7 +109,7 @@ namespace AutomechanicsProject.Formes
         /// </summary>
         private void ButtonEdit_Click(object sender, EventArgs e)
         {
-            if (selectedCategory == null)
+            if (!selectedCategoryId.HasValue)
             {
                 MessageBox.Show(Resources.SelectCategoryForEdit, Resources.TitleWarning,
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -118,7 +125,7 @@ namespace AutomechanicsProject.Formes
                 return;
             }
 
-            if (newName == selectedCategory.Name)
+            if (newName == selectedCategoryName)
             {
                 MessageBox.Show(Resources.InfoCategoryNameNotChanged, Resources.TitleInformation,
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -127,23 +134,17 @@ namespace AutomechanicsProject.Formes
 
             try
             {
-                var categoryExists = _db.Categories
-                    .Any(c => c.Name == newName && c.Id != selectedCategory.Id);
+                var oldName = selectedCategoryName;
 
-                if (categoryExists)
-                {
-                    MessageBox.Show(Resources.ErrorCategoryExists, Resources.TitleWarning,
-                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-
-                var oldName = selectedCategory.Name;
-                selectedCategory.Name = newName;
-                _db.SaveChanges();
+                _categoryService.EditCategory(selectedCategoryId.Value, newName);
 
                 logger.Info($"Категория '{oldName}' переименована в '{newName}'");
+
                 MessageBox.Show(string.Format(Resources.SuccessCategoryRenamed, oldName, newName),
-                    Resources.TitleSuccess, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    Resources.TitleSuccess,
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+
                 LoadCategories();
             }
             catch (Exception ex)
@@ -158,9 +159,9 @@ namespace AutomechanicsProject.Formes
         /// </summary>
         private void ButtonCancel_Click(object sender, EventArgs e)
         {
-            var hasChanges = selectedCategory != null &&
-                             textBoxNewName.Text != selectedCategory.Name &&
-                             textBoxNewName.Text != Resources.EditCategoryWatermark;
+            var hasChanges = selectedCategoryId.HasValue &&
+                 textBoxNewName.Text != selectedCategoryName &&
+                 textBoxNewName.Text != Resources.EditCategoryWatermark;
 
             if (hasChanges)
             {

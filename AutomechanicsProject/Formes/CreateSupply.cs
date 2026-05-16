@@ -2,6 +2,8 @@
 using AutomechanicsProject.Dtos.UI;
 using AutomechanicsProject.Helpers;
 using AutomechanicsProject.Properties;
+using AutomechanicsProject.Services;
+using AutomechanicsProject.Services.Interfaces;
 using AutomechanicsProject.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using NLog;
@@ -19,7 +21,8 @@ namespace AutomechanicsProject.Formes
     /// </summary>
     public partial class CreateSupply : Form
     {
-        private readonly DateBase _db;
+        private readonly ISupplyService _supplyService;
+        private readonly ICurrentUserService _currentUserService;
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
         private List<SupplyPosition> positions = new List<SupplyPosition>();
         private string currentCurrency = CurrencyCodes.RUB;
@@ -31,10 +34,16 @@ namespace AutomechanicsProject.Formes
         private List<ProductComboViewModel> allProductsForSearch;
         private SearchableComboBoxHelper.ComboBoxState comboBoxState;
 
-        public CreateSupply(DateBase database)
+
+        public CreateSupply(
+            ISupplyService supplyService,
+            ICurrentUserService currentUserService)
         {
             InitializeComponent();
-            _db = database ?? throw new ArgumentNullException(nameof(database));
+
+            _supplyService = supplyService ?? throw new ArgumentNullException(nameof(supplyService));
+            _currentUserService = currentUserService ?? throw new ArgumentNullException(nameof(currentUserService));
+
             this.Load += new System.EventHandler(this.CreateSupply_Load);
         }
 
@@ -121,7 +130,7 @@ namespace AutomechanicsProject.Formes
             }
             catch (Exception ex)
             {
-                logger.Error("Ошибка загрузки валют из API", ex);
+                logger.Error(ex, "Ошибка загрузки валют из API");
 
                 currencies = CurrencyHelper.GetFallbackCurrencies();
 
@@ -171,7 +180,7 @@ namespace AutomechanicsProject.Formes
             }
             catch (Exception ex)
             {
-                logger.Error("Ошибка при смене валюты", ex);
+                logger.Error(ex, "Ошибка при смене валюты");
             }
         }
 
@@ -210,20 +219,7 @@ namespace AutomechanicsProject.Formes
         {
             try
             {
-                cachedProducts = _db.Products
-                    .OrderBy(p => p.Name)
-                    .Select(p => new ProductDisplayItem
-                    {
-                        Id = p.Id,
-                        Article = p.Article,
-                        Name = p.Name,
-                        Balance = p.Balance,
-                        IsActive = p.Balance > 0,
-                        HasExpiryDate = p.HasExpiryDate,
-                        ProductExpiryDate = p.ExpiryDate
-                    })
-                    .AsNoTracking()
-                    .ToList();
+                cachedProducts = _supplyService.GetProductsForSupply();
 
                 allProductsForSearch = cachedProducts
                     .Select(p => new ProductComboViewModel
@@ -247,7 +243,7 @@ namespace AutomechanicsProject.Formes
             }
             catch (Exception ex)
             {
-                logger.Error("Ошибка при загрузке товаров из БД", ex);
+                logger.Error(ex, "Ошибка при загрузке товаров из БД");
                 MessageBox.Show(Resources.ErrorLoadProducts, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -260,17 +256,9 @@ namespace AutomechanicsProject.Formes
         {
             try
             {
-                var suppliers = _db.Suppliers
-             .OrderBy(s => s.Name)
-             .Select(s => new ComboItemDto
-             {
-                 Id = s.Id,
-                 Text = s.Name
-             })
-             .AsNoTracking()
-             .ToList();
+                cachedSuppliers = _supplyService.GetSuppliersForCombo();
 
-                cachedSuppliers = suppliers;
+                
 
                 if (cachedSuppliers != null && cachedSuppliers.Count > 0)
                 {
@@ -285,7 +273,7 @@ namespace AutomechanicsProject.Formes
             }
             catch (Exception ex)
             {
-                logger.Error("Ошибка при загрузке поставщиков из БД", ex);
+                logger.Error(ex, "Ошибка при загрузке поставщиков из БД");
                 MessageBox.Show(Resources.ErrorLoadSuppliers, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -713,7 +701,7 @@ namespace AutomechanicsProject.Formes
                     }
                     catch (Exception ex)
                     {
-                        logger.Error("Ошибка при импорте", ex);
+                        logger.Error(ex, "Ошибка при импорте");
                         MessageBox.Show(Resources.ErrorImportFailed,
                             Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
@@ -805,73 +793,20 @@ namespace AutomechanicsProject.Formes
 
                 try
                 {
-                    Supply supply = new Supply
-                    {
-                        Id = Guid.NewGuid(),
-                        OrderNumber = GenerateOrderNumber(),
-                        DateCreated = MoscowTime.Now,
-                        UserId = GetCurrentUserId(),
-                        Status = Resources.SupplyStatusCompleted,
-                        TotalAmount = totalInRUB,
-                        CurrencyCode = currentCurrency,
-                        ExchangeRate = currentCurrencyRate,
-                        RateDate = MoscowTime.Now,
-                    };
 
-                    using (var transaction = _db.Database.BeginTransaction())
-                    {
-                        try
-                        {
-                            _db.Supplies.Add(supply);
-                            _db.SaveChanges();
+                    var supply = _supplyService.CreateSupply(
+                        positions,
+                        GetCurrentUserId(),
+                        currentCurrency,
+                        currentCurrencyRate
+);
 
-                            foreach (var pos in positions)
-                            {
-                                var supplyPosition = new SupplyPosition
-                                {
-                                    Id = Guid.NewGuid(),
-                                    SupplyId = supply.Id,
-                                    ProductId = pos.ProductId,
-                                    Quantity = pos.Quantity,
-                                    Price = pos.Price,
-                                    ProductName = pos.ProductName,
-                                    Article = pos.Article,
-                                    SupplierId = pos.SupplierId,
-                                    SupplierName = pos.SupplierName,
-                                    ExpiryDate = pos.ExpiryDate
-                                };
-                                _db.SupplyPositions.Add(supplyPosition);
-                            }
-                            _db.SaveChanges();
-
-                            foreach (var pos in positions)
-                            {
-                                var product = _db.Products.Find(pos.ProductId);
-                                if (product != null)
-                                {
-                                    product.Balance += pos.Quantity;
-
-                                    product.Price = pos.Price;
-
-                                    if (pos.ExpiryDate.HasValue)
-                                    {
-                                        product.ExpiryDate = pos.ExpiryDate;
-                                    }
-
-                                    product.BatchNumber = string.Format(Resources.BatchNumberFormat, MoscowTime.Now);
-                                }
-                            }
-                            _db.SaveChanges();
-                            transaction.Commit();
-                        }
-                        catch (Exception)
-                        {
-                            transaction.Rollback();
-                            throw;
-                        }
-                    }
-
-                    MessageBox.Show(string.Format(Resources.SuccessSupplyFormat, supply.OrderNumber, supply.DateCreated.ToString("dd.MM.yyyy HH:mm"), positions.Count, displayTotalText),
+                    MessageBox.Show(
+                        string.Format(Resources.SuccessSupplyFormat,
+                            supply.OrderNumber,
+                            supply.DateCreated.ToString("dd.MM.yyyy HH:mm"),
+                            positions.Count,
+                            displayTotalText),
                         Resources.TitleSuccess,
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Information);
@@ -881,7 +816,7 @@ namespace AutomechanicsProject.Formes
                 }
                 catch (Exception ex)
                 {
-                    logger.Error("Ошибка при подтверждении поставки", ex);
+                    logger.Error(ex, "Ошибка при подтверждении поставки");
                     MessageBox.Show(Resources.ErrorSupplyFailed, Resources.TitleError,
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
 
@@ -902,20 +837,22 @@ namespace AutomechanicsProject.Formes
             return $"PO-{MoscowTime.Now:yyyyMMddHHmmss}-{new Random().Next(1000, 9999)}";
         }
 
+
         /// <summary>
-        /// Возвращает идентификатор текущего авторизованного пользователя
+        /// Возвращает идентификатор текущего пользователя
+        /// </summary>
+        /// <summary>
+        /// Возвращает идентификатор текущего пользователя
         /// </summary>
         private Guid GetCurrentUserId()
         {
-            if (Program.CurrentUser != null && Program.CurrentUser.Id != Guid.Empty)
+            if (_currentUserService.CurrentUser != null &&
+                _currentUserService.CurrentUser.Id != Guid.Empty)
             {
-                return Program.CurrentUser.Id;
+                return _currentUserService.CurrentUser.Id;
             }
 
-            MessageBox.Show(Resources.ErrorUserNotAuthorized, Resources.TitleError,
-                MessageBoxButtons.OK, MessageBoxIcon.Error);
-
-            return Guid.Empty;
+            throw new InvalidOperationException("Текущий пользователь не найден");
         }
 
         /// <summary>
