@@ -15,12 +15,12 @@ namespace AutomechanicsProject.Services
     {
         private const int ColumnsCount = 6;
 
-        private readonly DateBase _db;
+        private readonly IDateBaseContext _db;
 
         /// <summary>
         /// Создает сервис тепловой карты склада
         /// </summary>
-        public WarehouseHeatmapService(DateBase db)
+        public WarehouseHeatmapService(IDateBaseContext db)
         {
             _db = db;
         }

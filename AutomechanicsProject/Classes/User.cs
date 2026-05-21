@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AutomechanicsProject.Properties;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -69,6 +70,6 @@ namespace AutomechanicsProject.Classes
         /// Наименование роли пользователя 
         /// </summary>
         [NotMapped]
-        public string RoleName => Role?.Position ?? "Не назначена";
+        public string RoleName => Role?.Position ?? Resources.RoleNotAssigned;
     }
 }

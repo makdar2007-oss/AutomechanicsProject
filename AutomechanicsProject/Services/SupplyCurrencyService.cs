@@ -13,13 +13,13 @@ namespace AutomechanicsProject.Services
     public class SupplyCurrencyService : ISupplyCurrencyService
     {
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
-        private readonly DateBase _db;
+        private readonly IDateBaseContext _db;
         private readonly ICurrencySettingsService _currencySettingsService;
 
         /// <summary>
         /// Создает сервис валюты поставок
         /// </summary>
-        public SupplyCurrencyService(DateBase db, ICurrencySettingsService currencySettingsService)
+        public SupplyCurrencyService(IDateBaseContext db, ICurrencySettingsService currencySettingsService)
         {
             _db = db;
             _currencySettingsService = currencySettingsService;

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AutomechanicsProject.Properties;
+using System;
 
 namespace AutomechanicsProject.Dtos.UI
 {
@@ -46,8 +47,8 @@ namespace AutomechanicsProject.Dtos.UI
         /// Отображает товар с учетом наличия и остатка 
         /// </summary>
         public string DisplayName => IsActive
-            ? $"{Name} (в наличии: {Balance})"
-            : $"{Name} (ожидается поставка)";
+            ? string.Format(Resources.ProductDisplay_InStockFormat, Name, Balance)
+            : string.Format(Resources.ProductDisplay_WaitingSupplyFormat, Name);
 
         /// <summary>
         /// Строка для поиска товара

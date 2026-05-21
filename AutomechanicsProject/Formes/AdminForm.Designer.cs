@@ -107,7 +107,7 @@ namespace AutomechanicsProject.Formes
             // 
             // buttonWarehouse
             // 
-            this.buttonWarehouse.Location = new System.Drawing.Point(1271, 30);
+            this.buttonWarehouse.Location = new System.Drawing.Point(1271, 24);
             this.buttonWarehouse.Name = "buttonWarehouse";
             this.buttonWarehouse.Size = new System.Drawing.Size(153, 62);
             this.buttonWarehouse.TabIndex = 7;
@@ -227,7 +227,7 @@ namespace AutomechanicsProject.Formes
             this.toolStripTextBoxAdmin});
             this.menuStripMainForm.Location = new System.Drawing.Point(0, 0);
             this.menuStripMainForm.Name = "menuStripMainForm";
-            this.menuStripMainForm.Size = new System.Drawing.Size(1427, 44);
+            this.menuStripMainForm.Size = new System.Drawing.Size(1427, 48);
             this.menuStripMainForm.TabIndex = 1;
             // 
             // toolStripComboBoxAdd
@@ -242,14 +242,14 @@ namespace AutomechanicsProject.Formes
             // ProductToolStripMenuItem
             // 
             this.ProductToolStripMenuItem.Name = "ProductToolStripMenuItem";
-            this.ProductToolStripMenuItem.Size = new System.Drawing.Size(294, 44);
+            this.ProductToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
             this.ProductToolStripMenuItem.Text = global::AutomechanicsProject.Properties.Resources.AdminForm_ToolStripProductText;
             this.ProductToolStripMenuItem.Click += new System.EventHandler(this.ProductToolStripMenuItem_Click);
             // 
             // CategoryToolStripMenuItem
             // 
             this.CategoryToolStripMenuItem.Name = "CategoryToolStripMenuItem";
-            this.CategoryToolStripMenuItem.Size = new System.Drawing.Size(294, 44);
+            this.CategoryToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
             this.CategoryToolStripMenuItem.Text = global::AutomechanicsProject.Properties.Resources.AdminForm_ToolStripCategoryText;
             this.CategoryToolStripMenuItem.Click += new System.EventHandler(this.CategoryToolStripMenuItem_Click);
             // 

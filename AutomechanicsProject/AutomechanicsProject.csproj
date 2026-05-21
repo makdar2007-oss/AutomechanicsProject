@@ -391,6 +391,7 @@
     <Compile Include="Interfaces\ICategoryService.cs" />
     <Compile Include="Interfaces\ICurrencySettingsService.cs" />
     <Compile Include="Interfaces\ICurrentUserService.cs" />
+    <Compile Include="Interfaces\IDateBaseContext.cs" />
     <Compile Include="Interfaces\IExpiredProductsService.cs" />
     <Compile Include="Interfaces\IProductService.cs" />
     <Compile Include="Interfaces\IReportService.cs" />

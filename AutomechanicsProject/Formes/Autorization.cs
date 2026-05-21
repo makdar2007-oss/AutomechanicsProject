@@ -141,7 +141,7 @@ namespace AutomechanicsProject
             }
             catch (Exception ex)
             {
-                FormHelper.HandleException("Ошибка авторизации", ex);
+                FormHelper.HandleException(Resources.ErrorAuthorization, ex);
             }
         }
 

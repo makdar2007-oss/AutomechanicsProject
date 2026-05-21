@@ -852,7 +852,7 @@ namespace AutomechanicsProject.Formes
                 return _currentUserService.CurrentUser.Id;
             }
 
-            throw new InvalidOperationException("Текущий пользователь не найден");
+            throw new InvalidOperationException(Resources.CurrentUserNotFound);
         }
 
         /// <summary>

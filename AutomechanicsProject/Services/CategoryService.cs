@@ -1,9 +1,10 @@
 ﻿using AutomechanicsProject.Classes;
 using AutomechanicsProject.Dtos.UI;
+using AutomechanicsProject.Properties;
+using AutomechanicsProject.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using AutomechanicsProject.Services.Interfaces;
 
 namespace AutomechanicsProject.Services
 {
@@ -12,13 +13,13 @@ namespace AutomechanicsProject.Services
     /// </summary>
     public class CategoryService : ICategoryService
     {
-        private readonly DateBase _db;
+        private readonly IDateBaseContext _db;
         private readonly IWarehouseHeatmapService _warehouseHeatmapService;
 
         /// <summary>
         /// Создает сервис категорий
         /// </summary>
-        public CategoryService(DateBase db, IWarehouseHeatmapService warehouseHeatmapService)
+        public CategoryService(IDateBaseContext db, IWarehouseHeatmapService warehouseHeatmapService)
         {
             _db = db;
             _warehouseHeatmapService = warehouseHeatmapService ?? throw new ArgumentNullException(nameof(warehouseHeatmapService));
@@ -51,7 +52,8 @@ namespace AutomechanicsProject.Services
                 .Select(c => new ComboItemDto
                 {
                     Id = c.Id,
-                    Text = $"{c.Name} (товаров: {_db.Products.Count(p => p.CategoryId == c.Id && !p.IsDeleted)})"
+                    Text = string.Format(
+                        Resources.CategoryDisplayFormat_WithCount,c.Name,_db.Products.Count(p => p.CategoryId == c.Id && !p.IsDeleted))
                 })
                 .ToList();
         }
@@ -65,7 +67,7 @@ namespace AutomechanicsProject.Services
 
             if (category == null)
             {
-                throw new Exception("Категория не найдена");
+                throw new Exception(Resources.ErrorCategoryNotFound);
             }
 
             return category.Name;
@@ -104,7 +106,7 @@ namespace AutomechanicsProject.Services
             {
                 if (!category.IsDeleted)
                 {
-                    throw new Exception("Категория с таким названием уже существует");
+                    throw new Exception(Resources.ErrorCategoryExists);
                 }
 
                 category.IsDeleted = false;
@@ -133,7 +135,7 @@ namespace AutomechanicsProject.Services
 
             if (category == null)
             {
-                throw new Exception("Категория не найдена");
+                throw new Exception(Resources.ErrorCategoryNotFound);
             }
 
             var name = newName.Trim();
@@ -145,7 +147,7 @@ namespace AutomechanicsProject.Services
 
             if (nameExists)
             {
-                throw new Exception("Категория с таким названием уже существует");
+                throw new Exception(Resources.ErrorCategoryExists);
             }
 
             category.Name = name;
@@ -162,7 +164,7 @@ namespace AutomechanicsProject.Services
 
             if (category == null)
             {
-                throw new Exception("Категория не найдена");
+                throw new Exception(Resources.ErrorCategoryNotFound);
             }
 
             var products = _db.Products

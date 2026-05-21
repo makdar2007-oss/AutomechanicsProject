@@ -1,4 +1,5 @@
-﻿using AutomechanicsProject.Services.Interfaces;
+﻿using AutomechanicsProject.Properties;
+using AutomechanicsProject.Services.Interfaces;
 using AutomechanicsProject.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -27,6 +28,7 @@ namespace AutomechanicsProject.Formes
         public WarehouseHeatmapForm(IWarehouseHeatmapService warehouseHeatmapService)
         {
             InitializeComponent();
+            ApplyLocalization();
 
             _warehouseHeatmapService = warehouseHeatmapService ?? throw new ArgumentNullException(nameof(warehouseHeatmapService));
 
@@ -36,6 +38,37 @@ namespace AutomechanicsProject.Formes
             Load += WarehouseHeatmapForm_Load;
         }
 
+        /// <summary>
+        /// Применяет текст из ресурсов к элементам формы
+        /// </summary>
+        private void ApplyLocalization()
+        {
+            Text = Resources.Warehouse_Title;
+
+            labelmain.Text = Resources.Warehouse_Title;
+            lblSearch.Text = Resources.Warehouse_SearchLabel;
+
+            labellegend.Text = Resources.Warehouse_LegendTitle;
+            labelgreent.Text = Resources.Warehouse_LegendGreen;
+            labelyellowt.Text = Resources.Warehouse_LegendYellow;
+            labeloranget.Text = Resources.Warehouse_LegendOrange;
+            labelredt.Text = Resources.Warehouse_LegendRed;
+            labelbluet.Text = Resources.Warehouse_LegendBlue;
+            laberule.Text = Resources.Warehouse_LegendRule;
+
+            groupBoxcard.Text = Resources.Warehouse_CardTitle;
+            labelname.Text = Resources.Warehouse_CardNameCaption;
+            label9.Text = Resources.Warehouse_CardCategoryCaption;
+            label7.Text = Resources.Warehouse_CardStockCaption;
+            label6.Text = Resources.Warehouse_CardExpiryCaption;
+            label3.Text = Resources.Warehouse_CardCellCaption;
+
+            labelinform.Text = Resources.Warehouse_InfoTitle;
+            lblTotalCount.Text = Resources.Warehouse_TotalCount;
+            lblExpSoon.Text = Resources.Warehouse_ExpSoon;
+            lblExpNormal.Text = Resources.Warehouse_ExpNormal;
+            lblLowStock.Text = Resources.Warehouse_LowStock;
+        }
         private void WarehouseHeatmapForm_Load(object sender, EventArgs e)
         {
             RefreshWarehouse();
@@ -120,28 +153,28 @@ namespace AutomechanicsProject.Formes
 
             if (cell == null || cell.IsEmpty)
             {
-                gridCell.Value = "Пусто";
+                gridCell.Value = Resources.Warehouse_EmptyCell;
                 gridCell.Tag = null;
                 gridCell.Style.BackColor = Color.LightGray;
                 gridCell.Style.ForeColor = Color.DimGray;
-                gridCell.ToolTipText = "Свободная ячейка";
+                gridCell.ToolTipText = Resources.Warehouse_FreeCell;
                 return;
             }
 
             var isMatch = IsSearchMatch(cell);
             var baseColor = GetCellColor(cell);
 
-            gridCell.Value = cell.ProductName + Environment.NewLine + cell.Balance + " шт.";
+            gridCell.Value = cell.ProductName + Environment.NewLine + cell.Balance + " " + Resources.Warehouse_UnitPieceShort;
             gridCell.Tag = cell;
             gridCell.Style.BackColor = GetSearchColor(baseColor, isMatch);
             gridCell.Style.ForeColor = GetSearchTextColor(isMatch);
             gridCell.ToolTipText =
-                "Ячейка: " + cell.CellCode + Environment.NewLine +
-                "Товар: " + cell.ProductName + Environment.NewLine +
-                "Артикул: " + cell.Article + Environment.NewLine +
-                "Остаток: " + cell.Balance + " шт." + Environment.NewLine +
-                "Категория: " + GetTextOrDash(cell.CategoryName) + Environment.NewLine +
-                "Срок годности: " + GetExpiryText(cell);
+                string.Format(Resources.Warehouse_CellCodeLabel, cell.CellCode) + Environment.NewLine +
+                string.Format(Resources.Warehouse_ProductNameLabel, cell.ProductName) + Environment.NewLine +
+                string.Format(Resources.Warehouse_ArticleLabel, cell.Article) + Environment.NewLine +
+                string.Format(Resources.Warehouse_BalanceLabel, cell.Balance) + Environment.NewLine +
+                string.Format(Resources.Warehouse_CategoryLabel, GetTextOrDash(cell.CategoryName)) + Environment.NewLine +
+                string.Format(Resources.Warehouse_ExpiryLabel, GetExpiryText(cell));
         }
 
         private void DataGridViewWarehouse_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -157,8 +190,8 @@ namespace AutomechanicsProject.Formes
             {
                 ClearProductCard();
 
-                MessageBox.Show("Ячейка пуста",
-                    "Склад",
+                MessageBox.Show(Resources.Warehouse_CellEmptyMessage,
+                    Resources.Warehouse_Title,
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Information);
 
@@ -280,7 +313,7 @@ namespace AutomechanicsProject.Formes
         {
             if (!cell.HasExpiryDate || !cell.ExpiryDate.HasValue)
             {
-                return "Не требуется";
+                return Resources.Warehouse_NoExpiryRequired;
             }
 
             return cell.ExpiryDate.Value.ToString("dd.MM.yyyy");
@@ -342,8 +375,8 @@ namespace AutomechanicsProject.Formes
         {
             if (string.IsNullOrWhiteSpace(_searchText) || _searchText.Length < 3)
             {
-                MessageBox.Show("Введите минимум 3 символа для поиска",
-                    "Поиск",
+                MessageBox.Show(Resources.Warehouse_SearchMinLength,
+                    Resources.Warehouse_SearchTitle,
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Warning);
 
@@ -354,16 +387,16 @@ namespace AutomechanicsProject.Formes
 
             if (count == 0)
             {
-                MessageBox.Show("Ничего не найдено",
-                    "Результат поиска",
+                MessageBox.Show(Resources.Warehouse_SearchNothingFound,
+                    Resources.Warehouse_SearchResultTitle,
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Warning);
 
                 return;
             }
 
-            MessageBox.Show("Найдено: " + count + " ячеек",
-                "Результат поиска",
+            MessageBox.Show(string.Format(Resources.Warehouse_SearchFound, count),
+                Resources.Warehouse_SearchResultTitle,
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Information);
         }

@@ -29,12 +29,10 @@ namespace AutomechanicsProject.Formes
         /// <summary>
         /// Конструктор формы
         /// </summary>
-        /// <summary>
-        /// Конструктор формы
-        /// </summary>
         public AddProduct(IProductService productService)
         {
             InitializeComponent();
+            ApplyLocalization();
 
             _productService = productService ?? throw new ArgumentNullException(nameof(productService));
 
@@ -48,6 +46,25 @@ namespace AutomechanicsProject.Formes
             TextBoxHelper.SetupWatermarkComboBox(comboBoxUnit, Resources.UnitSelectWatermark);
 
             comboBoxCategory.SelectedIndexChanged += ComboBoxCategory_SelectedIndexChanged;
+        }
+
+        /// <summary>
+        /// Применяет текст из ресурсов к элементам формы
+        /// </summary>
+        private void ApplyLocalization()
+        {
+            Text = Resources.AddProduct_Title;
+
+            labelAddProduct.Text = Resources.AddProduct_Title;
+            textBoxArt.Text = Resources.AddProduct_ArticleWatermark;
+            textBoxName.Text = Resources.AddProduct_NameWatermark;
+            textBoxPrice.Text = Resources.AddProduct_PriceWatermark;
+            groupBoxExpiry.Text = Resources.AddProduct_GroupBoxExpiry_Text;
+
+            radioButtonNoExpiry.Text = Resources.AddProduct_RadioButtonNoExpiry_Text;
+            radioButtonHasExpiry.Text = Resources.AddProduct_RadioButtonHasExpiry_Text;
+            buttonCancel.Text = Resources.AddProduct_ButtonCancelText;
+            buttonAdd.Text = Resources.AddProduct_ButtonAddText;
         }
 
         /// <summary>

@@ -118,7 +118,7 @@ namespace AutomechanicsProject.Formes
             }
             catch (Exception ex)
             {
-                FormHelper.HandleException("Ошибка регистрации", ex, this);
+                FormHelper.HandleException(Resources.ErrorRegistration, ex, this);
             }
         }
         /// <summary>

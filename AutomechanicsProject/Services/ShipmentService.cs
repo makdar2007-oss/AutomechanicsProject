@@ -18,13 +18,13 @@ namespace AutomechanicsProject.Services
     /// </summary>
     public class ShipmentService : IShipmentService
     {
-        private readonly DateBase _db;
+        private readonly IDateBaseContext _db;
         private readonly IWarehouseHeatmapService _warehouseHeatmapService;
 
         /// <summary>
         /// Создает сервис отгрузок
         /// </summary>
-        public ShipmentService(DateBase db, IWarehouseHeatmapService warehouseHeatmapService)
+        public ShipmentService(IDateBaseContext db, IWarehouseHeatmapService warehouseHeatmapService)
         {
             _db = db;
             _warehouseHeatmapService = warehouseHeatmapService ?? throw new ArgumentNullException(nameof(warehouseHeatmapService));
@@ -187,7 +187,7 @@ namespace AutomechanicsProject.Services
                 {
                     if (!item.ProductId.HasValue)
                     {
-                        throw new Exception("Товар не найден");
+                        throw new Exception(Resources.ErrorProductNotFoundGeneric);
                     }
 
                     var shipmentItem = new ShipmentItem
@@ -215,7 +215,7 @@ namespace AutomechanicsProject.Services
 
                     if (product == null)
                     {
-                        throw new Exception("Товар не найден или был удален");
+                        throw new Exception(Resources.ErrorProductNotFoundOrDeleted);
                     }
 
                     product.Balance -= Math.Abs(item.Quantity);

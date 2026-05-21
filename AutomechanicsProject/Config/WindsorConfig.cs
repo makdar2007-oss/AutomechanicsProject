@@ -20,8 +20,7 @@ namespace AutomechanicsProject.Config
 
             container.Register(
 
-                Component.For<DateBase>().LifestyleTransient(),
-
+                Component.For<IDateBaseContext>().ImplementedBy<DateBase>().LifestyleTransient(),
 
                 Component.For<IAuthService>().ImplementedBy<AuthService>().LifestyleTransient(),
                 Component.For<ICategoryService>().ImplementedBy<CategoryService>().LifestyleTransient(),

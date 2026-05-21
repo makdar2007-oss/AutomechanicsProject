@@ -1,5 +1,6 @@
 ﻿using AutomechanicsProject.Classes;
 using AutomechanicsProject.Enum;
+using AutomechanicsProject.Properties;
 using AutomechanicsProject.Services.Interfaces;
 using System;
 using System.Linq;
@@ -12,13 +13,13 @@ namespace AutomechanicsProject.Services
     /// </summary>
     public class ExpiredProductsService : IExpiredProductsService
     {
-        private readonly DateBase _db;
+        private readonly IDateBaseContext _db;
         private readonly ICurrentUserService _currentUserService;
 
         /// <summary>
-        /// Создает сервис просроченных товаров
+        /// Создает сервис списания просроченных товаров
         /// </summary>
-        public ExpiredProductsService(DateBase db, ICurrentUserService currentUserService)
+        public ExpiredProductsService(IDateBaseContext db, ICurrentUserService currentUserService)
         {
             _db = db;
             _currentUserService = currentUserService;
@@ -45,7 +46,7 @@ namespace AutomechanicsProject.Services
 
             if (_currentUserService.CurrentUser == null)
             {
-                throw new InvalidOperationException("Текущий пользователь не найден");
+                throw new InvalidOperationException(Resources.CurrentUserNotFound);
             }
 
             foreach (var product in expiredProducts)

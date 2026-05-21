@@ -13,12 +13,12 @@ namespace AutomechanicsProject.Services
     /// </summary>
     public class AuthService : IAuthService
     {
-        private readonly DateBase _db;
+        private readonly IDateBaseContext _db;
 
         /// <summary>
         /// Создает сервис авторизации
         /// </summary>
-        public AuthService(DateBase db)
+        public AuthService(IDateBaseContext db)
         {
             _db = db;
         }
@@ -61,12 +61,12 @@ namespace AutomechanicsProject.Services
         public void Register(string surname, string name, string lastname, string login, string password)
         {
             if (_db.Users.Any(u => u.Login == login))
-                throw new Exception("Пользователь с таким логином уже существует");
+                throw new Exception(Resources.ErrorUserExists);
 
             var role = _db.Roles.FirstOrDefault(r => r.Position == Resources.StorekeeperRoleName);
 
             if (role == null)
-                throw new Exception("Роль кладовщика не найдена");
+                throw new Exception(Resources.ErrorRoleNotFound);
 
             var user = new Users
             {

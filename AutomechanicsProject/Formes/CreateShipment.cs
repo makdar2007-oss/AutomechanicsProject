@@ -362,7 +362,7 @@ namespace AutomechanicsProject.Formes
             if (quantity > productToShip.Balance)
             {
                 MessageBox.Show(string.Format(Resources.ErrorInsufficientStockWithDetails,
-                    productToShip.Balance, productToShip.Unit?.Name ?? "шт"),
+                    productToShip.Balance, productToShip.Unit?.Name ?? Resources.Unit_Piece_Short),
                     Resources.TitleWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 textBoxUnit.Focus();
                 return false;
@@ -377,7 +377,7 @@ namespace AutomechanicsProject.Formes
                 quantity,
                 productToShip.Price,
                 productToShip.Price * 2,
-                productToShip.Unit?.Name ?? "шт"
+                productToShip.Unit?.Name ?? Resources.Unit_Piece_Short
             );
         }
 
@@ -638,8 +638,10 @@ namespace AutomechanicsProject.Formes
             {
                 if (_currentUserService.CurrentUser == null)
                 {
-                    MessageBox.Show("Текущий пользователь не найден.");
-                    return;
+                    MessageBox.Show(Resources.CurrentUserNotFound,
+                        Resources.TitleError,
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
                 }
                 _shipmentService.CreateShipment(
                 shipmentItems,

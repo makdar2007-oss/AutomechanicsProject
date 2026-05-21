@@ -15,15 +15,16 @@ namespace AutomechanicsProject.Services
     /// </summary>
     public class SupplyService : ISupplyService
     {
-        private readonly DateBase _db;
+        private readonly IDateBaseContext _db;
 
         /// <summary>
-        /// Конструктор
+        /// Создает сервис поставок
         /// </summary>
-        public SupplyService(DateBase db)
+        public SupplyService(IDateBaseContext db)
         {
             _db = db;
         }
+
         /// <summary>
         /// Получает товары для формы поставки
         /// </summary>
@@ -98,7 +99,7 @@ namespace AutomechanicsProject.Services
 
                     if (product == null)
                     {
-                        throw new Exception("Товар не найден или был удален");
+                        throw new Exception(Resources.ErrorProductNotFoundOrDeleted);
                     }
 
                     product.Balance += position.Quantity;

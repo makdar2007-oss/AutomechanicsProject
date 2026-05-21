@@ -1,6 +1,7 @@
 ﻿using AutomechanicsProject.Classes;
 using Microsoft.EntityFrameworkCore;
 using System;
+using AutomechanicsProject.Services.Interfaces;
 
 namespace AutomechanicsProject.Classes
 {
@@ -8,7 +9,7 @@ namespace AutomechanicsProject.Classes
     /// Контекст базы данных для работы с приложением
     /// Предоставляет доступ к сущностям и методы для работы с данными
     /// </summary>
-    public class DateBase : DbContext
+    public class DateBase : DbContext, IDateBaseContext
     {
         /// <summary>
         /// Набор пользователей

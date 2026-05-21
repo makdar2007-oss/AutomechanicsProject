@@ -146,7 +146,7 @@ namespace AutomechanicsProject.Formes
             this.textBoxSearch.Name = "textBoxSearch";
             this.textBoxSearch.Size = new System.Drawing.Size(298, 44);
             this.textBoxSearch.TabIndex = 2;
-            this.textBoxSearch.Text = "Поиск:";
+            textBoxSearch.Text = Resources.StorekeeperForm_SearchText;
             this.textBoxSearch.TextChanged += new System.EventHandler(this.TextBoxSearch_TextChanged);
             // 
             // panelData
@@ -205,7 +205,7 @@ namespace AutomechanicsProject.Formes
             this.toolStripTextBoxStorekeeper.Name = "toolStripTextBoxStorekeeper";
             this.toolStripTextBoxStorekeeper.ReadOnly = true;
             this.toolStripTextBoxStorekeeper.Size = new System.Drawing.Size(500, 44);
-            this.toolStripTextBoxStorekeeper.Text = "Кладовщик";
+            this.toolStripTextBoxStorekeeper.Text = Resources.StorekeeperForm_ToolStripStorekeeperText;
             // 
             // StorekeeperForm
             // 
@@ -216,7 +216,7 @@ namespace AutomechanicsProject.Formes
             this.MainMenuStrip = this.menuStripStorekeeper;
             this.MinimumSize = new System.Drawing.Size(1337, 585);
             this.Name = "StorekeeperForm";
-            this.Text = "Кладовщик - Управление складом";
+            this.Text = Resources.StorekeeperForm_Title;
             this.panelStorekeeper.ResumeLayout(false);
             this.panelStorekeeper.PerformLayout();
             this.panelSearch.ResumeLayout(false);

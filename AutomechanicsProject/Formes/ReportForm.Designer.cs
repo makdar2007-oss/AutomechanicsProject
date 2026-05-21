@@ -280,7 +280,7 @@ namespace AutomechanicsProject.Formes
             this.labelProfitValue.Name = "labelProfitValue";
             this.labelProfitValue.Size = new System.Drawing.Size(108, 20);
             this.labelProfitValue.TabIndex = 3;
-            this.labelProfitValue.Text = "0.00 руб.";
+            this.labelProfitValue.Text = string.Format(Resources.CurrencyFormat_Rub, 0);
             this.labelProfitValue.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // labelTotalAmountCaption
@@ -291,7 +291,7 @@ namespace AutomechanicsProject.Formes
             this.labelTotalAmountCaption.Name = "labelTotalAmountCaption";
             this.labelTotalAmountCaption.Size = new System.Drawing.Size(151, 20);
             this.labelTotalAmountCaption.TabIndex = 0;
-            this.labelTotalAmountCaption.Text = "Сумма(RUB):                                                ";
+            this.labelTotalAmountCaption.Text = "Report_LabelTotalAmount_Text:                                                ";
             this.labelTotalAmountCaption.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // panelExport

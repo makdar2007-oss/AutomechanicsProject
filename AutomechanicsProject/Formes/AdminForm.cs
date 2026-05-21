@@ -37,6 +37,16 @@ namespace AutomechanicsProject.Formes
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         /// <summary>
+        /// Применяет текст из ресурсов к элементам формы
+        /// </summary>
+        private void ApplyLocalization()
+        {
+            Text = Resources.AdminForm_Title;
+
+            buttonWarehouse.Text = Resources.Warehouse_Button;
+            toolStripTextBoxAdmin.Text = Resources.AdminForm_ToolStripAdminText;
+        }
+        /// <summary>
         /// Инициализирует новый экземпляр формы администратора
         /// </summary>
         public AdminForm(
@@ -53,8 +63,8 @@ namespace AutomechanicsProject.Formes
             IWarehouseHeatmapService warehouseHeatmapService)
         {
             InitializeComponent();
+            ApplyLocalization();
 
-            
             _productService = productService ?? throw new ArgumentNullException(nameof(productService));
             _categoryService = categoryService ?? throw new ArgumentNullException(nameof(categoryService));
             _authService = authService ?? throw new ArgumentNullException(nameof(authService));

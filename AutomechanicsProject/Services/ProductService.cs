@@ -2,12 +2,13 @@
 using AutomechanicsProject.Dtos.Service;
 using AutomechanicsProject.Dtos.UI;
 using AutomechanicsProject.Mappers;
+using AutomechanicsProject.Properties;
+using AutomechanicsProject.Services.Interfaces;
 using AutomechanicsProject.ViewModels;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using AutomechanicsProject.Services.Interfaces;
-using Microsoft.EntityFrameworkCore;
 
 namespace AutomechanicsProject.Services
 {
@@ -16,13 +17,13 @@ namespace AutomechanicsProject.Services
     /// </summary>
     public class ProductService : IProductService
     {
-        private readonly DateBase _db;
+        private readonly IDateBaseContext _db;
         private readonly IWarehouseHeatmapService _warehouseHeatmapService;
 
         /// <summary>
         /// Создает сервис товаров
         /// </summary>
-        public ProductService(DateBase db, IWarehouseHeatmapService warehouseHeatmapService)
+        public ProductService(IDateBaseContext db, IWarehouseHeatmapService warehouseHeatmapService)
         {
             _db = db;
             _warehouseHeatmapService = warehouseHeatmapService ?? throw new ArgumentNullException(nameof(warehouseHeatmapService));
@@ -157,12 +158,12 @@ namespace AutomechanicsProject.Services
 
             if (product == null)
             {
-                throw new Exception("Товар не найден");
+                throw new Exception(Resources.ErrorProductNotFoundGeneric);
             }
 
             if (product.IsDeleted)
             {
-                throw new Exception("Товар уже удален");
+                throw new Exception(Resources.ErrorProductAlreadyDeleted);
             }
 
             product.IsDeleted = true;
@@ -184,7 +185,7 @@ namespace AutomechanicsProject.Services
                     p.Name,
                     p.Balance,
                     p.Price,
-                    UnitName = p.Unit != null ? p.Unit.Name : "шт",
+                    UnitName = p.Unit != null ? p.Unit.Name : Resources.Unit_Piece_Short,
                     p.UnitId,
                     p.IsMetal
                 })

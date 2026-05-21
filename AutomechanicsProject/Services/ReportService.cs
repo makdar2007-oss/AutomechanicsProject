@@ -11,12 +11,12 @@ namespace AutomechanicsProject.Services
     /// </summary>
     public class ReportService : IReportService
     {
-        private readonly DateBase _db;
+        private readonly IDateBaseContext _db;
 
         /// <summary>
-        /// Конструктор
+        /// Создает сервис отчетов
         /// </summary>
-        public ReportService(DateBase db)
+        public ReportService(IDateBaseContext db)
         {
             _db = db;
         }

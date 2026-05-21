@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AutomechanicsProject.Properties;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -33,7 +34,7 @@ namespace AutomechanicsProject.Classes
         /// Отображаемое имя категории с количеством товаров 
         /// </summary>
         [NotMapped]
-        public string DisplayName => $"{Name} (товаров: {Products?.Count ?? 0})";
+        public string DisplayName => string.Format(Resources.CategoryDisplayFormat_WithCount, Name, Products?.Count ?? 0);
 
         /// <summary>
         /// Показывает, удалена ли категория из каталога
