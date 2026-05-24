@@ -17,12 +17,25 @@ namespace AutomechanicsProject.Formes
         private readonly ICategoryService _categoryService;
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-        //// <summary>
+        /// <summary>
+        /// Применяет текст из ресурсов к элементам формы
+        /// </summary>
+        private void ApplyLocalization()
+        {
+            Text = Resources.DeleteCategory_Form_Title;
+
+            label1.Text = Resources.DeleteCategory_LabelTitle_Text;
+            buttonDelete.Text = Resources.DeleteCategory_ButtonDelete_Text;
+            buttonCancel.Text = Resources.DeleteCategory_ButtonCancel_Text;
+        }
+
+        /// <summary>
         /// Инициализирует новый экземпляр формы удаления категории
         /// </summary>
         public DeleteCategory(ICategoryService categoryService)
         {
             InitializeComponent();
+            ApplyLocalization();
 
             _categoryService = categoryService ?? throw new ArgumentNullException(nameof(categoryService));
         }
@@ -133,5 +146,7 @@ namespace AutomechanicsProject.Formes
             DialogResult = DialogResult.Cancel;
             Close();
         }
+
+      
     }
 }

@@ -35,8 +35,6 @@ namespace AutomechanicsProject.Config
                 Component.For<IWarehouseHeatmapService>().ImplementedBy<WarehouseHeatmapService>().LifestyleTransient()
 
 
-
-
                 );
                 
             return container;

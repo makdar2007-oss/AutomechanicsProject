@@ -71,22 +71,22 @@ namespace AutomechanicsProject.Formes
             this.tableLayoutPanelMain.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanelMain.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanelMain.Name = "tableLayoutPanelMain";
-            this.tableLayoutPanelMain.Padding = new System.Windows.Forms.Padding(10);
+            this.tableLayoutPanelMain.Padding = new System.Windows.Forms.Padding(15, 16, 15, 16);
             this.tableLayoutPanelMain.RowCount = 3;
-            this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
+            this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 94F));
             this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 80F));
-            this.tableLayoutPanelMain.Size = new System.Drawing.Size(984, 611);
+            this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 125F));
+            this.tableLayoutPanelMain.Size = new System.Drawing.Size(1608, 1043);
             this.tableLayoutPanelMain.TabIndex = 0;
             // 
             // panelTitle
             // 
             this.panelTitle.Controls.Add(this.labelTitle);
             this.panelTitle.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelTitle.Location = new System.Drawing.Point(10, 10);
+            this.panelTitle.Location = new System.Drawing.Point(15, 16);
             this.panelTitle.Margin = new System.Windows.Forms.Padding(0);
             this.panelTitle.Name = "panelTitle";
-            this.panelTitle.Size = new System.Drawing.Size(964, 60);
+            this.panelTitle.Size = new System.Drawing.Size(1578, 94);
             this.panelTitle.TabIndex = 0;
             // 
             // labelTitle
@@ -95,19 +95,20 @@ namespace AutomechanicsProject.Formes
             this.labelTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Bold);
             this.labelTitle.ForeColor = System.Drawing.Color.Black;
             this.labelTitle.Location = new System.Drawing.Point(0, 0);
+            this.labelTitle.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelTitle.Name = "labelTitle";
-            this.labelTitle.Size = new System.Drawing.Size(964, 60);
+            this.labelTitle.Size = new System.Drawing.Size(1578, 94);
             this.labelTitle.TabIndex = 0;
-            this.labelTitle.Text = Resources.Report_LabelTitle_Text;
+            this.labelTitle.Text = "Отчет";
             // 
             // panelTable
             // 
             this.panelTable.Controls.Add(this.dataGridViewReport);
             this.panelTable.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelTable.Location = new System.Drawing.Point(10, 70);
+            this.panelTable.Location = new System.Drawing.Point(15, 110);
             this.panelTable.Margin = new System.Windows.Forms.Padding(0);
             this.panelTable.Name = "panelTable";
-            this.panelTable.Size = new System.Drawing.Size(964, 451);
+            this.panelTable.Size = new System.Drawing.Size(1578, 792);
             this.panelTable.TabIndex = 1;
             // 
             // dataGridViewReport
@@ -128,7 +129,7 @@ namespace AutomechanicsProject.Formes
             this.dataGridViewReport.RowHeadersWidth = 82;
             this.dataGridViewReport.RowTemplate.Height = 33;
             this.dataGridViewReport.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewReport.Size = new System.Drawing.Size(964, 451);
+            this.dataGridViewReport.Size = new System.Drawing.Size(1578, 792);
             this.dataGridViewReport.TabIndex = 0;
             // 
             // panelBottom
@@ -141,13 +142,13 @@ namespace AutomechanicsProject.Formes
             this.panelBottom.Controls.Add(this.panelSummary, 1, 0);
             this.panelBottom.Controls.Add(this.panelExport, 2, 0);
             this.panelBottom.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelBottom.Location = new System.Drawing.Point(10, 521);
+            this.panelBottom.Location = new System.Drawing.Point(15, 902);
             this.panelBottom.Margin = new System.Windows.Forms.Padding(0);
             this.panelBottom.Name = "panelBottom";
-            this.panelBottom.Padding = new System.Windows.Forms.Padding(5);
+            this.panelBottom.Padding = new System.Windows.Forms.Padding(8, 8, 8, 8);
             this.panelBottom.RowCount = 1;
             this.panelBottom.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.panelBottom.Size = new System.Drawing.Size(964, 80);
+            this.panelBottom.Size = new System.Drawing.Size(1578, 125);
             this.panelBottom.TabIndex = 2;
             // 
             // panelDateFilter
@@ -164,12 +165,13 @@ namespace AutomechanicsProject.Formes
             this.panelDateFilter.Controls.Add(this.labelTo, 3, 0);
             this.panelDateFilter.Controls.Add(this.dateTimePickerTo, 4, 0);
             this.panelDateFilter.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelDateFilter.Location = new System.Drawing.Point(5, 5);
+            this.panelDateFilter.Location = new System.Drawing.Point(8, 8);
             this.panelDateFilter.Margin = new System.Windows.Forms.Padding(0);
             this.panelDateFilter.Name = "panelDateFilter";
             this.panelDateFilter.RowCount = 1;
             this.panelDateFilter.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.panelDateFilter.Size = new System.Drawing.Size(479, 70);
+            this.panelDateFilter.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 109F));
+            this.panelDateFilter.Size = new System.Drawing.Size(785, 109);
             this.panelDateFilter.TabIndex = 0;
             // 
             // labelPeriod
@@ -177,22 +179,24 @@ namespace AutomechanicsProject.Formes
             this.labelPeriod.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.labelPeriod.AutoSize = true;
             this.labelPeriod.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold);
-            this.labelPeriod.Location = new System.Drawing.Point(3, 15);
+            this.labelPeriod.Location = new System.Drawing.Point(4, 39);
+            this.labelPeriod.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelPeriod.Name = "labelPeriod";
-            this.labelPeriod.Size = new System.Drawing.Size(101, 40);
+            this.labelPeriod.Size = new System.Drawing.Size(260, 31);
             this.labelPeriod.TabIndex = 0;
-            this.labelPeriod.Text = Resources.Report_LabelPeriod_Text;
+            this.labelPeriod.Text = "Выберите период:";
             // 
             // labelFrom
             // 
             this.labelFrom.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.labelFrom.AutoSize = true;
             this.labelFrom.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.labelFrom.Location = new System.Drawing.Point(110, 26);
+            this.labelFrom.Location = new System.Drawing.Point(272, 40);
+            this.labelFrom.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelFrom.Name = "labelFrom";
-            this.labelFrom.Size = new System.Drawing.Size(16, 18);
+            this.labelFrom.Size = new System.Drawing.Size(25, 29);
             this.labelFrom.TabIndex = 1;
-            this.labelFrom.Text = Resources.Report_LabelFrom_Text;
+            this.labelFrom.Text = "с";
             // 
             // dateTimePickerFrom
             // 
@@ -200,9 +204,10 @@ namespace AutomechanicsProject.Formes
             this.dateTimePickerFrom.CustomFormat = "dd.MM.yyyy";
             this.dateTimePickerFrom.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
             this.dateTimePickerFrom.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dateTimePickerFrom.Location = new System.Drawing.Point(132, 23);
+            this.dateTimePickerFrom.Location = new System.Drawing.Point(305, 37);
+            this.dateTimePickerFrom.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.dateTimePickerFrom.Name = "dateTimePickerFrom";
-            this.dateTimePickerFrom.Size = new System.Drawing.Size(145, 24);
+            this.dateTimePickerFrom.Size = new System.Drawing.Size(216, 35);
             this.dateTimePickerFrom.TabIndex = 2;
             this.dateTimePickerFrom.ValueChanged += new System.EventHandler(this.dateTimePickerFrom_ValueChanged);
             // 
@@ -211,11 +216,12 @@ namespace AutomechanicsProject.Formes
             this.labelTo.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.labelTo.AutoSize = true;
             this.labelTo.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.labelTo.Location = new System.Drawing.Point(283, 26);
+            this.labelTo.Location = new System.Drawing.Point(529, 40);
+            this.labelTo.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelTo.Name = "labelTo";
-            this.labelTo.Size = new System.Drawing.Size(25, 18);
+            this.labelTo.Size = new System.Drawing.Size(42, 29);
             this.labelTo.TabIndex = 3;
-            this.labelTo.Text = Resources.Report_LabelTo_Text;
+            this.labelTo.Text = "по";
             // 
             // dateTimePickerTo
             // 
@@ -223,29 +229,30 @@ namespace AutomechanicsProject.Formes
             this.dateTimePickerTo.CustomFormat = "dd.MM.yyyy";
             this.dateTimePickerTo.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
             this.dateTimePickerTo.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dateTimePickerTo.Location = new System.Drawing.Point(314, 23);
+            this.dateTimePickerTo.Location = new System.Drawing.Point(579, 37);
+            this.dateTimePickerTo.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.dateTimePickerTo.Name = "dateTimePickerTo";
-            this.dateTimePickerTo.Size = new System.Drawing.Size(148, 24);
+            this.dateTimePickerTo.Size = new System.Drawing.Size(202, 35);
             this.dateTimePickerTo.TabIndex = 4;
             this.dateTimePickerTo.ValueChanged += new System.EventHandler(this.dateTimePickerTo_ValueChanged);
             // 
             // panelSummary
             // 
             this.panelSummary.ColumnCount = 2;
-            this.panelSummary.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.panelSummary.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.panelSummary.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 68.22034F));
+            this.panelSummary.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 31.77966F));
             this.panelSummary.Controls.Add(this.labelTotalAmountValue, 1, 0);
             this.panelSummary.Controls.Add(this.labelProfitCaption, 0, 1);
             this.panelSummary.Controls.Add(this.labelProfitValue, 1, 1);
             this.panelSummary.Controls.Add(this.labelTotalAmountCaption, 0, 0);
             this.panelSummary.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelSummary.Location = new System.Drawing.Point(484, 5);
+            this.panelSummary.Location = new System.Drawing.Point(793, 8);
             this.panelSummary.Margin = new System.Windows.Forms.Padding(0);
             this.panelSummary.Name = "panelSummary";
             this.panelSummary.RowCount = 2;
             this.panelSummary.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.panelSummary.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.panelSummary.Size = new System.Drawing.Size(315, 70);
+            this.panelSummary.Size = new System.Drawing.Size(516, 109);
             this.panelSummary.TabIndex = 1;
             // 
             // labelTotalAmountValue
@@ -253,22 +260,23 @@ namespace AutomechanicsProject.Formes
             this.labelTotalAmountValue.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.labelTotalAmountValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold);
             this.labelTotalAmountValue.ForeColor = System.Drawing.Color.Black;
-            this.labelTotalAmountValue.Location = new System.Drawing.Point(160, 7);
+            this.labelTotalAmountValue.Location = new System.Drawing.Point(356, 11);
+            this.labelTotalAmountValue.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelTotalAmountValue.Name = "labelTotalAmountValue";
-            this.labelTotalAmountValue.Size = new System.Drawing.Size(108, 20);
+            this.labelTotalAmountValue.Size = new System.Drawing.Size(156, 31);
             this.labelTotalAmountValue.TabIndex = 1;
-            this.labelTotalAmountCaption.Text = Resources.Report_LabelTotalAmount_Text;
             this.labelTotalAmountValue.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // labelProfitCaption
             // 
             this.labelProfitCaption.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.labelProfitCaption.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold);
-            this.labelProfitCaption.Location = new System.Drawing.Point(3, 42);
+            this.labelProfitCaption.Location = new System.Drawing.Point(34, 66);
+            this.labelProfitCaption.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelProfitCaption.Name = "labelProfitCaption";
-            this.labelProfitCaption.Size = new System.Drawing.Size(151, 20);
+            this.labelProfitCaption.Size = new System.Drawing.Size(314, 31);
             this.labelProfitCaption.TabIndex = 2;
-            this.labelProfitCaption.Text = Resources.Report_LabelProfit_Text;
+            this.labelProfitCaption.Text = "Прибыль(RUB):";
             this.labelProfitCaption.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // labelProfitValue
@@ -276,32 +284,34 @@ namespace AutomechanicsProject.Formes
             this.labelProfitValue.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.labelProfitValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold);
             this.labelProfitValue.ForeColor = System.Drawing.Color.Black;
-            this.labelProfitValue.Location = new System.Drawing.Point(160, 42);
+            this.labelProfitValue.Location = new System.Drawing.Point(356, 66);
+            this.labelProfitValue.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelProfitValue.Name = "labelProfitValue";
-            this.labelProfitValue.Size = new System.Drawing.Size(108, 20);
+            this.labelProfitValue.Size = new System.Drawing.Size(156, 31);
             this.labelProfitValue.TabIndex = 3;
-            this.labelProfitValue.Text = string.Format(Resources.CurrencyFormat_Rub, 0);
+            this.labelProfitValue.Text = "0,00 руб.";
             this.labelProfitValue.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // labelTotalAmountCaption
             // 
             this.labelTotalAmountCaption.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.labelTotalAmountCaption.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold);
-            this.labelTotalAmountCaption.Location = new System.Drawing.Point(3, 7);
+            this.labelTotalAmountCaption.Location = new System.Drawing.Point(78, 11);
+            this.labelTotalAmountCaption.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelTotalAmountCaption.Name = "labelTotalAmountCaption";
-            this.labelTotalAmountCaption.Size = new System.Drawing.Size(151, 20);
+            this.labelTotalAmountCaption.Size = new System.Drawing.Size(270, 31);
             this.labelTotalAmountCaption.TabIndex = 0;
-            this.labelTotalAmountCaption.Text = "Report_LabelTotalAmount_Text:                                                ";
+            this.labelTotalAmountCaption.Text = "Сумма отгрузки:                                     ";
             this.labelTotalAmountCaption.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // panelExport
             // 
             this.panelExport.Controls.Add(this.buttonExport);
             this.panelExport.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelExport.Location = new System.Drawing.Point(799, 5);
+            this.panelExport.Location = new System.Drawing.Point(1309, 8);
             this.panelExport.Margin = new System.Windows.Forms.Padding(0);
             this.panelExport.Name = "panelExport";
-            this.panelExport.Size = new System.Drawing.Size(160, 70);
+            this.panelExport.Size = new System.Drawing.Size(261, 109);
             this.panelExport.TabIndex = 2;
             // 
             // buttonExport
@@ -314,24 +324,26 @@ namespace AutomechanicsProject.Formes
             this.buttonExport.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonExport.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Bold);
             this.buttonExport.ForeColor = System.Drawing.Color.Black;
-            this.buttonExport.Location = new System.Drawing.Point(18, 1);
+            this.buttonExport.Location = new System.Drawing.Point(37, 2);
+            this.buttonExport.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.buttonExport.Name = "buttonExport";
-            this.buttonExport.Size = new System.Drawing.Size(126, 67);
+            this.buttonExport.Size = new System.Drawing.Size(189, 105);
             this.buttonExport.TabIndex = 0;
-            this.buttonExport.Text = Resources.Report_ButtonExport_Text;
+            this.buttonExport.Text = global::AutomechanicsProject.Properties.Resources.Report_ButtonExport_Text;
             this.buttonExport.UseVisualStyleBackColor = false;
             this.buttonExport.Click += new System.EventHandler(this.buttonExport_Click);
             // 
             // ReportForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(984, 611);
+            this.ClientSize = new System.Drawing.Size(1608, 1043);
             this.Controls.Add(this.tableLayoutPanelMain);
-            this.MinimumSize = new System.Drawing.Size(800, 500);
+            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.MinimumSize = new System.Drawing.Size(1187, 741);
             this.Name = "ReportForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = Resources.Report_Form_Title;
+            this.Text = "Отчет";
             this.Load += new System.EventHandler(this.ReportForm_Load);
             this.tableLayoutPanelMain.ResumeLayout(false);
             this.panelTitle.ResumeLayout(false);

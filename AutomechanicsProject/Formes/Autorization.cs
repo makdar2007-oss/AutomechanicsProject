@@ -33,6 +33,20 @@ namespace AutomechanicsProject
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         /// <summary>
+        /// Применяет текст из ресурсов к элементам формы
+        /// </summary>
+        private void ApplyLocalization()
+        {
+            Text = Resources.Auth_Form_Title;
+
+            labelEnter.Text = Resources.Auth_LabelEnter_Text;
+            labelLogin.Text = Resources.Auth_LabelLogin_Text;
+            labelPassword.Text = Resources.Auth_LabelPassword_Text;
+            buttonEnter.Text = Resources.Auth_ButtonEnter_Text;
+            buttonRegest.Text = Resources.Auth_ButtonRegister_Text;
+        }
+
+        /// <summary>
         /// Конструктор
         /// </summary>
         public Autorization(
@@ -49,6 +63,7 @@ namespace AutomechanicsProject
              IWarehouseHeatmapService warehouseHeatmapService)
         {
             InitializeComponent();
+            ApplyLocalization();
 
             _authService = authService ?? throw new ArgumentNullException(nameof(authService));
             _productService = productService ?? throw new ArgumentNullException(nameof(productService));

@@ -20,11 +20,24 @@ namespace AutomechanicsProject.Formes
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         /// <summary>
+        /// Применяет текст из ресурсов к элементам формы
+        /// </summary>
+        private void ApplyLocalization()
+        {
+            Text = Resources.AddCategory_Title;
+
+            labelAddCategory.Text = Resources.AddCategory_LabelText;
+            buttonCancel.Text = Resources.AddCategory_ButtonCancelText;
+            buttonAdd.Text = Resources.AddCategory_ButtonAddText;
+        }
+
+        /// <summary>
         /// Конструктор формы
         /// </summary>
         public AddCategory(ICategoryService categoryService)
         {
             InitializeComponent();
+            ApplyLocalization();
 
             _categoryService = categoryService ?? throw new ArgumentNullException(nameof(categoryService));
 
@@ -87,7 +100,7 @@ namespace AutomechanicsProject.Formes
             }
             catch (Exception ex)
             {
-                logger.Error($"Ошибка при добавлении категории '{categoryName}'", ex);
+                logger.Error(ex, $"Ошибка при добавлении категории '{categoryName}'");
 
                 MessageBox.Show(Resources.ErrorAddCategory, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);

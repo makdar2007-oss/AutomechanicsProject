@@ -538,7 +538,7 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на {0} - {1} (остаток: {2} шт.).
+        ///   Ищет локализованную строку, похожую на {0} - {1} (остаток: {2} {3}).
         /// </summary>
         public static string ComboItemFormat {
             get {

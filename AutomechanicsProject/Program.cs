@@ -1,10 +1,9 @@
 ﻿using AutomechanicsProject.Config;
 using AutomechanicsProject.Formes;
+using AutomechanicsProject.Properties;
 using AutomechanicsProject.Services.Interfaces;
-using Castle.Windsor;
 using NLog;
 using System;
-using System.IO;
 using System.Windows.Forms;
 
 namespace AutomechanicsProject
@@ -46,8 +45,12 @@ namespace AutomechanicsProject
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString(), "CRITICAL ERROR",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                logger.Error(ex, "Критическая ошибка при запуске приложения");
+
+                MessageBox.Show(Resources.CriticalApplicationError,
+                    Resources.TitleError,
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
         }
 

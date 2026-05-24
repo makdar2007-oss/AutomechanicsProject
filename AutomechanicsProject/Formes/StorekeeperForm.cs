@@ -32,6 +32,21 @@ namespace AutomechanicsProject.Formes
         private readonly IWarehouseHeatmapService _warehouseHeatmapService;
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
+
+        /// <summary>
+        /// Применяет текст из ресурсов к элементам формы
+        /// </summary>
+        private void ApplyLocalization()
+        {
+            Text = Resources.StorekeeperForm_Title;
+
+            toolStripTextBoxStorekeeper.Text = Resources.StorekeeperForm_ToolStripStorekeeperText;
+            buttonExit.Text = Resources.Storekeeper_ButtonExitText;
+            buttonCurrency.Text = Resources.Storekeeper_ButtonCurrencyText;
+            buttonSupply.Text = Resources.Storekeeper_ButtonSupplyText;
+            buttonShipment.Text = Resources.Storekeeper_ButtonShipmentText;
+        }
+
         /// <summary>
         /// Инициализирует новый экземпляр формы кладовщика
         /// </summary>
@@ -49,8 +64,8 @@ namespace AutomechanicsProject.Formes
              IWarehouseHeatmapService warehouseHeatmapService)
         {
             InitializeComponent();
+            ApplyLocalization();
 
-            
             _productService = productService ?? throw new ArgumentNullException(nameof(productService));
             _authService = authService ?? throw new ArgumentNullException(nameof(authService));
             _shipmentService = shipmentService ?? throw new ArgumentNullException(nameof(shipmentService));

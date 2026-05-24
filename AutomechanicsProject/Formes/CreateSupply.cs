@@ -34,12 +34,42 @@ namespace AutomechanicsProject.Formes
         private List<ProductComboViewModel> allProductsForSearch;
         private SearchableComboBoxHelper.ComboBoxState comboBoxState;
 
+        /// <summary>
+        /// Применяет текст из ресурсов к элементам формы
+        /// </summary>
+        private void ApplyLocalization()
+        {
+            Text = Resources.Supply_Form_Title;
+
+            labelSupply.Text = Resources.Supply_LabelTitle_Text;
+            labelProduct.Text = Resources.Supply_LabelProduct_Text;
+            labelQuantity.Text = Resources.Supply_LabelQuantity_Text;
+            labelExpiry.Text = Resources.Supply_LabelExpiry_Text;
+            labelSupplier.Text = Resources.Supply_LabelSupplier_Text;
+            labelCurrency.Text = Resources.Supply_LabelCurrency_Text;
+            labelPrice.Text = Resources.Supply_LabelPrice_Text;
+            labelTotalCaption.Text = Resources.Supply_LabelTotalCaption_Text;
+
+            buttonImport.Text = Resources.Supply_ButtonImport_Text;
+            buttonAddToList.Text = Resources.Supply_ButtonAddToList_Text;
+            buttonCancel.Text = Resources.Supply_ButtonCancel_Text;
+            buttonConfirmSupply.Text = Resources.Supply_ButtonConfirmSupply_Text;
+
+            dataGridViewTextBoxColumn1.HeaderText = Resources.Supply_DataGridView_ColumnArticle;
+            dataGridViewTextBoxColumn2.HeaderText = Resources.Supply_DataGridView_ColumnName;
+            dataGridViewTextBoxColumn3.HeaderText = Resources.Supply_DataGridView_ColumnQuantity;
+            dataGridViewTextBoxColumn4.HeaderText = Resources.Supply_DataGridView_ColumnPrice;
+            dataGridViewTextBoxColumn5.HeaderText = Resources.Supply_DataGridView_ColumnTotal;
+            dataGridViewTextBoxColumn6.HeaderText = Resources.Supply_DataGridView_ColumnSupplier;
+            dataGridViewTextBoxColumn7.HeaderText = Resources.Supply_DataGridView_ColumnExpiry;
+        }
 
         public CreateSupply(
             ISupplyService supplyService,
             ICurrentUserService currentUserService)
         {
             InitializeComponent();
+            ApplyLocalization();
 
             _supplyService = supplyService ?? throw new ArgumentNullException(nameof(supplyService));
             _currentUserService = currentUserService ?? throw new ArgumentNullException(nameof(currentUserService));
@@ -227,7 +257,8 @@ namespace AutomechanicsProject.Formes
                         Id = p.Id,
                         Article = p.Article,
                         Name = p.Name,
-                        Text = string.Format(Resources.ComboItemFormat, p.Article, p.Name, p.Balance),                      Balance = p.Balance
+                        Text = string.Format(Resources.ComboItemFormat, p.Article, p.Name, p.Balance),                      
+                        Balance = p.Balance
                     })
                     .ToList();
 
@@ -284,10 +315,10 @@ namespace AutomechanicsProject.Formes
         /// </summary>
         private bool ValidateInputs()
         {
-            string productPlaceholder = Resources.SProductWatermark;
-            string supplierPlaceholder = Resources.SSupplierWatermark;
-            string quantityPlaceholder = Resources.SQuantityWatermark;
-            string pricePlaceholder = Resources.SProductWatermark;
+            var productPlaceholder = Resources.SProductWatermark;
+            var supplierPlaceholder = Resources.SSupplierWatermark;
+            var quantityPlaceholder = Resources.SQuantityWatermark;
+            var pricePlaceholder = Resources.SPriceWatermark;
 
             if (comboBoxProduct.SelectedItem == null ||
                 comboBoxProduct.Text == productPlaceholder ||
@@ -824,7 +855,7 @@ namespace AutomechanicsProject.Formes
                 finally
                 {
                     buttonConfirmSupply.Enabled = true;
-                    buttonConfirmSupply.Text = Resources.ButtonConfirmSupply;
+                    buttonConfirmSupply.Text = Resources.Supply_ButtonConfirmSupply_Text;
                 }
             }
         }
@@ -838,9 +869,7 @@ namespace AutomechanicsProject.Formes
         }
 
 
-        /// <summary>
-        /// Возвращает идентификатор текущего пользователя
-        /// </summary>
+        
         /// <summary>
         /// Возвращает идентификатор текущего пользователя
         /// </summary>

@@ -780,7 +780,7 @@
     <value>{0} (товаров: {1})</value>
   </data>
   <data name="ComboItemFormat" xml:space="preserve">
-    <value>{0} - {1} (остаток: {2} шт.)</value>
+    <value>&#x8;{0} - {1} (остаток: {2} {3})</value>
   </data>
   <data name="ConfirmDeleteSupplyItem" xml:space="preserve">
     <value>Вы действительно хотите удалить товар "{0} - {1}" из списка поставки?</value>

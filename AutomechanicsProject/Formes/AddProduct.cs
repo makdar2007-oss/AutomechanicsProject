@@ -55,10 +55,8 @@ namespace AutomechanicsProject.Formes
         {
             Text = Resources.AddProduct_Title;
 
-            labelAddProduct.Text = Resources.AddProduct_Title;
+            labelAddProduct.Text = Resources.AddProduct_LabelText;
             textBoxArt.Text = Resources.AddProduct_ArticleWatermark;
-            textBoxName.Text = Resources.AddProduct_NameWatermark;
-            textBoxPrice.Text = Resources.AddProduct_PriceWatermark;
             groupBoxExpiry.Text = Resources.AddProduct_GroupBoxExpiry_Text;
 
             radioButtonNoExpiry.Text = Resources.AddProduct_RadioButtonNoExpiry_Text;

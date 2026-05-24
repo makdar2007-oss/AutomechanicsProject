@@ -20,12 +20,26 @@ namespace AutomechanicsProject.Formes
         private bool hasChanges;
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
+
+        /// <summary>
+        /// Применяет текст из ресурсов к элементам формы
+        /// </summary>
+        private void ApplyLocalization()
+        {
+            Text = Resources.RedactProduct_Form_Title;
+
+            labelRedact.Text = Resources.RedactProduct_LabelTitle_Text;
+            buttonRedact.Text = Resources.RedactProduct_ButtonRedact_Text;
+            buttonCancel.Text = Resources.RedactProduct_ButtonCancel_Text;
+        }
+
         /// <summary>
         /// Инициализирует новый экземпляр формы редактирования товара
         /// </summary>
         public RedactProduct(IProductService productService, Guid id)
         {
             InitializeComponent();
+            ApplyLocalization();
 
             _productService = productService ?? throw new ArgumentNullException(nameof(productService));
             productId = id;
@@ -44,6 +58,7 @@ namespace AutomechanicsProject.Formes
 
             LoadUnits();
             LoadProductData();
+            hasChanges = false;
         }
 
         /// <summary>
@@ -109,7 +124,7 @@ namespace AutomechanicsProject.Formes
             }
             catch (Exception ex)
             {
-                logger.Error($"Ошибка при загрузке данных товара ID {productId}", ex);
+                logger.Error(ex, $"Ошибка при загрузке данных товара ID {productId}");
                 MessageBox.Show(Resources.ErrorLoadProductData, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -168,7 +183,7 @@ namespace AutomechanicsProject.Formes
             }
             catch (Exception ex)
             {
-                logger.Error($"Ошибка при обновлении товара ID {productId}", ex);
+                logger.Error(ex, $"Ошибка при обновлении товара ID {productId}");
                 MessageBox.Show(Resources.ErrorUpdateProduct, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }

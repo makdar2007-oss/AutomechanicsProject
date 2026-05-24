@@ -97,7 +97,7 @@ namespace AutomechanicsProject.Formes
             this.textBoxNewName.Size = new System.Drawing.Size(434, 34);
             this.textBoxNewName.TabIndex = 2;
             this.textBoxNewName.Text = Resources.EditCategory_TextBoxNewName_Watermark;
-            this.textBoxNewName.ForeColor = System.Drawing.Color.Gray;
+            
             // 
             // comboBoxCategory
             // 

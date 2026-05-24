@@ -20,11 +20,24 @@ namespace AutomechanicsProject.Formes
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         /// <summary>
+        /// Применяет текст из ресурсов к элементам формы
+        /// </summary>
+        private void ApplyLocalization()
+        {
+            Text = Resources.DeleteProduct_Form_Title;
+
+            labelDeleteProduct.Text = Resources.DeleteProduct_LabelTitle_Text;
+            buttonDelete.Text = Resources.DeleteProduct_ButtonDelete_Text;
+            buttonCancel.Text = Resources.DeleteProduct_ButtonCancel_Text;
+        }
+
+        /// <summary>
         /// Инициализирует форму удаления товара по артикулу
         /// </summary>
         public DeleteProduct(IProductService productService)
         {
             InitializeComponent();
+            ApplyLocalization();
 
             _productService = productService ??
                 throw new ArgumentNullException(nameof(productService));
@@ -67,7 +80,7 @@ namespace AutomechanicsProject.Formes
             }
             catch (Exception ex)
             {
-                logger.Error($"Ошибка при загрузке товара с ID {_productId}", ex);
+                logger.Error(ex, $"Ошибка при загрузке товара с ID {_productId}");
                 MessageBox.Show(Resources.ErrorLoadProduct, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }

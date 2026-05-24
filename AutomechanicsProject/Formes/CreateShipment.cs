@@ -39,6 +39,25 @@ namespace AutomechanicsProject.Formes
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
         private ShipmentTypeEnum currentShipmentType = ShipmentTypeEnum.Shipment;
 
+        /// <summary>
+        /// Применяет текст из ресурсов к элементам формы
+        /// </summary>
+        private void ApplyLocalization()
+        {
+            Text = Resources.Shipment_Form_Title;
+
+            labelShipment.Text = Resources.Shipment_LabelTitle_Text;
+            label4.Text = Resources.Shipment_LabelType_Text;
+            label1.Text = Resources.Shipment_LabelSelectProduct_Text;
+            label2.Text = Resources.Shipment_LabelQuantity_Text;
+            label3.Text = Resources.Shipment_LabelRecipient_Text;
+            labelExpiry.Text = Resources.Shipment_LabelExpiry_Text;
+            labelTotalCaption.Text = Resources.Shipment_LabelTotalCaption_Text;
+
+            buttonAdd.Text = Resources.Shipment_ButtonAdd_Text;
+            buttonCancel.Text = Resources.Shipment_ButtonCancel_Text;
+            buttonShipment.Text = Resources.Shipment_ButtonShipment_Text;
+        }
 
         /// <summary>
         /// Инициализирует новый экземпляр формы создания отгрузки
@@ -48,6 +67,7 @@ namespace AutomechanicsProject.Formes
             ICurrentUserService currentUserService)
         {
             InitializeComponent();
+            ApplyLocalization();
 
             _shipmentService = shipmentService ?? throw new ArgumentNullException(nameof(shipmentService));
             _currentUserService = currentUserService ?? throw new ArgumentNullException(nameof(currentUserService));

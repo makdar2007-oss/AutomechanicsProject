@@ -19,11 +19,26 @@ namespace AutomechanicsProject.Formes
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         /// <summary>
+        /// Применяет текст из ресурсов к элементам формы
+        /// </summary>
+        private void ApplyLocalization()
+        {
+            Text = Resources.History_Form_Title;
+
+            textBoxHistory.Text = Resources.History_TextBox_Text;
+            labelPeriod.Text = Resources.History_LabelFrom_Text;
+            labelTo.Text = Resources.History_LabelTo_Text;
+            buttonApplyFilter.Text = Resources.History_ButtonApplyFilter_Text;
+        }
+
+        /// <summary>
         /// Инициализирует новый экземпляр формы истории отгрузок
         /// </summary>
         public ShipmentHistoryForm(IShipmentService shipmentService)
         {
             InitializeComponent();
+            ApplyLocalization();
+
 
             _shipmentService = shipmentService ?? throw new ArgumentNullException(nameof(shipmentService));
         }
@@ -46,8 +61,8 @@ namespace AutomechanicsProject.Formes
         {
             try
             {
-                DateTime startDate = dateTimePickerFrom.Value.Date;
-                DateTime endDate = dateTimePickerTo.Value.Date.AddDays(1).AddSeconds(-1);
+                var startDate = dateTimePickerFrom.Value.Date;
+                var endDate = dateTimePickerTo.Value.Date.AddDays(1).AddSeconds(-1);
 
                 if (startDate > endDate)
                 {

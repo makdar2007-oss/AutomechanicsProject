@@ -27,9 +27,22 @@ namespace AutomechanicsProject.Formes
         private readonly ICurrencySettingsService _currencySettingsService;
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
+        /// <summary>
+        /// Применяет текст из ресурсов к элементам формы
+        /// </summary>
+        private void ApplyLocalization()
+        {
+            Text = Resources.Currency_Form_Title;
+
+            textBoxCurrency.Text = Resources.Currency_TextBox_Text;
+            buttonChoose.Text = Resources.Currency_ButtonChoose_Text;
+            buttonCancel.Text = Resources.Currency_ButtonCancel_Text;
+        }
+
         public ChoosingCurrency(ICurrencySettingsService currencySettingsService)
         {
             InitializeComponent();
+            ApplyLocalization();
 
             _currencySettingsService = currencySettingsService ?? throw new ArgumentNullException(nameof(currencySettingsService));
 

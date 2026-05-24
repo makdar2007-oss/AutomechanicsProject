@@ -21,11 +21,28 @@ namespace AutomechanicsProject.Formes
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         /// <summary>
+        /// Применяет текст из ресурсов к элементам формы
+        /// </summary>
+        private void ApplyLocalization()
+        {
+            Text = Resources.Report_Form_Title;
+
+            labelTitle.Text = Resources.Report_LabelTitle_Text;
+            labelPeriod.Text = Resources.Report_LabelPeriod_Text;
+            labelFrom.Text = Resources.Report_LabelFrom_Text;
+            labelTo.Text = Resources.Report_LabelTo_Text;
+            labelTotalAmountCaption.Text = Resources.Report_LabelTotalAmount_Text;
+            labelProfitCaption.Text = Resources.Report_LabelProfit_Text;
+            buttonExport.Text = Resources.Report_ButtonExport_Text;
+        }
+
+        /// <summary>
         /// Инициализирует новый экземпляр формы отчета
         /// </summary>
         public ReportForm(IReportService reportService)
         {
             InitializeComponent();
+            ApplyLocalization();
 
             _reportService = reportService ?? throw new ArgumentNullException(nameof(reportService));
         }
@@ -183,7 +200,7 @@ namespace AutomechanicsProject.Formes
             if (dataGridViewReport.Columns.Count == 0) return;
 
             if (dataGridViewReport.Columns["Number"] != null)
-                dataGridViewReport.Columns["Number"].HeaderText = "№";
+                dataGridViewReport.Columns["Number"].HeaderText = Resources.Report_ColumnNumber;
 
             if (dataGridViewReport.Columns["Article"] != null)
                 dataGridViewReport.Columns["Article"].HeaderText = Resources.Report_Article;

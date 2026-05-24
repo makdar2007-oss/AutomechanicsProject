@@ -43,7 +43,24 @@ namespace AutomechanicsProject.Formes
         {
             Text = Resources.AdminForm_Title;
 
+            buttonExit.Text = Resources.AdminForm_ButtonExitText;
+            buttonReport.Text = Resources.AdminForm_ButtonReportText;
+            buttonCurrency.Text = Resources.AdminForm_ButtonCurrencyText;
+            buttonSupply.Text = Resources.AdminForm_ButtonSupplyText;
+            buttonhistory.Text = Resources.AdminForm_ButtonHistoryText;
             buttonWarehouse.Text = Resources.Warehouse_Button;
+
+            toolStripComboBoxAdd.Text = Resources.AdminForm_ToolStripAddText;
+            toolStripComboBox2.Text = Resources.AdminForm_ToolStripEditText;
+            toolStripComboBox3.Text = Resources.AdminForm_ToolStripDeleteText;
+
+            ProductToolStripMenuItem.Text = Resources.AdminForm_ToolStripProductText;
+            CategoryToolStripMenuItem.Text = Resources.AdminForm_ToolStripCategoryText;
+            ProductToolStripMenuItem1.Text = Resources.AdminForm_ToolStripProductText;
+            CategoryToolStripMenuItem1.Text = Resources.AdminForm_ToolStripCategoryText;
+            ProductToolStripMenuItem2.Text = Resources.AdminForm_ToolStripProductText;
+            CategoryToolStripMenuItem2.Text = Resources.AdminForm_ToolStripCategoryText;
+
             toolStripTextBoxAdmin.Text = Resources.AdminForm_ToolStripAdminText;
         }
         /// <summary>
@@ -298,9 +315,7 @@ namespace AutomechanicsProject.Formes
         /// <summary>
         /// Открывает форму добавления товара
         /// </summary>
-        /// <summary>
-        /// Открывает форму добавления товара
-        /// </summary>
+        
         private void OpenAddProductForm()
         {
             try
@@ -321,6 +336,7 @@ namespace AutomechanicsProject.Formes
             }
         }
 
+        /// <summary>
         /// Открывает форму добавления категории
         /// </summary>
         private void OpenAddCategoryForm()
@@ -373,9 +389,7 @@ namespace AutomechanicsProject.Formes
             }
         }
 
-        /// <summary>
-        /// Открывает форму удаления для выбранного товара
-        /// </summary>
+        
         /// <summary>
         /// Открывает форму удаления для выбранного товара
         /// </summary>
@@ -499,7 +513,7 @@ namespace AutomechanicsProject.Formes
         /// </summary>
         internal decimal CalculateProductPrice(ProductListItemDto product)
         {
-            decimal priceInRub = product.PurchasePrice;
+            var priceInRub = product.PurchasePrice;
 
             if (product.ExpiryDate.HasValue &&
                 product.ExpiryDate.Value.Date >= MoscowTime.Today &&
@@ -516,7 +530,7 @@ namespace AutomechanicsProject.Formes
         /// </summary>
         private void ConfigureColumns()
         {
-            string[] columnOrder = { "Article", "Name", "Category", "Unit", "ExpiryDate", "PurchasePrice", "Price", "Balance" };
+            var columnOrder = new[] { "Article", "Name", "Category", "Unit", "ExpiryDate", "PurchasePrice", "Price", "Balance" };
             for (int i = 0; i < columnOrder.Length; i++)
             {
                 if (dataGridViewMainForm.Columns[columnOrder[i]] != null)

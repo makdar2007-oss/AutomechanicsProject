@@ -23,11 +23,25 @@ namespace AutomechanicsProject.Formes
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         /// <summary>
+        /// Применяет текст из ресурсов к элементам формы
+        /// </summary>
+        private void ApplyLocalization()
+        {
+            Text = Resources.EditCategory_Form_Title;
+
+            labelTitle.Text = Resources.EditCategory_LabelTitle_Text;
+            buttonEdit.Text = Resources.EditCategory_ButtonEdit_Text;
+            buttonCancel.Text = Resources.EditCategory_ButtonCancel_Text;
+        }
+
+        /// <summary>
         /// Инициализирует новый экземпляр формы редактирования категории
         /// </summary>
         public EditCategory(ICategoryService categoryService)
         {
             InitializeComponent();
+            ApplyLocalization();
+
 
             _categoryService = categoryService ?? throw new ArgumentNullException(nameof(categoryService));
 
@@ -149,7 +163,7 @@ namespace AutomechanicsProject.Formes
             }
             catch (Exception ex)
             {
-                logger.Error($"Ошибка при редактировании категории", ex);
+                logger.Error(ex, "Ошибка при редактировании категории");
                 MessageBox.Show(Resources.ErrorEditCategory, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }

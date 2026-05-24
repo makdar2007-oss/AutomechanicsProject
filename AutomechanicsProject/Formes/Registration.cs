@@ -30,6 +30,26 @@ namespace AutomechanicsProject.Formes
         private readonly IWarehouseHeatmapService _warehouseHeatmapService;
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
+
+        /// <summary>
+        /// Применяет текст из ресурсов к элементам формы
+        /// </summary>
+        private void ApplyLocalization()
+        {
+            Text = Resources.Registration_Form_Title;
+
+            labelRegistration.Text = Resources.Registration_LabelTitle_Text;
+            labelSurname.Text = Resources.Registration_LabelSurname_Text;
+            labelName.Text = Resources.Registration_LabelName_Text;
+            labelLastname.Text = Resources.Registration_LabelLastname_Text;
+            labelLogin.Text = Resources.Registration_LabelLogin_Text;
+            labelPassword.Text = Resources.Registration_LabelPassword_Text;
+            labelAgreePassword.Text = Resources.Registration_LabelConfirmPassword_Text;
+
+            buttonRegistration.Text = Resources.Registration_ButtonRegister_Text;
+            buttonEnter.Text = Resources.Registration_ButtonEnter_Text;
+        }
+
         /// <summary>
         /// Инициализирует новый экземпляр формы регистрации
         /// </summary>
@@ -47,6 +67,7 @@ namespace AutomechanicsProject.Formes
             IWarehouseHeatmapService warehouseHeatmapService)
         {
             InitializeComponent();
+            ApplyLocalization();
 
             _authService = authService ?? throw new ArgumentNullException(nameof(authService));
             _productService = productService ?? throw new ArgumentNullException(nameof(productService));
@@ -58,6 +79,7 @@ namespace AutomechanicsProject.Formes
             _supplyCurrencyService = supplyCurrencyService ?? throw new ArgumentNullException(nameof(supplyCurrencyService));
             _currentUserService = currentUserService ?? throw new ArgumentNullException(nameof(currentUserService));
             _currencySettingsService = currencySettingsService ?? throw new ArgumentNullException(nameof(currencySettingsService));
+            _warehouseHeatmapService = warehouseHeatmapService ?? throw new ArgumentNullException(nameof(warehouseHeatmapService));
 
             TextBoxHelper.SetupWatermarkTextBox(textBoxSurname, Resources.RegSurnameWatermark);
             TextBoxHelper.SetupWatermarkTextBox(textBoxName, Resources.RegNameWatermark);

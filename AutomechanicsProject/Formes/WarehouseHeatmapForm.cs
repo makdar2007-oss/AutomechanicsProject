@@ -1,4 +1,5 @@
-﻿using AutomechanicsProject.Properties;
+﻿using AutomechanicsProject.Classes;
+using AutomechanicsProject.Properties;
 using AutomechanicsProject.Services.Interfaces;
 using AutomechanicsProject.ViewModels;
 using System;
@@ -243,7 +244,7 @@ namespace AutomechanicsProject.Formes
 
             if (cell.HasExpiryDate && cell.ExpiryDate.HasValue)
             {
-                var days = (cell.ExpiryDate.Value.Date - DateTime.Now.Date).Days;
+                var days = (cell.ExpiryDate.Value.Date - MoscowTime.Today).Days;
 
                 if (days <= 7)
                 {
@@ -302,11 +303,11 @@ namespace AutomechanicsProject.Formes
 
         private void ClearProductCard()
         {
-            lblCardName.Text = "—";
-            lblCardCategory.Text = "—";
-            lblCardStock.Text = "—";
-            lblCardExpiry.Text = "—";
-            lblCardCell.Text = "—";
+            lblCardName.Text = Resources.Warehouse_Dash;
+            lblCardCategory.Text = Resources.Warehouse_Dash;
+            lblCardStock.Text = Resources.Warehouse_Dash;
+            lblCardExpiry.Text = Resources.Warehouse_Dash;
+            lblCardCell.Text = Resources.Warehouse_Dash;
         }
 
         private string GetExpiryText(WarehouseCellViewModel cell)
@@ -323,7 +324,7 @@ namespace AutomechanicsProject.Formes
         {
             if (string.IsNullOrWhiteSpace(text))
             {
-                return "—";
+                return Resources.Warehouse_Dash;
             }
 
             return text;
@@ -346,7 +347,7 @@ namespace AutomechanicsProject.Formes
                     continue;
                 }
 
-                var days = (cell.ExpiryDate.Value.Date - DateTime.Now.Date).Days;
+                var days = (cell.ExpiryDate.Value.Date - MoscowTime.Today).Days;
 
                 if (days <= 7)
                 {
