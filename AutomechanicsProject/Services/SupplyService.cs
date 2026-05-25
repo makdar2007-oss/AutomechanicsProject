@@ -16,13 +16,14 @@ namespace AutomechanicsProject.Services
     public class SupplyService : ISupplyService
     {
         private readonly IDateBaseContext _db;
-
+        private readonly IWarehouseHeatmapService _warehouseHeatmapService;
         /// <summary>
         /// Создает сервис поставок
         /// </summary>
-        public SupplyService(IDateBaseContext db)
+        public SupplyService(IDateBaseContext db, IWarehouseHeatmapService warehouseHeatmapService)
         {
             _db = db;
+            _warehouseHeatmapService = warehouseHeatmapService ?? throw new ArgumentNullException(nameof(warehouseHeatmapService));
         }
 
         /// <summary>
@@ -113,6 +114,10 @@ namespace AutomechanicsProject.Services
 
                 _db.SaveChanges();
                 transaction.Commit();
+                foreach (var position in positions)
+                {
+                    _warehouseHeatmapService.EnsureProductHasCell(position.ProductId);
+                }
                 return supply;
             }
         }

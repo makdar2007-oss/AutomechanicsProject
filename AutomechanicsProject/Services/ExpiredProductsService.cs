@@ -68,6 +68,7 @@ namespace AutomechanicsProject.Services
 
                 var shipmentItem = new ShipmentItem
                 {
+                    Id = Guid.NewGuid(),
                     ShipmentId = shipment.Id,
                     ProductId = product.Id,
                     Product = product,

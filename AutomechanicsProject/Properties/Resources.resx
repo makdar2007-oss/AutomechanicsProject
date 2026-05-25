@@ -780,7 +780,7 @@
     <value>{0} (товаров: {1})</value>
   </data>
   <data name="ComboItemFormat" xml:space="preserve">
-    <value>&#x8;{0} - {1} (остаток: {2} {3})</value>
+    <value>{0} - {1} (остаток: {2})</value>
   </data>
   <data name="ConfirmDeleteSupplyItem" xml:space="preserve">
     <value>Вы действительно хотите удалить товар "{0} - {1}" из списка поставки?</value>
@@ -1522,5 +1522,26 @@
   </data>
   <data name="Warehouse_Button" xml:space="preserve">
     <value>Склад</value>
+  </data>
+  <data name="CurrencyCode_RUB" xml:space="preserve">
+    <value>RUB</value>
+  </data>
+  <data name="Warehouse_Dash" xml:space="preserve">
+    <value>—</value>
+  </data>
+  <data name="CriticalApplicationError" xml:space="preserve">
+    <value>Критическая ошибка при запуске приложения</value>
+  </data>
+  <data name="SupplyCurrencyTooltip_NoSupplyData" xml:space="preserve">
+    <value>{0}\nНет данных о поставках\nЦена отображается в {1}</value>
+  </data>
+  <data name="SupplyCurrencyTooltip_RubSupply" xml:space="preserve">
+    <value>{0}\nЗакупка в рублях\nТекущая валюта: {1}</value>
+  </data>
+  <data name="SupplyCurrencyTooltip_ForeignSupply" xml:space="preserve">
+    <value>{0}\nВалюта поставки: {1}\nКурс на момент поставки: 1 {2} = {3:F4} {1}</value>
+  </data>
+  <data name="CurrencySymbol_RUB" xml:space="preserve">
+    <value>₽</value>
   </data>
 </root>

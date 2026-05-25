@@ -154,7 +154,7 @@ namespace AutomechanicsProject.Formes
                 return;
             }
 
-            string selectedType = comboBox1.SelectedItem.ToString();
+            var selectedType = comboBox1.SelectedItem.ToString();
 
             if (selectedType == Resources.ShipmentType_Shipment)
             {
@@ -343,7 +343,7 @@ namespace AutomechanicsProject.Formes
             if (comboBoxExpiry.Enabled && comboBoxExpiry.SelectedItem != null)
             {
                 var selectedExpiry = (ExpiryItemDto)comboBoxExpiry.SelectedItem;
-                Guid actualProductId = selectedExpiry.ProductId;
+                var actualProductId = selectedExpiry.ProductId;
 
                 var productWithExpiry = _shipmentService.GetProductForShipmentById(actualProductId);
 
@@ -418,7 +418,7 @@ namespace AutomechanicsProject.Formes
         /// </summary>
         private bool AddOrUpdateShipmentItem(Guid productId, string productName, string article, int quantity, decimal price, decimal purchasePrice, string unitName)
         {
-            bool isMetal = _shipmentService.IsProductMetal(productId);
+            var isMetal = _shipmentService.IsProductMetal(productId);
 
             var existingItem = shipmentItems.FirstOrDefault(i => i.ProductId == productId);
 
@@ -488,8 +488,8 @@ namespace AutomechanicsProject.Formes
         {
             totalAmount = 0;
             totalItemsCount = 0;
-            decimal totalProfit = 0;
-            decimal totalCost = 0;
+            var totalProfit = 0m;
+            var totalCost = 0m;
 
             string recipientName;
             switch (currentShipmentType)

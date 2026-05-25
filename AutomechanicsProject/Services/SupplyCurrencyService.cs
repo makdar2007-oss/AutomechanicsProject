@@ -1,5 +1,6 @@
 ﻿using AutomechanicsProject.Classes;
 using AutomechanicsProject.Formes;
+using AutomechanicsProject.Properties;
 using AutomechanicsProject.Services.Interfaces;
 using NLog;
 using System;
@@ -64,18 +65,27 @@ namespace AutomechanicsProject.Services
 
                 if (!hasSupply)
                 {
-                    return $"{productName}\nНет данных о поставках\nЦена отображается в {_currencySettingsService.SelectedCurrencyCode}";
+                    return string.Format(
+                        Resources.SupplyCurrencyTooltip_NoSupplyData,
+                        productName,
+                        _currencySettingsService.SelectedCurrencyCode);
                 }
             }
 
             if (currency == CurrencyCodes.RUB || rate == 1.00m)
             {
-                return $"{productName}\nЗакупка в рублях\nТекущая валюта: {_currencySettingsService.SelectedCurrencyCode}";
+                return string.Format(
+                    Resources.SupplyCurrencyTooltip_RubSupply,
+                    productName,
+                    _currencySettingsService.SelectedCurrencyCode);
             }
 
-            return $"{productName}\n" +
-                   $"Валюта поставки: {currency}\n" +
-                   $"Курс на момент поставки: 1 RUB = {rate:F4} {currency}\n";
+            return string.Format(
+                Resources.SupplyCurrencyTooltip_ForeignSupply,
+                productName,
+                currency,
+                Resources.CurrencyCode_RUB,
+                rate);
         }
     }
 }

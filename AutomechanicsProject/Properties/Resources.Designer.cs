@@ -538,7 +538,7 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на {0} - {1} (остаток: {2} {3}).
+        ///   Ищет локализованную строку, похожую на {0} - {1} (остаток: {2}).
         /// </summary>
         public static string ComboItemFormat {
             get {
@@ -688,6 +688,15 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Критическая ошибка при запуске приложения.
+        /// </summary>
+        public static string CriticalApplicationError {
+            get {
+                return ResourceManager.GetString("CriticalApplicationError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Отмена.
         /// </summary>
         public static string Currency_ButtonCancel_Text {
@@ -764,6 +773,15 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на RUB.
+        /// </summary>
+        public static string CurrencyCode_RUB {
+            get {
+                return ResourceManager.GetString("CurrencyCode_RUB", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Евро.
         /// </summary>
         public static string CurrencyEUR {
@@ -814,6 +832,15 @@ namespace AutomechanicsProject.Properties {
         public static string CurrencyRUB {
             get {
                 return ResourceManager.GetString("CurrencyRUB", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на ₽.
+        /// </summary>
+        public static string CurrencySymbol_RUB {
+            get {
+                return ResourceManager.GetString("CurrencySymbol_RUB", resourceCulture);
             }
         }
         
@@ -3645,6 +3672,33 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на {0}\nВалюта поставки: {1}\nКурс на момент поставки: 1 {2} = {3:F4} {1}.
+        /// </summary>
+        public static string SupplyCurrencyTooltip_ForeignSupply {
+            get {
+                return ResourceManager.GetString("SupplyCurrencyTooltip_ForeignSupply", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на {0}\nНет данных о поставках\nЦена отображается в {1}.
+        /// </summary>
+        public static string SupplyCurrencyTooltip_NoSupplyData {
+            get {
+                return ResourceManager.GetString("SupplyCurrencyTooltip_NoSupplyData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на {0}\nЗакупка в рублях\nТекущая валюта: {1}.
+        /// </summary>
+        public static string SupplyCurrencyTooltip_RubSupply {
+            get {
+                return ResourceManager.GetString("SupplyCurrencyTooltip_RubSupply", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Оформлена.
         /// </summary>
         public static string SupplyStatusCompleted {
@@ -3875,6 +3929,15 @@ namespace AutomechanicsProject.Properties {
         public static string Warehouse_CellEmptyMessage {
             get {
                 return ResourceManager.GetString("Warehouse_CellEmptyMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на —.
+        /// </summary>
+        public static string Warehouse_Dash {
+            get {
+                return ResourceManager.GetString("Warehouse_Dash", resourceCulture);
             }
         }
         

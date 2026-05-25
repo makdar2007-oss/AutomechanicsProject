@@ -213,7 +213,7 @@ namespace AutomechanicsProject.Services
         /// </summary>
         private string GetCategoryPrefix(string categoryName)
         {
-            string prefix = categoryName.Length >= 3
+            var prefix = categoryName.Length >= 3
                 ? categoryName.Substring(0, 3).ToUpper()
                 : categoryName.ToUpper();
 

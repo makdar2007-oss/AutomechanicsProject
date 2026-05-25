@@ -78,10 +78,10 @@ namespace AutomechanicsProject.Services
         {
             var excludedNames = new[]
             {
-        Resources.ShipmentType_Defect,
-        Resources.ShipmentType_WriteOff,
-        "-",
-        ""
+                Resources.ShipmentType_Defect,
+                Resources.ShipmentType_WriteOff,
+                Resources.Warehouse_Dash,
+                string.Empty
     };
 
             return _db.Addresses

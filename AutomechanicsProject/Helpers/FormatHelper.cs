@@ -1,5 +1,4 @@
 ﻿using AutomechanicsProject.Classes;
-using AutomechanicsProject.Formes;
 using AutomechanicsProject.Properties;
 using System;
 
@@ -15,7 +14,7 @@ namespace AutomechanicsProject.Helpers
         /// </summary>
         public static string FormatDate(DateTime? date)
         {
-            return date?.ToString("dd.MM.yyyy") ?? "—";
+            return date?.ToString("dd.MM.yyyy") ?? Resources.Warehouse_Dash;
         }
 
         /// <summary>
@@ -23,7 +22,7 @@ namespace AutomechanicsProject.Helpers
         /// </summary>
         public static string FormatDate(DateTime? date, string format)
         {
-            return date?.ToString(format) ?? "—";
+            return date?.ToString(format) ?? Resources.Warehouse_Dash;
         }
 
         /// <summary>

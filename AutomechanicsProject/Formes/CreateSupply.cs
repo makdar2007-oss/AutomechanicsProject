@@ -122,7 +122,7 @@ namespace AutomechanicsProject.Formes
             var product = cachedProducts.FirstOrDefault(p => p.Id == selectedProduct.Id);
             if (product != null)
             {
-                bool productHasExpiryDate = product.HasExpiryDate;
+                var productHasExpiryDate = product.HasExpiryDate;
                 dateTimePickerExpiry.Enabled = productHasExpiryDate;
                 dateTimePickerExpiry.Checked = productHasExpiryDate;
 
@@ -230,7 +230,7 @@ namespace AutomechanicsProject.Formes
         /// </summary>
         private void ValidateDecimalInput(object sender, KeyPressEventArgs e)
         {
-            TextBox textBox = sender as TextBox;
+            var textBox = sender as TextBox;
             if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && e.KeyChar != '.' && e.KeyChar != ',')
             {
                 e.Handled = true;
@@ -454,7 +454,7 @@ namespace AutomechanicsProject.Formes
         /// </summary>
         private void UpdateTotalAmount()
         {
-            decimal totalInRUB = positions.Sum(p => p.Quantity * p.Price);
+            var totalInRUB = positions.Sum(p => p.Quantity * p.Price);
 
             if (comboBoxCurrency.SelectedItem != null)
             {
@@ -467,7 +467,7 @@ namespace AutomechanicsProject.Formes
                 }
             }
 
-            labelTotalValue.Text = $"{totalInRUB:N2} RUB";
+            labelTotalValue.Text = $"{totalInRUB:N2} {Resources.CurrencyCode_RUB}";
         }
 
         /// <summary>
