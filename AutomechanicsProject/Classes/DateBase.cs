@@ -11,10 +11,6 @@ namespace AutomechanicsProject.Classes
     /// </summary>
     public class DateBase : DbContext, IDateBaseContext
     {
-        public DateBase(DbContextOptions<DateBase> options) : base(options)
-        {
-        }
-
         /// <summary>
         /// Набор пользователей
         /// </summary>
