@@ -37,6 +37,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Castle.Core, Version=5.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <HintPath>..\packages\Castle.Core.5.1.1\lib\net462\Castle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.EntityFrameworkCore, Version=3.1.32.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\.nuget\packages\microsoft.entityframeworkcore\3.1.32\lib\netstandard2.0\Microsoft.EntityFrameworkCore.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.EntityFrameworkCore.Abstractions, Version=3.1.32.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\.nuget\packages\microsoft.entityframeworkcore.abstractions\3.1.32\lib\netstandard2.0\Microsoft.EntityFrameworkCore.Abstractions.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.TestPlatform.CoreUtilities, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.TestPlatform.ObjectModel.17.13.0\lib\net462\Microsoft.TestPlatform.CoreUtilities.dll</HintPath>
     </Reference>
@@ -45,6 +56,9 @@
     </Reference>
     <Reference Include="Microsoft.VisualStudio.TestPlatform.ObjectModel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.TestPlatform.ObjectModel.17.13.0\lib\net462\Microsoft.VisualStudio.TestPlatform.ObjectModel.dll</HintPath>
+    </Reference>
+    <Reference Include="Moq, Version=4.20.72.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
+      <HintPath>..\packages\Moq.4.20.72\lib\net462\Moq.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Collections.Immutable, Version=1.2.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -56,7 +70,13 @@
       <HintPath>..\packages\System.Reflection.Metadata.1.6.0\lib\netstandard2.0\System.Reflection.Metadata.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime" />
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.3\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -80,14 +100,47 @@
     <Compile Include="Classes\AddressTests.cs" />
     <Compile Include="Classes\CategoryTests.cs" />
     <Compile Include="Classes\CurrencyCodesTests.cs" />
+    <Compile Include="Classes\CurrencyInfoTests.cs" />
     <Compile Include="Classes\CurrencyManagerTest.cs" />
+    <Compile Include="Classes\CurrentUserTests.cs" />
+    <Compile Include="Classes\ImportFileDataTests.cs" />
+    <Compile Include="Classes\ImportProductItemTests.cs" />
     <Compile Include="Classes\MoscowTimeTests.cs" />
     <Compile Include="Classes\ProductTests.cs" />
     <Compile Include="Classes\RoleTests.cs" />
+    <Compile Include="Classes\ShipmentItemTests.cs" />
     <Compile Include="Classes\ShipmentTests.cs" />
     <Compile Include="Classes\SupplierTests.cs" />
+    <Compile Include="Classes\SupplyPositionTests.cs" />
+    <Compile Include="Classes\SupplyTests.cs" />
     <Compile Include="Classes\UnitTests.cs" />
     <Compile Include="Classes\UsersTests.cs" />
+    <Compile Include="Classes\WarehouseCellTests.cs" />
+    <Compile Include="Dtos\Mappers\CategoryMapperTests.cs" />
+    <Compile Include="Dtos\Mappers\ProductMapperTests.cs" />
+    <Compile Include="Dtos\Service\CategoryDtoTests.cs" />
+    <Compile Include="Dtos\Service\CreateProductDtoTests.cs" />
+    <Compile Include="Dtos\Service\ExpiryItemDtoTests.cs" />
+    <Compile Include="Dtos\Service\ProductBatchDtoTests.cs" />
+    <Compile Include="Dtos\Service\ProductDtoTests.cs" />
+    <Compile Include="Dtos\Service\ProductListItemDtoTests.cs" />
+    <Compile Include="Dtos\Service\RecipientDtoTests.cs" />
+    <Compile Include="Dtos\Service\ShipmentItemDtoTests.cs" />
+    <Compile Include="Dtos\Service\ShipmentResultDtoTests.cs" />
+    <Compile Include="Dtos\Service\UnitDtoTests.cs" />
+    <Compile Include="Dtos\Service\UpdateProductDtoTests.cs" />
+    <Compile Include="Dtos\UI\ComboItemDtoTests.cs" />
+    <Compile Include="Dtos\UI\ProductDisplayItemTests.cs" />
+    <Compile Include="Dtos\ViewModels\ProductComboViewModelTests.cs" />
+    <Compile Include="Dtos\ViewModels\ProductViewModelTests.cs" />
+    <Compile Include="Dtos\ViewModels\ShipmentViewModelTests.cs" />
+    <Compile Include="Dtos\ViewModels\WarehouseCellViewModelTests.cs" />
+    <Compile Include="Helpers\CurrencyHelperTests.cs" />
+    <Compile Include="Helpers\CurrencyStorageTests.cs" />
+    <Compile Include="Helpers\FormatHelperTests.cs" />
+    <Compile Include="Helpers\FormHelperTests.cs" />
+    <Compile Include="Helpers\ShipmentTypeHelperTests.cs" />
+    <Compile Include="Helpers\ValidationTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -104,6 +157,7 @@
       <Name>AutomechanicsProject</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
