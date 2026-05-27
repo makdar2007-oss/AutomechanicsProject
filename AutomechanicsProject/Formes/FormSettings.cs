@@ -2,21 +2,23 @@
 using AutomechanicsProject.Classes;
 using AutomechanicsProject.Helpers;
 using AutomechanicsProject.Properties;
+using AutomechanicsProject.Services.Interfaces;
 using NLog;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Net.Http;
 using System.Text.Json;
+using System.Threading;
 using System.Windows.Forms;
-using AutomechanicsProject.Services.Interfaces;
 
 namespace AutomechanicsProject.Formes
 {
     /// <summary>
     /// Форма выбора валюты для отображения цен
     /// </summary>
-    public partial class ChoosingCurrency : Form
+    public partial class FormSettings : Form
     {
         private static string CacheFilePath => Path.Combine(
         Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
@@ -32,21 +34,28 @@ namespace AutomechanicsProject.Formes
         /// </summary>
         private void ApplyLocalization()
         {
-            Text = Resources.Currency_Form_Title;
+            Text = Resources.Settings_Form_Title;
 
-            textBoxCurrency.Text = Resources.Currency_TextBox_Text;
-            buttonChoose.Text = Resources.Currency_ButtonChoose_Text;
-            buttonCancel.Text = Resources.Currency_ButtonCancel_Text;
+            
+            buttonChoose.Text = Resources.Settings_ButtonChoose_Text;
+            buttonCancel.Text = Resources.Settings_ButtonCancel_Text;
         }
 
-        public ChoosingCurrency(ICurrencySettingsService currencySettingsService)
+        public FormSettings(ICurrencySettingsService currencySettingsService)
         {
             InitializeComponent();
             ApplyLocalization();
 
             _currencySettingsService = currencySettingsService ?? throw new ArgumentNullException(nameof(currencySettingsService));
 
+
+            _currencySettingsService = currencySettingsService ?? throw new ArgumentNullException(nameof(currencySettingsService));
+
+            TextBoxHelper.SetupWatermarkComboBox(comboBoxCurrency, Resources.Settings_CurrencyWatermark);
+            TextBoxHelper.SetupWatermarkComboBox(comboBoxLanguage, Resources.Settings_LanguageWatermark);
+
             LoadCurrencies();
+            LoadLanguages();
         }
 
         /// <summary>
@@ -83,6 +92,36 @@ namespace AutomechanicsProject.Formes
                 }
 
                 PopulateCurrencyComboBox();
+            }
+        }
+
+        /// <summary>
+        /// Загружает список языков
+        /// </summary>
+        private void LoadLanguages()
+        {
+            comboBoxLanguage.Items.Clear();
+
+            comboBoxLanguage.Items.Add(Resources.Language_Russian);
+            comboBoxLanguage.Items.Add(Resources.Language_English);
+            comboBoxLanguage.Items.Add(Resources.Language_Chuvash);
+            comboBoxLanguage.Items.Add(Resources.Language_Tatar);
+
+            if (Settings.Default.SelectedLanguage == "en")
+            {
+                comboBoxLanguage.SelectedItem = Resources.Language_English;
+            }
+            else if (Settings.Default.SelectedLanguage == "cv")
+            {
+                comboBoxLanguage.SelectedItem = Resources.Language_Chuvash;
+            }
+            else if (Settings.Default.SelectedLanguage == "tt")
+            {
+                comboBoxLanguage.SelectedItem = Resources.Language_Tatar;
+            }
+            else
+            {
+                comboBoxLanguage.SelectedItem = Resources.Language_Russian;
             }
         }
 
@@ -149,7 +188,7 @@ namespace AutomechanicsProject.Formes
                 comboBoxCurrency.Items.Add(currency.DisplayText);
             }
 
-            for (int i = 0; i < currencies.Count; i++)
+            for (var i = 0; i < currencies.Count; i++)
             {
                 if (currencies[i].Code == _currencySettingsService.SelectedCurrencyCode)
                 {
@@ -181,6 +220,8 @@ namespace AutomechanicsProject.Formes
                     CurrencyHelper.GetCurrencyName(selected.Code),
                     selected.Rate);
 
+                
+
                 if (exchangeRates != null)
                 {
                     SaveToCache(exchangeRates);
@@ -199,6 +240,11 @@ namespace AutomechanicsProject.Formes
 
                 if (result == DialogResult.Yes)
                 {
+                    Settings.Default.SelectedCurrency = selected.Code;
+                    Settings.Default.ExchangeRate = selected.Rate;
+                    SaveLanguage();
+                    Settings.Default.Save();
+
                     DialogResult = DialogResult.OK;
                     Close();
                 }
@@ -215,6 +261,43 @@ namespace AutomechanicsProject.Formes
         }
 
         /// <summary>
+        /// Сохраняет выбранный язык
+        /// </summary>
+        private void SaveLanguage()
+        {
+            var selectedLanguage = comboBoxLanguage.SelectedItem?.ToString();
+
+            if (string.IsNullOrWhiteSpace(selectedLanguage) ||
+                selectedLanguage == Resources.Settings_LanguageWatermark)
+            {
+                return;
+            }
+
+            if (selectedLanguage == Resources.Language_English)
+            {
+                Settings.Default.SelectedLanguage = "en";
+            }
+            else if (selectedLanguage == Resources.Language_Chuvash)
+            {
+                Settings.Default.SelectedLanguage = "cv";
+            }
+            else if (selectedLanguage == Resources.Language_Tatar)
+            {
+                Settings.Default.SelectedLanguage = "tt";
+            }
+            else
+            {
+                Settings.Default.SelectedLanguage = "ru";
+            }
+
+            var culture = new CultureInfo(Settings.Default.SelectedLanguage);
+
+            Thread.CurrentThread.CurrentCulture = culture;
+            Thread.CurrentThread.CurrentUICulture = culture;
+            CultureInfo.DefaultThreadCurrentCulture = culture;
+            CultureInfo.DefaultThreadCurrentUICulture = culture;
+        }
+        /// <summary>
         /// Обработчик нажатия кнопки отмены
         /// </summary>
         private void buttonCancel_Click(object sender, EventArgs e)
@@ -223,24 +306,5 @@ namespace AutomechanicsProject.Formes
             Close();
         }
 
-  
-        /// <summary>
-        /// Возвращает символ валюты по её коду
-        /// </summary>
-        private static string GetCurrencySymbol(string code)
-        {
-            switch (code)
-            {
-                case "RUB": return "₽";
-                case "USD": return "$";
-                case "EUR": return "€";
-                case "GBP": return "£";
-                case "JPY": return "¥";
-                case "CNY": return "¥";
-                case "KZT": return "₸";
-                case "BYN": return "Br";
-                default: return code;
-            }
-        }
     }
 }

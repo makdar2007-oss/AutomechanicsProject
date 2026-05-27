@@ -33,7 +33,7 @@ namespace AutomechanicsProject.Formes
             this.panelStorekeeper = new System.Windows.Forms.Panel();
             this.buttonExit = new System.Windows.Forms.Button();
             this.panelSearch = new System.Windows.Forms.Panel();
-            this.buttonCurrency = new System.Windows.Forms.Button();
+            this.buttonSettings = new System.Windows.Forms.Button();
             this.buttonSupply = new System.Windows.Forms.Button();
             this.buttonShipment = new System.Windows.Forms.Button();
             this.textBoxSearch = new System.Windows.Forms.TextBox();
@@ -82,7 +82,7 @@ namespace AutomechanicsProject.Formes
             // 
             this.panelSearch.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.panelSearch.Controls.Add(this.buttonCurrency);
+            this.panelSearch.Controls.Add(this.buttonSettings);
             this.panelSearch.Controls.Add(this.buttonSupply);
             this.panelSearch.Controls.Add(this.buttonShipment);
             this.panelSearch.Controls.Add(this.textBoxSearch);
@@ -91,21 +91,21 @@ namespace AutomechanicsProject.Formes
             this.panelSearch.Size = new System.Drawing.Size(1323, 116);
             this.panelSearch.TabIndex = 6;
             // 
-            // buttonCurrency
+            // buttonSettings
             // 
-            this.buttonCurrency.AutoSize = true;
-            this.buttonCurrency.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.buttonCurrency.BackColor = System.Drawing.SystemColors.Control;
-            this.buttonCurrency.FlatAppearance.BorderSize = 0;
-            this.buttonCurrency.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonCurrency.Location = new System.Drawing.Point(362, 38);
-            this.buttonCurrency.MinimumSize = new System.Drawing.Size(180, 55);
-            this.buttonCurrency.Name = "buttonCurrency";
-            this.buttonCurrency.Size = new System.Drawing.Size(229, 55);
-            this.buttonCurrency.TabIndex = 5;
-            this.buttonCurrency.Text = global::AutomechanicsProject.Properties.Resources.Storekeeper_ButtonCurrencyText;
-            this.buttonCurrency.UseVisualStyleBackColor = false;
-            this.buttonCurrency.Click += new System.EventHandler(this.ButtonCurrency_Click);
+            this.buttonSettings.AutoSize = true;
+            this.buttonSettings.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.buttonSettings.BackColor = System.Drawing.SystemColors.Control;
+            this.buttonSettings.FlatAppearance.BorderSize = 0;
+            this.buttonSettings.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonSettings.Location = new System.Drawing.Point(362, 38);
+            this.buttonSettings.MinimumSize = new System.Drawing.Size(180, 55);
+            this.buttonSettings.Name = "buttonSettings";
+            this.buttonSettings.Size = new System.Drawing.Size(182, 55);
+            this.buttonSettings.TabIndex = 5;
+            this.buttonSettings.Text = "Настройки";
+            this.buttonSettings.UseVisualStyleBackColor = false;
+            this.buttonSettings.Click += new System.EventHandler(this.ButtonSettings_Click);
             // 
             // buttonSupply
             // 
@@ -146,7 +146,7 @@ namespace AutomechanicsProject.Formes
             this.textBoxSearch.Name = "textBoxSearch";
             this.textBoxSearch.Size = new System.Drawing.Size(298, 44);
             this.textBoxSearch.TabIndex = 2;
-            textBoxSearch.Text = Resources.StorekeeperForm_SearchText;
+            this.textBoxSearch.Text = "Поиск:";
             this.textBoxSearch.TextChanged += new System.EventHandler(this.TextBoxSearch_TextChanged);
             // 
             // panelData
@@ -194,8 +194,7 @@ namespace AutomechanicsProject.Formes
             this.toolStripTextBoxStorekeeper});
             this.menuStripStorekeeper.Location = new System.Drawing.Point(0, 0);
             this.menuStripStorekeeper.Name = "menuStripStorekeeper";
-            this.menuStripStorekeeper.Padding = new System.Windows.Forms.Padding(6, 2, 0, 2);
-            this.menuStripStorekeeper.Size = new System.Drawing.Size(1323, 48);
+            this.menuStripStorekeeper.Size = new System.Drawing.Size(1323, 44);
             this.menuStripStorekeeper.TabIndex = 1;
             // 
             // toolStripTextBoxStorekeeper
@@ -204,8 +203,8 @@ namespace AutomechanicsProject.Formes
             this.toolStripTextBoxStorekeeper.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.toolStripTextBoxStorekeeper.Name = "toolStripTextBoxStorekeeper";
             this.toolStripTextBoxStorekeeper.ReadOnly = true;
-            this.toolStripTextBoxStorekeeper.Size = new System.Drawing.Size(500, 44);
-            this.toolStripTextBoxStorekeeper.Text = Resources.StorekeeperForm_ToolStripStorekeeperText;
+            this.toolStripTextBoxStorekeeper.Size = new System.Drawing.Size(500, 40);
+            this.toolStripTextBoxStorekeeper.Text = "Кладовщик";
             // 
             // StorekeeperForm
             // 
@@ -216,7 +215,7 @@ namespace AutomechanicsProject.Formes
             this.MainMenuStrip = this.menuStripStorekeeper;
             this.MinimumSize = new System.Drawing.Size(1337, 585);
             this.Name = "StorekeeperForm";
-            this.Text = Resources.StorekeeperForm_Title;
+            this.Text = "Кладовщик - Управление складом";
             this.panelStorekeeper.ResumeLayout(false);
             this.panelStorekeeper.PerformLayout();
             this.panelSearch.ResumeLayout(false);
@@ -240,7 +239,7 @@ namespace AutomechanicsProject.Formes
         private System.Windows.Forms.MenuStrip menuStripStorekeeper;
         private System.Windows.Forms.Button buttonExit;
         private System.Windows.Forms.ToolStripTextBox toolStripTextBoxStorekeeper;
-        private System.Windows.Forms.Button buttonCurrency;   
+        private System.Windows.Forms.Button buttonSettings;   
         private System.Windows.Forms.Button buttonSupply;
     }
 }

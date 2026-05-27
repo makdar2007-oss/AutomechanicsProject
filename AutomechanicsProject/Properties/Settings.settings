@@ -8,5 +8,8 @@
     <Setting Name="ExchangeRate" Type="System.Decimal" Scope="User">
       <Value Profile="(Default)">1</Value>
     </Setting>
+    <Setting Name="SelectedLanguage" Type="System.String" Scope="User">
+      <Value Profile="(Default)">ru</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

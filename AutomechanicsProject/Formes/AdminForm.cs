@@ -45,7 +45,7 @@ namespace AutomechanicsProject.Formes
 
             buttonExit.Text = Resources.AdminForm_ButtonExitText;
             buttonReport.Text = Resources.AdminForm_ButtonReportText;
-            buttonCurrency.Text = Resources.AdminForm_ButtonCurrencyText;
+            buttonSettings.Text = Resources.AdminForm_ButtonSettingsText;
             buttonSupply.Text = Resources.AdminForm_ButtonSupplyText;
             buttonhistory.Text = Resources.AdminForm_ButtonHistoryText;
             buttonWarehouse.Text = Resources.Warehouse_Button;
@@ -63,6 +63,7 @@ namespace AutomechanicsProject.Formes
 
             toolStripTextBoxAdmin.Text = Resources.AdminForm_ToolStripAdminText;
         }
+
         /// <summary>
         /// Инициализирует новый экземпляр формы администратора
         /// </summary>
@@ -681,18 +682,39 @@ namespace AutomechanicsProject.Formes
         }
 
         /// <summary>
-        /// Обработчик нажатия кнопки выбора валюты
+        /// Открывает форму настроек
         /// </summary>
-        private void buttonCurrency_Click(object sender, EventArgs e)
+        private void buttonSettings_Click(object sender, EventArgs e)
         {
-
-            using (var currencyForm = new ChoosingCurrency(_currencySettingsService))
+            try
             {
-                if (currencyForm.ShowDialog() == DialogResult.OK)
+                var oldSearchWatermark = Resources.SearchWatermark;
+
+                using (var settingsForm = new FormSettings(_currencySettingsService))
                 {
-                    RefreshProductList();
-                    Logger.Info("Валюта изменена");
+                    if (settingsForm.ShowDialog() == DialogResult.OK)
+                    {
+                        ApplyLocalization();
+
+                        if (textBoxSearch.Text == oldSearchWatermark)
+                        {
+                            textBoxSearch.Text = Resources.SearchWatermark;
+                        }
+
+                        RefreshProductList();
+
+                        Logger.Info("Настройки изменены");
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "Ошибка при открытии формы настроек");
+
+                MessageBox.Show(Resources.ErrorOpenSettingsForm,
+                    Resources.TitleError,
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
         }
 

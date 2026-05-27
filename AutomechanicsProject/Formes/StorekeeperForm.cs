@@ -42,7 +42,7 @@ namespace AutomechanicsProject.Formes
 
             toolStripTextBoxStorekeeper.Text = Resources.StorekeeperForm_ToolStripStorekeeperText;
             buttonExit.Text = Resources.Storekeeper_ButtonExitText;
-            buttonCurrency.Text = Resources.Storekeeper_ButtonCurrencyText;
+            buttonSettings.Text = Resources.Storekeeper_ButtonSettingsText;
             buttonSupply.Text = Resources.Storekeeper_ButtonSupplyText;
             buttonShipment.Text = Resources.Storekeeper_ButtonShipmentText;
         }
@@ -163,26 +163,39 @@ namespace AutomechanicsProject.Formes
         }
 
         /// <summary>
-        /// Обработчик нажатия кнопки "Выбор валюты"
+        /// Открывает форму настроек
         /// </summary>
-        private void ButtonCurrency_Click(object sender, EventArgs e)
+        private void ButtonSettings_Click(object sender, EventArgs e)
         {
             try
             {
-                using (var currencyForm = new ChoosingCurrency(_currencySettingsService))
+                var oldSearchWatermark = Resources.SearchWatermark;
+
+                using (var settingsForm = new FormSettings(_currencySettingsService))
                 {
-                    if (currencyForm.ShowDialog() == DialogResult.OK)
+                    if (settingsForm.ShowDialog() == DialogResult.OK)
                     {
+                        ApplyLocalization();
+
+                        if (textBoxSearch.Text == oldSearchWatermark)
+                        {
+                            textBoxSearch.Text = Resources.SearchWatermark;
+                        }
+
                         RefreshProductList();
-                        logger.Info("Валюта изменена");
+
+                        logger.Info("Настройки изменены");
                     }
                 }
             }
             catch (Exception ex)
             {
-                logger.Error(ex,"Ошибка при открытии формы выбора валюты");
-                MessageBox.Show(Resources.ErrorOpenCurrencyForm, Resources.TitleError,
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                logger.Error(ex, "Ошибка при открытии формы настроек");
+
+                MessageBox.Show(Resources.ErrorOpenSettingsForm,
+                    Resources.TitleError,
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
         }
 
@@ -204,7 +217,12 @@ namespace AutomechanicsProject.Formes
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString());
+                logger.Error(ex, "Ошибка при открытии формы отгрузки");
+
+                MessageBox.Show(Resources.ErrorOpenShipmentForm,
+                    Resources.TitleError,
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
         }
 

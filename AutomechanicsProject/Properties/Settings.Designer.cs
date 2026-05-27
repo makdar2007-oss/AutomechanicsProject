@@ -50,12 +50,12 @@ namespace AutomechanicsProject.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("ru")]
-        public string Name {
+        public string SelectedLanguage {
             get {
-                return ((string)(this["Name"]));
+                return ((string)(this["SelectedLanguage"]));
             }
             set {
-                this["Name"] = value;
+                this["SelectedLanguage"] = value;
             }
         }
     }

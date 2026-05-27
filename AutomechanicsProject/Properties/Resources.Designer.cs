@@ -241,6 +241,15 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Настройки.
+        /// </summary>
+        public static string AdminForm_ButtonSettingsText {
+            get {
+                return ResourceManager.GetString("AdminForm_ButtonSettingsText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Поставка.
         /// </summary>
         public static string AdminForm_ButtonSupplyText {
@@ -1757,6 +1766,15 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Не удалось открыть форму настроек.
+        /// </summary>
+        public static string ErrorOpenSettingsForm {
+            get {
+                return ResourceManager.GetString("ErrorOpenSettingsForm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Не удалось открыть форму отгрузки.
         /// </summary>
         public static string ErrorOpenShipmentForm {
@@ -2187,6 +2205,42 @@ namespace AutomechanicsProject.Properties {
         public static string JsonFileFilter {
             get {
                 return ResourceManager.GetString("JsonFileFilter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Чувашский.
+        /// </summary>
+        public static string Language_Chuvash {
+            get {
+                return ResourceManager.GetString("Language_Chuvash", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на English.
+        /// </summary>
+        public static string Language_English {
+            get {
+                return ResourceManager.GetString("Language_English", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Русский.
+        /// </summary>
+        public static string Language_Russian {
+            get {
+                return ResourceManager.GetString("Language_Russian", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Татарский.
+        /// </summary>
+        public static string Language_Tatar {
+            get {
+                return ResourceManager.GetString("Language_Tatar", resourceCulture);
             }
         }
         
@@ -3001,6 +3055,60 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Отмена.
+        /// </summary>
+        public static string Settings_ButtonCancel_Text {
+            get {
+                return ResourceManager.GetString("Settings_ButtonCancel_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Выбрать.
+        /// </summary>
+        public static string Settings_ButtonChoose_Text {
+            get {
+                return ResourceManager.GetString("Settings_ButtonChoose_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Выберите валюту.
+        /// </summary>
+        public static string Settings_CurrencyWatermark {
+            get {
+                return ResourceManager.GetString("Settings_CurrencyWatermark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Настройки.
+        /// </summary>
+        public static string Settings_Form_Title {
+            get {
+                return ResourceManager.GetString("Settings_Form_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Выберите язык.
+        /// </summary>
+        public static string Settings_LanguageWatermark {
+            get {
+                return ResourceManager.GetString("Settings_LanguageWatermark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Настройки.
+        /// </summary>
+        public static string Settings_TextBox_Title {
+            get {
+                return ResourceManager.GetString("Settings_TextBox_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Добавить в список.
         /// </summary>
         public static string Shipment_ButtonAdd_Text {
@@ -3258,6 +3366,15 @@ namespace AutomechanicsProject.Properties {
         public static string Storekeeper_ButtonExitText {
             get {
                 return ResourceManager.GetString("Storekeeper_ButtonExitText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Настройки.
+        /// </summary>
+        public static string Storekeeper_ButtonSettingsText {
+            get {
+                return ResourceManager.GetString("Storekeeper_ButtonSettingsText", resourceCulture);
             }
         }
         

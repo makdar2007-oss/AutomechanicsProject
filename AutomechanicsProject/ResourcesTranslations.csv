@@ -1,0 +1,658 @@
+﻿Key;Russian;English;Tatar;Chuvash
+AuthLoginWatermark;Введите имя;Enter first name;Исемне кертегез;Ята кӗртӗр
+AuthPasswordWatermark;Введите пароль;Enter password;Серсүзне кертегез;Пароль кӗртӗр
+CategoryAddWatermark;Введите название;Enter name;Исемен кертегез;Ятне кӗртӗр
+CategorySelectWatermark;Выберите категорию;Select a category;Категорияне сайлагыз;Категори суйласа илӗр
+DeleteArticleWatermark;Введите артикул товара;Enter product article number;Товар артикулын кертегез;Товар артикулне кӗртӗр
+EditArticleWatermark;Артикул;Article;Артикул;Артикул
+EditCategoryWatermark;Введите название;Enter name;Исемен кертегез;Ятне кӗртӗр
+EditNameWatermark;Название;Name;Исеме;Ячӗ
+EditPriceWatermark;Цена;Price;Бәя;Хак
+ProductArticleWatermark;Введите артикул;Enter article number;Артикулны кертегез;Артикул кӗртӗр
+ProductNameWatermark;Введите название;Enter name;Исемен кертегез;Ятне кӗртӗр
+ProductPriceWatermark;Введите цену;Enter price;Бәяне кертегез;Хак кӗртӗр
+RegConfirmPasswordWatermark;Повторите пароль;Repeat password;Серсүзне кабатлагыз;Парольне тепӗр хут кӗртӗр
+RegLastnameWatermark;Введите отчество;Enter patronymic;Ата исемен кертегез;Ашшӗ ятне кӗртӗр
+RegLoginWatermark;Введите логин;Enter login;Логинны кертегез;Логин кӗртӗр
+RegNameWatermark;Введите имя;Enter first name;Исемне кертегез;Ята кӗртӗр
+RegPasswordWatermark;Введите пароль;Enter password;Серсүзне кертегез;Пароль кӗртӗр
+RegSurnameWatermark;Введите фамилию;Enter last name;Фамилияне кертегез;Фамили кӗртӗр
+SearchWatermark;Поиск:;Search:;Эзләү:;Шырани:
+ShipmentQuantityWatermark;Введите количество товара;Enter product quantity;Товар санын кертегез;Товар шутне кӗртӗр
+UnitSelectWatermark;Выберите единицу измерения;Select a unit of measure;Үлчәү берәмлеген сайлагыз;Виҫе пӗрлӗхне суйласа илӗр
+SQuantityWatermark;Введите количество товара;Enter product quantity;Товар санын кертегез;Товар шутне кӗртӗр
+SPriceWatermark;Введите цену;Enter price;Бәяне кертегез;Хак кӗртӗр
+SProductWatermark;Выберите товар из списка;Select a product from the list;Исемлектән товар сайлагыз;Списокран товар суйласа илӗр
+SSupplierWatermark;Выберите поставщика;Select a supplier;Тәэмин итүчене сайлагыз;Поставщик суйласа илӗр
+SCurrencyWatermark;Выберите валюту закупки;Select purchase currency;Сатып алу валютасын сайлагыз;Илӳ валютичӗн суйласа илӗр
+ShipmentRecipientWatermark;Выберите получателя;Select recipient;Алучыны сайлагыз;Илекене суйласа илӗр
+ShipmentTypeWatermark;Выберите тип отгрузки;Select shipment type;Җибәрү төрен сайлагыз;Ӑсату тӗсне суйласа илӗр
+ShipmentExpiryDateWatermark;Выберите срок годности;Select expiration date;Яраклылык срогын сайлагыз;Юрӑхлӑх вӑхӑтне суйласа илӗр
+NoExpiryDateWatermark;Нет срока годности;No expiration date;Яраклылык срогы юк;Юрӑхлӑх вӑхӑчӗ ҫук
+ButtonConfirmSupply;Подтвердить поставку;Confirm supply;Поставканы раслау;Поставкӑна ҫирӗплет
+ConfirmCancelAddProduct;"Вы уверены, что хотите отменить добавление товара?
+
+Все введенные данные будут потеряны.";"Are you sure you want to cancel adding the product?
+
+All entered data will be lost.";"Товар өстәүне юкка чыгарырга телисезме?
+
+Барлык кертелгән мәгълүмат югалачак.";"Товар хушнине пӑрахасшӑн-и?
+
+Кӗртнӗ пӗтӗм информаци ҫухалать."
+ConfirmCancelDelete;Вы уверены, что хотите отменить удаление?;Are you sure you want to cancel deletion?;Бетерүне юкка чыгарырга телисезме?;Катӑртнине пӑрахасшӑн-и?
+ConfirmCancelEdit;"У вас есть несохраненные изменения.
+
+Вы действительно хотите отменить редактирование?";"You have unsaved changes.
+
+Do you really want to cancel editing?";"Сакланмаган үзгәрешләр бар.
+
+Үзгәртүне юкка чыгарырга телисезме?";Сохранăман улӑштарусем пур. Редакцилени пӑрахасшӑн-и?
+ConfirmCancelEditWithDetails;"У вас есть несохраненные изменения.
+
+Вы действительно хотите отменить редактирование?";"You have unsaved changes.
+
+Do you really want to cancel editing?";"Сакланмаган үзгәрешләр бар.
+
+Үзгәртүне юкка чыгарырга телисезме?";Сохранăман улӑштарусем пур. Редакцилени пӑрахасшӑн-и?
+ConfirmCancelShipment;"У вас есть добавленные товары в списке отгрузки.
+
+Вы действительно хотите отменить создание отгрузки?";"You have added products in the shipment list.
+
+Do you really want to cancel creating the shipment?";"Җибәрү исемлегендә өстәлгән товарлар бар.
+
+Җибәрү булдыруны юкка чыгарырга телисезме?";"Ӑсату списокӗнче хушнӑ товарсем пур.
+
+Ӑсату хатӗрленине пӑрахасшӑн-и?"
+ConfirmCancelSupply;Отменить поставку? Все данные будут потеряны.;Cancel supply? All data will be lost.;Поставканы юкка чыгарыргамы? Барлык мәгълүмат югалачак.;Поставкӑна пӑрахас-и? Пӗтӗм даннӑйсем ҫухалӗҫ.
+ConfirmDeleteCategory;"Вы действительно хотите удалить категорию ""{0}""?";"Do you really want to delete category ""{0}""?";"""{0}"" категориясен бетерергә телисезме?";{0} категорине катӑртасшӑн-и?
+ConfirmDeleteCategoryWithProducts;"В категории ""{0}"" находится {1} товаров.
+
+Вы уверены, что хотите удалить категорию и все товары в ней?
+Это действие нельзя отменить.";"Category ""{0}"" contains {1} products.
+
+Are you sure you want to delete the category and all products in it?
+This action cannot be undone.";"""{0}"" категориясендә {1} товар бар.
+
+Категорияне һәм андагы барлык товарларны бетерергә телисезме?
+Бу гамәлне кире кайтарып булмый.";"""{0}"" категорире {1} товар пур.
+
+Категорине тата унти пӗтӗм товарсене катӑртасшӑн-и?
+Ку ӗҫе каялла тавӑраймастӑр."
+ConfirmDeleteProduct;"Вы действительно хотите удалить товар?
+
+Артикул: {0}
+Название: {1}
+Категория: {2}
+Цена: {3:F2}
+Остаток: {4} {5}
+
+Это действие нельзя отменить!";"Do you really want to delete the product?
+
+Article: {0}
+Name: {1}
+Category: {2}
+Price: {3:F2}
+Stock: {4} {5}
+
+This action cannot be undone!";"Товарны бетерергә телисезме?
+
+Артикул: {0}
+Исеме: {1}
+Категория: {2}
+Бәя: {3:F2}
+Калдык: {4} {5}
+
+Бу гамәлне кире кайтарып булмый!";"Товар катӑртасшӑн-и?
+
+Артикул: {0}
+Ячӗ: {1}
+Категори: {2}
+Хак: {3:F2}
+Юлашки: {4} {5}
+
+Ку ӗҫе каялла тавӑраймастӑр!"
+ConfirmRemoveShipmentItem;"Удалить товар ""{0}"" из списка отгрузки?";"Remove product ""{0}"" from the shipment list?";"""{0}"" товарын җибәрү исемлегеннән бетерергәме?";{0} товарне ӑсату списокӗнчен катӑртас-и?
+ConfirmShipment;"Подтвердить отгрузку?
+
+Получатель: {0}
+Количество позиций: {1}
+Общая сумма: {2:C2}";"Confirm shipment?
+
+Recipient: {0}
+Number of items: {1}
+Total amount: {2:C2}";"Җибәрүне расларгамы?
+
+Алучы: {0}
+Позицияләр саны: {1}
+Гомуми сумма: {2:C2}";"Ӑсату ҫирӗплетес-и?
+
+Илекен: {0}
+Позици шучӗ: {1}
+Пӗтӗм сумма: {2:C2}"
+ConfirmSupplyFormat;"Подтвердить поставку?
+Общая сумма: {0}";"Confirm supply?
+Total amount: {0}";"Поставканы расларгамы?
+Гомуми сумма: {0}";"Поставкӑ ҫирӗплетес-и?
+Пӗтӗм сумма: {0}"
+CurrencyBYN;Белорусский рубль;Belarusian ruble;Беларусь рубле;Белорус рублӗ
+CurrencyChangeConfirm;"Валюта изменена с {0} на {1}
+Курс: 1 RUB = {2:F4} {3} 
+
+Все цены будут пересчитаны в {4}.
+Продолжить?";"Currency changed from {0} to {1}
+Rate: 1 RUB = {2:F4} {3}
+
+All prices will be recalculated in {4}.
+Continue?";"Валюта {0} дан {1} гә үзгәртелде
+Курс: 1 RUB = {2:F4} {3}
+
+Барлык бәяләр {4} валютасына яңадан исәпләнәчәк.
+Дәвам итәргәме?";"Валюта {0}-ран {1}-а улӑштарнӑ
+Курс: 1 RUB = {2:F4} {3}
+
+Пӗтӗм хаксем {4}-ра каллех шутланӑҫҫӗ.
+Малалла-и?"
+CurrencyChangeTitle;Изменение валюты;Currency change;Валюта үзгәртү;Валютӑ улӑшни
+CurrencyCNY;Китайский юань;Chinese yuan;Кытай юане;Китай юанӗ
+CurrencyEUR;Евро;Euro;Евро;Евро
+CurrencyGBP;Британский фунт;British pound;Британия фунты;Британи фунчӗ
+CurrencyJPY;Японская иена;Japanese yen;Япония иенасы;Япони иенӗ
+CurrencyKZT;Казахстанский тенге;Kazakhstani tenge;Казакъстан тәңкәсе;Казахстан тенге
+CurrencyRUB;Российский рубль;Russian ruble;Россия сумы;Раҫҫей рублӗ
+CurrencyUSD;Доллар США;US dollar;АКШ доллары;АКШ долларӗ
+DebugSavingCache;Сохраняю кэш в: {0};Saving cache to: {0};Кэш саклана: {0};Отладка Сохранени Кэш
+StatusError;Ошибка;Error;Хата;Йӑнӑш
+ErrorImportFailed;Ошибка при импорте данных. Операция прервана. Подробности записаны в журнал ошибок.;Error importing data. The operation was canceled. Details were written to the error log.;Мәгълүмат импортлау вакытында хата. Операция туктатылды. Тулырак мәгълүмат хаталар журналына язылды.;Йӑнӑш Импорт Ӑнӑҫмарӗ
+ErrorCreateShipment;Не удалось оформить отгрузку.;Failed to create shipment.;Отгрузканы рәсмиләштереп булмады.;Ӑсату хатӗрлеме пулмарӗ.
+ErrorAutoWriteOff;Ошибка при автоматическом списании просроченных товаров.к.;Error during automatic write-off of expired products.;Яраклылык срогы чыккан товарларны автоматик списание вакытында хата.;Йӑнӑш: вӑхӑт иртнӗ товарсене автоматлӑ списани тума
+ErrorCurrencyFixed;Нельзя изменить валюту после добавления позиций в поставку.;Currency cannot be changed after items were added to the supply.;Поставкага позицияләр өстәгәннән соң валютаны үзгәртеп булмый.;Поставкӑна позицийсем хушсан валютӑна улӑштарма юрамасть.
+ErrorExpiryDateRequired;Срок годности не может быть в прошлом;Expiration date cannot be in the past;Яраклылык срогы үткән дата була алмый;Юрӑхлӑх вӑхӑчӗ иртнӗ пулма пултараймасть
+ErrorExpiryDateExceedsProduct;Срок годности в поставке не может превышать срок годности товара ({0});The supply expiration date cannot exceed the product expiration date ({0});Поставкадагы яраклылык срогы товарның яраклылык срогыннан ({0}) артык була алмый;Йӑнӑш Юрӑхлӑх Дата иртет Товар
+ErrorNoExpiryDateAllowed;У выбранного товара нет срока годности. Поле даты должно быть пустым.;The selected product has no expiration date. The date field must be empty.;Сайланган товарның яраклылык срогы юк. Дата кыры буш булырга тиеш.;Йӑнӑш ҫук Юрӑхлӑх Дата юрать
+ErrorAddCategory;Не удалось добавить категорию. Попробуйте позже.;Failed to add category. Try again later.;Категорияне өстәп булмады. Соңрак кабатлап карагыз.;Категори хушма пулмарӗ. Кайран тӑрӑшса пӑхӑр.
+ErrorAddProduct;Ошибка при добавлении товара;Error adding product;Товар өстәү вакытында хата;Товар хушнӑ чух йӑнӑш
+ErrorAuthFailed;Ошибка при входе в систему;Login error;Системага керү вакытында хата;Системӑна кӗнӗ чух йӑнӑш
+ErrorAuthInvalid;Неверный логин или пароль!;Invalid login or password!;Логин яки серсүз дөрес түгел!;Логин е пароль тӗрӗс мар!
+ErrorCannotDeleteCategoryWithShipments;"Невозможно удалить категорию, так как некоторые товары используются в отгрузках.
+Сначала удалите связанные отгрузки.";"Cannot delete the category because some products are used in shipments.
+Delete the related shipments first.";"Категорияне бетереп булмый, чөнки кайбер товарлар отгрузкаларда кулланыла.
+Башта бәйле отгрузкаларны бетерегез.";Категорине катӑртма май ҫук, мӗншӗн тесен хӑш-пӗр товарсем ӑсатусемпе усӑ кураҫҫӗ.
+ErrorCategoryExists;Категория с таким названием уже существует!;A category with this name already exists!;Мондый исемле категория инде бар!;Ҫак ятпа категори пур ӗнтӗ!
+ErrorCategoryNotFound;Категория не найдена в базе данных!;Category was not found in the database!;Категория мәгълүматлар базасында табылмады!;Категори база даннӑйсенче тупӑнмарӗ!
+ErrorDeleteCategory;Не удалось удалить категорию. Попробуйте позже.;Failed to delete category. Try again later.;Категорияне бетереп булмады. Соңрак кабатлап карагыз.;Категорине катӑртма пулмарӗ. Кайран тӑрӑшса пӑхӑр.
+ErrorDeleteProduct;Не удалось удалить товар. Попробуйте позже.;Failed to delete product. Try again later.;Товарны бетереп булмады. Соңрак кабатлап карагыз.;Товара катӑртма пулмарӗ. Кайран тӑрӑшса пӑхӑр.
+ErrorEditCategory;Не удалось отредактировать категорию. Попробуйте позже.;Failed to edit category. Try again later.;Категорияне үзгәртеп булмады. Соңрак кабатлап карагыз.;Категорине улӑштарма пулмарӗ. Кайран тӑрӑшса пӑхӑр.
+ErrorEditProduct;Ошибка при редактировании товара;Error editing product;Товарны үзгәртү вакытында хата;Товар улӑштарнӑ чух йӑнӑш
+ErrorEnterArticle;Введите артикул товара!;Enter product article number!;Товар артикулын кертегез!;Товар артикулне кӗртӗр!
+ErrorEnterCorrectPrice;Введите корректную цену!;Enter a valid price!;Дөрес бәя кертегез!;Тӗрӗс хак кӗртӗр!
+ErrorEnterCorrectQuantity;Введите корректное количество (целое положительное число)!;Enter a valid quantity (positive integer)!;Дөрес сан кертегез (бөтен уңай сан)!;Тӗрӗс шут кӗртӗр (пӗтӗм положителлӗ шут)!
+ErrorEnterValidPrice;Введите корректную цену закупки!;Enter a valid purchase price!;Дөрес сатып алу бәясен кертегез!;Тӗрӗс илӳ хакне кӗртӗр!
+ErrorEnterValidQuantity;Введите корректное количество товара!;Enter a valid product quantity!;Товарның дөрес санын кертегез!;Товарӑн тӗрӗс шутне кӗртӗр!
+ErrorExportToCsvWithMessage;Ошибка при экспорте данных.;Error exporting data.;Мәгълүматны экспортлау вакытында хата.;Даннӑйсене экспортланӑ чух йӑнӑш.
+ErrorFillCategory;Введите название категории!;Enter category name!;Категория исемен кертегез!;Категори ятне кӗртӗр!
+ErrorFillFields;Заполните все обязательные поля!;Fill in all required fields!;Барлык мәҗбүри кырларны тутырыгыз!;Пӗтӗм кирлӗ полясене тултарӑр!
+ErrorFixFormErrors;"Пожалуйста, исправьте ошибки в форме.
+Поля, выделенные розовым, заполнены неверно.";"Please correct the errors in the form.
+Fields highlighted in pink are filled in incorrectly.";"Формадагы хаталарны төзәтегез.
+Алсу төс белән билгеләнгән кырлар дөрес тутырылмаган.";Йӑнӑш Тӳрлетни Форма Йӑнӑшсем
+ErrorFormatColumnsMessage;Ошибка при отображении таблицы. Некоторые колонки могут быть отображены некорректно.;Error displaying the table. Some columns may be displayed incorrectly.;Таблицаны күрсәтү вакытында хата. Кайбер баганалар дөрес күрсәтелмәскә мөмкин.;Таблицӑна кӑтартнӑ чух йӑнӑш. Хӑш-пӗр колонкӑсем тӗрӗс кӑтартӑнмаҫҫӗ.
+ErrorHighlightRow;Ошибка при подсветке строки;Error highlighting row;Юлны билгеләү вакытында хата;Йӗр палӑртнӑ чух йӑнӑш
+ErrorImportNoData;Файл не содержит данных для импорта!;The file contains no data to import!;Файлда импорт өчен мәгълүмат юк!;Файлта импортлама даннӑйсем ҫук!
+ErrorImportNotFound;Не найдено в каталоге;Not found in catalog;Каталогта табылмады;Каталогра тупӑнмарӗ
+ErrorInsufficientStockWithDetails;"Недостаточно товара на складе!
+Доступно: {0} {1}";"Not enough stock in the warehouse!
+Available: {0} {1}";"Складта товар җитәрлек түгел!
+Доступно: {0} {1}";"Складра товар ҫитмӗ!
+Пур: {0} {1}"
+ErrorLoadCategories;Не удалось загрузить категории;Failed to load categories;Категорияләрне йөкләп булмады;Категорисене загрузкӑлама пулмарӗ
+ErrorLoadProduct;Не удалось загрузить товар;Failed to load product;Товарны йөкләп булмады;Товара загрузкӑлама пулмарӗ
+ErrorLoadProductData;Не удалось загрузить данные товара;Failed to load product data;Товар мәгълүматларын йөкләп булмады;Товар даннӑйсене загрузкӑлама пулмарӗ
+ErrorLoadProducts;Не удалось загрузить товары;Failed to load products;Товарларны йөкләп булмады;Товарсене загрузкӑлама пулмарӗ
+ErrorLoadProductsList;Не удалось загрузить список товаров. Попробуйте позже.;Failed to load product list. Try again later.;Товарлар исемлеген йөкләп булмады. Соңрак кабатлап карагыз.;Ӑнӑҫмарӗ: загрузить список товарсен. Попробуйте позже.
+ErrorLoadRecipients;Не удалось загрузить список получателей;Failed to load recipients list;Алучылар исемлеген йөкләү булмады;Илекенсен спискне тиеме пулмарӗ
+ErrorLoadReportFormat;Ошибка при загрузке отчета;Error loading report;Хисапны йөкләү вакытында хата;Отчета загрузкӑланӑ чух йӑнӑш
+ErrorLoadShipmentHistory;Не удалось загрузить историю отгрузок.;Failed to load shipment history.;Отгрузкалар тарихын йөкләп булмады.;Ӑсату историне загрузкӑлама пулмарӗ.
+ErrorLoadSuppliers;Ошибка при загрузке поставщиков;Error loading suppliers;Тәэмин итүчеләрне йөкләү вакытында хата;Поставщиксене загрузкӑланӑ чух йӑнӑш
+ErrorLoadUnits;Не удалось загрузить список единиц измерения;Failed to load unit list;Үлчәү берәмлекләре исемлеген йөкләү булмады;Виҫе пӗрчисен спискне тиеме пулмарӗ
+ErrorLogout;Ошибка при выходе из системы;Logout error;Системадан чыгу вакытында хата;Системӑран тухнӑ чух йӑнӑш
+ErrorNoAccess;У вас нет доступа к системе! Обратитесь к администратору.;You do not have access to the system! Contact the administrator.;Сезнең системага керү хокукыгыз юк! Администраторга мөрәҗәгать итегез.;Сире системӑна кӗме ирӗк ҫук! Администратор патне ҫаврӑнӑр.
+ErrorNoDataToExport;Нет данных для экспорта;No data to export;Экспорт өчен мәгълүмат юк;Экспортлама даннӑйсем ҫук
+ErrorNoItemsInShipment;Добавьте товары в список отгрузки!;Add products to the shipment list!;Отгрузка исемлегенә товарлар өстәгез!;Ӑсату списокне товарсем хушӑр!
+ErrorNoPositions;Добавьте хотя бы одну позицию!;Add at least one item!;Кимендә бер позиция өстәгез!;Пӗр позици те пулин хушӑр!
+ErrorNoProducts;В базе данных нет товаров! Добавьте товары через каталог.;There are no products in the database! Add products through the catalog.;Мәгълүматлар базасында товарлар юк! Товарларны каталог аша өстәгез.;Йӑнӑш ҫук Товарсем
+ErrorNoSuppliers;В базе данных нет поставщиков! Добавьте поставщиков.;There are no suppliers in the database! Add suppliers.;Мәгълүматлар базасында тәэмин итүчеләр юк! Тәэмин итүчеләрне өстәгез.;Йӑнӑш ҫук Поставщиксем
+ErrorOpenAddCategoryForm;Не удалось открыть форму добавления категории;Failed to open the category add form;Категория өстәү формасын ачып булмады;Категори хушмалли формӑна уҫма пулмарӗ
+ErrorOpenAddProductForm;Не удалось открыть форму добавления товара;Failed to open the product add form;Товар өстәү формасын ачып булмады;Товар хушмалли формӑна уҫма пулмарӗ
+ErrorOpenCurrencyForm;Ошибка при открытии формы выбора валюты;Error opening the currency selection form;Валюта сайлау формасын ачканда хата;Валютӑ суйламалли формӑна уҫнӑ чух йӑнӑш
+ErrorOpenDeleteCategoryForm;Не удалось удалить категорию;Failed to delete category;Категорияне бетереп булмады;Категорине катӑртма пулмарӗ
+ErrorOpenEditCategoryForm;Не удалось открыть форму редактирования категории;Failed to open the category edit form;Категорияне үзгәртү формасын ачып булмады;Категори улӑштармалли формӑна уҫма пулмарӗ
+ErrorOpenHistory;Не удалось открыть историю;Failed to open history;Тарихны ачып булмады;Историне уҫма пулмарӗ
+ErrorOpenShipmentForm;Не удалось открыть форму отгрузки;Failed to open shipment form;Отгрузка формасын ачып булмады;Ӑсату формине уҫма пулмарӗ
+ErrorProductInShipments;"Невозможно удалить товар ""{0}"", так как он используется в {1} отгрузках.";"Cannot delete product ""{0}"" because it is used in {1} shipments.";"""{0}"" товарын бетереп булмый, чөнки ул {1} отгрузкада кулланыла.";"""{0}"" товарне катӑртма май ҫук, мӗншӗн тесен вӑл {1} ӑсатура кӗрет."
+ErrorProductNotFound;"Товар с артикулом ""{0}"" не найден!";"Product with article number ""{0}"" was not found!";"""{0}"" артикуллы товар табылмады!";"Товар с артикулом ""{0}"" тупӑнмарӗ!"
+ErrorProductNotFoundGeneric;Товар не найден!;Product not found!;Товар табылмады!;Товар тупӑнмарӗ!
+ErrorRegistration;Ошибка при регистрации. Попробуйте позже.;Registration error. Try again later.;Теркәлү вакытында хата. Соңрак кабатлап карагыз.;Регистраци чух йӑнӑш. Кайран тӑрӑшса пӑхӑр.
+ErrorRoleNotFound;"Ошибка: роль 'Кладовщик' не найдена!
+Обратитесь к администратору.";"Error: role 'Storekeeper' was not found!
+Contact the administrator.";"Хата: 'Складчы' роле табылмады!
+Администраторга мөрәҗәгать итегез.";Йӑнӑш Роль мар тупӑннӑ
+ErrorSelectCategory;Выберите категорию!;Select a category!;Категорияне сайлагыз!;Категори суйласа илӗр!
+ErrorSelectCategoryForDelete;Выберите категорию для удаления!;Select a category to delete!;Бетерү өчен категорияне сайлагыз!;Катӑртмалли категорине суйласа илӗр!
+ErrorSelectProduct;Выберите товар из списка!;Select a product from the list!;Исемлектән товар сайлагыз!;Списокран товар суйласа илӗр!
+ErrorSelectRecipient;Выберите получателя из списка!;Select a recipient from the list!;Исемлектән алучыны сайлагыз!;Списокран илекене суйласа илӗр!
+ErrorSelectSupplier;Пожалуйста, выберите поставщика!;Please select a supplier!;Тәэмин итүчене сайлагыз!;Поставщик суйласа илӗр!
+ErrorSelectUnit;Выберите единицу измерения!;Select a unit of measure!;Үлчәү берәмлеген сайлагыз!;Виҫе пӗрлӗхне суйласа илӗр!
+ErrorSupplyFailed;Ошибка при подтверждении поставки.;Error confirming supply.;Поставканы раслау вакытында хата.;Поставкӑна ҫирӗплетнӗ чух йӑнӑш.
+ErrorUpdateProduct;Не удалось обновить товар. Попробуйте позже.;Failed to update product. Try again later.;Товарны яңартып булмады. Соңрак кабатлап карагыз.;Товара ҫӗнетме пулмарӗ. Кайран тӑрӑшса пӑхӑр.
+ErrorUserExists;Пользователь с таким логином уже существует!;A user with this login already exists!;Мондый логинлы кулланучы инде бар!;Ҫак логинпа усӑ куракан пур ӗнтӗ!
+ErrorUserNotAuthorized;Ошибка: пользователь не авторизован!;Error: user is not authorized!;Хата: кулланучы авторизацияләнмәгән!;Йӑнӑш: усӑ куракан авторизаци иртмен!
+ErrorWithDetails;Ошибка.;Error.;Хата.;Йӑнӑш.
+ErrorSurnameLength;Фамилия должна быть от 2 до 100 символов.;Last name must be from 2 to 100 characters.;Фамилия 2 дән 100 символга кадәр булырга тиеш.;Йӑнӑш Фамили Вӑрӑмлӑх
+ErrorEnterSurname;Введите фамилию;Enter last name;Фамилияне кертегез;Фамили кӗртӗр
+ErrorInvalidSurname;Фамилия должна содержать только русские буквы, дефис и пробел.;Last name must contain only Russian letters, hyphen and space.;Фамилиядә рус хәрефләре, дефис һәм пробел гына булырга тиеш.;Йӑнӑш тӗрӗс мар Фамили
+ErrorEnterName;Введите имя;Enter first name;Исемне кертегез;Ята кӗртӗр
+ErrorInvalidName;Имя должно содержать только русские буквы, дефис и пробел.;First name must contain only Russian letters, hyphen and space.;Исемдә рус хәрефләре, дефис һәм пробел гына булырга тиеш.;Йӑнӑш тӗрӗс мар Ят
+ErrorNameLength;Имя должно быть от 2 до 100 символов.;First name must be from 2 to 100 characters.;Исем 2 дән 100 символга кадәр булырга тиеш.;Йӑнӑш Ят Вӑрӑмлӑх
+ErrorInvalidLastname;Отчество должно содержать только русские буквы, дефис и пробел.;Patronymic must contain only Russian letters, hyphen and space.;Ата исемендә рус хәрефләре, дефис һәм пробел гына булырга тиеш.;Йӑнӑш тӗрӗс мар Ашшӗ ячӗ
+ErrorLastnameLength;Отчество должно быть от 2 до 100 символов.;Patronymic must be from 2 to 100 characters.;Ата исеме 2 дән 100 символга кадәр булырга тиеш.;Йӑнӑш Ашшӗ ячӗ Вӑрӑмлӑх
+ErrorEnterLogin;Введите логин;Enter login;Логинны кертегез;Логин кӗртӗр
+ErrorInvalidLogin;Логин может содержать только английские буквы, цифры и подчеркивание.;Login may contain only English letters, digits and underscore.;Логинда инглиз хәрефләре, саннар һәм аскы сызык кына булырга мөмкин.;Йӑнӑш тӗрӗс мар Логин
+ErrorLoginLength;Логин должен быть от 3 до 20 символов.;Login must be from 3 to 20 characters.;Логин 3 тән 20 символга кадәр булырга тиеш.;Йӑнӑш Логин Вӑрӑмлӑх
+ErrorEnterPassword;Введите пароль;Enter password;Серсүзне кертегез;Пароль кӗртӗр
+ErrorInvalidPassword;Пароль должен содержать минимум 6 символов, хотя бы одну цифру и одну букву.;Password must contain at least 6 characters, at least one digit and one letter.;Серсүз кимендә 6 символдан, бер саннан һәм бер хәрефтән торырга тиеш.;Йӑнӑш тӗрӗс мар Пароль
+ErrorConfirmPassword;Подтвердите пароль;Confirm password;Серсүзне раслагыз;Парольне ҫирӗплетӗр
+ErrorPasswordMismatch;Пароли не совпадают!;Passwords do not match!;Серсүзләр туры килми!;Парольсем пӗр килмеҫҫӗ!
+ErrorGeneric;Произошла ошибка. Попробуйте позже.;An error occurred. Try again later.;Хата килеп чыкты. Соңрак кабатлап карагыз.;Йӑнӑш пулчӗ. Кайран тӑрӑшса пӑхӑр.
+ErrorCurrencyRatesLoad;Критическая ошибка при загрузке курсов валют;Critical error loading currency rates;Валюта курсларын йөкләү вакытында критик хата;Йӑнӑш Валюта Курссем Йӗклени
+CategoryNone;Без категории;No category;Категориясез;Категорисӗр
+InfoCategoryNameNotChanged;Название категории не изменилось;Category name was not changed;Категория исеме үзгәрмәде;Категори ячӗ улӑшман
+InfoHistoryEmpty;Задайте корректно период;Set the period correctly;Периодны дөрес күрсәтегез;Периодне тӗрӗс кӑтартӑр
+InfoNoDataForPeriod;Нет данных для истории;No data for history;Тарих өчен мәгълүмат юк;Истори валли даннӑйсем ҫук
+InfoNoPositionsToDisplay;Нет позиций для отображения;No items to display;Күрсәтү өчен позицияләр юк;Кӑтартмалли позицийсем ҫук
+InfoNoProductsForShipment;Нет товаров в наличии для отгрузки!;No products in stock for shipment!;Отгрузка өчен складта товарлар юк!;Нет товарсен в наличии для отгрузки!
+InfoNoRecipientsAvailable;"Нет доступных получателей!
+Обратитесь к администратору для добавления компаний.";"No recipients available!
+Contact the administrator to add companies.";"Алучылар юк!
+Компанияләр өстәү өчен администраторга мөрәҗәгать итегез.";Илекенсем ҫук! Компанисем хушма администратора ҫырӑр.
+InfoUsingCachedCurrencies;Используются сохранённые курсы валют (интернет недоступен);Saved currency rates are used (internet is unavailable);Сакланган валюта курслары кулланыла (интернет юк);Информаци Усӑ курни Кэш Валютӑсем
+InfoCurrencyRatesLoaded;Курсы валют успешно загружены;Currency rates loaded successfully;Валюта курслары уңышлы йөкләнде;Валютӑ курсӗсем уңӑҫлӑ загрузкӑланчӗҫ
+JsonFileFilter;JSON files (*.json)|*.json|All files (*.*)|*.*;JSON files (*.json)|*.json|All files (*.*)|*.*;JSON files (*.json)|*.json|All files (*.*)|*.*;JSON files (*.json)|*.json|All files (*.*)|*.*
+ImportSupplyTitle;Импорт данных поставки из JSON файла;Import supply data from JSON file;JSON файлыннан поставка мәгълүматларын импортлау;Импорт Поставка Ят
+SaveCsvFileTitle;Сохранить CSV файл;Save CSV file;CSV файлны саклау;Сохранени CSV Файл Ят
+LoadingCurrencies;Загрузка курсов валют...;Loading currency rates...;Валюта курслары йөкләнә...;Валютӑ курсӗсене загрузкӑлани...
+WarningNoDataForPeriod;Задайте корректно период;Set the period correctly;Периодны дөрес күрсәтегез;Периодне тӗрӗс кӑтартӑр
+WarningNoHistoryForPeriod;Задайте корректно период;Set the period correctly;Периодны дөрес күрсәтегез;Периодне тӗрӗс кӑтартӑр
+NoCategoriesForDelete;Нет доступных категорий для удаления;No categories available for deletion;Бетерү өчен категорияләр юк;Катӑртма пултаракан категорисем ҫук
+NoCurrenciesAvailable;Нет доступных валют;No currencies available;Валюталар юк;Валютӑсем ҫук
+PleaseSelectCurrency;Пожалуйста, выберите валюту;Please select a currency;Валютаны сайлагыз;Валютӑ суйласа илӗр
+ProductAlreadyInList;"Товар ""{0}"" уже добавлен в список.
+Текущее количество: {1} {2}
+
+Заменить количество новым значением?";"Product ""{0}"" is already added to the list.
+Current quantity: {1} {2}
+
+Replace the quantity with a new value?";"""{0}"" товары инде өстәлгән. Хәзерге саны: {1} {2}. Санны яңа кыйммәткә алыштырыргамы?";"""{0}"" товарӗ списокра пурӗ. Хальхи шут: {1} {2}. Шута ҫӗннипе улӑштарма?"
+SelectCategoryForDelete;Выберите категорию для удаления;Select a category to delete;Бетерү өчен категорияне сайлагыз;Катӑртмалли категорине суйласа илӗр
+SelectCategoryForEdit;Выберите категорию для редактирования;Select a category to edit;Үзгәртү өчен категорияне сайлагыз;Улӑштармалли категорине суйласа илӗр
+SelectProductForDelete;Выберите товар для удаления;Select a product to delete;Бетерү өчен товарны сайлагыз;Катӑртмалли товара суйласа илӗр
+SelectProductForEdit;Выберите товар для редактирования;Select a product to edit;Үзгәртү өчен товарны сайлагыз;Улӑштармалли товара суйласа илӗр
+ShipmentHistoryTitle;История отгрузок - Отгружено: {0} ед. | Списано: {1} ед. | Сумма: {2:C2} | Прибыль: {3:C2} | Убыток: {4:C2};Shipment history - Shipped: {0} units | Written off: {1} units | Amount: {2:C2} | Profit: {3:C2} | Loss: {4:C2};Отгрузкалар тарихы - Җибәрелде: {0} бер. | Списание: {1} бер. | Сумма: {2:C2} | Табыш: {3:C2} | Зыян: {4:C2};Ӑсату историйӗ - Ӑсатнӑ: {0} | Списани: {1} | Суммӑ: {2:C2} | Тупӑш: {3:C2} | Ҫухату: {4:C2}
+StatusSaving;Сохранение...;Saving...;Саклау...;Сохранени...
+StorekeeperRoleName;Кладовщик;Storekeeper;Складчы;Кладовщик
+SupplyStatusCompleted;Оформлена;Completed;Рәсмиләштерелде;Хатӗрленӗ
+UnknownSupplier;Не указан;Not specified;Билгесез Тәэмин итүче;Кӑтартман
+WarningShipmentsWithoutItems;Найдено {0} отгрузок, но ни одна не содержит позиций!;Found {0} shipments, but none contains items!;{0} отгрузка табылды, ләкин берсендә дә позицияләр юк!;Асӑрхантару Ӑсатусем Without Позици
+WarningNoProductExpiryDate;У выбранного товара нет срока годности. Дата поставки не требуется.;The selected product has no expiration date. Supply date is not required.;Сайланган товарның яраклылык срогы юк. Поставка датасы кирәк түгел.;Асӑрхантару ҫук Товар Юрӑхлӑх Дата
+WarningCurrencyRatesFallback;Не удалось загрузить актуальные курсы валют. Используются резервные значения.;Failed to load current currency rates. Fallback values are used.;Актуаль валюта курсларын йөкләп булмады. Резерв кыйммәтләр кулланыла.;Ӑнӑҫмарӗ: загрузить актуальные курсы валют. Используются резервные значения.
+WarningCurrencyRatesFailed;Ошибка загрузки курсов валют: {0};Currency rate loading error: {0};Валюта курсларын йөкләү хатасы: {0};Асӑрхантару Валюта Курссем Ӑнӑҫмарӗ
+WarningUsingCachedRates;Используются сохранённые курсы валют (интернет недоступен);Saved currency rates are used (internet is unavailable);Сакланган валюта курслары кулланыла (интернет юк);Асӑрхантару Усӑ курни Кэш Курссем
+SuccessAutoWriteOffMessage;Списано {0} просроченных товаров.;{0} expired products were written off.;Яраклылык срогы чыккан {0} товар списание ителде.;{0} вӑхӑт иртнӗ товар списани тухнӑ.
+SuccessCategoryAdded;"Категория ""{0}"" успешно добавлена!";"Category ""{0}"" was successfully added!";"""{0}"" категориясе уңышлы өстәлде!";"Категория ""{0}"" ӑнӑҫлӑ добавлена!"
+SuccessCategoryAndProductsDeleted;"Категория ""{0}"" и все ({1}) товары в ней успешно удалены!";"Category ""{0}"" and all ({1}) products in it were successfully deleted!";"""{0}"" категориясе һәм андагы барлык ({1}) товар уңышлы бетерелде!";"Категория ""{0}"" и все ({1}) товарсем в ней ӑнӑҫлӑ удалены!"
+SuccessCategoryDeleted;"Категория ""{0}"" успешно удалена!";"Category ""{0}"" was successfully deleted!";"""{0}"" категориясе уңышлы бетерелде!";"Категория ""{0}"" ӑнӑҫлӑ удалена!"
+SuccessCategoryRenamed;"Категория ""{0}"" успешно переименована в ""{1}""!";"Category ""{0}"" was successfully renamed to ""{1}""!";"""{0}"" категориясе ""{1}"" итеп уңышлы үзгәртелде!";"Категория ""{0}"" ӑнӑҫлӑ переименована в ""{1}""!"
+SuccessExportFormat;Данные успешно экспортированы в файл: {0};Data was successfully exported to file: {0};Мәгълүмат файлга уңышлы экспортланды: {0};Данные ӑнӑҫлӑ экспортированы в файл: {0}
+SuccessImportFormat;Успешно импортировано {0} товаров!;Successfully imported {0} products!;{0} товар уңышлы импортланды!;Ӑнӑҫлӑ импортировано {0} товарсен!
+SuccessProductAdded;Товар успешно добавлен!;Product was successfully added!;Товар уңышлы өстәлде!;Товар ӑнӑҫлӑ добавлен!
+SuccessProductAddedToList;Товар добавлен в список отгрузки;Product added to the shipment list;Товар отгрузка исемлегенә өстәлде;Ӑнӑҫу Товар Хушнӑ To Список
+SuccessProductDeleted;Товар успешно удален!;Product was successfully deleted!;Товар уңышлы бетерелде!;Товар ӑнӑҫлӑ удален!
+SuccessProductUpdated;Товар успешно обновлен!;Product was successfully updated!;Товар уңышлы яңартылды!;Товар ӑнӑҫлӑ обновлен!
+SuccessRegistrationWithDetails;"Регистрация успешна!
+
+Логин: {0}
+ФИО: {1}
+
+Теперь вы можете войти в систему.";"Registration successful!
+
+Login: {0}
+Full name: {1}
+
+Now you can log in.";"Теркәлү уңышлы!
+
+Логин: {0}
+ФИО: {1}
+
+Хәзер системага керә аласыз.";Ӑнӑҫу Регистраци пур детальсем
+SuccessShipmentCreatedWithDetails;"Отгрузка успешно оформлена!
+
+Получатель: {0}
+Количество позиций: {1}
+Общая сумма: {2:C2}";"Shipment created successfully!
+
+Recipient: {0}
+Number of items: {1}
+Total amount: {2:C2}";"Отгрузка уңышлы рәсмиләштерелде!
+
+Алучы: {0}
+Позицияләр саны: {1}
+Гомуми сумма: {2:C2}";"Отгрузка ӑнӑҫлӑ оформлена!
+
+Получатель: {0}
+Количество позиций: {1}
+Общая сумма: {2:C2}"
+SuccessSupplyFormat;"Поставка оформлена!
+
+Номер: {0}
+Дата: {1}
+Товаров в поставке: {2}
+Общая сумма: {3}";"Supply completed!
+
+Number: {0}
+Date: {1}
+Products in supply: {2}
+Total amount: {3}";"Поставка рәсмиләштерелде!
+
+Номер: {0}
+Дата: {1}
+Поставкадагы товарлар: {2}
+Гомуми сумма: {3}";Поставка хатӗрленӗ! №: {0}, Вӑхӑчӗ: {1}, Товарсен шучӗ: {2}, Пӗтӗм суммӑ: {3}
+TitleAutoWriteOff;Автоматическое списание;Automatic write-off;Автоматик списание;Автоматла списани
+TitleConfirmation;Подтверждение;Confirmation;Раслау;Ҫирӗплетни
+TitleDeleteConfirmation;Подтверждение удаления;Delete confirmation;Бетерүне раслау;Катӑртнине ҫирӗплетни
+TitleError;Ошибка;Error;Хата;Йӑнӑш
+TitleInformation;Информация;Information;Мәгълүмат;Информаци
+TitleProductAlreadyInList;Товар уже в списке;Product is already in the list;Товар инде исемлектә;Товар списокра пур ӗнтӗ
+TitleRemoveConfirmation;Подтверждение удаления;Delete confirmation;Бетерүне раслау;Катӑртнине ҫирӗплетни
+TitleSuccess;Успех;Success;Уңыш;Уңӑҫ
+TitleWarning;Внимание;Warning;Игътибар;Асӑрхани
+Unit_Piece_Short;шт;pcs;данә;данӑ
+BatchNumberFormat;Партия_{0:yyyyMM};Batch_{0:yyyyMM};Партия_{0:yyyyMM};Batch Number Формат
+CategoryDisplayFormat_WithCount;{0} (товаров: {1});{0} (products: {1});{0} (товар: {1});{0} (товарсен: {1})
+CategoryItemFormat;{0} (товаров: {1});{0} (products: {1});{0} (товар: {1});{0} (товарсен: {1})
+ComboItemFormat;{0} - {1} (остаток: {2});{0} - {1} (stock: {2});{0} - {1} (калдык: {2});Combo Позици Формат
+ConfirmDeleteSupplyItem;"Вы действительно хотите удалить товар ""{0} - {1}"" из списка поставки?";"Do you really want to remove product ""{0} - {1}"" from the supply list?";"""{0} - {1}"" товарын поставка исемлегеннән бетерергәме?";Ҫирӗплетни Катӑртни Поставка Позици
+CurrencyFormat_Rub;{0:N2} руб.;{0:N2} RUB;{0:N2} сум.;Валюта Формат Rub
+ExpiryDisplayFormat_WithBalance;Срок: {0:dd.MM.yyyy} (остаток: {1});Expiration: {0:dd.MM.yyyy} (stock: {1});Срок: {0:dd.MM.yyyy} (калдык: {1});Юрӑхлӑх Кӑтартни Формат пур Юлашки
+FileNameDateFormat;yyyyMMdd_HHmmss;yyyyMMdd_HHmmss;yyyyMMdd_HHmmss;yyyyMMdd_HHmmss
+NoExpiryDisplayFormat;Без срока (остаток: {0});No expiration date (stock: {0});Сроксыз (калдык: {0});ҫук Юрӑхлӑх Кӑтартни Формат
+ProductDisplayFormat_WithBalance;{0} - {1} (остаток: {2} {3});{0} - {1} (stock: {2} {3});{0} - {1} (калдык: {2} {3});Товар Кӑтартни Формат пур Юлашки
+RussianRuble;Российский рубль;Russian ruble;Россия сумы;Раҫҫей рублӗ
+SaveFileDefaultExt_CSV;csv;csv;csv;csv
+SaveFileFileNameTemplate_Report;Отчет_{0};Report_{0};Хисап_{0};Отчет_{0}
+SaveFileFilter_CSV;CSV файлы (*.csv)|*.csv|Все файлы (*.*)|*.*;CSV files (*.csv)|*.csv|All files (*.*)|*.*;CSV файлы (*.csv)|*.csv|Все файлы (*.*)|*.*;CSV файлы (*.csv)|*.csv|Все файлы (*.*)|*.*
+ShipmentForm_TitleFormat;Формирование отгрузки - Общая сумма: {0:F2}, Прибыль: {1:F2};Shipment creation - Total amount: {0:F2}, Profit: {1:F2};Отгрузканы формалаштыру - Гомуми сумма: {0:F2}, Табыш: {1:F2};Ӑсату Форма Ят Формат
+SupplierNotFoundFormat;{0} (поставщик '{1}' не найден);{0} (supplier '{1}' not found);{0} (тәэмин итүче '{1}' табылмады);{0} (поставщик '{1}' тупӑнмарӗ)
+TitleConfirmDelete;Подтверждение удаления;Delete confirmation;Бетерүне раслау;Катӑртнине ҫирӗплетни
+ShipmentType_Supply;Поставка;Supply;Поставка;Поставка
+ColumnArticle;Артикул;Article;Артикул;Артикул
+ColumnName;Наименование;Name;Исеме;Ячӗ
+ColumnCategory;Категория;Category;Категория;Категори
+ColumnUnit;Ед. изм.;Unit;Үлч. бер.;Виҫе пӗрл.
+ColumnExpiryDate;Срок годности;Expiration date;Яраклылык срогы;Юрӑхлӑх вӑхӑчӗ
+ColumnPrice;Цена закупки;Purchase price;Сатып алу бәясе;Илӳ хакӗ
+ColumnPurchasePrice;Цена;Price;Бәя;Хак
+ColumnPurchasePriceFormat;Цена ({0});Column Purchase Price Format;Бәя ({0});Колонкӑ Илӳ Хак Формат
+ColumnBalance;Остаток;Stock;Калдык;Юлашки
+History_Number;№;History  Number;№;№
+History_Article;Артикул;Article;Артикул;Артикул
+History_Name;Название;Name;Исеме;Ячӗ
+History_Quantity;Количество;Quantity;Сан;Шут
+History_Price;Цена;Price;Бәя;Хак
+History_Profit;Прибыль;Profit;Табыш;Тупӑш
+History_Total;Сумма;Amount;Сумма;Сумма
+History_Recipient;Получатель;Recipient;Алучы;Илекен
+History_Storekeeper;Кладовщик;Storekeeper;Складчы;Кладовщик
+History_Date;Дата;Date;Дата;Дата
+Report_Article;Артикул;Article;Артикул;Артикул
+Report_Name;Название;Name;Исеме;Ячӗ
+Report_Quantity;Количество;Quantity;Сан;Шут
+Report_Price;Цена;Price;Бәя;Хак
+Report_Profit;Прибыль;Profit;Табыш;Тупӑш
+Report_Total;Сумма;Amount;Сумма;Сумма
+Report_Recipient;Получатель;Recipient;Алучы;Илекен
+Report_Storekeeper;Кладовщик;Storekeeper;Складчы;Кладовщик
+Report_Date;Дата;Date;Дата;Дата
+NotListed;Не указан;Not specified;Күрсәтелмәгән;Кӑтартман
+ND;Н/Д;N D;Юк;Н/Д
+AddCategory_Title;Добавить категорию;Add Category;Категория өстәү;Добавить категорине
+AddCategory_LabelText;Добавить категорию;Add Category;Категория өстәү;Добавить категорине
+AddCategory_ButtonAddText;Добавить;Add Category  Button Add Text;Өстәү;Хуш
+AddCategory_ButtonCancelText;Отмена;Cancel;Баш тарту;Пӑрахӑҫ
+AddProduct_Title;Добавить товар;Add Product;Товар өстәү;Хушни Товар Ят
+AddProduct_LabelText;Добавить товар;Add Product;Товар өстәү;Товар хушни
+AddProduct_GroupBoxExpiry_Text;Срок годности;Expiration date;Яраклылык срогы;Юрӑхлӑх вӑхӑчӗ
+AddProduct_RadioButtonHasExpiry_Text;Есть срок;Add Product  Radio Button Has Expiry  Text;Яраклылык срогы бар;Юрӑхлӑх вӑхӑчӗ пур
+AddProduct_RadioButtonNoExpiry_Text;Нет срока;Add Product  Radio Button No Expiry  Text;Яраклылык срогы юк;Юрӑхлӑх вӑхӑчӗ ҫук
+AddProduct_ButtonAddText;Добавить;Add Product  Button Add Text;Өстәү;Хуш
+AddProduct_ButtonCancelText;Отмена;Cancel;Баш тарту;Пӑрахӑҫ
+AddProduct_TextBoxArt_Watermark;Введите артикул;Enter article number;Артикулны кертегез;Артикул кӗртӗр
+AddProduct_TextBoxArt_DefaultText;Введите артикул;Enter article number;Артикулны кертегез;Артикул кӗртӗр
+AdminForm_Title;Главная форма;Main Form;Төп форма;Тӗп форма
+AdminForm_ButtonExitText;Выйти;Exit;Чыгу;Тух
+AdminForm_ButtonReportText;Отчет;Report;Хисап;Отчет
+AdminForm_ButtonCurrencyText;Выбор валюты;Currency selection;Валюта сайлау;Валютӑ суйлавӗ
+AdminForm_ButtonSupplyText;Поставка;Supply;Поставка;Поставка
+AdminForm_ButtonHistoryText;История отгрузок;Shipment history;Җибәрү тарихы;Ӑсату историйӗ
+AdminForm_TextBoxSearch_Text;Поиск:;Search:;Эзләү:;Шырани:
+AdminForm_ToolStripAddText;Добавить;Add;Өстәү;Хуш
+AdminForm_ToolStripEditText;Редактировать;Edit;Үзгәртү;Улӑштар
+AdminForm_ToolStripDeleteText;Удалить;Delete;Бетерү;Катӑрт
+AdminForm_ToolStripProductText;Товар;Product;Товар;Товар
+AdminForm_ToolStripCategoryText;Категорию;Category;Категория;Категори
+AdminForm_ToolStripAdminText;Администратор;Administrator;Администратор;Администратор
+Auth_Form_Title;Авторизация;Authorization;Авторизация;Кӗни Форма Ят
+Auth_LabelEnter_Text;Войти;Login;Керү;Кӗр
+Auth_LabelLogin_Text;Логин;Auth  Label Login  Text;Логин;Логин
+Auth_LabelPassword_Text;Пароль;Auth  Label Password  Text;Серсүз;Пароль
+Auth_ButtonEnter_Text;Войти;Login;Керү;Кӗр
+Auth_ButtonRegister_Text;Нет аккаунта? Зарегистрироваться;Auth  Button Register  Text;Аккаунт юкмы? Теркәлергә;Аккаунт ҫук-и? Регистраци тух
+Currency_Form_Title;Выбор валюты;Currency selection;Валюта сайлау;Валютӑ суйлавӗ
+Currency_TextBox_Text;Выбор валюты;Currency selection;Валюта сайлау;Валютӑ суйлавӗ
+Currency_ButtonChoose_Text;Выбрать;Select;Сайлау;Суйла
+Currency_ButtonCancel_Text;Отмена;Cancel;Баш тарту;Пӑрахӑҫ
+Shipment_Form_Title;Формирование отгрузки;Create Shipment;Отгрузканы формалаштыру;Ӑсату хатӗрлени
+Shipment_LabelTitle_Text;Формирование отгрузки;Create Shipment;Отгрузканы формалаштыру;Ӑсату хатӗрлени
+Shipment_LabelType_Text;Тип отгрузки;Shipment  Label Type  Text;Отгрузка төре;Ӑсату тӗсӗ
+Shipment_LabelSelectProduct_Text;Выберите товар:;Shipment  Label Select Product  Text;Товарны сайлагыз:;Суйласа илӗр товар:
+Shipment_LabelQuantity_Text;Введите количество товара:;Shipment  Label Quantity  Text;Товар санын кертегез:;Кӗртӗр количество товара:
+Shipment_LabelRecipient_Text;Выберите получателя:;Shipment  Label Recipient  Text;Алучыны сайлагыз:;Суйласа илӗр получателя:
+Shipment_LabelExpiry_Text;Срок годности:;Expiration date:;Яраклылык срогы:;Юрӑхлӑх вӑхӑчӗ:
+Shipment_ButtonAdd_Text;Добавить в список;Shipment  Button Add  Text;Исемлеккә өстәү;Списокa хуш
+Shipment_ButtonShipment_Text;Подтвердить отгрузку;Shipment  Button Shipment  Text;Отгрузканы раслау;Ҫирӗплетӗр ӑсатӑва
+Shipment_ButtonCancel_Text;Отмена;Cancel;Баш тарту;Пӑрахӑҫ
+Shipment_LabelTotalCaption_Text;Итого:;Shipment  Label Total Caption  Text;Барлыгы:;Пурӗ:
+ShipmentType_Shipment;Отгрузка;Shipment Type  Shipment;Отгрузка;Ӑсату
+ShipmentType_WriteOff;Списание;Shipment Type  Write Off;Списание;Списание
+ShipmentType_Defect;Брак;Shipment Type  Defect;Брак;Брак
+Supply_Form_Title;Формирование поставки;Create Supply;Поставканы формалаштыру;Поставка Форма Ят
+Supply_LabelTitle_Text;Поставка;Supply;Поставка;Поставка
+Supply_LabelProduct_Text;Выберите товар из списка:;Supply  Label Product  Text;Исемлектән товар сайлагыз:;Суйласа илӗр товар из списка:
+Supply_LabelQuantity_Text;Введите количество:;Supply  Label Quantity  Text;Санын кертегез:;Кӗртӗр количество:
+Supply_LabelExpiry_Text;Срок годности:;Expiration date:;Яраклылык срогы:;Юрӑхлӑх вӑхӑчӗ:
+Supply_LabelSupplier_Text;Выберите поставщика:;Supply  Label Supplier  Text;Тәэмин итүчене сайлагыз:;Суйласа илӗр поставщика:
+Supply_LabelCurrency_Text;Валюта закупки:;Supply  Label Currency  Text;Сатып алу валютасы:;Илӳ валютичӗ:
+Supply_LabelPrice_Text;Введите цену:;Supply  Label Price  Text;Бәяне кертегез:;Кӗртӗр цену:
+Supply_ButtonAddToList_Text;Добавить в список;Supply  Button Add To List  Text;Исемлеккә өстәү;Списокa хуш
+Supply_ButtonConfirmSupply_Text;Подтвердить поставку;Confirm supply;Поставканы раслау;Поставкӑна ҫирӗплет
+Supply_ButtonCancel_Text;Отмена;Cancel;Баш тарту;Пӑрахӑҫ
+Supply_ButtonImport_Text;Импорт файла;Supply  Button Import  Text;Файл импортлау;Файл импортлани
+Supply_LabelTotalCaption_Text;Итого:;Supply  Label Total Caption  Text;Барлыгы:;Пурӗ:
+Supply_DataGridView_ColumnArticle;Артикул;Article;Артикул;Артикул
+Supply_DataGridView_ColumnName;Название;Name;Исеме;Ячӗ
+Supply_DataGridView_ColumnQuantity;Кол-во;Supply  Data Grid View  Column Quantity;Сан;Шут
+Supply_DataGridView_ColumnPrice;Цена;Price;Бәя;Хак
+Supply_DataGridView_ColumnTotal;Сумма;Amount;Сумма;Сумма
+Supply_DataGridView_ColumnSupplier;Поставщик;Supply  Data Grid View  Column Supplier;Тәэмин итүче;Поставщик
+Supply_DataGridView_ColumnExpiry;Срок годности;Expiration date;Яраклылык срогы;Юрӑхлӑх вӑхӑчӗ
+DeleteCategory_Form_Title;Удалить категорию;Delete Category;Категорияне бетерү;Катӑртӑр категорине
+DeleteCategory_LabelTitle_Text;Удалить категорию;Delete Category;Категорияне бетерү;Катӑртӑр категорине
+DeleteCategory_ButtonDelete_Text;Удалить;Delete Category  Button Delete  Text;Бетерү;Катӑрт
+DeleteCategory_ButtonCancel_Text;Отмена;Cancel;Баш тарту;Пӑрахӑҫ
+DeleteProduct_Form_Title;Удалить товар;Delete Product;Товарны бетерү;Катӑртӑр товар
+DeleteProduct_LabelTitle_Text;Удалить товар;Delete Product;Товарны бетерү;Катӑртӑр товар
+DeleteProduct_ButtonDelete_Text;Удалить;Delete Product  Button Delete  Text;Бетерү;Катӑрт
+DeleteProduct_ButtonCancel_Text;Отмена;Cancel;Баш тарту;Пӑрахӑҫ
+DeleteProduct_TextBoxArt_Watermark;Введите артикул товара;Enter product article number;Товар артикулын кертегез;Товар артикулне кӗртӗр
+DeleteProductWithDetails;Удаление товара: {0} - {1};Delete Product With Details;Товарны бетерү: {0} - {1};Катӑртни Товар пур детальсем
+EditCategory_Form_Title;Редактировать категорию;Edit Category;Категорияне үзгәртү;Редактировать категорине
+EditCategory_LabelTitle_Text;Редактировать категорию;Edit Category;Категорияне үзгәртү;Редактировать категорине
+EditCategory_ButtonEdit_Text;Редактировать;Edit Category  Button Edit  Text;Үзгәртү;Улӑштар
+EditCategory_ButtonCancel_Text;Отмена;Cancel;Баш тарту;Пӑрахӑҫ
+EditCategory_TextBoxNewName_Watermark;Введите название;Enter name;Исемен кертегез;Ятне кӗртӗр
+RedactProduct_Form_Title;Редактировать товар;Edit Product;Товарны үзгәртү;Товар улӑштарни
+RedactProduct_LabelTitle_Text;Редактировать товар;Edit Product;Товарны үзгәртү;Товар улӑштарни
+RedactProduct_TextBoxArt_Watermark;Артикул;Article;Артикул;Артикул
+RedactProduct_TextBoxName_Watermark;Название;Name;Исеме;Ячӗ
+RedactProduct_TextBoxCategory_Watermark;Категория;Category;Категория;Категори
+RedactProduct_TextBoxPrice_Watermark;Цена;Price;Бәя;Хак
+RedactProduct_ButtonRedact_Text;Редактировать;Redact Product  Button Redact  Text;Үзгәртү;Улӑштар
+RedactProduct_ButtonCancel_Text;Отмена;Cancel;Баш тарту;Пӑрахӑҫ
+Registration_Form_Title;Регистрация;Registration;Теркәлү;Регистраци Форма Ят
+Registration_LabelTitle_Text;Регистрация;Registration;Теркәлү;Регистраци
+Registration_LabelSurname_Text;Фамилия;Registration  Label Surname  Text;Фамилия;Фамили
+Registration_LabelName_Text;Имя;Registration  Label Name  Text;Исем;Ят
+Registration_LabelLastname_Text;Отчество;Registration  Label Lastname  Text;Ата исеме;Ашшӗ ячӗ
+Registration_LabelLogin_Text;Логин;Registration  Label Login  Text;Логин;Логин
+Registration_LabelPassword_Text;Пароль;Registration  Label Password  Text;Серсүз;Пароль
+Registration_LabelConfirmPassword_Text;Подтверждение пароля;Registration  Label Confirm Password  Text;Серсүзне раслау;Пароль ҫирӗплетни
+Registration_ButtonRegister_Text;Зарегистрироваться;Registration  Button Register  Text;Теркәлергә;Регистраци тух
+Registration_ButtonEnter_Text;Уже есть аккаунт? Войти;Registration  Button Enter  Text;Аккаунт бармы? Керергә;Аккаунт пур-и? Кӗр
+Registration_TextBoxSurname_Watermark;Введите фамилию;Enter last name;Фамилияне кертегез;Фамили кӗртӗр
+Registration_TextBoxName_Watermark;Введите имя;Enter first name;Исемне кертегез;Ята кӗртӗр
+Registration_TextBoxLastname_Watermark;Введите отчество;Enter patronymic;Ата исемен кертегез;Ашшӗ ятне кӗртӗр
+Registration_TextBoxLogin_Watermark;Введите логин;Enter login;Логинны кертегез;Логин кӗртӗр
+Registration_TextBoxPassword_Watermark;Введите пароль;Enter password;Серсүзне кертегез;Пароль кӗртӗр
+Registration_TextBoxConfirmPassword_Watermark;Повторите пароль;Repeat password;Серсүзне кабатлагыз;Парольне тепӗр хут кӗртӗр
+Report_Form_Title;Отчет;Report;Хисап;Отчет
+Report_LabelTitle_Text;Отчет;Report;Хисап;Отчет
+Report_LabelPeriod_Text;Выберите период:;Report  Label Period  Text;Периодны сайлагыз:;Период суйласа илӗр:
+Report_LabelFrom_Text;с;from;башлап;ҫакран
+Report_LabelTo_Text;по;to;кадәр;ҫак таран
+Report_ButtonExport_Text;Экспорт файла;Report  Button Export  Text;Файл экспортлау;Файл экспортлани
+Report_LabelTotalAmount_Text;Сумма(RUB):;Report  Label Total Amount  Text;Сумма(RUB):;Сумма(RUB):
+Report_LabelProfit_Text;Прибыль(RUB):;Report  Label Profit  Text;Табыш(RUB):;Тупӑш(RUB):
+Report_ColumnNumber;№;Report  Column Number;№;№
+Report_ColumnArticle;Артикул;Article;Артикул;Артикул
+Report_ColumnName;Название;Name;Исеме;Ячӗ
+Report_ColumnQuantity;Количество;Quantity;Сан;Шут
+Report_ColumnPrice;Цена;Price;Бәя;Хак
+Report_ColumnProfit;Прибыль;Profit;Табыш;Тупӑш
+Report_ColumnTotal;Сумма;Amount;Сумма;Сумма
+Report_ColumnRecipient;Получатель;Recipient;Алучы;Илекен
+Report_ColumnStorekeeper;Кладовщик;Storekeeper;Кладовщик;Кладовщик
+Report_ColumnDate;Дата;Date;Дата;Дата
+History_Form_Title;История отгрузок;Shipment history;Җибәрү тарихы;Ӑсату историйӗ
+History_TextBox_Text;История отгрузок;Shipment history;Җибәрү тарихы;Ӑсату историйӗ
+History_LabelFrom_Text;с;from;башлап;ҫакран
+History_LabelTo_Text;по;to;кадәр;ҫак таран
+History_ButtonApplyFilter_Text;Применить;Apply;Куллану;Усӑ кур
+Storekeeper_Form_Title;Кладовщик - Управление складом;Storekeeper - Warehouse management;Складчы - склад белән идарә;Кладовщик - складпа управлени
+Storekeeper_ButtonExitText;Выйти;Exit;Чыгу;Тух
+Storekeeper_ButtonCurrencyText;Выбор валюты;Currency selection;Валюта сайлау;Валютӑ суйлавӗ
+Storekeeper_ButtonSupplyText;Поставка;Supply;Поставка;Поставка
+Storekeeper_ButtonShipmentText;Оформить отгрузку;Create shipment;Җибәрүне рәсмиләштерү;Ӑсату хатӗрле
+Storekeeper_TextBoxSearch_Text;Поиск:;Search:;Эзләү:;Шырани:
+Storekeeper_ToolStripText;Кладовщик;Storekeeper;Складчы;Кладовщик
+DataGridView_ColumnArticle;Артикул;Article;Артикул;Артикул
+DataGridView_ColumnName;Наименование;Name;Исеме;Ячӗ
+DataGridView_ColumnCategory;Категория;Category;Категория;Категори
+DataGridView_ColumnUnit;Ед. изм.;Unit;Үлч. бер.;Виҫе пӗрл.
+DataGridView_ColumnExpiryDate;Срок годности;Expiration date;Яраклылык срогы;Юрӑхлӑх вӑхӑчӗ
+DataGridView_ColumnPrice;Цена;Price;Бәя;Хак
+DataGridView_ColumnBalance;Остаток;Stock;Калдык;Юлашки
+ScrapMetal_Title;Металлолом;Scrap metal;Металл ватыгы;Металл ватӑкӗ
+ScrapMetal_ReturnMessage;"Сдано на металлолом: {0} позиций
+Получено возврата: {1:F2} ₽
+
+Убыток от брака уменьшен на эту сумму.";{0} item(s) delivered as scrap metal. Return received: {1:F2} ₽. Loss from defect reduced by this amount.;"Металлоломга тапшырылды: {0} позиция
+Кире кайтару алынды: {1:F2} ₽
+
+Брактан килгән зыян бу суммага киметелде.";Металл ватӑкне панӑ: {0} позици\nТавӑру илнӗ: {1:F2} ₽\n\nБракран килнӗ убыток ҫак суммӑпа чакнӑ.
+ScrapMetal_NoReturnMessage;"В отгрузке {0} металлических позиций,
+которые НЕ были сданы на металлолом.
+
+Возврат не получен.";Shipment contains {0} metal item(s) that were NOT delivered as scrap metal. No return received.;"Отгрузкада {0} металл позициясе бар, алар металлоломга тапшырылмаган.
+
+Кире кайтару алынмады.";Ӑсатура {0} металл позицийӗ пур,\nвӗсене металл ватӑкне паман.\n\nТавӑру илмен.
+Warehouse_Title;Тепловая карта склада;Warehouse heat map;Складның җылылык картасы;Склад хӗртӳ картӑ
+Warehouse_SearchFound;Найдено: {0} ячеек;Found: {0} cells;Табылды: {0} күзәнәк;Тупӑннӑ: {0} ячейкӑ
+Warehouse_SearchNothingFound;Ничего не найдено;Nothing found;Бернәрсә дә табылмады;Нимӗн те тупӑнмарӗ
+Warehouse_SearchMinLength;Введите минимум 3 символа для поиска;Enter at least 3 characters to search;Эзләү өчен кимендә 3 символ кертегез;Шырама 3 символтан кӑшт кӗртӗр
+Warehouse_SearchTitle;Поиск;Search;Эзләү;Шырани
+Warehouse_SearchResultTitle;Результат поиска;Search result;Эзләү нәтиҗәсе;Шырани результачӗ
+Warehouse_EmptyCell;Пусто;Empty;Буш;Пушӑ
+Warehouse_NoExpiryRequired;Не требуется;Not required;Кирәк түгел;Кирлӗ мар
+Warehouse_FreeCell;Свободная ячейка;Free cell;Буш күзәнәк;Пушӑ ячейкӑ
+Warehouse_CellEmptyMessage;Ячейка пуста;Cell is empty;Күзәнәк буш;Ячейкӑ пушӑ
+Warehouse_CellCodeLabel;Ячейка: {0};Cell: {0};Күзәнәк: {0};Ячейкӑ: {0}
+Warehouse_ProductNameLabel;Товар: {0};Product: {0};Товар: {0};Товар: {0}
+Warehouse_ArticleLabel;Артикул: {0};Article: {0};Артикул: {0};Артикул: {0}
+Warehouse_BalanceLabel;Остаток: {0} шт;Stock: {0} pcs;Калдык: {0} данә;Юлашки: {0} данӑ
+Warehouse_CategoryLabel;Категория: {0};Category: {0};Категория: {0};Категори: {0}
+Warehouse_ExpiryLabel;Срок годности: {0};Expiration date: {0};Яраклылык срогы: {0};Юрӑхлӑх вӑхӑчӗ: {0}
+Warehouse_UnitPieceShort;шт.;pcs.;данә;данӑ
+CurrentUserNotFound;Текущий пользователь не найден;Current user not found;Хәзерге кулланучы табылмады;Хальхи усӑ куракан тупӑнмарӗ
+StorekeeperForm_SearchText;Поиск:;Search:;Эзләү:;Шырани:
+StorekeeperForm_ToolStripStorekeeperText;Кладовщик;Storekeeper;Складчы;Кладовщик
+StorekeeperForm_Title;Кладовщик - Управление складом;Storekeeper - Warehouse management;Складчы - склад белән идарә;Кладовщик - складпа управлени
+ErrorAuthorization;Ошибка авторизации;Authorization error;Авторизация хатасы;Авторизаци йӑнӑшӗ
+RoleNotAssigned;Не назначена;Not assigned;Билгеләнмәгән;Палӑртман
+RoleAdministrator;Администратор;Administrator;Администратор;Администратор
+RoleStorekeeper;Кладовщик;Storekeeper;Складчы;Кладовщик
+ErrorProductAlreadyDeleted;Товар уже удален;Product is already deleted;Товар инде бетерелгән;Товар малтанах катӑртнӑ
+ErrorProductNotFoundOrDeleted;Товар не найден или был удален;Product was not found or was deleted;Товар табылмады яки бетерелгән;Товар тупӑнмарӗ е катӑртнӑ
+ProductDisplay_InStockFormat;{0} (в наличии: {1});{0} (in stock: {1});{0} (бар: {1});{0} (наличире: {1})
+ProductDisplay_WaitingSupplyFormat;{0} (ожидается поставка);{0} (awaiting supply);{0} (поставка көтелә);{0} (поставка кӗтет)
+Warehouse_SearchLabel;Поиск:;Search:;Эзләү:;Шырани:
+Warehouse_LegendTitle;Условные обозначения;Legend;Шартлы билгеләр;Условиллӗ паллӑсем
+Warehouse_CardTitle;Карточка товара;Product card;Товар карточкасы;Товар карточки
+Warehouse_LegendRed;Количество менее 10 штук;Quantity less than 10 pcs;Сан 10 данәдән ким;Шучӗ 10 данӑран сахал
+Warehouse_LegendGreen;Срок годности больше 30 дней;Expiration date is more than 30 days;Яраклылык срогы 30 көннән артык;Юрӑхлӑх вӑхӑчӗ 30 кунран ытла
+Warehouse_LegendYellow;Срок годности от 7 до 30 дней;Expiration date from 7 to 30 days;Яраклылык срогы 7 дән 30 көнгә кадәр;Юрӑхлӑх вӑхӑчӗ 7-30 кун
+Warehouse_LegendOrange;Срок годности менее 7 дней;Expiration date is less than 7 days;Яраклылык срогы 7 көннән ким;Юрӑхлӑх вӑхӑчӗ 7 кунран сахал
+Warehouse_LegendRule;сначала учитывается срок, потом количество;expiration date is checked first, then quantity;башта срок, аннары сан исәпкә алына;малтан вӑхӑт, унтан шут шутланать
+Warehouse_CardNameCaption;Название:;Name:;Исеме:;Ячӗ:
+Warehouse_CardCategoryCaption;Категория:;Category:;Категория:;Категори:
+Warehouse_CardStockCaption;Остаток:;Stock:;Калдык:;Юлашки:
+Warehouse_CardExpiryCaption;Срок годности:;Expiration date:;Яраклылык срогы:;Юрӑхлӑх вӑхӑчӗ:
+Warehouse_CardCellCaption;Ячейка:;Cell:;Күзәнәк:;Ячейкӑ:
+Warehouse_InfoTitle;Общая информация:;General information:;Гомуми мәгълүмат:;Пӗтӗмӗшле информаци:
+Warehouse_TotalCount;Всего товаров;Total products;Барлык товарлар;Товарсем пурӗ
+Warehouse_ExpSoon;Заканчивающиеся (<7 дней);Expiring soon (<7 days);Тиздән бетә (<7 көн);Тиз пӗтекенсем (<7 кун)
+Warehouse_ExpNormal;Срок истекает (7-30 дней):;Expires in 7-30 days:;Срок бетә (7-30 көн):;Вӑхӑт пӗтет (7-30 кун):
+Warehouse_LowStock;Количество < 10 шт;Quantity < 10 pcs;Сан < 10 данә;Шут < 10 данӑ
+Warehouse_LegendBlue;Нет срока годности;No expiration date;Яраклылык срогы юк;Юрӑхлӑх вӑхӑчӗ ҫук
+AddProduct_ArticleWatermark;Введите артикул;Enter article number;Артикулны кертегез;Артикул кӗртӗр
+AddProduct_NameWatermark;Введите название;Enter name;Исемен кертегез;Ятне кӗртӗр
+AddProduct_PriceWatermark;Введите цену;Enter price;Бәяне кертегез;Хак кӗртӗр
+Warehouse_Button;Склад;Warehouse;Склад;Склад
+CurrencyCode_RUB;RUB;RUB;RUB;RUB
+Warehouse_Dash;—;—;—;—
+CriticalApplicationError;Критическая ошибка при запуске приложения;Critical error starting the application;Кушымтаны эшләтеп җибәргәндә критик хата;Приложени пуҫланнӑ чух критикӑллӑ йӑнӑш
+SupplyCurrencyTooltip_NoSupplyData;{0}\nНет данных о поставках\nЦена отображается в {1};{0}\nNo supply data\nPrice is displayed in {1};{0}\nПоставкалар турында мәгълүмат юк\nБәя {1} белән күрсәтелә;{0}\nПоставкӑсем ҫинчен информаци ҫук\nХак {1}-ра кӑтартӑнать
+SupplyCurrencyTooltip_RubSupply;{0}\nЗакупка в рублях\nТекущая валюта: {1};{0}\nPurchase in rubles\nCurrent currency: {1};{0}\nСатып алу рубльдә\nХәзерге валюта: {1};{0}\nИлӳ тенкӗпе\nХальхи валюта: {1}
+SupplyCurrencyTooltip_ForeignSupply;{0}\nВалюта поставки: {1}\nКурс на момент поставки: 1 {2} = {3:F4} {1};{0}\nSupply currency: {1}\nRate at supply time: 1 {2} = {3:F4} {1};{0}\nПоставка валютасы: {1}\nПоставка вакытындагы курс: 1 {2} = {3:F4} {1};{0}\nПоставка валютичӗ: {1}\nПоставка вӑхӑтӗнчи курс: 1 {2} = {3:F4} {1}
+CurrencySymbol_RUB;₽;₽;₽;₽
+Settings_Form_Title;Настройки;Settings;Көйләүләр;Кӗртӳсем
+Settings_TextBox_Title;Настройки;Settings;Көйләүләр;Кӗртӳсем
+Settings_ButtonChoose_Text;Выбрать;Select;Сайлау;Суйла
+Settings_ButtonCancel_Text;Отмена;Cancel;Баш тарту;Пӑрахӑҫ
+Language_Russian;Русский;Russian;Русча;Вырӑсла
+Language_English;English;English;English;English
+Language_Chuvash;Чувашский;Chuvash;Чуашча;Чӑвашла
+Language_Tatar;Татарский;Tatar;Татарча;Тутарла
+Settings_CurrencyWatermark;Выберите валюту;Select currency;Валютаны сайлагыз;Валютӑ суйласа илӗр
+Settings_LanguageWatermark;Выберите язык;Select language;Телне сайлагыз;Чӗлхе суйласа илӗр
+AdminForm_ButtonSettingsText;Настройки;Settings;Көйләүләр;Кӗртӳсем
+Storekeeper_ButtonSettingsText;Настройки;Settings;Көйләүләр;Кӗртӳсем
+ErrorOpenSettingsForm;Не удалось открыть форму настроек;Failed to open settings form;Көйләүләр формасын ачып булмады;Кӗртӳсем формине уҫма пулмарӗ

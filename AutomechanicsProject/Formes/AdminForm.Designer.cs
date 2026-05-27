@@ -36,7 +36,7 @@ namespace AutomechanicsProject.Formes
             this.panelSearchHIstory = new System.Windows.Forms.Panel();
             this.buttonWarehouse = new System.Windows.Forms.Button();
             this.buttonReport = new System.Windows.Forms.Button();
-            this.buttonCurrency = new System.Windows.Forms.Button();
+            this.buttonSettings = new System.Windows.Forms.Button();
             this.buttonSupply = new System.Windows.Forms.Button();
             this.buttonhistory = new System.Windows.Forms.Button();
             this.textBoxSearch = new System.Windows.Forms.TextBox();
@@ -96,7 +96,7 @@ namespace AutomechanicsProject.Formes
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panelSearchHIstory.Controls.Add(this.buttonWarehouse);
             this.panelSearchHIstory.Controls.Add(this.buttonReport);
-            this.panelSearchHIstory.Controls.Add(this.buttonCurrency);
+            this.panelSearchHIstory.Controls.Add(this.buttonSettings);
             this.panelSearchHIstory.Controls.Add(this.buttonSupply);
             this.panelSearchHIstory.Controls.Add(this.buttonhistory);
             this.panelSearchHIstory.Controls.Add(this.textBoxSearch);
@@ -129,20 +129,20 @@ namespace AutomechanicsProject.Formes
             this.buttonReport.UseVisualStyleBackColor = true;
             this.buttonReport.Click += new System.EventHandler(this.buttonReport_Click);
             // 
-            // buttonCurrency
+            // buttonSettings
             // 
-            this.buttonCurrency.AutoSize = true;
-            this.buttonCurrency.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.buttonCurrency.BackColor = System.Drawing.SystemColors.Control;
-            this.buttonCurrency.FlatAppearance.BorderSize = 0;
-            this.buttonCurrency.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonCurrency.Location = new System.Drawing.Point(474, 30);
-            this.buttonCurrency.Name = "buttonCurrency";
-            this.buttonCurrency.Size = new System.Drawing.Size(229, 47);
-            this.buttonCurrency.TabIndex = 5;
-            this.buttonCurrency.Text = global::AutomechanicsProject.Properties.Resources.AdminForm_ButtonCurrencyText;
-            this.buttonCurrency.UseVisualStyleBackColor = false;
-            this.buttonCurrency.Click += new System.EventHandler(this.buttonCurrency_Click);
+            this.buttonSettings.AutoSize = true;
+            this.buttonSettings.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.buttonSettings.BackColor = System.Drawing.SystemColors.Control;
+            this.buttonSettings.FlatAppearance.BorderSize = 0;
+            this.buttonSettings.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonSettings.Location = new System.Drawing.Point(474, 30);
+            this.buttonSettings.Name = "buttonSettings";
+            this.buttonSettings.Size = new System.Drawing.Size(182, 47);
+            this.buttonSettings.TabIndex = 5;
+            this.buttonSettings.Text = "Настройки";
+            this.buttonSettings.UseVisualStyleBackColor = false;
+            this.buttonSettings.Click += new System.EventHandler(this.buttonSettings_Click);
             // 
             // buttonSupply
             // 
@@ -227,7 +227,7 @@ namespace AutomechanicsProject.Formes
             this.toolStripTextBoxAdmin});
             this.menuStripMainForm.Location = new System.Drawing.Point(0, 0);
             this.menuStripMainForm.Name = "menuStripMainForm";
-            this.menuStripMainForm.Size = new System.Drawing.Size(1427, 48);
+            this.menuStripMainForm.Size = new System.Drawing.Size(1427, 44);
             this.menuStripMainForm.TabIndex = 1;
             // 
             // toolStripComboBoxAdd
@@ -242,14 +242,14 @@ namespace AutomechanicsProject.Formes
             // ProductToolStripMenuItem
             // 
             this.ProductToolStripMenuItem.Name = "ProductToolStripMenuItem";
-            this.ProductToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
+            this.ProductToolStripMenuItem.Size = new System.Drawing.Size(294, 44);
             this.ProductToolStripMenuItem.Text = global::AutomechanicsProject.Properties.Resources.AdminForm_ToolStripProductText;
             this.ProductToolStripMenuItem.Click += new System.EventHandler(this.ProductToolStripMenuItem_Click);
             // 
             // CategoryToolStripMenuItem
             // 
             this.CategoryToolStripMenuItem.Name = "CategoryToolStripMenuItem";
-            this.CategoryToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
+            this.CategoryToolStripMenuItem.Size = new System.Drawing.Size(294, 44);
             this.CategoryToolStripMenuItem.Text = global::AutomechanicsProject.Properties.Resources.AdminForm_ToolStripCategoryText;
             this.CategoryToolStripMenuItem.Click += new System.EventHandler(this.CategoryToolStripMenuItem_Click);
             // 
@@ -352,7 +352,7 @@ namespace AutomechanicsProject.Formes
         private System.Windows.Forms.DataGridView dataGridViewMainForm;
         private System.Windows.Forms.Panel panelSearchHIstory;
         private System.Windows.Forms.Button buttonSupply;
-        private System.Windows.Forms.Button buttonCurrency;
+        private System.Windows.Forms.Button buttonSettings;
         private System.Windows.Forms.Button buttonReport;
         private Button buttonWarehouse;
     }

@@ -5,6 +5,8 @@ using AutomechanicsProject.Services.Interfaces;
 using NLog;
 using System;
 using System.Windows.Forms;
+using System.Globalization;
+using System.Threading;
 
 namespace AutomechanicsProject
 {
@@ -23,6 +25,15 @@ namespace AutomechanicsProject
             try
             {
                 Application.EnableVisualStyles();
+                var language = Settings.Default.SelectedLanguage;
+
+                if (string.IsNullOrWhiteSpace(language))
+                {
+                    language = "ru";
+                }
+
+                Thread.CurrentThread.CurrentCulture = new CultureInfo(language);
+                Thread.CurrentThread.CurrentUICulture = new CultureInfo(language);
                 Application.SetCompatibleTextRenderingDefault(false);
 
                 var container = WindsorConfig.Register();
