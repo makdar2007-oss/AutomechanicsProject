@@ -50,6 +50,11 @@ namespace AutomechanicsProject.Formes
             buttonApply.Text = Resources.WarehouseFilter_Apply;
             buttonReset.Text = Resources.WarehouseFilter_Reset;
 
+            comboBoxSortBy.Items.Clear();
+            comboBoxSortBy.Items.Add(Resources.WarehouseFilter_SortExpiry);
+            comboBoxSortBy.Items.Add(Resources.WarehouseFilter_SortQuantity);
+            comboBoxSortBy.SelectedIndex = 0;
+
             labellegend.Text = Resources.Warehouse_LegendTitle;
             labelgreent.Text = Resources.Warehouse_LegendGreen;
             labelyellowt.Text = Resources.Warehouse_LegendYellow;

@@ -270,11 +270,12 @@
     <value>Белорус рублӗ</value>
   </data>
   <data name="CurrencyChangeConfirm" xml:space="preserve">
-    <value>Валюта {0}-ран {1}-а улӑштарнӑ
-Курс: 1 RUB = {2:F4} {3}
+    <value>Тӳрлетӳсем ăнăçлă çирĕплетĕнче!
 
-Пӗтӗм хаксем {4}-ра каллех шутланӑҫҫӗ.
-Малалла-и?</value>
+Чĕлхе: {0}
+Валюта: {1} (1 RUB = {2:F4} {1})
+
+Пĕрремĕш хаксем суйласа илнĕ валюта кăтартăнĕç.</value>
   </data>
   <data name="CurrencyChangeTitle" xml:space="preserve">
     <value>Валютӑ улӑшни</value>

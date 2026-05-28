@@ -274,11 +274,12 @@ Total amount: {0}</value>
     <value>Belarusian ruble</value>
   </data>
   <data name="CurrencyChangeConfirm" xml:space="preserve">
-    <value>Currency changed from {0} to {1}
-Rate: 1 RUB = {2:F4} {3}
+    <value>&#x8;Settings successfully applied!
 
-All prices will be recalculated in {4}.
-Continue?</value>
+Interface language: {0}
+Currency: {1} (1 RUB = {2:F4} {1})
+
+All prices will be displayed in the selected currency.</value>
   </data>
   <data name="CurrencyChangeTitle" xml:space="preserve">
     <value>Currency change</value>
@@ -1000,16 +1001,16 @@ Total amount: {3}</value>
     <value>Login</value>
   </data>
   <data name="Auth_LabelLogin_Text" xml:space="preserve">
-    <value>Auth  Label Login  Text</value>
+    <value>Login </value>
   </data>
   <data name="Auth_LabelPassword_Text" xml:space="preserve">
-    <value>Auth  Label Password  Text</value>
+    <value>Password </value>
   </data>
   <data name="Auth_ButtonEnter_Text" xml:space="preserve">
     <value>Login</value>
   </data>
   <data name="Auth_ButtonRegister_Text" xml:space="preserve">
-    <value>Auth  Button Register  Text</value>
+    <value>&#x8;Don't have an account? Sign up</value>
   </data>
   <data name="Currency_Form_Title" xml:space="preserve">
     <value>Currency selection</value>
@@ -1072,25 +1073,25 @@ Total amount: {3}</value>
     <value>Supply</value>
   </data>
   <data name="Supply_LabelProduct_Text" xml:space="preserve">
-    <value>Supply  Label Product  Text</value>
+    <value>Select a product from the list:</value>
   </data>
   <data name="Supply_LabelQuantity_Text" xml:space="preserve">
-    <value>Supply  Label Quantity  Text</value>
+    <value>Enter quantity:</value>
   </data>
   <data name="Supply_LabelExpiry_Text" xml:space="preserve">
     <value>Expiration date:</value>
   </data>
   <data name="Supply_LabelSupplier_Text" xml:space="preserve">
-    <value>Supply  Label Supplier  Text</value>
+    <value>Select a supplier:</value>
   </data>
   <data name="Supply_LabelCurrency_Text" xml:space="preserve">
-    <value>Supply  Label Currency  Text</value>
+    <value>Purchase currency:</value>
   </data>
   <data name="Supply_LabelPrice_Text" xml:space="preserve">
-    <value>Supply  Label Price  Text</value>
+    <value>Enter price:</value>
   </data>
   <data name="Supply_ButtonAddToList_Text" xml:space="preserve">
-    <value>Supply  Button Add To List  Text</value>
+    <value>Add To List</value>
   </data>
   <data name="Supply_ButtonConfirmSupply_Text" xml:space="preserve">
     <value>Confirm supply</value>
@@ -1099,10 +1100,10 @@ Total amount: {3}</value>
     <value>Cancel</value>
   </data>
   <data name="Supply_ButtonImport_Text" xml:space="preserve">
-    <value>Supply  Button Import  Text</value>
+    <value>Import  file</value>
   </data>
   <data name="Supply_LabelTotalCaption_Text" xml:space="preserve">
-    <value>Supply  Label Total Caption  Text</value>
+    <value>Total:</value>
   </data>
   <data name="Supply_DataGridView_ColumnArticle" xml:space="preserve">
     <value>Article</value>
@@ -1111,7 +1112,7 @@ Total amount: {3}</value>
     <value>Name</value>
   </data>
   <data name="Supply_DataGridView_ColumnQuantity" xml:space="preserve">
-    <value>Supply  Data Grid View  Column Quantity</value>
+    <value>Quantity</value>
   </data>
   <data name="Supply_DataGridView_ColumnPrice" xml:space="preserve">
     <value>Price</value>
@@ -1120,7 +1121,7 @@ Total amount: {3}</value>
     <value>Amount</value>
   </data>
   <data name="Supply_DataGridView_ColumnSupplier" xml:space="preserve">
-    <value>Supply  Data Grid View  Column Supplier</value>
+    <value>Supplier</value>
   </data>
   <data name="Supply_DataGridView_ColumnExpiry" xml:space="preserve">
     <value>Expiration date</value>

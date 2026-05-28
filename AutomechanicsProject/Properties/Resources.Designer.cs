@@ -823,11 +823,13 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Валюта изменена с {0} на {1}
-        ///Курс: 1 RUB = {2:F4} {3} 
+        ///   Ищет локализованную строку, похожую на Настройки успешно применены!
         ///
-        ///Все цены будут пересчитаны в {4}.
-        ///Продолжить?.
+        ///Язык интерфейса: {0}
+        ///Валюта: {1} (1 RUB = {2:F4} {1})
+        ///
+        ///Все цены будут отображаться в выбранной валюте.
+        ///.
         /// </summary>
         public static string CurrencyChangeConfirm {
             get {
@@ -4784,24 +4786,6 @@ namespace AutomechanicsProject.Properties {
         public static string Warehouse_UnitPieceShort {
             get {
                 return ResourceManager.GetString("Warehouse_UnitPieceShort", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Применить.
-        /// </summary>
-        public static string WarehouseFilter_Apply {
-            get {
-                return ResourceManager.GetString("WarehouseFilter_Apply", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Ищет локализованную строку, похожую на Сбросить.
-        /// </summary>
-        public static string WarehouseFilter_Reset {
-            get {
-                return ResourceManager.GetString("WarehouseFilter_Reset", resourceCulture);
             }
         }
         

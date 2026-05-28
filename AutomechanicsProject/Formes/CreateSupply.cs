@@ -599,9 +599,9 @@ namespace AutomechanicsProject.Formes
             decimal rate = selectedCurrency.Rate;
             string currencyCode = selectedCurrency.Code;
 
-            int maxIndex = Math.Min(dataGridViewSupply.Rows.Count, positions.Count);
+            var maxIndex = Math.Min(dataGridViewSupply.Rows.Count, positions.Count);
 
-            for (int i = 0; i < maxIndex; i++)
+            for (var i = 0; i < maxIndex; i++)
             {
                 try
                 {
@@ -617,7 +617,7 @@ namespace AutomechanicsProject.Formes
                         continue;
                     }
 
-                    decimal displayPrice = CurrencyHelper.ConvertFromRUB(position.Price, rate);
+                    var displayPrice = CurrencyHelper.ConvertFromRUB(position.Price, rate);
 
                     if (row.Cells["colPrice"] != null)
                     {
@@ -664,14 +664,14 @@ namespace AutomechanicsProject.Formes
             var selectedProductDto = (ProductComboViewModel)comboBoxProduct.SelectedItem;
             var selectedItem = cachedProducts.FirstOrDefault(p => p.Id == selectedProductDto.Id);
             var selectedSupplier = (ComboItemDto)comboBoxSupplier.SelectedItem;
-            int quantity = int.Parse(textBoxQuantity.Text);
+            var quantity = int.Parse(textBoxQuantity.Text);
             var priceInSelectedCurrency = decimal.Parse(textBoxPrice.Text.Replace('.', ','));
 
             var selectedCurrency = (CurrencyInfo)comboBoxCurrency.SelectedItem;
-            decimal rate = selectedCurrency.Rate;
-            string currencyCode = selectedCurrency.Code;
+            var rate = selectedCurrency.Rate;
+            var currencyCode = selectedCurrency.Code;
 
-            decimal priceInRUB = CurrencyHelper.ConvertToRUB(priceInSelectedCurrency, rate);
+            var priceInRUB = CurrencyHelper.ConvertToRUB(priceInSelectedCurrency, rate);
 
             DateTime? supplyExpiryDate = null;
 
@@ -695,7 +695,7 @@ namespace AutomechanicsProject.Formes
 
             positions.Add(position);
 
-            decimal displayPrice = CurrencyHelper.ConvertFromRUB(priceInRUB, rate);
+            var displayPrice = CurrencyHelper.ConvertFromRUB(priceInRUB, rate);
 
             dataGridViewSupply.Rows.Add(
                 position.Article,
@@ -739,7 +739,7 @@ namespace AutomechanicsProject.Formes
 
                         if (!string.IsNullOrEmpty(importData.Currency))
                         {
-                            int index = comboBoxCurrency.FindStringExact(importData.Currency);
+                            var index = comboBoxCurrency.FindStringExact(importData.Currency);
                             if (index >= 0)
                             {
                                 comboBoxCurrency.SelectedIndex = index;
@@ -831,7 +831,7 @@ namespace AutomechanicsProject.Formes
                         }
                         UpdateTotalAmount();
 
-                        string warningMessage = notFoundCount > 0
+                        var warningMessage = notFoundCount > 0
                             ? $"\n\n{Resources.ErrorImportNotFound}: {notFoundCount}\n{string.Join(", ", notFoundArticles)}"
                             : "";
 

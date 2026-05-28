@@ -87,7 +87,7 @@
             this.pnlTop.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlTop.Location = new System.Drawing.Point(0, 0);
             this.pnlTop.Name = "pnlTop";
-            this.pnlTop.Size = new System.Drawing.Size(1974, 130);
+            this.pnlTop.Size = new System.Drawing.Size(1986, 130);
             this.pnlTop.TabIndex = 0;
             // 
             // buttonFilter
@@ -141,82 +141,90 @@
             this.pnlBottom.Controls.Add(this.lblTotalCount);
             this.pnlBottom.Controls.Add(this.labelinform);
             this.pnlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.pnlBottom.Location = new System.Drawing.Point(0, 1369);
+            this.pnlBottom.Location = new System.Drawing.Point(0, 1418);
             this.pnlBottom.Name = "pnlBottom";
-            this.pnlBottom.Size = new System.Drawing.Size(1974, 160);
+            this.pnlBottom.Size = new System.Drawing.Size(1986, 230);
             this.pnlBottom.TabIndex = 1;
             // 
             // lblLowStockcount
             // 
             this.lblLowStockcount.BackColor = System.Drawing.SystemColors.ScrollBar;
-            this.lblLowStockcount.Location = new System.Drawing.Point(1014, 72);
+            this.lblLowStockcount.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lblLowStockcount.Location = new System.Drawing.Point(1444, 130);
             this.lblLowStockcount.Name = "lblLowStockcount";
             this.lblLowStockcount.Size = new System.Drawing.Size(75, 75);
             this.lblLowStockcount.TabIndex = 7;
             // 
             // lblLowStock
             // 
-            this.lblLowStock.Location = new System.Drawing.Point(996, 12);
+            this.lblLowStock.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lblLowStock.Location = new System.Drawing.Point(1345, 30);
             this.lblLowStock.Name = "lblLowStock";
-            this.lblLowStock.Size = new System.Drawing.Size(131, 60);
+            this.lblLowStock.Size = new System.Drawing.Size(281, 60);
             this.lblLowStock.TabIndex = 6;
             this.lblLowStock.Text = "Количество < 10 шт";
             // 
             // lblExpNormalcount
             // 
             this.lblExpNormalcount.BackColor = System.Drawing.SystemColors.ScrollBar;
-            this.lblExpNormalcount.Location = new System.Drawing.Point(823, 76);
+            this.lblExpNormalcount.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lblExpNormalcount.Location = new System.Drawing.Point(1114, 130);
             this.lblExpNormalcount.Name = "lblExpNormalcount";
             this.lblExpNormalcount.Size = new System.Drawing.Size(75, 75);
             this.lblExpNormalcount.TabIndex = 5;
             // 
             // lblExpNormal
             // 
-            this.lblExpNormal.Location = new System.Drawing.Point(802, 10);
+            this.lblExpNormal.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lblExpNormal.Location = new System.Drawing.Point(1071, 27);
             this.lblExpNormal.Name = "lblExpNormal";
-            this.lblExpNormal.Size = new System.Drawing.Size(173, 83);
+            this.lblExpNormal.Size = new System.Drawing.Size(236, 134);
             this.lblExpNormal.TabIndex = 4;
             this.lblExpNormal.Text = "Срок истекает (7-30 дней):";
             // 
             // lblExpSooncount
             // 
             this.lblExpSooncount.BackColor = System.Drawing.SystemColors.ScrollBar;
-            this.lblExpSooncount.Location = new System.Drawing.Point(567, 76);
+            this.lblExpSooncount.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lblExpSooncount.Location = new System.Drawing.Point(799, 130);
             this.lblExpSooncount.Name = "lblExpSooncount";
             this.lblExpSooncount.Size = new System.Drawing.Size(75, 75);
             this.lblExpSooncount.TabIndex = 3;
             // 
             // lblExpSoon
             // 
-            this.lblExpSoon.Location = new System.Drawing.Point(546, 12);
+            this.lblExpSoon.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lblExpSoon.Location = new System.Drawing.Point(742, 27);
             this.lblExpSoon.Name = "lblExpSoon";
-            this.lblExpSoon.Size = new System.Drawing.Size(210, 60);
+            this.lblExpSoon.Size = new System.Drawing.Size(296, 83);
             this.lblExpSoon.TabIndex = 0;
             this.lblExpSoon.Text = "Заканчивающиеся (<7 дней)";
             // 
             // lblTotalCountcount
             // 
             this.lblTotalCountcount.BackColor = System.Drawing.SystemColors.ScrollBar;
-            this.lblTotalCountcount.Location = new System.Drawing.Point(369, 75);
+            this.lblTotalCountcount.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lblTotalCountcount.Location = new System.Drawing.Point(523, 130);
             this.lblTotalCountcount.Name = "lblTotalCountcount";
             this.lblTotalCountcount.Size = new System.Drawing.Size(75, 75);
             this.lblTotalCountcount.TabIndex = 2;
             // 
             // lblTotalCount
             // 
-            this.lblTotalCount.Location = new System.Drawing.Point(336, 12);
+            this.lblTotalCount.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lblTotalCount.Location = new System.Drawing.Point(465, 30);
             this.lblTotalCount.Name = "lblTotalCount";
-            this.lblTotalCount.Size = new System.Drawing.Size(172, 63);
+            this.lblTotalCount.Size = new System.Drawing.Size(231, 63);
             this.lblTotalCount.TabIndex = 1;
             this.lblTotalCount.Text = "Всего товаров";
             // 
             // labelinform
             // 
             this.labelinform.AutoSize = true;
-            this.labelinform.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelinform.Location = new System.Drawing.Point(12, 12);
+            this.labelinform.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.labelinform.Location = new System.Drawing.Point(3, 21);
             this.labelinform.Name = "labelinform";
-            this.labelinform.Size = new System.Drawing.Size(301, 33);
+            this.labelinform.Size = new System.Drawing.Size(383, 42);
             this.labelinform.TabIndex = 0;
             this.labelinform.Text = "Общая информация:";
             // 
@@ -237,9 +245,9 @@
             this.pnlRight.Controls.Add(this.labelgreen);
             this.pnlRight.Controls.Add(this.labellegend);
             this.pnlRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.pnlRight.Location = new System.Drawing.Point(1374, 130);
+            this.pnlRight.Location = new System.Drawing.Point(1386, 130);
             this.pnlRight.Name = "pnlRight";
-            this.pnlRight.Size = new System.Drawing.Size(600, 1239);
+            this.pnlRight.Size = new System.Drawing.Size(600, 1288);
             this.pnlRight.TabIndex = 2;
             // 
             // groupBoxcard
@@ -460,7 +468,7 @@
             this.pnlCenter.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlCenter.Location = new System.Drawing.Point(0, 130);
             this.pnlCenter.Name = "pnlCenter";
-            this.pnlCenter.Size = new System.Drawing.Size(1374, 1239);
+            this.pnlCenter.Size = new System.Drawing.Size(1386, 1288);
             this.pnlCenter.TabIndex = 3;
             // 
             // dataGridViewWarehouse
@@ -479,7 +487,7 @@
             this.dataGridViewWarehouse.RowHeadersWidth = 82;
             this.dataGridViewWarehouse.RowTemplate.Height = 33;
             this.dataGridViewWarehouse.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.dataGridViewWarehouse.Size = new System.Drawing.Size(1374, 1239);
+            this.dataGridViewWarehouse.Size = new System.Drawing.Size(1386, 1288);
             this.dataGridViewWarehouse.TabIndex = 0;
             // 
             // WarehouseHeatmapForm
@@ -487,7 +495,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Window;
-            this.ClientSize = new System.Drawing.Size(1974, 1529);
+            this.ClientSize = new System.Drawing.Size(1986, 1648);
             this.Controls.Add(this.pnlCenter);
             this.Controls.Add(this.pnlRight);
             this.Controls.Add(this.pnlBottom);

@@ -274,11 +274,12 @@
     <value>Беларусь рубле</value>
   </data>
   <data name="CurrencyChangeConfirm" xml:space="preserve">
-    <value>Валюта {0} дан {1} гә үзгәртелде
-Курс: 1 RUB = {2:F4} {3}
+    <value>&#x8;Көйләүләр уңышлы кулланылды!
 
-Барлык бәяләр {4} валютасына яңадан исәпләнәчәк.
-Дәвам итәргәме?</value>
+Интерфейс теле: {0}
+Валюта: {1} (1 RUB = {2:F4} {1})
+
+Барлык бәяләр сайланган валютада күрсәтеләчәк.</value>
   </data>
   <data name="CurrencyChangeTitle" xml:space="preserve">
     <value>Валюта үзгәртү</value>
