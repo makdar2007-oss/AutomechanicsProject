@@ -1724,4 +1724,25 @@
   <data name="CounterpartyCheckRequired" xml:space="preserve">
     <value>Хуçана тĕрĕслемелле</value>
   </data>
+  <data name="Warehouse_FilterButton" xml:space="preserve">
+    <value>Фильтр</value>
+  </data>
+  <data name="WarehouseFilter_Title" xml:space="preserve">
+    <value>Складăн тепла картти (фильтр)</value>
+  </data>
+  <data name="WarehouseFilter_SortBy" xml:space="preserve">
+    <value>Сортла:</value>
+  </data>
+  <data name="WarehouseFilter_SortExpiry" xml:space="preserve">
+    <value>Вăхăтпа</value>
+  </data>
+  <data name="WarehouseFilter_SortQuantity" xml:space="preserve">
+    <value>&#x8;Миксарпа</value>
+  </data>
+  <data name="WarehouseFilter_Apply" xml:space="preserve">
+    <value>Татăк</value>
+  </data>
+  <data name="WarehouseFilter_Reset" xml:space="preserve">
+    <value>Сӳтер </value>
+  </data>
 </root>

@@ -4590,6 +4590,15 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Фильтр.
+        /// </summary>
+        public static string Warehouse_FilterButton {
+            get {
+                return ResourceManager.GetString("Warehouse_FilterButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Свободная ячейка.
         /// </summary>
         public static string Warehouse_FreeCell {
@@ -4775,6 +4784,60 @@ namespace AutomechanicsProject.Properties {
         public static string Warehouse_UnitPieceShort {
             get {
                 return ResourceManager.GetString("Warehouse_UnitPieceShort", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Применить.
+        /// </summary>
+        public static string WarehouseFilter_Apply {
+            get {
+                return ResourceManager.GetString("WarehouseFilter_Apply", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Сбросить.
+        /// </summary>
+        public static string WarehouseFilter_Reset {
+            get {
+                return ResourceManager.GetString("WarehouseFilter_Reset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Сортировать по: .
+        /// </summary>
+        public static string WarehouseFilter_SortBy {
+            get {
+                return ResourceManager.GetString("WarehouseFilter_SortBy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Сроку.
+        /// </summary>
+        public static string WarehouseFilter_SortExpiry {
+            get {
+                return ResourceManager.GetString("WarehouseFilter_SortExpiry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Количеству.
+        /// </summary>
+        public static string WarehouseFilter_SortQuantity {
+            get {
+                return ResourceManager.GetString("WarehouseFilter_SortQuantity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Тепловая карта склада (фильтр).
+        /// </summary>
+        public static string WarehouseFilter_Title {
+            get {
+                return ResourceManager.GetString("WarehouseFilter_Title", resourceCulture);
             }
         }
         

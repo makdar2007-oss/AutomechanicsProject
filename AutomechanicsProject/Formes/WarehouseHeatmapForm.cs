@@ -46,6 +46,8 @@ namespace AutomechanicsProject.Formes
         {
             Text = Resources.Warehouse_Title;
 
+            buttonFilter.Text = Resources.Warehouse_FilterButton;
+
             labelmain.Text = Resources.Warehouse_Title;
             lblSearch.Text = Resources.Warehouse_SearchLabel;
 
@@ -432,6 +434,24 @@ namespace AutomechanicsProject.Formes
         {
             _warehouseHeatmapService.EnsureProductHasCell(productId);
             RefreshWarehouse();
+        }
+
+        /// <summary>
+        /// Открывает форму фильтрации тепловой карты
+        /// </summary>
+        private void ButtonFilter_Click(object sender, EventArgs e)
+        {
+            var form = new WarehouseHeatmapFilterForm(_warehouseHeatmapService);
+            form.ShowDialog();
+        }
+
+        /// <summary>
+        /// Открывает форму фильтрации тепловой карты
+        /// </summary>
+        private void buttonFilter_Click_1(object sender, EventArgs e)
+        {
+            var form = new WarehouseHeatmapFilterForm(_warehouseHeatmapService);
+            form.ShowDialog();
         }
     }
 }

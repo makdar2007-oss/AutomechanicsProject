@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.pnlTop = new System.Windows.Forms.Panel();
+            this.buttonFilter = new System.Windows.Forms.Button();
             this.labelmain = new System.Windows.Forms.Label();
             this.lblSearch = new System.Windows.Forms.Label();
             this.txtSearch = new System.Windows.Forms.TextBox();
@@ -79,6 +80,7 @@
             // pnlTop
             // 
             this.pnlTop.BackColor = System.Drawing.SystemColors.Menu;
+            this.pnlTop.Controls.Add(this.buttonFilter);
             this.pnlTop.Controls.Add(this.labelmain);
             this.pnlTop.Controls.Add(this.lblSearch);
             this.pnlTop.Controls.Add(this.txtSearch);
@@ -87,6 +89,16 @@
             this.pnlTop.Name = "pnlTop";
             this.pnlTop.Size = new System.Drawing.Size(1974, 130);
             this.pnlTop.TabIndex = 0;
+            // 
+            // buttonFilter
+            // 
+            this.buttonFilter.Location = new System.Drawing.Point(572, 59);
+            this.buttonFilter.Name = "buttonFilter";
+            this.buttonFilter.Size = new System.Drawing.Size(182, 45);
+            this.buttonFilter.TabIndex = 4;
+            this.buttonFilter.Text = "Фильтр";
+            this.buttonFilter.UseVisualStyleBackColor = true;
+            this.buttonFilter.Click += new System.EventHandler(this.buttonFilter_Click_1);
             // 
             // labelmain
             // 
@@ -540,5 +552,6 @@
         private System.Windows.Forms.Label lblCardStock;
         private System.Windows.Forms.Label lblCardCategory;
         private System.Windows.Forms.DataGridView dataGridViewWarehouse;
+        private System.Windows.Forms.Button buttonFilter;
     }
 }

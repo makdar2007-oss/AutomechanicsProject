@@ -1664,4 +1664,25 @@ Total amount: {3}</value>
   <data name="SupplierCheckRequired" xml:space="preserve">
     <value> Supplier verification required</value>
   </data>
+  <data name="Warehouse_FilterButton" xml:space="preserve">
+    <value>Filter</value>
+  </data>
+  <data name="WarehouseFilter_Title" xml:space="preserve">
+    <value>Warehouse heat map (filter)</value>
+  </data>
+  <data name="WarehouseFilter_SortBy" xml:space="preserve">
+    <value>Sort by:</value>
+  </data>
+  <data name="WarehouseFilter_SortExpiry" xml:space="preserve">
+    <value>By expiry</value>
+  </data>
+  <data name="WarehouseFilter_SortQuantity" xml:space="preserve">
+    <value>By quantity</value>
+  </data>
+  <data name="WarehouseFilter_Apply" xml:space="preserve">
+    <value>Apply</value>
+  </data>
+  <data name="WarehouseFilter_Reset" xml:space="preserve">
+    <value>Reset</value>
+  </data>
 </root>

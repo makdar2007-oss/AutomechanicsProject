@@ -1749,4 +1749,25 @@
   <data name="CounterpartyCheckRequired" xml:space="preserve">
     <value>Заказчикны тикшерү кирәк</value>
   </data>
+  <data name="Warehouse_FilterButton" xml:space="preserve">
+    <value>Фильтр</value>
+  </data>
+  <data name="WarehouseFilter_Title" xml:space="preserve">
+    <value>Складның җылылык картасы (фильтр)</value>
+  </data>
+  <data name="WarehouseFilter_SortBy" xml:space="preserve">
+    <value>Сортлау:</value>
+  </data>
+  <data name="WarehouseFilter_SortExpiry" xml:space="preserve">
+    <value>&#x8;Вакыт буенча</value>
+  </data>
+  <data name="WarehouseFilter_SortQuantity" xml:space="preserve">
+    <value>Микъдар буенча</value>
+  </data>
+  <data name="WarehouseFilter_Apply" xml:space="preserve">
+    <value>Куллану</value>
+  </data>
+  <data name="WarehouseFilter_Reset" xml:space="preserve">
+    <value>Кире кайтару</value>
+  </data>
 </root>

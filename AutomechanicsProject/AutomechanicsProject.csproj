@@ -306,6 +306,12 @@
     <Compile Include="Formes\ReportForm.Designer.cs">
       <DependentUpon>ReportForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Formes\WarehouseHeatmapFilterForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Formes\WarehouseHeatmapFilterForm.Designer.cs">
+      <DependentUpon>WarehouseHeatmapFilterForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Formes\WarehouseHeatmapForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -474,6 +480,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Formes\StorekeeperForm.resx">
       <DependentUpon>StorekeeperForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Formes\WarehouseHeatmapFilterForm.resx">
+      <DependentUpon>WarehouseHeatmapFilterForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Formes\WarehouseHeatmapForm.resx">
       <DependentUpon>WarehouseHeatmapForm.cs</DependentUpon>
