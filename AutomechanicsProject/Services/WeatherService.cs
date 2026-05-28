@@ -8,25 +8,28 @@ using System.Threading.Tasks;
 namespace AutomechanicsProject.Services
 {
     /// <summary>
-    /// Сервис для проверки погоды
+    /// Сервис для проверки погоды через OpenWeatherMap
     /// </summary>
     public class WeatherService : IWeatherService
     {
+        private const decimal MinAllowedTemperature = -15m;
+        private const decimal MaxAllowedTemperature = 25m;
+
         private readonly HttpClient _httpClient = new HttpClient();
 
         /// <summary>
-        /// Проверяет плохую погоду в городе на ближайшие дни
+        /// Проверяет, нужна ли термоупаковка по погоде
         /// </summary>
-        public async Task<bool> HasBadWeatherAsync(string city)
+        public async Task<bool> IsThermoContainerNeededAsync(string city)
         {
             if (string.IsNullOrWhiteSpace(city))
             {
-                throw new Exception("Введите город");
+                throw new Exception(Resources.ErrorEnterCity);
             }
 
             if (string.IsNullOrWhiteSpace(Settings.Default.OpenWeatherApiKey))
             {
-                throw new Exception("Не указан API-ключ OpenWeatherMap");
+                throw new Exception(Resources.ErrorOpenWeatherApiKeyMissing);
             }
 
             var url = "https://api.openweathermap.org/data/2.5/forecast?q="
@@ -44,7 +47,7 @@ namespace AutomechanicsProject.Services
 
             if (list == null)
             {
-                throw new Exception("Не удалось получить прогноз погоды");
+                throw new Exception(Resources.ErrorWeatherForecastLoad);
             }
 
             var limitDate = DateTime.Now.AddDays(3);
@@ -63,14 +66,10 @@ namespace AutomechanicsProject.Services
                     continue;
                 }
 
-                var weather = item["weather"]?[0]?["main"]?.ToString();
-                var temperature = item["main"]?["temp"]?.Value<decimal>() ?? 0;
+                var temperature = item["main"]?["temp"]?.Value<decimal>() ?? 0m;
 
-                if (weather == "Rain" ||
-                    weather == "Snow" ||
-                    weather == "Thunderstorm" ||
-                    temperature < -10 ||
-                    temperature > 30)
+                if (temperature < MinAllowedTemperature ||
+                    temperature > MaxAllowedTemperature)
                 {
                     return true;
                 }

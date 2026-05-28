@@ -32,8 +32,9 @@ namespace AutomechanicsProject.Config
                 Component.For<ISupplyCurrencyService>().ImplementedBy<SupplyCurrencyService>().LifestyleTransient(),
                 Component.For<ICurrentUserService>().ImplementedBy<CurrentUserService>().LifestyleSingleton(),
                 Component.For<ICurrencySettingsService>().ImplementedBy<CurrencySettingsService>().LifestyleSingleton(),
-                Component.For<IWarehouseHeatmapService>().ImplementedBy<WarehouseHeatmapService>().LifestyleTransient()
-
+                Component.For<IWarehouseHeatmapService>().ImplementedBy<WarehouseHeatmapService>().LifestyleTransient(),
+                Component.For<IDaDataService>().ImplementedBy<DaDataService>().LifestyleTransient(),
+                Component.For<IWeatherService>().ImplementedBy<WeatherService>().LifestyleTransient()
 
                 );
                 

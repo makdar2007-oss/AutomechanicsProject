@@ -156,6 +156,9 @@
     <Reference Include="System.Buffers, Version=4.0.5.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Buffers.4.6.1\lib\net462\System.Buffers.dll</HintPath>
     </Reference>
+    <Reference Include="System.Collections.Immutable, Version=10.0.0.8, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Collections.Immutable.10.0.8\lib\net462\System.Collections.Immutable.dll</HintPath>
+    </Reference>
     <Reference Include="System.ComponentModel.Annotations, Version=4.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.ComponentModel.Annotations.4.7.0\lib\net461\System.ComponentModel.Annotations.dll</HintPath>
     </Reference>
@@ -169,8 +172,8 @@
     <Reference Include="System.Diagnostics.DiagnosticSource, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Diagnostics.DiagnosticSource.8.0.0\lib\net462\System.Diagnostics.DiagnosticSource.dll</HintPath>
     </Reference>
-    <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Memory.4.5.5\lib\net461\System.Memory.dll</HintPath>
+    <Reference Include="System.Memory, Version=4.0.5.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Memory.4.6.3\lib\net462\System.Memory.dll</HintPath>
     </Reference>
     <Reference Include="System.Messaging" />
     <Reference Include="System.Net" />
@@ -248,6 +251,7 @@
     <Compile Include="Classes\Product.cs" />
     <Compile Include="Classes\WarehouseCell.cs" />
     <Compile Include="Config\WindsorConfig.cs" />
+    <Compile Include="Dtos\CounterpartyCheckResultDto.cs" />
     <Compile Include="Dtos\Service\InnInfoDto.cs" />
     <Compile Include="Dtos\Service\WeatherInfoDto.cs" />
     <Compile Include="Dtos\UI\ProductDisplayItem.cs" />
@@ -276,6 +280,7 @@
     <Compile Include="Dtos\ViewModels\ProductViewModel.cs" />
     <Compile Include="Dtos\ViewModels\ShipmentModel.cs" />
     <Compile Include="Dtos\ViewModels\WarehouseCellViewModel.cs" />
+    <Compile Include="Enum\CounterpartyCheckStatus.cs" />
     <Compile Include="Enum\ShipmentType.cs" />
     <Compile Include="Formes\FormSettings.cs">
       <SubType>Form</SubType>

@@ -1,15 +1,16 @@
-﻿using System.Threading.Tasks;
+﻿using AutomechanicsProject.Dtos;
+using System.Threading.Tasks;
 
 namespace AutomechanicsProject.Services.Interfaces
 {
     /// <summary>
-    /// Описывает сервис для проверки поставщика по ИНН
+    /// Описывает сервис для проверки контрагента по ИНН
     /// </summary>
     public interface IDaDataService
     {
         /// <summary>
-        /// Проверяет поставщика по ИНН
+        /// Проверяет контрагента по ИНН
         /// </summary>
-        Task<string> CheckSupplierByInnAsync(string inn);
+        Task<CounterpartyCheckResultDto> CheckCounterpartyByInnAsync(string inn);
     }
 }

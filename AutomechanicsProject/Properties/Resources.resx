@@ -1278,7 +1278,7 @@
     <value>Количество</value>
   </data>
   <data name="Report_ColumnPrice" xml:space="preserve">
-    <value>Цена</value>
+    <value>Цена(в рублях)</value>
   </data>
   <data name="Report_ColumnProfit" xml:space="preserve">
     <value>Прибыль</value>
@@ -1293,7 +1293,7 @@
     <value>Кладовщик</value>
   </data>
   <data name="Report_ColumnDate" xml:space="preserve">
-    <value>Дата</value>
+    <value>Дата и время (по Москве)</value>
   </data>
   <data name="History_Form_Title" xml:space="preserve">
     <value>История отгрузок</value>
@@ -1582,5 +1582,173 @@
   </data>
   <data name="ErrorOpenSettingsForm" xml:space="preserve">
     <value>Не удалось открыть форму настроек</value>
+  </data>
+  <data name="ErrorEnterInn" xml:space="preserve">
+    <value>Введите ИНН</value>
+  </data>
+  <data name="ErrorDaDataApiKeyMissing" xml:space="preserve">
+    <value>Не указан API-ключ</value>
+  </data>
+  <data name="ErrorCounterpartyNotFound" xml:space="preserve">
+    <value>Контрагент с таким ИНН не найден</value>
+  </data>
+  <data name="CounterpartyAllowedMessage" xml:space="preserve">
+    <value>Контрагент проверен. Риск не найден</value>
+  </data>
+  <data name="CounterpartyRiskMessage" xml:space="preserve">
+    <value>Контрагент найден, но есть риск</value>
+  </data>
+  <data name="CounterpartyBlockedMessage" xml:space="preserve">
+    <value>Контрагент запрещен для отгрузки</value>
+  </data>
+  <data name="ErrorEnterCity" xml:space="preserve">
+    <value>Выберите город доставки</value>
+  </data>
+  <data name="ErrorOpenWeatherApiKeyMissing" xml:space="preserve">
+    <value>Не указан API-ключ</value>
+  </data>
+  <data name="ErrorWeatherForecastLoad" xml:space="preserve">
+    <value>Не удалось получить прогноз погоды</value>
+  </data>
+  <data name="ShipmentCustomerTypeWatermark" xml:space="preserve">
+    <value>Выберите тип заказчика</value>
+  </data>
+  <data name="ShipmentCustomerTypeLegalEntity" xml:space="preserve">
+    <value>Юр. лицо</value>
+  </data>
+  <data name="ShipmentCustomerTypeOrganization" xml:space="preserve">
+    <value>Организация</value>
+  </data>
+  <data name="ShipmentInnWatermark" xml:space="preserve">
+    <value>Введите ИНН</value>
+  </data>
+  <data name="ErrorInnDigitsOnly" xml:space="preserve">
+    <value>ИНН должен содержать только цифры</value>
+  </data>
+  <data name="ErrorSelectCustomerType" xml:space="preserve">
+    <value>Выберите тип заказчика</value>
+  </data>
+  <data name="ErrorLegalEntityInnLength" xml:space="preserve">
+    <value>Для юридического лица ИНН должен содержать 10 цифр</value>
+  </data>
+  <data name="ErrorOrganizationInnLength" xml:space="preserve">
+    <value>Для организации ИНН должен содержать 12 цифр</value>
+  </data>
+  <data name="SupplyInnWatermark" xml:space="preserve">
+    <value>Введите ИНН</value>
+  </data>
+  <data name="SupplySupplierTypeWatermark" xml:space="preserve">
+    <value>Выберите тип поставщика</value>
+  </data>
+  <data name="SupplySupplierTypeLegalEntity" xml:space="preserve">
+    <value>Юридическое лицо</value>
+  </data>
+  <data name="SupplySupplierTypeOrganization" xml:space="preserve">
+    <value>Организация</value>
+  </data>
+  <data name="SupplySupplierTypeIndividual" xml:space="preserve">
+    <value>Индивидуальный предприниматель</value>
+  </data>
+  <data name="ErrorSelectSupplierType" xml:space="preserve">
+    <value>Выберите тип поставщика</value>
+  </data>
+  <data name="ErrorSupplierNotChecked" xml:space="preserve">
+    <value>Проверьте поставщика по ИНН</value>
+  </data>
+  <data name="ErrorSupplierBlocked" xml:space="preserve">
+    <value>Поставщик запрещен для поставки</value>
+  </data>
+  <data name="ConfirmSupplierRisk" xml:space="preserve">
+    <value>У поставщика найден риск. Продолжить оформление поставки?</value>
+  </data>
+  <data name="SupplierStatusWarning" xml:space="preserve">
+    <value> Статус поставщика: высокий риск</value>
+  </data>
+  <data name="SupplierStatusOk" xml:space="preserve">
+    <value> Статус поставщика: проверен</value>
+  </data>
+  <data name="SupplierCheckRequired" xml:space="preserve">
+    <value> Требуется проверка поставщика</value>
+  </data>
+  <data name="ShipmentTownWatermark" xml:space="preserve">
+    <value>Введите город доставки</value>
+  </data>
+  <data name="ErrorSelectTown" xml:space="preserve">
+    <value>Выберите город доставки</value>
+  </data>
+  <data name="ErrorInvalidTown" xml:space="preserve">
+    <value>Город доставки не распознан. Проверьте правильность ввода</value>
+  </data>
+  <data name="WarningTemperatureLimit" xml:space="preserve">
+    <value>Температура в городе доставки в ближайшие 3 дня выходит за допустимые пределы</value>
+  </data>
+  <data name="ThermoContainerAddedMessage" xml:space="preserve">
+    <value>Температура в городе доставки в ближайшие 3 дня выходит за допустимые пределы. Для каждой единицы товара добавлен термоконтейнер за {0:N2} руб. Общая стоимость термоконтейнеров: {1:N2} руб.</value>
+  </data>
+  <data name="ThermoContainerAddedTitle" xml:space="preserve">
+    <value>Добавлен термоконтейнер</value>
+  </data>
+  <data name="ShipmentTown_Moscow" xml:space="preserve">
+    <value>Москва</value>
+  </data>
+  <data name="ShipmentTown_SaintPetersburg" xml:space="preserve">
+    <value>Санкт-Петербург</value>
+  </data>
+  <data name="ShipmentTown_Novosibirsk" xml:space="preserve">
+    <value>Новосибирск</value>
+  </data>
+  <data name="ShipmentTown_Ekaterinburg" xml:space="preserve">
+    <value>Екатеринбург</value>
+  </data>
+  <data name="ShipmentTown_Kazan" xml:space="preserve">
+    <value>Казань</value>
+  </data>
+  <data name="ShipmentTown_NizhnyNovgorod" xml:space="preserve">
+    <value>Нижний Новгород</value>
+  </data>
+  <data name="ShipmentTown_Chelyabinsk" xml:space="preserve">
+    <value>Челябинск</value>
+  </data>
+  <data name="ShipmentTown_Samara" xml:space="preserve">
+    <value>Самара</value>
+  </data>
+  <data name="ShipmentTown_Omsk" xml:space="preserve">
+    <value>Омск</value>
+  </data>
+  <data name="ShipmentTown_Rostov" xml:space="preserve">
+    <value>Ростов-на-Дону</value>
+  </data>
+  <data name="ShipmentTown_Ufa" xml:space="preserve">
+    <value>Уфа</value>
+  </data>
+  <data name="ShipmentTown_Krasnoyarsk" xml:space="preserve">
+    <value>Красноярск</value>
+  </data>
+  <data name="ShipmentTown_Perm" xml:space="preserve">
+    <value>Пермь</value>
+  </data>
+  <data name="ShipmentTown_Voronezh" xml:space="preserve">
+    <value>Воронеж</value>
+  </data>
+  <data name="ShipmentTown_Volgograd" xml:space="preserve">
+    <value>Волгоград</value>
+  </data>
+  <data name="ErrorCounterpartyNotChecked" xml:space="preserve">
+    <value>Проверьте заказчика по ИНН</value>
+  </data>
+  <data name="ErrorCounterpartyBlocked" xml:space="preserve">
+    <value>Заказчик запрещен для отгрузки</value>
+  </data>
+  <data name="ConfirmCounterpartyRisk" xml:space="preserve">
+    <value>У заказчика найден риск. Продолжить оформление отгрузки?</value>
+  </data>
+  <data name="CounterpartyStatusWarning" xml:space="preserve">
+    <value> Статус заказчика: высокий риск</value>
+  </data>
+  <data name="CounterpartyStatusOk" xml:space="preserve">
+    <value>✓ Статус заказчика: проверен</value>
+  </data>
+  <data name="CounterpartyCheckRequired" xml:space="preserve">
+    <value>Требуется проверка заказчика</value>
   </data>
 </root>

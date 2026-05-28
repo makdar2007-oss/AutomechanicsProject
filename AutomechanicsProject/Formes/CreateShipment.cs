@@ -1,8 +1,11 @@
 ﻿using AutomechanicsProject.Classes;
 using AutomechanicsProject.Dtos;
 using AutomechanicsProject.Dtos.UI;
+using AutomechanicsProject.Enum;
+using AutomechanicsProject.Enums;
 using AutomechanicsProject.Helpers;
 using AutomechanicsProject.Properties;
+using AutomechanicsProject.Services.Interfaces;
 using AutomechanicsProject.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using NLog;
@@ -11,8 +14,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using AutomechanicsProject.Enum;
-using AutomechanicsProject.Services.Interfaces;
+using System.Text.RegularExpressions;
 
 
 
@@ -38,6 +40,11 @@ namespace AutomechanicsProject.Formes
         private bool isShipmentTypeLocked = false;
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
         private ShipmentTypeEnum currentShipmentType = ShipmentTypeEnum.Shipment;
+        private readonly IDaDataService _daDataService;
+        private readonly IWeatherService _weatherService;
+        private CounterpartyCheckStatus counterpartyStatus;
+        private bool isCounterpartyChecked;
+        private const decimal ThermoContainerPrice = 2000m;
 
         /// <summary>
         /// Применяет текст из ресурсов к элементам формы
@@ -60,17 +67,38 @@ namespace AutomechanicsProject.Formes
         }
 
         /// <summary>
+        /// Загружает типы заказчиков
+        /// </summary>
+        private void LoadCustomerTypes()
+        {
+            comboBoxcustomer.Items.Clear();
+
+            comboBoxcustomer.Items.Add(Resources.ShipmentCustomerTypeLegalEntity);
+            comboBoxcustomer.Items.Add(Resources.ShipmentCustomerTypeOrganization);
+        }
+
+        /// <summary>
         /// Инициализирует новый экземпляр формы создания отгрузки
         /// </summary>
         public CreateShipment(
             IShipmentService shipmentService,
-            ICurrentUserService currentUserService)
+            ICurrentUserService currentUserService,
+            IDaDataService daDataService,
+            IWeatherService weatherService)
         {
             InitializeComponent();
             ApplyLocalization();
 
+            textBoxINN.TextChanged += ResetCounterpartyCheck;
+            comboBoxcustomer.SelectedIndexChanged += ResetCounterpartyCheck;
+
             _shipmentService = shipmentService ?? throw new ArgumentNullException(nameof(shipmentService));
             _currentUserService = currentUserService ?? throw new ArgumentNullException(nameof(currentUserService));
+            _daDataService = daDataService ?? throw new ArgumentNullException(nameof(daDataService));
+            _weatherService = weatherService ?? throw new ArgumentNullException(nameof(weatherService));
+
+            counterpartyStatus = CounterpartyCheckStatus.Blocked;
+            isCounterpartyChecked = false;
             shipmentItems = new List<ShipmentItem>();
             totalAmount = 0;
             allProducts = new List<ProductComboViewModel>();
@@ -80,10 +108,83 @@ namespace AutomechanicsProject.Formes
             TextBoxHelper.SetupWatermarkComboBox(comboBoxProduct, Resources.SProductWatermark);
             TextBoxHelper.SetupWatermarkComboBox(comboBoxRecipient1, Resources.ShipmentRecipientWatermark);
             TextBoxHelper.SetupWatermarkComboBox(comboBox1, Resources.ShipmentTypeWatermark);
+            TextBoxHelper.SetupWatermarkComboBox(comboBoxtown, Resources.ShipmentTownWatermark);
 
             UpdateDisplay();
         }
+        /// <summary>
+        /// Сбрасывает результат проверки контрагента
+        /// </summary>
+        private void ResetCounterpartyCheck(object sender, EventArgs e)
+        {
+            isCounterpartyChecked = false;
+            counterpartyStatus = CounterpartyCheckStatus.Blocked;
+        }
+        /// <summary>
+        /// Проверяет формат ИНН по типу заказчика
+        /// </summary>
+        private bool ValidateInn()
+        {
+            var inn = textBoxINN.Text.Trim();
 
+            if (string.IsNullOrWhiteSpace(inn) ||
+                inn == Resources.ShipmentInnWatermark)
+            {
+                MessageBox.Show(Resources.ErrorEnterInn,
+                    Resources.TitleWarning,
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
+                return false;
+            }
+
+            if (!Regex.IsMatch(inn, @"^\d+$"))
+            {
+                MessageBox.Show(Resources.ErrorInnDigitsOnly,
+                    Resources.TitleWarning,
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
+                return false;
+            }
+
+            if (comboBoxcustomer.SelectedItem == null ||
+                comboBoxcustomer.Text == Resources.ShipmentCustomerTypeWatermark)
+            {
+                MessageBox.Show(Resources.ErrorSelectCustomerType,
+                    Resources.TitleWarning,
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
+                return false;
+            }
+
+            var customerType = comboBoxcustomer.SelectedItem.ToString();
+
+            if (customerType == Resources.ShipmentCustomerTypeLegalEntity &&
+                inn.Length != 10)
+            {
+                MessageBox.Show(Resources.ErrorLegalEntityInnLength,
+                    Resources.TitleWarning,
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
+                return false;
+            }
+
+            if (customerType == Resources.ShipmentCustomerTypeOrganization &&
+                inn.Length != 12)
+            {
+                MessageBox.Show(Resources.ErrorOrganizationInnLength,
+                    Resources.TitleWarning,
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
+                return false;
+            }
+
+            return true;
+        }
         /// <summary>
         /// Обработчик загрузки формы
         /// </summary>
@@ -104,6 +205,8 @@ namespace AutomechanicsProject.Formes
 
             LoadProducts();
             LoadRecipients();
+            LoadCustomerTypes();
+            LoadTowns();
 
             comboBox1.SelectedIndexChanged += ComboBox_SelectedIndexChanged;
             dataGridViewShipment.CurrentCellDirtyStateChanged += DataGridViewShipment_CurrentCellDirtyStateChanged;
@@ -249,7 +352,40 @@ namespace AutomechanicsProject.Formes
                     MessageBoxIcon.Error);
             }
         }
+        /// <summary>
+        /// Загружает города доставки
+        /// </summary>
+        private void LoadTowns()
+        {
+            comboBoxtown.Items.Clear();
 
+            comboBoxtown.Items.Add(Resources.ShipmentTown_Moscow);
+            comboBoxtown.Items.Add(Resources.ShipmentTown_SaintPetersburg);
+            comboBoxtown.Items.Add(Resources.ShipmentTown_Novosibirsk);
+            comboBoxtown.Items.Add(Resources.ShipmentTown_Ekaterinburg);
+            comboBoxtown.Items.Add(Resources.ShipmentTown_Kazan);
+            comboBoxtown.Items.Add(Resources.ShipmentTown_NizhnyNovgorod);
+            comboBoxtown.Items.Add(Resources.ShipmentTown_Chelyabinsk);
+        }
+        /// <summary>
+        /// Проверяет выбранный город доставки
+        /// </summary>
+        private bool ValidateTown()
+        {
+            if (comboBoxtown.SelectedItem == null ||
+                comboBoxtown.Text == Resources.ShipmentTownWatermark ||
+                string.IsNullOrWhiteSpace(comboBoxtown.Text))
+            {
+                MessageBox.Show(Resources.ErrorSelectTown,
+                    Resources.TitleWarning,
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
+                return false;
+            }
+
+            return true;
+        }
         /// <summary>
         /// Загружает список получателей
         /// </summary>
@@ -597,7 +733,7 @@ namespace AutomechanicsProject.Formes
         /// <summary>
         /// Обработчик нажатия кнопки Подтвердить отгрузку
         /// </summary>
-        private void ButtonShipment_Click(object sender, EventArgs e)
+        private async void ButtonShipment_Click(object sender, EventArgs e)
         {
             if (shipmentItems.Count == 0)
             {
@@ -605,7 +741,42 @@ namespace AutomechanicsProject.Formes
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
+            if (!ValidateTown())
+            {
+                return;
+            }
+            if (!isCounterpartyChecked)
+            {
+                MessageBox.Show(Resources.ErrorCounterpartyNotChecked,
+                    Resources.TitleWarning,
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
 
+                return;
+            }
+
+            if (counterpartyStatus == CounterpartyCheckStatus.Blocked)
+            {
+                MessageBox.Show(Resources.ErrorCounterpartyBlocked,
+                    Resources.TitleError,
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+
+                return;
+            }
+
+            if (counterpartyStatus == CounterpartyCheckStatus.Risk)
+            {
+                var riskResult = MessageBox.Show(Resources.ConfirmCounterpartyRisk,
+                    Resources.TitleWarning,
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Warning);
+
+                if (riskResult != DialogResult.Yes)
+                {
+                    return;
+                }
+            }
             string recipientName;
             Guid? recipientId = null;
             decimal displayTotal;
@@ -642,9 +813,38 @@ namespace AutomechanicsProject.Formes
                         break;
                     }
             }
+            var finalTotalAmount = displayTotal;
+            var thermoContainerTotal = 0m;
 
+            try
+            {
+                var isThermoContainerNeeded = await _weatherService.IsThermoContainerNeededAsync(comboBoxtown.Text);
+
+                if (isThermoContainerNeeded)
+                {
+                    thermoContainerTotal = shipmentItems.Sum(i => i.Quantity) * ThermoContainerPrice;
+                    finalTotalAmount += thermoContainerTotal;
+
+                    MessageBox.Show(
+                        string.Format(Resources.ThermoContainerAddedMessage, ThermoContainerPrice, thermoContainerTotal),
+                        Resources.TitleInformation,
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Ошибка при проверке погоды для отгрузки");
+
+                MessageBox.Show(Resources.ErrorWeatherForecastLoad,
+                    Resources.TitleError,
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+
+                return;
+            }
             var confirmResult = MessageBox.Show(
-                string.Format(Resources.ConfirmShipment, recipientName, shipmentItems.Count, totalAmount),
+                string.Format(Resources.ConfirmShipment, recipientName, shipmentItems.Count, finalTotalAmount),
                 Resources.TitleConfirmation,
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question);
@@ -662,13 +862,15 @@ namespace AutomechanicsProject.Formes
                         Resources.TitleError,
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Error);
+
+                    return;
                 }
                 _shipmentService.CreateShipment(
-                shipmentItems,
-                recipientId,
-                _currentUserService.CurrentUser.Id,
-                totalAmount,
-                currentShipmentType
+                    shipmentItems,
+                    recipientId,
+                    _currentUserService.CurrentUser.Id,
+                    finalTotalAmount,
+                    currentShipmentType
 );
 
                 if (currentShipmentType == ShipmentTypeEnum.Defect)
@@ -700,7 +902,7 @@ namespace AutomechanicsProject.Formes
 
                 logger.Info($"Отгрузка успешно оформлена! Получатель: {recipientName}, Количество позиций: {shipmentItems.Count}, Общая сумма: {totalAmount:C2}");
 
-                MessageBox.Show(string.Format(Resources.SuccessShipmentCreatedWithDetails, recipientName, shipmentItems.Count, totalAmount),
+                MessageBox.Show(string.Format(Resources.SuccessShipmentCreatedWithDetails, recipientName, shipmentItems.Count, finalTotalAmount),
                     Resources.TitleSuccess, MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                 DialogResult = DialogResult.OK;
@@ -799,6 +1001,55 @@ namespace AutomechanicsProject.Formes
                         RefreshShipmentList();
                     }
                 }
+            }
+        }
+
+        /// <summary>
+        /// Проверяет контрагента по ИНН
+        /// </summary>
+        private async void btncheck_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (!ValidateInn())
+                {
+                    return;
+                }
+
+                var result = await _daDataService.CheckCounterpartyByInnAsync(textBoxINN.Text.Trim());
+
+                counterpartyStatus = result.Status;
+                isCounterpartyChecked = true;
+
+                MessageBoxIcon icon;
+
+                if (result.Status == CounterpartyCheckStatus.Allowed)
+                {
+                    icon = MessageBoxIcon.Information;
+                }
+                else if (result.Status == CounterpartyCheckStatus.Risk)
+                {
+                    icon = MessageBoxIcon.Warning;
+                }
+                else
+                {
+                    icon = MessageBoxIcon.Error;
+                }
+
+                MessageBox.Show(result.Message + Environment.NewLine + result.Name,
+                    Resources.TitleInformation,
+                    MessageBoxButtons.OK,
+                    icon);
+            }
+            catch (Exception ex)
+            {
+                isCounterpartyChecked = false;
+                counterpartyStatus = CounterpartyCheckStatus.Blocked;
+
+                MessageBox.Show(ex.Message,
+                    Resources.TitleError,
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
         }
     }

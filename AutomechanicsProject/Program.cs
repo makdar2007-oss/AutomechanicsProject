@@ -37,7 +37,7 @@ namespace AutomechanicsProject
                 Application.SetCompatibleTextRenderingDefault(false);
 
                 var container = WindsorConfig.Register();
-                
+
 
                 var form = new Autorization(
                     container.Resolve<IAuthService>(),
@@ -50,7 +50,9 @@ namespace AutomechanicsProject
                     container.Resolve<ISupplyCurrencyService>(),
                     container.Resolve<ICurrentUserService>(),
                     container.Resolve<ICurrencySettingsService>(),
-                    container.Resolve<IWarehouseHeatmapService>());
+                    container.Resolve<IWarehouseHeatmapService>(),
+                    container.Resolve<IDaDataService>(),
+                    container.Resolve<IWeatherService>());
 
                 Application.Run(form);
             }

@@ -1278,7 +1278,7 @@ Total amount: {3}</value>
     <value>Quantity</value>
   </data>
   <data name="Report_ColumnPrice" xml:space="preserve">
-    <value>Price</value>
+    <value>&#x8;Price (in rubles)</value>
   </data>
   <data name="Report_ColumnProfit" xml:space="preserve">
     <value>Profit</value>
@@ -1293,7 +1293,7 @@ Total amount: {3}</value>
     <value>Storekeeper</value>
   </data>
   <data name="Report_ColumnDate" xml:space="preserve">
-    <value>Date</value>
+    <value>&#x8;Date and time (Moscow time)</value>
   </data>
   <data name="History_Form_Title" xml:space="preserve">
     <value>Shipment history</value>
@@ -1576,5 +1576,92 @@ Total amount: {3}</value>
   </data>
   <data name="ErrorOpenSettingsForm" xml:space="preserve">
     <value>Failed to open settings form</value>
+  </data>
+  <data name="ErrorEnterInn" xml:space="preserve">
+    <value> Enter INN</value>
+  </data>
+  <data name="ErrorDaDataApiKeyMissing" xml:space="preserve">
+    <value>API key is not specified</value>
+  </data>
+  <data name="ErrorCounterpartyNotFound" xml:space="preserve">
+    <value>No counterparty found with this INN</value>
+  </data>
+  <data name="CounterpartyAllowedMessage" xml:space="preserve">
+    <value>Counterparty verified. No risk found</value>
+  </data>
+  <data name="CounterpartyRiskMessage" xml:space="preserve">
+    <value>Counterparty found, but there is a risk</value>
+  </data>
+  <data name="CounterpartyBlockedMessage" xml:space="preserve">
+    <value>Counterparty is prohibited from shipment</value>
+  </data>
+  <data name="ErrorEnterCity" xml:space="preserve">
+    <value>Select the delivery city</value>
+  </data>
+  <data name="ErrorOpenWeatherApiKeyMissing" xml:space="preserve">
+    <value>API key is not specified</value>
+  </data>
+  <data name="ErrorWeatherForecastLoad" xml:space="preserve">
+    <value>Failed to get the weather forecast</value>
+  </data>
+  <data name="ShipmentCustomerTypeWatermark" xml:space="preserve">
+    <value>Select the customer type</value>
+  </data>
+  <data name="ShipmentCustomerTypeLegalEntity" xml:space="preserve">
+    <value>Legal entity</value>
+  </data>
+  <data name="ShipmentCustomerTypeOrganization" xml:space="preserve">
+    <value>Organization</value>
+  </data>
+  <data name="ShipmentInnWatermark" xml:space="preserve">
+    <value>Enter INN</value>
+  </data>
+  <data name="ErrorInnDigitsOnly" xml:space="preserve">
+    <value> INN must contain only digits</value>
+  </data>
+  <data name="ErrorSelectCustomerType" xml:space="preserve">
+    <value>Select the customer type</value>
+  </data>
+  <data name="ErrorLegalEntityInnLength" xml:space="preserve">
+    <value>For a legal entity, the INN must contain 10 digits</value>
+  </data>
+  <data name="ErrorOrganizationInnLength" xml:space="preserve">
+    <value>For a legal entity, the INN must contain 10 digits</value>
+  </data>
+  <data name="SupplyInnWatermark" xml:space="preserve">
+    <value>Enter INN</value>
+  </data>
+  <data name="SupplySupplierTypeWatermark" xml:space="preserve">
+    <value>Select supplier type</value>
+  </data>
+  <data name="SupplySupplierTypeLegalEntity" xml:space="preserve">
+    <value>Legal entity</value>
+  </data>
+  <data name="SupplySupplierTypeOrganization" xml:space="preserve">
+    <value>Organization</value>
+  </data>
+  <data name="SupplySupplierTypeIndividual" xml:space="preserve">
+    <value>Individual entrepreneur</value>
+  </data>
+  <data name="ErrorSelectSupplierType" xml:space="preserve">
+    <value>Select supplier type</value>
+  </data>
+  <data name="ErrorSupplierNotChecked" xml:space="preserve">
+    <value>Check the supplier by INN</value>
+  </data>
+  <data name="ErrorSupplierBlocked" xml:space="preserve">
+    <value>Supplier is blocked for supply</value>
+  </data>
+  <data name="ConfirmSupplierRisk" xml:space="preserve">
+    <value>Risk found for supplier. Continue with the supply?</value>
+  </data>
+  <data name="SupplierStatusWarning" xml:space="preserve">
+    <value>Supplier status: high risk</value>
+  </data>
+  <data name="SupplierStatusOk" xml:space="preserve">
+    <value>Supplier status: verified</value>
+  </data>
+  <data name="SupplierCheckRequired" xml:space="preserve">
+    <value> Supplier verification required</value>
   </data>
 </root>

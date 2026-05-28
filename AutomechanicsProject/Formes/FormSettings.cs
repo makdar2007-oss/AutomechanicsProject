@@ -12,6 +12,7 @@ using System.Net.Http;
 using System.Text.Json;
 using System.Threading;
 using System.Windows.Forms;
+using System.Threading.Tasks;
 
 namespace AutomechanicsProject.Formes
 {
@@ -49,19 +50,26 @@ namespace AutomechanicsProject.Formes
             _currencySettingsService = currencySettingsService ?? throw new ArgumentNullException(nameof(currencySettingsService));
 
 
-            _currencySettingsService = currencySettingsService ?? throw new ArgumentNullException(nameof(currencySettingsService));
 
             TextBoxHelper.SetupWatermarkComboBox(comboBoxCurrency, Resources.Settings_CurrencyWatermark);
             TextBoxHelper.SetupWatermarkComboBox(comboBoxLanguage, Resources.Settings_LanguageWatermark);
 
-            LoadCurrencies();
             LoadLanguages();
+
+            Load += FormSettings_Load;
         }
 
         /// <summary>
-        /// Загружает курсы валют из API 
+        /// Загружает данные при открытии формы
         /// </summary>
-        private void LoadCurrencies()
+        private async void FormSettings_Load(object sender, EventArgs e)
+        {
+            await LoadCurrenciesAsync();
+        }
+        /// <summary>
+        /// Асинхронно загружает курсы валют из API
+        /// </summary>
+        private async Task LoadCurrenciesAsync()
         {
             try
             {
@@ -70,15 +78,8 @@ namespace AutomechanicsProject.Formes
                 comboBoxCurrency.Enabled = false;
                 buttonChoose.Enabled = false;
 
-                currencies = CurrencyHelper.GetCurrenciesFromApi();
-
-                if (currencies == null || currencies.Count == 0)
-                {
-                    currencies = CurrencyHelper.GetFallbackCurrencies();
-                    logger.Warn("Используются резервные курсы валют");
-                    MessageBox.Show(Resources.WarningCurrencyRatesFallback,
-                        Resources.TitleWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                }
+                exchangeRates = await CurrencyHelper.GetExchangeRatesAsync();
+                currencies = CreateCurrenciesFromRates(exchangeRates);
 
                 PopulateCurrencyComboBox();
             }
@@ -91,7 +92,14 @@ namespace AutomechanicsProject.Formes
                     LoadFallbackRates();
                 }
 
+                currencies = CreateCurrenciesFromRates(exchangeRates);
+
                 PopulateCurrencyComboBox();
+
+                MessageBox.Show(Resources.WarningCurrencyRatesFallback,
+                    Resources.TitleWarning,
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
             }
         }
 
@@ -167,7 +175,30 @@ namespace AutomechanicsProject.Formes
         {
             exchangeRates = CurrencyHelper.GetFallbackRates();
         }
+        /// <summary>
+        /// Создает список валют из курсов
+        /// </summary>
+        private List<CurrencyInfo> CreateCurrenciesFromRates(Dictionary<string, decimal> rates)
+        {
+            var result = new List<CurrencyInfo>();
 
+            if (rates == null)
+            {
+                return result;
+            }
+
+            foreach (var rate in rates)
+            {
+                result.Add(new CurrencyInfo
+                {
+                    Code = rate.Key,
+                    Rate = rate.Value,
+                    DisplayText = $"{rate.Key} - {CurrencyHelper.GetCurrencyName(rate.Key)} (1 RUB = {rate.Value:F4} {rate.Key})"
+                });
+            }
+
+            return result;
+        }
         /// <summary>
         /// Заполняет выпадающий список доступными валютами
         /// </summary>

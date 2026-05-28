@@ -1,4 +1,6 @@
-﻿using AutomechanicsProject.Properties;
+﻿using AutomechanicsProject.Dtos;
+using AutomechanicsProject.Enums;
+using AutomechanicsProject.Properties;
 using AutomechanicsProject.Services.Interfaces;
 using Newtonsoft.Json.Linq;
 using System;
@@ -9,25 +11,25 @@ using System.Threading.Tasks;
 namespace AutomechanicsProject.Services
 {
     /// <summary>
-    /// Сервис для проверки поставщика через DaData
+    /// Сервис для проверки контрагента через DaData
     /// </summary>
     public class DaDataService : IDaDataService
     {
         private readonly HttpClient _httpClient = new HttpClient();
 
         /// <summary>
-        /// Проверяет поставщика по ИНН
+        /// Проверяет контрагента по ИНН
         /// </summary>
-        public async Task<string> CheckSupplierByInnAsync(string inn)
+        public async Task<CounterpartyCheckResultDto> CheckCounterpartyByInnAsync(string inn)
         {
             if (string.IsNullOrWhiteSpace(inn))
             {
-                throw new Exception("Введите ИНН");
+                throw new Exception(Resources.ErrorEnterInn);
             }
 
             if (string.IsNullOrWhiteSpace(Settings.Default.DaDataApiKey))
             {
-                throw new Exception("Не указан API-ключ DaData");
+                throw new Exception(Resources.ErrorDaDataApiKeyMissing);
             }
 
             var request = new HttpRequestMessage(
@@ -44,14 +46,50 @@ namespace AutomechanicsProject.Services
 
             var responseText = await response.Content.ReadAsStringAsync();
             var data = JObject.Parse(responseText);
-            var suggestion = data["suggestions"]?[0];
+            var suggestions = data["suggestions"] as JArray;
 
-            if (suggestion == null)
+            if (suggestions == null || suggestions.Count == 0)
             {
-                throw new Exception("Поставщик с таким ИНН не найден");
+                return new CounterpartyCheckResultDto
+                {
+                    Status = CounterpartyCheckStatus.Blocked,
+                    Name = string.Empty,
+                    Message = Resources.ErrorCounterpartyNotFound
+                };
             }
 
-            return suggestion["value"]?.ToString();
+            var suggestion = suggestions[0];
+
+            var name = suggestion["value"]?.ToString() ?? string.Empty;
+            var status = suggestion["data"]?["state"]?["status"]?.ToString();
+
+            if (status == "ACTIVE")
+            {
+                return new CounterpartyCheckResultDto
+                {
+                    Status = CounterpartyCheckStatus.Allowed,
+                    Name = name,
+                    Message = Resources.CounterpartyAllowedMessage
+                };
+            }
+
+            if (status == "LIQUIDATING" ||
+                status == "REORGANIZING")
+            {
+                return new CounterpartyCheckResultDto
+                {
+                    Status = CounterpartyCheckStatus.Risk,
+                    Name = name,
+                    Message = Resources.CounterpartyRiskMessage
+                };
+            }
+
+            return new CounterpartyCheckResultDto
+            {
+                Status = CounterpartyCheckStatus.Blocked,
+                Name = name,
+                Message = Resources.CounterpartyBlockedMessage
+            };
         }
     }
 }

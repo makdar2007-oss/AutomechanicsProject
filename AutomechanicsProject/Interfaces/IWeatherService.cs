@@ -8,8 +8,8 @@ namespace AutomechanicsProject.Services.Interfaces
     public interface IWeatherService
     {
         /// <summary>
-        /// Проверяет плохую погоду в городе на ближайшие дни
+        /// Проверяет, нужна ли термоупаковка по погоде
         /// </summary>
-        Task<bool> HasBadWeatherAsync(string city);
+        Task<bool> IsThermoContainerNeededAsync(string city);
     }
 }

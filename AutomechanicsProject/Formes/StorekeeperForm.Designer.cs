@@ -34,6 +34,7 @@ namespace AutomechanicsProject.Formes
             this.buttonExit = new System.Windows.Forms.Button();
             this.panelSearch = new System.Windows.Forms.Panel();
             this.buttonSettings = new System.Windows.Forms.Button();
+            this.buttonWarehouse = new System.Windows.Forms.Button();
             this.buttonSupply = new System.Windows.Forms.Button();
             this.buttonShipment = new System.Windows.Forms.Button();
             this.textBoxSearch = new System.Windows.Forms.TextBox();
@@ -41,7 +42,6 @@ namespace AutomechanicsProject.Formes
             this.dataGridViewStore = new System.Windows.Forms.DataGridView();
             this.menuStripStorekeeper = new System.Windows.Forms.MenuStrip();
             this.toolStripTextBoxStorekeeper = new System.Windows.Forms.ToolStripTextBox();
-            this.buttonWarehouse = new System.Windows.Forms.Button();
             this.panelStorekeeper.SuspendLayout();
             this.panelSearch.SuspendLayout();
             this.panelData.SuspendLayout();
@@ -108,6 +108,21 @@ namespace AutomechanicsProject.Formes
             this.buttonSettings.Text = "Настройки";
             this.buttonSettings.UseVisualStyleBackColor = false;
             this.buttonSettings.Click += new System.EventHandler(this.ButtonSettings_Click);
+            // 
+            // buttonWarehouse
+            // 
+            this.buttonWarehouse.AutoSize = true;
+            this.buttonWarehouse.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.buttonWarehouse.BackColor = System.Drawing.SystemColors.Control;
+            this.buttonWarehouse.FlatAppearance.BorderSize = 0;
+            this.buttonWarehouse.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonWarehouse.Location = new System.Drawing.Point(1194, 42);
+            this.buttonWarehouse.Name = "buttonWarehouse";
+            this.buttonWarehouse.Size = new System.Drawing.Size(117, 47);
+            this.buttonWarehouse.TabIndex = 1;
+            this.buttonWarehouse.Text = global::AutomechanicsProject.Properties.Resources.Warehouse_Button;
+            this.buttonWarehouse.UseVisualStyleBackColor = false;
+            this.buttonWarehouse.Click += new System.EventHandler(this.ButtonWarehouse_Click);
             // 
             // buttonSupply
             // 
@@ -207,21 +222,6 @@ namespace AutomechanicsProject.Formes
             this.toolStripTextBoxStorekeeper.ReadOnly = true;
             this.toolStripTextBoxStorekeeper.Size = new System.Drawing.Size(500, 40);
             this.toolStripTextBoxStorekeeper.Text = "Кладовщик";
-            // 
-            // buttonWarehouse
-            // 
-            this.buttonWarehouse.AutoSize = true;
-            this.buttonWarehouse.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.buttonWarehouse.BackColor = System.Drawing.SystemColors.Control;
-            this.buttonWarehouse.FlatAppearance.BorderSize = 0;
-            this.buttonWarehouse.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonWarehouse.Location = new System.Drawing.Point(1133, 42);
-            this.buttonWarehouse.Name = "buttonWarehouse";
-            this.buttonWarehouse.Size = new System.Drawing.Size(117, 47);
-            this.buttonWarehouse.TabIndex = 1;
-            this.buttonWarehouse.Text = global::AutomechanicsProject.Properties.Resources.Warehouse_Button;
-            this.buttonWarehouse.UseVisualStyleBackColor = false;
-            this.buttonWarehouse.Click += new System.EventHandler(this.ButtonWarehouse_Click);
             // 
             // StorekeeperForm
             // 

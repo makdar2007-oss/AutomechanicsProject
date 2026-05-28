@@ -1275,7 +1275,7 @@
     <value>Сан</value>
   </data>
   <data name="Report_ColumnPrice" xml:space="preserve">
-    <value>Бәя</value>
+    <value>&#x8;Бәя (сум белән)</value>
   </data>
   <data name="Report_ColumnProfit" xml:space="preserve">
     <value>Табыш</value>
@@ -1290,7 +1290,7 @@
     <value>Кладовщик</value>
   </data>
   <data name="Report_ColumnDate" xml:space="preserve">
-    <value>Дата</value>
+    <value>&#x8;Дата һәм вакыт (Мәскәү вакыты буенча)</value>
   </data>
   <data name="History_Form_Title" xml:space="preserve">
     <value>Җибәрү тарихы</value>
@@ -1578,5 +1578,175 @@
   </data>
   <data name="ErrorOpenSettingsForm" xml:space="preserve">
     <value>Көйләүләр формасын ачып булмады</value>
+  </data>
+  <data name="ErrorEnterInn" xml:space="preserve">
+    <value>ИНН кертегез</value>
+  </data>
+  <data name="ErrorDaDataApiKeyMissing" xml:space="preserve">
+    <value>API ачкычы күрсәтелмәгән</value>
+  </data>
+  <data name="ErrorCounterpartyNotFound" xml:space="preserve">
+    <value>Мондый ИНН белән контрагент табылмады</value>
+  </data>
+  <data name="CounterpartyAllowedMessage" xml:space="preserve">
+    <value>Контрагент тикшерелде. Ризык табылмады</value>
+  </data>
+  <data name="CounterpartyRiskMessage" xml:space="preserve">
+    <value>Контрагент табылды, ләкин риск бар</value>
+  </data>
+  <data name="CounterpartyBlockedMessage" xml:space="preserve">
+    <value>Контрагентка йөк ташырга рөхсәт ителми</value>
+  </data>
+  <data name="ErrorEnterCity" xml:space="preserve">
+    <value>Çиткерү шәһәрен сайлагыз</value>
+  </data>
+  <data name="ErrorOpenWeatherApiKeyMissing" xml:space="preserve">
+    <value>API ачкычы күрсәтелмәгән</value>
+  </data>
+  <data name="ErrorWeatherForecastLoad" xml:space="preserve">
+    <value>Торыш күрсәткечен алып булмады</value>
+  </data>
+  <data name="ShipmentCustomerTypeWatermark" xml:space="preserve">
+    <value>Заказчик төрен сайлагыз
+
+</value>
+  </data>
+  <data name="ShipmentCustomerTypeLegalEntity" xml:space="preserve">
+    <value>Юридик зат</value>
+  </data>
+  <data name="ShipmentCustomerTypeOrganization" xml:space="preserve">
+    <value>Оешма</value>
+  </data>
+  <data name="ShipmentInnWatermark" xml:space="preserve">
+    <value>ИНН кертегез</value>
+  </data>
+  <data name="ErrorInnDigitsOnly" xml:space="preserve">
+    <value>ИНН бары тик саннардан гына торырга тиеш</value>
+  </data>
+  <data name="ErrorSelectCustomerType" xml:space="preserve">
+    <value>Заказчик төрен сайлагыз</value>
+  </data>
+  <data name="ErrorLegalEntityInnLength" xml:space="preserve">
+    <value>Юридик зат өчен ИНН 10 саннан торырга тиеш</value>
+  </data>
+  <data name="ErrorOrganizationInnLength" xml:space="preserve">
+    <value>Оешма өчен ИНН 12 саннан торырга тиеш</value>
+  </data>
+  <data name="SupplyInnWatermark" xml:space="preserve">
+    <value>ИНН кертегез</value>
+  </data>
+  <data name="SupplySupplierTypeWatermark" xml:space="preserve">
+    <value>Тәэмин итүче төрен сайлагыз</value>
+  </data>
+  <data name="SupplySupplierTypeLegalEntity" xml:space="preserve">
+    <value>Юридик зат</value>
+  </data>
+  <data name="SupplySupplierTypeOrganization" xml:space="preserve">
+    <value>Оешма</value>
+  </data>
+  <data name="SupplySupplierTypeIndividual" xml:space="preserve">
+    <value>Шәхси эшмәкәр</value>
+  </data>
+  <data name="ErrorSelectSupplierType" xml:space="preserve">
+    <value>Тәэмин итүче төрен сайлагыз</value>
+  </data>
+  <data name="ErrorSupplierNotChecked" xml:space="preserve">
+    <value>Тәэмин итүчене ИНН буенча тикшерегез</value>
+  </data>
+  <data name="ErrorSupplierBlocked" xml:space="preserve">
+    <value>Тәэмин итүче китерү өчен тыелган</value>
+  </data>
+  <data name="ConfirmSupplierRisk" xml:space="preserve">
+    <value>Тәэмин итүчедә риск табылды. Китерүне дәвам итәргә?</value>
+  </data>
+  <data name="SupplierStatusWarning" xml:space="preserve">
+    <value> Тәэмин итүче статусы: югары риск</value>
+  </data>
+  <data name="SupplierStatusOk" xml:space="preserve">
+    <value> Тәэмин итүче статусы: тикшерелгән</value>
+  </data>
+  <data name="SupplierCheckRequired" xml:space="preserve">
+    <value> Тәэмин итүчене тикшерү кирәк</value>
+  </data>
+  <data name="ShipmentTownWatermark" xml:space="preserve">
+    <value>Җиткерү шәһәрен кертегез</value>
+  </data>
+  <data name="ErrorSelectTown" xml:space="preserve">
+    <value>Җиткерү шәһәрен сайлагыз</value>
+  </data>
+  <data name="ErrorInvalidTown" xml:space="preserve">
+    <value>Җиткерү шәһәре танылмады. Дөрес керүне тикшерегез</value>
+  </data>
+  <data name="WarningTemperatureLimit" xml:space="preserve">
+    <value>Җиткерү шәһәрендә температура рөхсәт ителгән чикләрдән чыга</value>
+  </data>
+  <data name="ThermoContainerAddedMessage" xml:space="preserve">
+    <value>Җиткерү шәһәрендә якындагы 3 көн эчендә температура рөхсәт ителгән чикләрдән чыга. Һәр тавар берәмлеге өчен {0:N2} сумлы термоконтейнер өстәлде. Термоконтейнерларның гомуми бәясе: {1:N2} сум.</value>
+  </data>
+  <data name="ThermoContainerAddedTitle" xml:space="preserve">
+    <value>Термоконтейнер өстәлде</value>
+  </data>
+  <data name="ShipmentTown_Moscow" xml:space="preserve">
+    <value>Москва</value>
+  </data>
+  <data name="ShipmentTown_SaintPetersburg" xml:space="preserve">
+    <value>Санкт-Петербург</value>
+  </data>
+  <data name="ShipmentTown_Novosibirsk" xml:space="preserve">
+    <value>Новосибирск</value>
+  </data>
+  <data name="ShipmentTown_Ekaterinburg" xml:space="preserve">
+    <value>Екатеринбург</value>
+  </data>
+  <data name="ShipmentTown_Kazan" xml:space="preserve">
+    <value>Казань</value>
+  </data>
+  <data name="ShipmentTown_NizhnyNovgorod" xml:space="preserve">
+    <value>Нижний Новгород</value>
+  </data>
+  <data name="ShipmentTown_Chelyabinsk" xml:space="preserve">
+    <value>Челябинск</value>
+  </data>
+  <data name="ShipmentTown_Samara" xml:space="preserve">
+    <value>Самара</value>
+  </data>
+  <data name="ShipmentTown_Omsk" xml:space="preserve">
+    <value>Омск</value>
+  </data>
+  <data name="ShipmentTown_Rostov" xml:space="preserve">
+    <value>Ростов-на-Дону</value>
+  </data>
+  <data name="ShipmentTown_Ufa" xml:space="preserve">
+    <value>Уфа</value>
+  </data>
+  <data name="ShipmentTown_Krasnoyarsk" xml:space="preserve">
+    <value>Красноярск</value>
+  </data>
+  <data name="ShipmentTown_Perm" xml:space="preserve">
+    <value>Пермь</value>
+  </data>
+  <data name="ShipmentTown_Voronezh" xml:space="preserve">
+    <value>Воронеж</value>
+  </data>
+  <data name="ShipmentTown_Volgograd" xml:space="preserve">
+    <value>Волгоград</value>
+  </data>
+  <data name="ErrorCounterpartyNotChecked" xml:space="preserve">
+    <value>Заказчикны ИНН буенча тикшерегез</value>
+  </data>
+  <data name="ErrorCounterpartyBlocked" xml:space="preserve">
+    <value>Заказчик йөкләү өчен тыелган</value>
+  </data>
+  <data name="ConfirmCounterpartyRisk" xml:space="preserve">
+    <value>Заказчикта риск табылды. Йөкләүне дәвам итәргә?</value>
+  </data>
+  <data name="CounterpartyStatusWarning" xml:space="preserve">
+    <value> Заказчик статусы: югары риск</value>
+  </data>
+  <data name="CounterpartyStatusOk" xml:space="preserve">
+    <value>✓ Заказчик статусы: тикшерелгән</value>
+  </data>
+  <data name="CounterpartyCheckRequired" xml:space="preserve">
+    <value>Заказчикны тикшерү кирәк</value>
   </data>
 </root>

@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 
+
 namespace AutomechanicsProject.Formes
 {
     /// <summary>
@@ -30,6 +31,8 @@ namespace AutomechanicsProject.Formes
         private readonly ICurrentUserService _currentUserService;
         private readonly ICurrencySettingsService _currencySettingsService;
         private readonly IWarehouseHeatmapService _warehouseHeatmapService;
+        private readonly IDaDataService _daDataService;
+        private readonly IWeatherService _weatherService;
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
 
@@ -61,7 +64,9 @@ namespace AutomechanicsProject.Formes
              ISupplyCurrencyService supplyCurrencyService,
              ICurrentUserService currentUserService,
              ICurrencySettingsService currencySettingsService,
-             IWarehouseHeatmapService warehouseHeatmapService)
+             IWarehouseHeatmapService warehouseHeatmapService,
+            IDaDataService daDataService,
+            IWeatherService weatherService)
         {
             InitializeComponent();
             ApplyLocalization();
@@ -77,7 +82,8 @@ namespace AutomechanicsProject.Formes
             _currentUserService = currentUserService ?? throw new ArgumentNullException(nameof(currentUserService));
             _currencySettingsService = currencySettingsService ?? throw new ArgumentNullException(nameof(currencySettingsService));
             _warehouseHeatmapService = warehouseHeatmapService ?? throw new ArgumentNullException(nameof(warehouseHeatmapService));
-
+            _daDataService = daDataService ?? throw new ArgumentNullException(nameof(daDataService));
+            _weatherService = weatherService ?? throw new ArgumentNullException(nameof(weatherService));
             AutoWriteOffExpiredProducts();
 
             TextBoxHelper.SetupWatermarkTextBox(textBoxSearch, Resources.SearchWatermark);
@@ -206,7 +212,7 @@ namespace AutomechanicsProject.Formes
         {
             try
             {
-                using (var shipmentForm = new CreateShipment(_shipmentService, _currentUserService))
+                using (var shipmentForm = new CreateShipment(_shipmentService, _currentUserService, _daDataService, _weatherService))
                 {
                     if (shipmentForm.ShowDialog() == DialogResult.OK)
                     {
@@ -238,17 +244,19 @@ namespace AutomechanicsProject.Formes
 
                 Close();
                 var loginForm = new Autorization(
-                _authService,
-                _productService,
-                _categoryService,
-                _supplyService,
-                _reportService,
-                _shipmentService,
-                _expiredProductsService,
-                _supplyCurrencyService,
-                _currentUserService,
-                _currencySettingsService,
-                _warehouseHeatmapService);
+                    _authService,
+                    _productService,
+                    _categoryService,
+                    _supplyService,
+                    _reportService,
+                    _shipmentService,
+                    _expiredProductsService,
+                    _supplyCurrencyService,
+                    _currentUserService,
+                    _currencySettingsService,
+                    _warehouseHeatmapService,
+                    _daDataService,
+                    _weatherService);
                 loginForm.ShowDialog();
 
             }
@@ -537,7 +545,7 @@ namespace AutomechanicsProject.Formes
         /// </summary>
         private void buttonSupply_Click_1(object sender, EventArgs e)
         {
-            using (CreateSupply supplyForm = new CreateSupply(_supplyService, _currentUserService))
+            using (CreateSupply supplyForm = new CreateSupply(_supplyService, _currentUserService, _daDataService))
             {
                 if (supplyForm.ShowDialog() == DialogResult.OK)
                 {

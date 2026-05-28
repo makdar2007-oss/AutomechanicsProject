@@ -71,7 +71,7 @@ namespace AutomechanicsProject.Formes
             this.panelAdmin.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.panelAdmin.Location = new System.Drawing.Point(0, 0);
             this.panelAdmin.Name = "panelAdmin";
-            this.panelAdmin.Size = new System.Drawing.Size(1427, 1206);
+            this.panelAdmin.Size = new System.Drawing.Size(1503, 1215);
             this.panelAdmin.TabIndex = 0;
             // 
             // buttonExit
@@ -82,7 +82,7 @@ namespace AutomechanicsProject.Formes
             this.buttonExit.FlatAppearance.BorderSize = 0;
             this.buttonExit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonExit.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.buttonExit.Location = new System.Drawing.Point(1168, 0);
+            this.buttonExit.Location = new System.Drawing.Point(1244, 0);
             this.buttonExit.Name = "buttonExit";
             this.buttonExit.Size = new System.Drawing.Size(260, 44);
             this.buttonExit.TabIndex = 3;
@@ -102,12 +102,12 @@ namespace AutomechanicsProject.Formes
             this.panelSearchHIstory.Controls.Add(this.textBoxSearch);
             this.panelSearchHIstory.Location = new System.Drawing.Point(0, 56);
             this.panelSearchHIstory.Name = "panelSearchHIstory";
-            this.panelSearchHIstory.Size = new System.Drawing.Size(1427, 116);
+            this.panelSearchHIstory.Size = new System.Drawing.Size(1503, 116);
             this.panelSearchHIstory.TabIndex = 6;
             // 
             // buttonWarehouse
             // 
-            this.buttonWarehouse.Location = new System.Drawing.Point(1271, 24);
+            this.buttonWarehouse.Location = new System.Drawing.Point(1338, 24);
             this.buttonWarehouse.Name = "buttonWarehouse";
             this.buttonWarehouse.Size = new System.Drawing.Size(153, 62);
             this.buttonWarehouse.TabIndex = 7;
@@ -191,7 +191,7 @@ namespace AutomechanicsProject.Formes
             this.panelAdminData.Controls.Add(this.dataGridViewMainForm);
             this.panelAdminData.Location = new System.Drawing.Point(0, 172);
             this.panelAdminData.Name = "panelAdminData";
-            this.panelAdminData.Size = new System.Drawing.Size(1427, 1034);
+            this.panelAdminData.Size = new System.Drawing.Size(1503, 1043);
             this.panelAdminData.TabIndex = 5;
             // 
             // dataGridViewMainForm
@@ -212,7 +212,7 @@ namespace AutomechanicsProject.Formes
             this.dataGridViewMainForm.RowHeadersWidth = 82;
             this.dataGridViewMainForm.RowTemplate.Height = 35;
             this.dataGridViewMainForm.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewMainForm.Size = new System.Drawing.Size(1427, 1034);
+            this.dataGridViewMainForm.Size = new System.Drawing.Size(1503, 1043);
             this.dataGridViewMainForm.TabIndex = 1;
             // 
             // menuStripMainForm
@@ -227,7 +227,7 @@ namespace AutomechanicsProject.Formes
             this.toolStripTextBoxAdmin});
             this.menuStripMainForm.Location = new System.Drawing.Point(0, 0);
             this.menuStripMainForm.Name = "menuStripMainForm";
-            this.menuStripMainForm.Size = new System.Drawing.Size(1427, 44);
+            this.menuStripMainForm.Size = new System.Drawing.Size(1503, 44);
             this.menuStripMainForm.TabIndex = 1;
             // 
             // toolStripComboBoxAdd
@@ -312,7 +312,7 @@ namespace AutomechanicsProject.Formes
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1427, 1206);
+            this.ClientSize = new System.Drawing.Size(1503, 1215);
             this.Controls.Add(this.panelAdmin);
             this.MainMenuStrip = this.menuStripMainForm;
             this.MinimumSize = new System.Drawing.Size(1337, 585);

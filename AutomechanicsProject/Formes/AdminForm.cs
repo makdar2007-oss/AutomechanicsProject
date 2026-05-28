@@ -34,6 +34,8 @@ namespace AutomechanicsProject.Formes
         private readonly ICurrentUserService _currentUserService;
         private readonly ICurrencySettingsService _currencySettingsService;
         private readonly IWarehouseHeatmapService _warehouseHeatmapService;
+        private readonly IDaDataService _daDataService;
+        private readonly IWeatherService _weatherService;
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         /// <summary>
@@ -78,7 +80,9 @@ namespace AutomechanicsProject.Formes
             ISupplyCurrencyService supplyCurrencyService,
             ICurrentUserService currentUserService,
             ICurrencySettingsService currencySettingsService,
-            IWarehouseHeatmapService warehouseHeatmapService)
+            IWarehouseHeatmapService warehouseHeatmapService,
+            IDaDataService daDataService,
+            IWeatherService weatherService)
         {
             InitializeComponent();
             ApplyLocalization();
@@ -94,6 +98,8 @@ namespace AutomechanicsProject.Formes
             _currentUserService = currentUserService ?? throw new ArgumentNullException(nameof(currentUserService));
             _currencySettingsService = currencySettingsService ?? throw new ArgumentNullException(nameof(currencySettingsService));
             _warehouseHeatmapService = warehouseHeatmapService ?? throw new ArgumentNullException(nameof(warehouseHeatmapService));
+            _daDataService = daDataService ?? throw new ArgumentNullException(nameof(daDataService));
+            _weatherService = weatherService ?? throw new ArgumentNullException(nameof(weatherService));
 
             TextBoxHelper.SetupWatermarkTextBox(textBoxSearch, Resources.SearchWatermark);
             dataGridViewMainForm.DataBindingComplete += DataGridViewStore_DataBindingComplete;
@@ -224,17 +230,19 @@ namespace AutomechanicsProject.Formes
 
                 Close();
                 var loginForm = new Autorization(
-                    _authService,
-                    _productService,
-                    _categoryService,
-                    _supplyService,
-                    _reportService,
-                    _shipmentService,
-                    _expiredProductsService,
-                    _supplyCurrencyService,
-                    _currentUserService,
-                    _currencySettingsService,
-                    _warehouseHeatmapService);
+                     _authService,
+                     _productService,
+                     _categoryService,
+                     _supplyService,
+                     _reportService,
+                     _shipmentService,
+                     _expiredProductsService,
+                     _supplyCurrencyService,
+                     _currentUserService,
+                     _currencySettingsService,
+                     _warehouseHeatmapService,
+                     _daDataService,
+                     _weatherService);
                 loginForm.ShowDialog();
             }
             catch (Exception)
@@ -723,7 +731,7 @@ namespace AutomechanicsProject.Formes
         /// </summary>
         private void buttonSupply_Click(object sender, EventArgs e)
         {
-            using (CreateSupply supplyForm = new CreateSupply(_supplyService, _currentUserService))
+            using (CreateSupply supplyForm = new CreateSupply(_supplyService, _currentUserService, _daDataService))
             {
                 if (supplyForm.ShowDialog() == DialogResult.OK)
                 {

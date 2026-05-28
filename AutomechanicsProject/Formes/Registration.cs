@@ -28,6 +28,8 @@ namespace AutomechanicsProject.Formes
         private readonly ICurrentUserService _currentUserService;
         private readonly ICurrencySettingsService _currencySettingsService;
         private readonly IWarehouseHeatmapService _warehouseHeatmapService;
+        private readonly IDaDataService _daDataService;
+        private readonly IWeatherService _weatherService;
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
 
@@ -64,7 +66,9 @@ namespace AutomechanicsProject.Formes
             ISupplyCurrencyService supplyCurrencyService,
             ICurrentUserService currentUserService,
             ICurrencySettingsService currencySettingsService,
-            IWarehouseHeatmapService warehouseHeatmapService)
+            IWarehouseHeatmapService warehouseHeatmapService,
+            IDaDataService daDataService,
+            IWeatherService weatherService)
         {
             InitializeComponent();
             ApplyLocalization();
@@ -80,6 +84,8 @@ namespace AutomechanicsProject.Formes
             _currentUserService = currentUserService ?? throw new ArgumentNullException(nameof(currentUserService));
             _currencySettingsService = currencySettingsService ?? throw new ArgumentNullException(nameof(currencySettingsService));
             _warehouseHeatmapService = warehouseHeatmapService ?? throw new ArgumentNullException(nameof(warehouseHeatmapService));
+            _daDataService = daDataService ?? throw new ArgumentNullException(nameof(daDataService));
+            _weatherService = weatherService ?? throw new ArgumentNullException(nameof(weatherService));
 
             TextBoxHelper.SetupWatermarkTextBox(textBoxSurname, Resources.RegSurnameWatermark);
             TextBoxHelper.SetupWatermarkTextBox(textBoxName, Resources.RegNameWatermark);
@@ -159,7 +165,9 @@ namespace AutomechanicsProject.Formes
                 _supplyCurrencyService,
                 _currentUserService,
                 _currencySettingsService,
-                 _warehouseHeatmapService);
+                _warehouseHeatmapService,
+                _daDataService,
+                _weatherService);
             authForm.Show();
             Close();
         }

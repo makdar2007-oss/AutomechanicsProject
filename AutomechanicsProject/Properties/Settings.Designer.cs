@@ -61,7 +61,7 @@ namespace AutomechanicsProject.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute("200afe796dc0cb21d312fc9ee3dcee6d74f2c1c8")]
         public string DaDataApiKey {
             get {
                 return ((string)(this["DaDataApiKey"]));
@@ -73,7 +73,7 @@ namespace AutomechanicsProject.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute("29cb7689edaed0a5e64ee5f8d2af1134")]
         public string OpenWeatherApiKey {
             get {
                 return ((string)(this["OpenWeatherApiKey"]));

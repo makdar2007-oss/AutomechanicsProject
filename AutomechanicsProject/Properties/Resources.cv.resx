@@ -1257,7 +1257,7 @@
     <value>Шут</value>
   </data>
   <data name="Report_ColumnPrice" xml:space="preserve">
-    <value>Хак</value>
+    <value>Хак (тенкӗпе)</value>
   </data>
   <data name="Report_ColumnProfit" xml:space="preserve">
     <value>Тупӑш</value>
@@ -1272,7 +1272,7 @@
     <value>Кладовщик</value>
   </data>
   <data name="Report_ColumnDate" xml:space="preserve">
-    <value>Дата</value>
+    <value>&#x8;Вӑхӑт тата кун (Мускав вӑхӑчӗпе)</value>
   </data>
   <data name="History_Form_Title" xml:space="preserve">
     <value>Ӑсату историйӗ</value>
@@ -1555,5 +1555,173 @@
   </data>
   <data name="ErrorOpenSettingsForm" xml:space="preserve">
     <value>Кӗртӳсем формине уҫма пулмарӗ</value>
+  </data>
+  <data name="ErrorEnterInn" xml:space="preserve">
+    <value>ИНН кĕртĕр</value>
+  </data>
+  <data name="ErrorDaDataApiKeyMissing" xml:space="preserve">
+    <value>API-ключ палăртман</value>
+  </data>
+  <data name="ErrorCounterpartyNotFound" xml:space="preserve">
+    <value>Çак ИНН-лĕ контрагент тупăнмарĕ</value>
+  </data>
+  <data name="CounterpartyAllowedMessage" xml:space="preserve">
+    <value>Контрагент тĕрĕсленĕ. Риск тупăнмарĕ</value>
+  </data>
+  <data name="CounterpartyRiskMessage" xml:space="preserve">
+    <value>Контрагент тупăнчĕ, анчах риск пур</value>
+  </data>
+  <data name="CounterpartyBlockedMessage" xml:space="preserve">
+    <value>Контрагента тиесе ярама чараççĕ</value>
+  </data>
+  <data name="ErrorEnterCity" xml:space="preserve">
+    <value>Туса ярмалли хулана суйласа илĕр</value>
+  </data>
+  <data name="ErrorOpenWeatherApiKeyMissing" xml:space="preserve">
+    <value>API-ключ палăртман</value>
+  </data>
+  <data name="ErrorWeatherForecastLoad" xml:space="preserve">
+    <value>Не удалось получить прогноз погоды</value>
+  </data>
+  <data name="ShipmentCustomerTypeWatermark" xml:space="preserve">
+    <value>Заказчик тĕсне суйласа илĕр</value>
+  </data>
+  <data name="ShipmentCustomerTypeLegalEntity" xml:space="preserve">
+    <value>Юридици сăнарĕ</value>
+  </data>
+  <data name="ShipmentCustomerTypeOrganization" xml:space="preserve">
+    <value>Организаци</value>
+  </data>
+  <data name="ShipmentInnWatermark" xml:space="preserve">
+    <value>ИНН кĕртĕр</value>
+  </data>
+  <data name="ErrorInnDigitsOnly" xml:space="preserve">
+    <value>ИНН кăнаранпах цифрăсенчен тăрмалла</value>
+  </data>
+  <data name="ErrorSelectCustomerType" xml:space="preserve">
+    <value>Заказчик тĕсне суйласа илĕр</value>
+  </data>
+  <data name="ErrorLegalEntityInnLength" xml:space="preserve">
+    <value>Юридици сăнарĕн ИНН-ĕ 10 цифрăран тăрмалла</value>
+  </data>
+  <data name="ErrorOrganizationInnLength" xml:space="preserve">
+    <value>Организацин ИНН-ĕ 12 цифрăран тăрмалла</value>
+  </data>
+  <data name="SupplyInnWatermark" xml:space="preserve">
+    <value>ИНН кĕртĕр</value>
+  </data>
+  <data name="SupplySupplierTypeWatermark" xml:space="preserve">
+    <value>Тăвăмçă тĕсне суйласа илĕр</value>
+  </data>
+  <data name="SupplySupplierTypeLegalEntity" xml:space="preserve">
+    <value>Юридици сăпачĕ</value>
+  </data>
+  <data name="SupplySupplierTypeOrganization" xml:space="preserve">
+    <value>Организаци</value>
+  </data>
+  <data name="SupplySupplierTypeIndividual" xml:space="preserve">
+    <value>Индивидуаллă предприниматель</value>
+  </data>
+  <data name="ErrorSelectSupplierType" xml:space="preserve">
+    <value>Тăвăмçă тĕсне суйласа илĕр</value>
+  </data>
+  <data name="ErrorSupplierNotChecked" xml:space="preserve">
+    <value>Тăвăмçăна ИНН тăрăх тĕрĕслĕр</value>
+  </data>
+  <data name="ErrorSupplierBlocked" xml:space="preserve">
+    <value>Тăвăмçă парни валли чарăннă</value>
+  </data>
+  <data name="ConfirmSupplierRisk" xml:space="preserve">
+    <value>Тăвăмçăна риск тупăнчĕ. Парнине малалла тăватăр-и?</value>
+  </data>
+  <data name="SupplierStatusWarning" xml:space="preserve">
+    <value> Тăвăмçă статусĕ: çӳллĕ риск</value>
+  </data>
+  <data name="SupplierStatusOk" xml:space="preserve">
+    <value>Тăвăмçă статусĕ: тĕрĕсленĕ</value>
+  </data>
+  <data name="SupplierCheckRequired" xml:space="preserve">
+    <value> Тăвăмçăна тĕрĕслемелле</value>
+  </data>
+  <data name="ShipmentTownWatermark" xml:space="preserve">
+    <value>Ятпала илсе килмелли хулана кĕртĕр</value>
+  </data>
+  <data name="ErrorSelectTown" xml:space="preserve">
+    <value>Ятпала илсе килмелли хулана суйласа илĕр</value>
+  </data>
+  <data name="ErrorInvalidTown" xml:space="preserve">
+    <value>Ятпала илсе килмелли хула паллă мар. Тĕрĕс кĕртнине тĕрĕслĕр</value>
+  </data>
+  <data name="WarningTemperatureLimit" xml:space="preserve">
+    <value>Ятпала илсе килмелли хулара килĕшÿллĕ виçесем иртсе каяççĕ</value>
+  </data>
+  <data name="ThermoContainerAddedMessage" xml:space="preserve">
+    <value>Ятпала илсе килмелли хулара тепĕр 3 кун хушшинче температура ирĕклĕ виçесем иртсе каять. Кашни тавар виçи валли {0:N2} тен. термоконтейнер хушăнчĕ. Термоконтейнерсен пĕтĕм сумми: {1:N2} тен.</value>
+  </data>
+  <data name="ThermoContainerAddedTitle" xml:space="preserve">
+    <value>Термоконтейнер хушăнчĕ</value>
+  </data>
+  <data name="ShipmentTown_Moscow" xml:space="preserve">
+    <value>Москва</value>
+  </data>
+  <data name="ShipmentTown_SaintPetersburg" xml:space="preserve">
+    <value>Санкт-Петербург</value>
+  </data>
+  <data name="ShipmentTown_Novosibirsk" xml:space="preserve">
+    <value>Новосибирск</value>
+  </data>
+  <data name="ShipmentTown_Ekaterinburg" xml:space="preserve">
+    <value>Екатеринбург</value>
+  </data>
+  <data name="ShipmentTown_Kazan" xml:space="preserve">
+    <value>Казань</value>
+  </data>
+  <data name="ShipmentTown_NizhnyNovgorod" xml:space="preserve">
+    <value>Нижний Новгород</value>
+  </data>
+  <data name="ShipmentTown_Chelyabinsk" xml:space="preserve">
+    <value>Челябинск</value>
+  </data>
+  <data name="ShipmentTown_Samara" xml:space="preserve">
+    <value>Самара</value>
+  </data>
+  <data name="ShipmentTown_Omsk" xml:space="preserve">
+    <value>Омск</value>
+  </data>
+  <data name="ShipmentTown_Rostov" xml:space="preserve">
+    <value>Ростов-на-Дону</value>
+  </data>
+  <data name="ShipmentTown_Ufa" xml:space="preserve">
+    <value>Уфа</value>
+  </data>
+  <data name="ShipmentTown_Krasnoyarsk" xml:space="preserve">
+    <value>Красноярск</value>
+  </data>
+  <data name="ShipmentTown_Perm" xml:space="preserve">
+    <value>Пермь</value>
+  </data>
+  <data name="ShipmentTown_Voronezh" xml:space="preserve">
+    <value>Воронеж</value>
+  </data>
+  <data name="ShipmentTown_Volgograd" xml:space="preserve">
+    <value>Волгоград</value>
+  </data>
+  <data name="ErrorCounterpartyNotChecked" xml:space="preserve">
+    <value>Хуçаны ИНН тăрăх тĕрĕслĕр</value>
+  </data>
+  <data name="ErrorCounterpartyBlocked" xml:space="preserve">
+    <value>Хуçана тиентерме чарăннă</value>
+  </data>
+  <data name="ConfirmCounterpartyRisk" xml:space="preserve">
+    <value>Хуçана риск тупăнчĕ. Тиентерме малалла тăватăр-и?</value>
+  </data>
+  <data name="CounterpartyStatusWarning" xml:space="preserve">
+    <value> Хуçа статусĕ: çӳллĕ риск</value>
+  </data>
+  <data name="CounterpartyStatusOk" xml:space="preserve">
+    <value>✓ Хуçа статусĕ: тĕрĕсленĕ</value>
+  </data>
+  <data name="CounterpartyCheckRequired" xml:space="preserve">
+    <value>Хуçана тĕрĕслемелле</value>
   </data>
 </root>

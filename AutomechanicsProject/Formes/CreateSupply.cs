@@ -1,5 +1,6 @@
 ﻿using AutomechanicsProject.Classes;
 using AutomechanicsProject.Dtos.UI;
+using AutomechanicsProject.Enums;
 using AutomechanicsProject.Helpers;
 using AutomechanicsProject.Properties;
 using AutomechanicsProject.Services;
@@ -13,6 +14,9 @@ using System.Drawing;
 using System.Linq;
 using System.Text.Json;
 using System.Windows.Forms;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+
 
 namespace AutomechanicsProject.Formes
 {
@@ -23,6 +27,9 @@ namespace AutomechanicsProject.Formes
     {
         private readonly ISupplyService _supplyService;
         private readonly ICurrentUserService _currentUserService;
+        private readonly IDaDataService _daDataService;
+        private CounterpartyCheckStatus counterpartyStatus;
+        private bool isCounterpartyChecked;
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
         private List<SupplyPosition> positions = new List<SupplyPosition>();
         private string currentCurrency = CurrencyCodes.RUB;
@@ -64,15 +71,23 @@ namespace AutomechanicsProject.Formes
             dataGridViewTextBoxColumn7.HeaderText = Resources.Supply_DataGridView_ColumnExpiry;
         }
 
+        /// <summary>
+        /// Создает форму поставки
+        /// </summary>
         public CreateSupply(
             ISupplyService supplyService,
-            ICurrentUserService currentUserService)
+            ICurrentUserService currentUserService,
+            IDaDataService daDataService)
         {
             InitializeComponent();
             ApplyLocalization();
 
             _supplyService = supplyService ?? throw new ArgumentNullException(nameof(supplyService));
             _currentUserService = currentUserService ?? throw new ArgumentNullException(nameof(currentUserService));
+            _daDataService = daDataService ?? throw new ArgumentNullException(nameof(daDataService));
+
+            counterpartyStatus = CounterpartyCheckStatus.Blocked;
+            isCounterpartyChecked = false;
 
             this.Load += new System.EventHandler(this.CreateSupply_Load);
         }
@@ -80,10 +95,10 @@ namespace AutomechanicsProject.Formes
         /// <summary>
         /// Обработчик загрузки формы
         /// </summary>
-        private void CreateSupply_Load(object sender, EventArgs e)
+        private async void CreateSupply_Load(object sender, EventArgs e)
         {
             LoadProductsFromDatabase();
-            LoadCurrencies();
+            await LoadCurrenciesAsync();
             LoadSuppliersFromDatabase();
 
             TextBoxHelper.SetupWatermarkTextBox(textBoxQuantity, Resources.SQuantityWatermark);
@@ -91,6 +106,13 @@ namespace AutomechanicsProject.Formes
             TextBoxHelper.SetupWatermarkComboBox(comboBoxProduct, Resources.SProductWatermark);
             TextBoxHelper.SetupWatermarkComboBox(comboBoxSupplier, Resources.SSupplierWatermark);
             TextBoxHelper.SetupWatermarkComboBox(comboBoxCurrency, Resources.SCurrencyWatermark);
+            TextBoxHelper.SetupWatermarkTextBox(textBoxinn, Resources.SupplyInnWatermark);
+            TextBoxHelper.SetupWatermarkComboBox(comboBoxsyppliertipe, Resources.SupplySupplierTypeWatermark);
+
+            LoadSupplierTypes();
+
+            textBoxinn.TextChanged += ResetCounterpartyCheck;
+            comboBoxsyppliertipe.SelectedIndexChanged += ResetCounterpartyCheck;
 
             comboBoxCurrency.SelectedIndexChanged += ComboBoxCurrency_SelectedIndexChanged;
             dataGridViewSupply.DoubleClick += DataGridViewSupply_DoubleClick;
@@ -98,7 +120,90 @@ namespace AutomechanicsProject.Formes
             comboBoxProduct.Text = "";
             comboBoxProduct.SelectedIndex = -1;
         }
+        /// <summary>
+        /// Загружает типы поставщика
+        /// </summary>
+        private void LoadSupplierTypes()
+        {
+            comboBoxsyppliertipe.Items.Clear();
 
+            comboBoxsyppliertipe.Items.Add(Resources.SupplySupplierTypeLegalEntity);
+            comboBoxsyppliertipe.Items.Add(Resources.SupplySupplierTypeOrganization);
+        }
+        /// <summary>
+        /// Сбрасывает результат проверки поставщика
+        /// </summary>
+        private void ResetCounterpartyCheck(object sender, EventArgs e)
+        {
+            isCounterpartyChecked = false;
+            counterpartyStatus = CounterpartyCheckStatus.Blocked;
+        }
+
+        /// <summary>
+        /// Проверяет формат ИНН поставщика
+        /// </summary>
+        private bool ValidateSupplierInn()
+        {
+            var inn = textBoxinn.Text.Trim();
+
+            if (string.IsNullOrWhiteSpace(inn) ||
+                inn == Resources.SupplyInnWatermark)
+            {
+                MessageBox.Show(Resources.ErrorEnterInn,
+                    Resources.TitleWarning,
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
+                return false;
+            }
+
+            if (!Regex.IsMatch(inn, @"^\d+$"))
+            {
+                MessageBox.Show(Resources.ErrorInnDigitsOnly,
+                    Resources.TitleWarning,
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
+                return false;
+            }
+
+            if (comboBoxsyppliertipe.SelectedItem == null ||
+                comboBoxsyppliertipe.Text == Resources.SupplySupplierTypeWatermark)
+            {
+                MessageBox.Show(Resources.ErrorSelectSupplierType,
+                    Resources.TitleWarning,
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
+                return false;
+            }
+
+            var supplierType = comboBoxsyppliertipe.SelectedItem.ToString();
+
+            if (supplierType == Resources.SupplySupplierTypeLegalEntity &&
+                inn.Length != 10)
+            {
+                MessageBox.Show(Resources.ErrorLegalEntityInnLength,
+                    Resources.TitleWarning,
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
+                return false;
+            }
+
+            if (supplierType == Resources.SupplySupplierTypeOrganization &&
+                inn.Length != 12)
+            {
+                MessageBox.Show(Resources.ErrorOrganizationInnLength,
+                    Resources.TitleWarning,
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
+                return false;
+            }
+
+            return true;
+        }
         /// <summary>
         /// Настраивает выпадающий список для поиска по товарам
         /// </summary>
@@ -134,9 +239,9 @@ namespace AutomechanicsProject.Formes
         }
 
         /// <summary>
-        /// Загружает список валют из API
+        /// Асинхронно загружает список валют из API
         /// </summary>
-        private void LoadCurrencies()
+        private async Task LoadCurrenciesAsync()
         {
             try
             {
@@ -144,13 +249,16 @@ namespace AutomechanicsProject.Formes
                 comboBoxCurrency.Items.Add(Resources.LoadingCurrencies);
                 comboBoxCurrency.Enabled = false;
 
-                currencies = CurrencyHelper.GetCurrenciesFromApi();
+                currencies = await CurrencyHelper.GetCurrenciesFromApiAsync();
 
                 if (currencies == null || currencies.Count == 0)
                 {
                     currencies = CurrencyHelper.GetFallbackCurrencies();
-                    MessageBox.Show(Resources.WarningCurrencyRatesFallback, Resources.TitleWarning,
-                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+                    MessageBox.Show(Resources.WarningCurrencyRatesFallback,
+                        Resources.TitleWarning,
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
                 }
 
                 comboBoxCurrency.DataSource = currencies;
@@ -169,8 +277,10 @@ namespace AutomechanicsProject.Formes
                 currentCurrency = CurrencyCodes.RUB;
                 currentCurrencyRate = 1.00m;
 
-                MessageBox.Show(Resources.WarningCurrencyRatesFallback, Resources.TitleWarning,
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(Resources.WarningCurrencyRatesFallback,
+                    Resources.TitleWarning,
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
             }
         }
 
@@ -797,7 +907,38 @@ namespace AutomechanicsProject.Formes
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
+            if (!isCounterpartyChecked)
+            {
+                MessageBox.Show(Resources.ErrorSupplierNotChecked,
+                    Resources.TitleWarning,
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
 
+                return;
+            }
+
+            if (counterpartyStatus == CounterpartyCheckStatus.Blocked)
+            {
+                MessageBox.Show(Resources.ErrorSupplierBlocked,
+                    Resources.TitleError,
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+
+                return;
+            }
+
+            if (counterpartyStatus == CounterpartyCheckStatus.Risk)
+            {
+                var riskResult = MessageBox.Show(Resources.ConfirmSupplierRisk,
+                    Resources.TitleWarning,
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Warning);
+
+                if (riskResult != DialogResult.Yes)
+                {
+                    return;
+                }
+            }
             decimal totalInRUB = positions.Sum(p => p.Quantity * p.Price);
             string displayTotalText;
 
@@ -947,6 +1088,53 @@ namespace AutomechanicsProject.Formes
                     comboBoxCurrency.BackColor = SystemColors.Window;
                 }
                 logger.Info($"Товар '{article} - {productName}' удален из списка поставки");
+            }
+        }
+
+        /// <summary>
+        /// Проверяет поставщика по ИНН
+        /// </summary>
+        private async void buttoncheck_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (!ValidateSupplierInn())
+                {
+                    return;
+                }
+
+                var result = await _daDataService.CheckCounterpartyByInnAsync(textBoxinn.Text.Trim());
+
+                counterpartyStatus = result.Status;
+                isCounterpartyChecked = true;
+
+                var icon = MessageBoxIcon.Information;
+
+                if (result.Status == CounterpartyCheckStatus.Risk)
+                {
+                    icon = MessageBoxIcon.Warning;
+                }
+                else if (result.Status == CounterpartyCheckStatus.Blocked)
+                {
+                    icon = MessageBoxIcon.Error;
+                }
+
+                MessageBox.Show(result.Message + Environment.NewLine + result.Name,
+                    Resources.TitleInformation,
+                    MessageBoxButtons.OK,
+                    icon);
+            }
+            catch (Exception ex)
+            {
+                isCounterpartyChecked = false;
+                counterpartyStatus = CounterpartyCheckStatus.Blocked;
+
+                logger.Error(ex, "Ошибка при проверке ИНН поставщика");
+
+                MessageBox.Show(ex.Message,
+                    Resources.TitleError,
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
         }
     }
