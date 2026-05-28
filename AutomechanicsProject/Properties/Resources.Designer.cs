@@ -4790,6 +4790,24 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Применить.
+        /// </summary>
+        public static string WarehouseFilter_Apply {
+            get {
+                return ResourceManager.GetString("WarehouseFilter_Apply", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Сбросить.
+        /// </summary>
+        public static string WarehouseFilter_Reset {
+            get {
+                return ResourceManager.GetString("WarehouseFilter_Reset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Сортировать по: .
         /// </summary>
         public static string WarehouseFilter_SortBy {

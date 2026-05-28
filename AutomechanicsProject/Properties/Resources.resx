@@ -1768,4 +1768,10 @@
   <data name="WarehouseFilter_SortQuantity" xml:space="preserve">
     <value>Количеству</value>
   </data>
+  <data name="WarehouseFilter_Apply" xml:space="preserve">
+    <value>Применить</value>
+  </data>
+  <data name="WarehouseFilter_Reset" xml:space="preserve">
+    <value>Сбросить</value>
+  </data>
 </root>
