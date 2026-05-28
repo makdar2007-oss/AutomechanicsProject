@@ -58,5 +58,29 @@ namespace AutomechanicsProject.Properties {
                 this["SelectedLanguage"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string DaDataApiKey {
+            get {
+                return ((string)(this["DaDataApiKey"]));
+            }
+            set {
+                this["DaDataApiKey"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string OpenWeatherApiKey {
+            get {
+                return ((string)(this["OpenWeatherApiKey"]));
+            }
+            set {
+                this["OpenWeatherApiKey"] = value;
+            }
+        }
     }
 }

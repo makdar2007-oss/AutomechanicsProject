@@ -341,7 +341,7 @@ namespace AutomechanicsProject.Formes
         /// </summary>
         private decimal CalculateProductPrice(ProductListItemDto product)
         {
-            decimal priceInRub = product.PurchasePrice;
+            var priceInRub = product.PurchasePrice;
 
             if (product.ExpiryDate.HasValue &&
                 product.ExpiryDate.Value.Date >= MoscowTime.Today &&
@@ -369,9 +369,9 @@ namespace AutomechanicsProject.Formes
 
                 if (supplyCurrency != CurrencyCodes.RUB && supplyRate != 1.00m)
                 {
-                    decimal priceInSupplyCurrency = priceInRub * supplyRate;
+                    var priceInSupplyCurrency = priceInRub * supplyRate;
 
-                    decimal priceInRubAgain = priceInSupplyCurrency / supplyRate;
+                    var priceInRubAgain = priceInSupplyCurrency / supplyRate;
 
                     return _currencySettingsService.ConvertPrice(priceInRubAgain);
                 }
@@ -554,7 +554,7 @@ namespace AutomechanicsProject.Formes
         {
             if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
             {
-                string columnName = dataGridViewStore.Columns[e.ColumnIndex].Name;
+                var columnName = dataGridViewStore.Columns[e.ColumnIndex].Name;
 
                 if (columnName == "Price")
                 {
@@ -583,6 +583,16 @@ namespace AutomechanicsProject.Formes
             if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
             {
                 dataGridViewStore.Rows[e.RowIndex].Cells[e.ColumnIndex].ToolTipText = null;
+            }
+        }
+        /// <summary>
+        /// Открывает тепловую карту склада
+        /// </summary>
+        private void ButtonWarehouse_Click(object sender, EventArgs e)
+        {
+            using (var warehouseForm = new WarehouseHeatmapForm(_warehouseHeatmapService))
+            {
+                warehouseForm.ShowDialog();
             }
         }
     }

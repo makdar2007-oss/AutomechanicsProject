@@ -284,7 +284,7 @@ namespace AutomechanicsProject.Formes
         {
             if (dataGridViewHistory.Columns[e.ColumnIndex].Name == "Recipient" && e.Value != null)
             {
-                string value = e.Value.ToString();
+                var value = e.Value.ToString();
                 if (value == "Shipment")
                 {
                     e.Value = Resources.ShipmentType_Shipment;

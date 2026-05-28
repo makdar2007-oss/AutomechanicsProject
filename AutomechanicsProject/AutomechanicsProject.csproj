@@ -248,6 +248,8 @@
     <Compile Include="Classes\Product.cs" />
     <Compile Include="Classes\WarehouseCell.cs" />
     <Compile Include="Config\WindsorConfig.cs" />
+    <Compile Include="Dtos\Service\InnInfoDto.cs" />
+    <Compile Include="Dtos\Service\WeatherInfoDto.cs" />
     <Compile Include="Dtos\UI\ProductDisplayItem.cs" />
     <Compile Include="Classes\Role.cs" />
     <Compile Include="Classes\Shipment.cs" />
@@ -385,6 +387,7 @@
     <Compile Include="Interfaces\ICategoryService.cs" />
     <Compile Include="Interfaces\ICurrencySettingsService.cs" />
     <Compile Include="Interfaces\ICurrentUserService.cs" />
+    <Compile Include="Interfaces\IDaDataService.cs" />
     <Compile Include="Interfaces\IDateBaseContext.cs" />
     <Compile Include="Interfaces\IExpiredProductsService.cs" />
     <Compile Include="Interfaces\IProductService.cs" />
@@ -393,6 +396,7 @@
     <Compile Include="Interfaces\ISupplyCurrencyService.cs" />
     <Compile Include="Interfaces\ISupplyService.cs" />
     <Compile Include="Interfaces\IWarehouseHeatmapService.cs" />
+    <Compile Include="Interfaces\IWeatherService.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -409,6 +413,7 @@
     <Compile Include="Services\CategoryService.cs" />
     <Compile Include="Services\CurrencySettingsService.cs" />
     <Compile Include="Services\CurrentUserService.cs" />
+    <Compile Include="Services\DaDataService.cs" />
     <Compile Include="Services\ExpiredProductsService.cs" />
     <Compile Include="Services\ProductService.cs" />
     <Compile Include="Services\ReportService.cs" />
@@ -416,6 +421,7 @@
     <Compile Include="Services\SupplyCurrencyService.cs" />
     <Compile Include="Services\SupplyService.cs" />
     <Compile Include="Services\WarehouseHeatmapService.cs" />
+    <Compile Include="Services\WeatherService.cs" />
     <Compile Include="Settings.cs" />
     <EmbeddedResource Include="Formes\AddCategory.resx">
       <DependentUpon>AddCategory.cs</DependentUpon>
