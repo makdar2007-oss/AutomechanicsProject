@@ -301,7 +301,7 @@
     <value>АКШ долларӗ</value>
   </data>
   <data name="DebugSavingCache" xml:space="preserve">
-    <value>Отладка Сохранени Кэш</value>
+    <value>Кэша {0} ҫынна упраса хăваратăп</value>
   </data>
   <data name="StatusError" xml:space="preserve">
     <value>Йӑнӑш</value>
@@ -322,7 +322,7 @@
     <value>Юрӑхлӑх вӑхӑчӗ иртнӗ пулма пултараймасть</value>
   </data>
   <data name="ErrorExpiryDateExceedsProduct" xml:space="preserve">
-    <value>Йӑнӑш Юрӑхлӑх Дата иртет Товар</value>
+    <value>Парнири усă курасси вăхăчĕ таварăн усă курасси вăхăтĕнчен ({0}) иртсе каймасть</value>
   </data>
   <data name="ErrorNoExpiryDateAllowed" xml:space="preserve">
     <value>Йӑнӑш ҫук Юрӑхлӑх Дата юрать</value>
@@ -659,7 +659,7 @@
     <value>Кӑтартман</value>
   </data>
   <data name="WarningShipmentsWithoutItems" xml:space="preserve">
-    <value>Асӑрхантару Ӑсатусем Without Позици</value>
+    <value>&#x8;{0} тиентерме тупăнчĕ, анчах никамăшĕнче те позицисем çук!</value>
   </data>
   <data name="WarningNoProductExpiryDate" xml:space="preserve">
     <value>Асӑрхантару ҫук Товар Юрӑхлӑх Дата</value>
@@ -668,7 +668,7 @@
     <value>Ӑнӑҫмарӗ: загрузить актуальные курсы валют. Используются резервные значения.</value>
   </data>
   <data name="WarningCurrencyRatesFailed" xml:space="preserve">
-    <value>Асӑрхантару Валюта Курссем Ӑнӑҫмарӗ</value>
+    <value>Валюта курсĕсене тиенĕçтернĕ чухне йăнăш: {0}</value>
   </data>
   <data name="WarningUsingCachedRates" xml:space="preserve">
     <value>Асӑрхантару Усӑ курни Кэш Курссем</value>
@@ -707,7 +707,13 @@
     <value>Товар ӑнӑҫлӑ обновлен!</value>
   </data>
   <data name="SuccessRegistrationWithDetails" xml:space="preserve">
-    <value>Ӑнӑҫу Регистраци пур детальсем</value>
+    <value>Регистраци ăнăçлă!
+
+Логин: {0}
+Ят-йыш: {1}
+
+Халĕ эсир системăна кĕме пултаратăр.
+</value>
   </data>
   <data name="SuccessShipmentCreatedWithDetails" xml:space="preserve">
     <value>Отгрузка ӑнӑҫлӑ оформлена!
@@ -750,7 +756,7 @@
     <value>данӑ</value>
   </data>
   <data name="BatchNumberFormat" xml:space="preserve">
-    <value>Batch Number Формат</value>
+    <value>Парти_{0:yyyyMM}</value>
   </data>
   <data name="CategoryDisplayFormat_WithCount" xml:space="preserve">
     <value>{0} (товарсен: {1})</value>
@@ -759,25 +765,25 @@
     <value>{0} (товарсен: {1})</value>
   </data>
   <data name="ComboItemFormat" xml:space="preserve">
-    <value>Combo Позици Формат</value>
+    <value>{0} - {1} (юлни: {2})</value>
   </data>
   <data name="ConfirmDeleteSupplyItem" xml:space="preserve">
-    <value>Ҫирӗплетни Катӑртни Поставка Позици</value>
+    <value>Эсир чăннипе тавар "{0} - {1}" парнисен списокĕнчен кăларма шухăшлать-и?</value>
   </data>
   <data name="CurrencyFormat_Rub" xml:space="preserve">
-    <value>Валюта Формат Rub</value>
+    <value>{0:N2} тен.</value>
   </data>
   <data name="ExpiryDisplayFormat_WithBalance" xml:space="preserve">
-    <value>Юрӑхлӑх Кӑтартни Формат пур Юлашки</value>
+    <value>Вăхăт: {0:dd.MM.yyyy} (юлни: {1})</value>
   </data>
   <data name="FileNameDateFormat" xml:space="preserve">
     <value>yyyyMMdd_HHmmss</value>
   </data>
   <data name="NoExpiryDisplayFormat" xml:space="preserve">
-    <value>ҫук Юрӑхлӑх Кӑтартни Формат</value>
+    <value>Вăхăтсăр (юлни: {0})</value>
   </data>
   <data name="ProductDisplayFormat_WithBalance" xml:space="preserve">
-    <value>Товар Кӑтартни Формат пур Юлашки</value>
+    <value>{0} - {1} (юлни: {2} {3})</value>
   </data>
   <data name="RussianRuble" xml:space="preserve">
     <value>Раҫҫей рублӗ</value>
@@ -792,7 +798,7 @@
     <value>CSV файлы (*.csv)|*.csv|Все файлы (*.*)|*.*</value>
   </data>
   <data name="ShipmentForm_TitleFormat" xml:space="preserve">
-    <value>Ӑсату Форма Ят Формат</value>
+    <value>Тиентерме никĕслесси - Пĕтĕм суммă: {0:F2}, Тупăш: {1:F2}</value>
   </data>
   <data name="SupplierNotFoundFormat" xml:space="preserve">
     <value>{0} (поставщик '{1}' тупӑнмарӗ)</value>
@@ -825,7 +831,7 @@
     <value>Хак</value>
   </data>
   <data name="ColumnPurchasePriceFormat" xml:space="preserve">
-    <value>Колонкӑ Илӳ Хак Формат</value>
+    <value>Хакĕ ({0})</value>
   </data>
   <data name="ColumnBalance" xml:space="preserve">
     <value>Юлашки</value>
@@ -1131,7 +1137,7 @@
     <value>Товар артикулне кӗртӗр</value>
   </data>
   <data name="DeleteProductWithDetails" xml:space="preserve">
-    <value>Катӑртни Товар пур детальсем</value>
+    <value>Тавара кăларасси: {0} - {1}</value>
   </data>
   <data name="EditCategory_Form_Title" xml:space="preserve">
     <value>Редактировать категорине</value>
