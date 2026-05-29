@@ -61,149 +61,144 @@ namespace AutomechanicsProject.Formes
             this.panelAdd.Controls.Add(this.buttonAdd);
             this.panelAdd.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelAdd.Location = new System.Drawing.Point(0, 0);
-            this.panelAdd.Margin = new System.Windows.Forms.Padding(2);
             this.panelAdd.Name = "panelAdd";
-            this.panelAdd.Size = new System.Drawing.Size(577, 442);
+            this.panelAdd.Size = new System.Drawing.Size(866, 691);
             this.panelAdd.TabIndex = 0;
             // 
             // labelAddProduct
             // 
             this.labelAddProduct.AutoSize = true;
             this.labelAddProduct.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelAddProduct.Location = new System.Drawing.Point(171, 19);
-            this.labelAddProduct.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.labelAddProduct.Location = new System.Drawing.Point(256, 30);
             this.labelAddProduct.Name = "labelAddProduct";
-            this.labelAddProduct.Size = new System.Drawing.Size(250, 36);
+            this.labelAddProduct.Size = new System.Drawing.Size(383, 55);
             this.labelAddProduct.TabIndex = 0;
-            this.labelAddProduct.Text = Resources.AddProduct_LabelText;
+            this.labelAddProduct.Text = "Добавить товар";
             // 
             // textBoxArt
             // 
             this.textBoxArt.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.textBoxArt.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBoxArt.Location = new System.Drawing.Point(118, 77);
-            this.textBoxArt.Margin = new System.Windows.Forms.Padding(2);
+            this.textBoxArt.Location = new System.Drawing.Point(177, 120);
             this.textBoxArt.Name = "textBoxArt";
-            this.textBoxArt.Size = new System.Drawing.Size(342, 30);
+            this.textBoxArt.ReadOnly = true;
+            this.textBoxArt.Size = new System.Drawing.Size(512, 44);
             this.textBoxArt.TabIndex = 1;
-            this.textBoxArt.Text = Resources.AddProduct_TextBoxArt_Watermark;            // 
+            this.textBoxArt.Text = "Введите артикул";
+            // 
             // textBoxName
             // 
             this.textBoxName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.textBoxName.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBoxName.Location = new System.Drawing.Point(118, 122);
-            this.textBoxName.Margin = new System.Windows.Forms.Padding(2);
+            this.textBoxName.Location = new System.Drawing.Point(177, 191);
             this.textBoxName.Name = "textBoxName";
-            this.textBoxName.Size = new System.Drawing.Size(342, 30);
+            this.textBoxName.Size = new System.Drawing.Size(512, 44);
             this.textBoxName.TabIndex = 2;
-            this.textBoxName.Text = Resources.ProductNameWatermark;
+            this.textBoxName.Text = "Введите название";
             // 
             // comboBoxCategory
             // 
+            this.comboBoxCategory.DisplayMember = "Text";
             this.comboBoxCategory.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxCategory.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.comboBoxCategory.FormattingEnabled = true;
-            this.comboBoxCategory.Location = new System.Drawing.Point(118, 166);
-            this.comboBoxCategory.Margin = new System.Windows.Forms.Padding(2);
+            this.comboBoxCategory.Location = new System.Drawing.Point(177, 259);
             this.comboBoxCategory.Name = "comboBoxCategory";
-            this.comboBoxCategory.Size = new System.Drawing.Size(343, 33);
+            this.comboBoxCategory.Size = new System.Drawing.Size(512, 45);
             this.comboBoxCategory.TabIndex = 3;
-            this.comboBoxCategory.DisplayMember = "Text";
             this.comboBoxCategory.ValueMember = "Id";
             // 
             // comboBoxUnit
             // 
+            this.comboBoxUnit.DisplayMember = "Text";
             this.comboBoxUnit.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxUnit.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.comboBoxUnit.FormattingEnabled = true;
-            this.comboBoxUnit.Location = new System.Drawing.Point(118, 211);
-            this.comboBoxUnit.Margin = new System.Windows.Forms.Padding(2);
+            this.comboBoxUnit.Location = new System.Drawing.Point(177, 330);
             this.comboBoxUnit.Name = "comboBoxUnit";
-            this.comboBoxUnit.Size = new System.Drawing.Size(343, 33);
+            this.comboBoxUnit.Size = new System.Drawing.Size(512, 45);
             this.comboBoxUnit.TabIndex = 4;
-            this.comboBoxUnit.DisplayMember = "Text";
             this.comboBoxUnit.ValueMember = "Id";
             // 
             // textBoxPrice
             // 
             this.textBoxPrice.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.textBoxPrice.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBoxPrice.Location = new System.Drawing.Point(118, 256);
-            this.textBoxPrice.Margin = new System.Windows.Forms.Padding(2);
+            this.textBoxPrice.Location = new System.Drawing.Point(177, 400);
             this.textBoxPrice.Name = "textBoxPrice";
-            this.textBoxPrice.Size = new System.Drawing.Size(342, 30);
+            this.textBoxPrice.Size = new System.Drawing.Size(512, 44);
             this.textBoxPrice.TabIndex = 5;
-            this.textBoxPrice.Text = Resources.ProductPriceWatermark;
+            this.textBoxPrice.Text = "Введите цену";
             // 
             // groupBoxExpiry
             // 
             this.groupBoxExpiry.Controls.Add(this.radioButtonNoExpiry);
             this.groupBoxExpiry.Controls.Add(this.radioButtonHasExpiry);
             this.groupBoxExpiry.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.groupBoxExpiry.Location = new System.Drawing.Point(118, 291);
+            this.groupBoxExpiry.Location = new System.Drawing.Point(177, 455);
+            this.groupBoxExpiry.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.groupBoxExpiry.Name = "groupBoxExpiry";
-            this.groupBoxExpiry.Size = new System.Drawing.Size(343, 80);
+            this.groupBoxExpiry.Padding = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.groupBoxExpiry.Size = new System.Drawing.Size(514, 125);
             this.groupBoxExpiry.TabIndex = 6;
             this.groupBoxExpiry.TabStop = false;
-            this.groupBoxExpiry.Text = Resources.AddProduct_GroupBoxExpiry_Text;
+            this.groupBoxExpiry.Text = "Срок годности";
             // 
             // radioButtonNoExpiry
             // 
             this.radioButtonNoExpiry.AutoSize = true;
             this.radioButtonNoExpiry.Checked = true;
             this.radioButtonNoExpiry.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.radioButtonNoExpiry.Location = new System.Drawing.Point(200, 35);
+            this.radioButtonNoExpiry.Location = new System.Drawing.Point(300, 55);
+            this.radioButtonNoExpiry.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.radioButtonNoExpiry.Name = "radioButtonNoExpiry";
-            this.radioButtonNoExpiry.Size = new System.Drawing.Size(116, 24);
+            this.radioButtonNoExpiry.Size = new System.Drawing.Size(172, 35);
             this.radioButtonNoExpiry.TabIndex = 1;
             this.radioButtonNoExpiry.TabStop = true;
-            this.radioButtonNoExpiry.Text = Resources.AddProduct_RadioButtonNoExpiry_Text;
+            this.radioButtonNoExpiry.Text = global::AutomechanicsProject.Properties.Resources.AddProduct_RadioButtonNoExpiry_Text;
             // 
             // radioButtonHasExpiry
             // 
             this.radioButtonHasExpiry.AutoSize = true;
             this.radioButtonHasExpiry.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.radioButtonHasExpiry.Location = new System.Drawing.Point(20, 35);
+            this.radioButtonHasExpiry.Location = new System.Drawing.Point(30, 55);
+            this.radioButtonHasExpiry.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.radioButtonHasExpiry.Name = "radioButtonHasExpiry";
-            this.radioButtonHasExpiry.Size = new System.Drawing.Size(114, 24);
+            this.radioButtonHasExpiry.Size = new System.Drawing.Size(168, 35);
             this.radioButtonHasExpiry.TabIndex = 0;
-            this.radioButtonHasExpiry.Text = Resources.AddProduct_RadioButtonHasExpiry_Text;
+            this.radioButtonHasExpiry.Text = global::AutomechanicsProject.Properties.Resources.AddProduct_RadioButtonHasExpiry_Text;
             // 
             // buttonCancel
             // 
             this.buttonCancel.BackColor = System.Drawing.SystemColors.MenuBar;
             this.buttonCancel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.buttonCancel.Location = new System.Drawing.Point(118, 391);
-            this.buttonCancel.Margin = new System.Windows.Forms.Padding(2);
+            this.buttonCancel.Location = new System.Drawing.Point(177, 611);
             this.buttonCancel.Name = "buttonCancel";
-            this.buttonCancel.Size = new System.Drawing.Size(167, 40);
+            this.buttonCancel.Size = new System.Drawing.Size(250, 62);
             this.buttonCancel.TabIndex = 6;
-            this.buttonCancel.Text = Resources.AddProduct_ButtonCancelText;
+            this.buttonCancel.Text = global::AutomechanicsProject.Properties.Resources.AddProduct_ButtonCancelText;
             this.buttonCancel.UseVisualStyleBackColor = false;
             this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
             // 
             // buttonAdd
             // 
             this.buttonAdd.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.buttonAdd.Location = new System.Drawing.Point(300, 391);
-            this.buttonAdd.Margin = new System.Windows.Forms.Padding(2);
+            this.buttonAdd.Location = new System.Drawing.Point(450, 611);
             this.buttonAdd.Name = "buttonAdd";
-            this.buttonAdd.Size = new System.Drawing.Size(167, 40);
+            this.buttonAdd.Size = new System.Drawing.Size(250, 62);
             this.buttonAdd.TabIndex = 7;
-            this.buttonAdd.Text = Resources.AddProduct_ButtonAddText;
+            this.buttonAdd.Text = global::AutomechanicsProject.Properties.Resources.AddProduct_ButtonAddText;
             this.buttonAdd.UseVisualStyleBackColor = true;
             this.buttonAdd.Click += new System.EventHandler(this.ButtonAdd_Click);
-
             // 
             // AddProduct
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(577, 442);
+            this.ClientSize = new System.Drawing.Size(866, 691);
             this.Controls.Add(this.panelAdd);
-            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "AddProduct";
-            this.Text = Resources.AddProduct_Title; 
+            this.Text = "Добавить товар";
             this.panelAdd.ResumeLayout(false);
             this.panelAdd.PerformLayout();
             this.groupBoxExpiry.ResumeLayout(false);

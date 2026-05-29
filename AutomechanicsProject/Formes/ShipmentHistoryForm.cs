@@ -6,6 +6,7 @@ using System.Linq;
 using System.Windows.Forms;
 using NLog;
 using AutomechanicsProject.Enum;
+using AutomechanicsProject.Services.Interfaces;
 
 namespace AutomechanicsProject.Formes
 {
@@ -14,16 +15,32 @@ namespace AutomechanicsProject.Formes
     /// </summary>
     public partial class ShipmentHistoryForm : Form
     {
-        private readonly DateBase _db;
+        private readonly IShipmentService _shipmentService;
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
+
+        /// <summary>
+        /// Применяет текст из ресурсов к элементам формы
+        /// </summary>
+        private void ApplyLocalization()
+        {
+            Text = Resources.History_Form_Title;
+
+            textBoxHistory.Text = Resources.History_TextBox_Text;
+            labelPeriod.Text = Resources.History_LabelFrom_Text;
+            labelTo.Text = Resources.History_LabelTo_Text;
+            buttonApplyFilter.Text = Resources.History_ButtonApplyFilter_Text;
+        }
 
         /// <summary>
         /// Инициализирует новый экземпляр формы истории отгрузок
         /// </summary>
-        public ShipmentHistoryForm(DateBase database)
+        public ShipmentHistoryForm(IShipmentService shipmentService)
         {
             InitializeComponent();
-            _db = database ?? throw new ArgumentNullException(nameof(database));
+            ApplyLocalization();
+
+
+            _shipmentService = shipmentService ?? throw new ArgumentNullException(nameof(shipmentService));
         }
 
         /// <summary>
@@ -44,8 +61,8 @@ namespace AutomechanicsProject.Formes
         {
             try
             {
-                DateTime startDate = dateTimePickerFrom.Value.Date;
-                DateTime endDate = dateTimePickerTo.Value.Date.AddDays(1).AddSeconds(-1);
+                var startDate = dateTimePickerFrom.Value.Date;
+                var endDate = dateTimePickerTo.Value.Date.AddDays(1).AddSeconds(-1);
 
                 if (startDate > endDate)
                 {
@@ -54,13 +71,7 @@ namespace AutomechanicsProject.Formes
                     return;
                 }
 
-                var shipments = _db.Shipments
-                    .Include(s => s.User)
-                    .Include(s => s.CreatedByUser)
-                    .Include(s => s.Items)
-                    .Where(s => s.Date >= startDate && s.Date <= endDate)
-                    .OrderByDescending(s => s.Date)
-                    .ToList();
+                var shipments = _shipmentService.GetShipmentsForHistory(startDate, endDate);
 
                 if (shipments.Count == 0)
                 {
@@ -164,7 +175,7 @@ namespace AutomechanicsProject.Formes
             }
             catch (Exception ex)
             {
-                logger.Error("Не удалось загрузить историю отгрузок", ex);
+                logger.Error(ex, "Не удалось загрузить историю отгрузок");
                 MessageBox.Show(Resources.ErrorLoadShipmentHistory,
                     Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -273,7 +284,7 @@ namespace AutomechanicsProject.Formes
         {
             if (dataGridViewHistory.Columns[e.ColumnIndex].Name == "Recipient" && e.Value != null)
             {
-                string value = e.Value.ToString();
+                var value = e.Value.ToString();
                 if (value == "Shipment")
                 {
                     e.Value = Resources.ShipmentType_Shipment;

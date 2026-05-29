@@ -45,7 +45,7 @@ namespace AutomechanicsProject.Helpers
             }
             catch (Exception ex)
             {
-                logger.Error("Ошибка сохранения курсов валют", ex);
+                logger.Error(ex, "Ошибка сохранения курсов валют");
             }
         }
 
@@ -77,7 +77,7 @@ namespace AutomechanicsProject.Helpers
             }
             catch (Exception ex)
             {
-                logger.Error("Ошибка загрузки кэша курсов валют", ex);
+                logger.Error(ex, "Ошибка загрузки кэша курсов валют");
             }
             return null;
         }

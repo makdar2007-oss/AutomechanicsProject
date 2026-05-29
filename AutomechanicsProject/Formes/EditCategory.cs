@@ -6,7 +6,10 @@ using NLog;
 using System;
 using System.Linq;
 using System.Windows.Forms;
+using AutomechanicsProject.Services.Interfaces;
+
 namespace AutomechanicsProject.Formes
+
 
 {
     /// <summary>
@@ -14,19 +17,42 @@ namespace AutomechanicsProject.Formes
     /// </summary>
     public partial class EditCategory : Form
     {
-        private readonly DateBase _db;
-        private Category selectedCategory;
+        private readonly ICategoryService _categoryService;
+        private Guid? selectedCategoryId;
+        private string selectedCategoryName;
+        private bool selectedCategoryIsScrapMetal;
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
+
+        /// <summary>
+        /// Применяет текст из ресурсов к элементам формы
+        /// </summary>
+        private void ApplyLocalization()
+        {
+            Text = Resources.EditCategory_Form_Title;
+
+            labelTitle.Text = Resources.EditCategory_LabelTitle_Text;
+            buttonEdit.Text = Resources.EditCategory_ButtonEdit_Text;
+            buttonCancel.Text = Resources.EditCategory_ButtonCancel_Text;
+
+            groupBoxScrapMetal.Text = Resources.Category_GroupBoxScrapMetal_Text;
+            radioButtonScrapYes.Text = Resources.Category_RadioButtonScrapYes_Text;
+            radioButtonScrapNo.Text = Resources.Category_RadioButtonScrapNo_Text;
+        }
 
         /// <summary>
         /// Инициализирует новый экземпляр формы редактирования категории
         /// </summary>
-        public EditCategory(DateBase database)
+        public EditCategory(ICategoryService categoryService)
         {
             InitializeComponent();
-            _db = database ?? throw new ArgumentNullException(nameof(database));
+            ApplyLocalization();
+
+
+            _categoryService = categoryService ?? throw new ArgumentNullException(nameof(categoryService));
 
             TextBoxHelper.SetupWatermarkTextBox(textBoxNewName, Resources.EditCategoryWatermark);
+            groupBoxScrapMetal.Enabled = false;
+            radioButtonScrapNo.Checked = true;
         }
 
         /// <summary>
@@ -40,30 +66,38 @@ namespace AutomechanicsProject.Formes
         /// <summary>
         /// Загружает список категорий для выбора
         /// </summary>
+        
         private void LoadCategories()
         {
             try
             {
-                var categories = _db.Categories
-                    .OrderBy(c => c.Name)
-                    .Select(c => new ComboItemDto
-                    {
-                        Id = c.Id,
-                        Text = string.Format(Resources.CategoryItemFormat, c.Name, _db.Products.Count(p => p.CategoryId == c.Id))
-                    })
-                    .ToList();
+                var categories = _categoryService.GetCategoriesWithProductCountForCombo();
 
                 comboBoxCategory.DataSource = categories;
-                var hasCategories = comboBoxCategory.Items.Count > 0;
+                comboBoxCategory.DisplayMember = "Text";
+                comboBoxCategory.ValueMember = "Id";
+
                 comboBoxCategory.SelectedIndex = -1;
                 textBoxNewName.Text = Resources.EditCategoryWatermark;
-                selectedCategory = null;
+                textBoxNewName.ForeColor = System.Drawing.Color.Gray;
+                textBoxNewName.Enabled = false;
+                buttonEdit.Enabled = false;
+
+                selectedCategoryId = null;
+                selectedCategoryName = null;
+                selectedCategoryIsScrapMetal = false;
+
+                groupBoxScrapMetal.Enabled = false;
+                radioButtonScrapNo.Checked = true;
             }
             catch (Exception ex)
             {
-                logger.Error("Ошибка при загрузке категорий в форму 'Редактирование категории'", ex);
-                MessageBox.Show(Resources.ErrorLoadCategories, Resources.TitleError,
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                logger.Error(ex, "Ошибка при загрузке категорий в форму редактирования категории");
+
+                MessageBox.Show(Resources.ErrorLoadCategories,
+                    Resources.TitleError,
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
         }
         /// <summary>
@@ -74,18 +108,20 @@ namespace AutomechanicsProject.Formes
             if (comboBoxCategory.SelectedItem != null)
             {
                 var selectedItem = (ComboItemDto)comboBoxCategory.SelectedItem;
-                var categoryId = selectedItem.Id;
 
-                selectedCategory = _db.Categories
-                    .FirstOrDefault(c => c.Id == categoryId);
+                selectedCategoryId = selectedItem.Id;
+                selectedCategoryName = _categoryService.GetCategoryNameById(selectedItem.Id);
+                selectedCategoryIsScrapMetal = _categoryService.GetCategoryIsScrapMetalById(selectedItem.Id);
 
-                if (selectedCategory != null)
-                {
-                    textBoxNewName.Text = selectedCategory.Name;
-                    textBoxNewName.ForeColor = System.Drawing.Color.Black;
-                    textBoxNewName.Enabled = true;
-                    buttonEdit.Enabled = true;
-                }
+                textBoxNewName.Text = selectedCategoryName;
+                textBoxNewName.ForeColor = System.Drawing.Color.Black;
+                textBoxNewName.Enabled = true;
+
+                groupBoxScrapMetal.Enabled = true;
+                radioButtonScrapYes.Checked = selectedCategoryIsScrapMetal;
+                radioButtonScrapNo.Checked = !selectedCategoryIsScrapMetal;
+
+                buttonEdit.Enabled = true;
             }
             else
             {
@@ -93,7 +129,13 @@ namespace AutomechanicsProject.Formes
                 textBoxNewName.ForeColor = System.Drawing.Color.Gray;
                 textBoxNewName.Enabled = false;
                 buttonEdit.Enabled = false;
-                selectedCategory = null;
+
+                selectedCategoryId = null;
+                selectedCategoryName = null;
+                selectedCategoryIsScrapMetal = false;
+
+                groupBoxScrapMetal.Enabled = false;
+                radioButtonScrapNo.Checked = true;
             }
         }
 
@@ -102,7 +144,7 @@ namespace AutomechanicsProject.Formes
         /// </summary>
         private void ButtonEdit_Click(object sender, EventArgs e)
         {
-            if (selectedCategory == null)
+            if (!selectedCategoryId.HasValue)
             {
                 MessageBox.Show(Resources.SelectCategoryForEdit, Resources.TitleWarning,
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -118,7 +160,9 @@ namespace AutomechanicsProject.Formes
                 return;
             }
 
-            if (newName == selectedCategory.Name)
+            var isScrapMetal = radioButtonScrapYes.Checked;
+
+            if (newName == selectedCategoryName && isScrapMetal == selectedCategoryIsScrapMetal)
             {
                 MessageBox.Show(Resources.InfoCategoryNameNotChanged, Resources.TitleInformation,
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -127,28 +171,22 @@ namespace AutomechanicsProject.Formes
 
             try
             {
-                var categoryExists = _db.Categories
-                    .Any(c => c.Name == newName && c.Id != selectedCategory.Id);
+                var oldName = selectedCategoryName;
 
-                if (categoryExists)
-                {
-                    MessageBox.Show(Resources.ErrorCategoryExists, Resources.TitleWarning,
-                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-
-                var oldName = selectedCategory.Name;
-                selectedCategory.Name = newName;
-                _db.SaveChanges();
+                _categoryService.EditCategory(selectedCategoryId.Value, newName, isScrapMetal);
 
                 logger.Info($"Категория '{oldName}' переименована в '{newName}'");
+
                 MessageBox.Show(string.Format(Resources.SuccessCategoryRenamed, oldName, newName),
-                    Resources.TitleSuccess, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    Resources.TitleSuccess,
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+
                 LoadCategories();
             }
             catch (Exception ex)
             {
-                logger.Error($"Ошибка при редактировании категории", ex);
+                logger.Error(ex, "Ошибка при редактировании категории");
                 MessageBox.Show(Resources.ErrorEditCategory, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -158,9 +196,10 @@ namespace AutomechanicsProject.Formes
         /// </summary>
         private void ButtonCancel_Click(object sender, EventArgs e)
         {
-            var hasChanges = selectedCategory != null &&
-                             textBoxNewName.Text != selectedCategory.Name &&
-                             textBoxNewName.Text != Resources.EditCategoryWatermark;
+            var hasChanges = selectedCategoryId.HasValue &&
+                 textBoxNewName.Text != Resources.EditCategoryWatermark &&
+                 (textBoxNewName.Text != selectedCategoryName ||
+                  radioButtonScrapYes.Checked != selectedCategoryIsScrapMetal);
 
             if (hasChanges)
             {

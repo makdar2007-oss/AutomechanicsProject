@@ -28,8 +28,7 @@ namespace AutomechanicsProject.Classes
         /// Идентификатор получателя 
         /// </summary>
         [Column("user_id")]
-        public Guid UserId { get; set; }
-
+        public Guid? UserId { get; set; }
         /// <summary>
         /// Идентификатор кладовщика, создавшего отгрузку
         /// </summary>

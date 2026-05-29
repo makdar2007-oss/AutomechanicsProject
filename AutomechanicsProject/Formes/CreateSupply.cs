@@ -1,7 +1,10 @@
 ﻿using AutomechanicsProject.Classes;
 using AutomechanicsProject.Dtos.UI;
+using AutomechanicsProject.Enums;
 using AutomechanicsProject.Helpers;
 using AutomechanicsProject.Properties;
+using AutomechanicsProject.Services;
+using AutomechanicsProject.Services.Interfaces;
 using AutomechanicsProject.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using NLog;
@@ -11,6 +14,9 @@ using System.Drawing;
 using System.Linq;
 using System.Text.Json;
 using System.Windows.Forms;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+
 
 namespace AutomechanicsProject.Formes
 {
@@ -19,7 +25,11 @@ namespace AutomechanicsProject.Formes
     /// </summary>
     public partial class CreateSupply : Form
     {
-        private readonly DateBase _db;
+        private readonly ISupplyService _supplyService;
+        private readonly ICurrentUserService _currentUserService;
+        private readonly IDaDataService _daDataService;
+        private CounterpartyCheckStatus counterpartyStatus;
+        private bool isCounterpartyChecked;
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
         private List<SupplyPosition> positions = new List<SupplyPosition>();
         private string currentCurrency = CurrencyCodes.RUB;
@@ -31,20 +41,64 @@ namespace AutomechanicsProject.Formes
         private List<ProductComboViewModel> allProductsForSearch;
         private SearchableComboBoxHelper.ComboBoxState comboBoxState;
 
-        public CreateSupply(DateBase database)
+        /// <summary>
+        /// Применяет текст из ресурсов к элементам формы
+        /// </summary>
+        private void ApplyLocalization()
+        {
+            Text = Resources.Supply_Form_Title;
+
+            labelSupply.Text = Resources.Supply_LabelTitle_Text;
+            labelProduct.Text = Resources.Supply_LabelProduct_Text;
+            labelQuantity.Text = Resources.Supply_LabelQuantity_Text;
+            labelExpiry.Text = Resources.Supply_LabelExpiry_Text;
+            labelSupplier.Text = Resources.Supply_LabelSupplier_Text;
+            labelCurrency.Text = Resources.Supply_LabelCurrency_Text;
+            labelPrice.Text = Resources.Supply_LabelPrice_Text;
+            labelTotalCaption.Text = Resources.Supply_LabelTotalCaption_Text;
+
+            buttonImport.Text = Resources.Supply_ButtonImport_Text;
+            buttonAddToList.Text = Resources.Supply_ButtonAddToList_Text;
+            buttonCancel.Text = Resources.Supply_ButtonCancel_Text;
+            buttonConfirmSupply.Text = Resources.Supply_ButtonConfirmSupply_Text;
+
+            dataGridViewTextBoxColumn1.HeaderText = Resources.Supply_DataGridView_ColumnArticle;
+            dataGridViewTextBoxColumn2.HeaderText = Resources.Supply_DataGridView_ColumnName;
+            dataGridViewTextBoxColumn3.HeaderText = Resources.Supply_DataGridView_ColumnQuantity;
+            dataGridViewTextBoxColumn4.HeaderText = Resources.Supply_DataGridView_ColumnPrice;
+            dataGridViewTextBoxColumn5.HeaderText = Resources.Supply_DataGridView_ColumnTotal;
+            dataGridViewTextBoxColumn6.HeaderText = Resources.Supply_DataGridView_ColumnSupplier;
+            dataGridViewTextBoxColumn7.HeaderText = Resources.Supply_DataGridView_ColumnExpiry;
+        }
+
+        /// <summary>
+        /// Создает форму поставки
+        /// </summary>
+        public CreateSupply(
+            ISupplyService supplyService,
+            ICurrentUserService currentUserService,
+            IDaDataService daDataService)
         {
             InitializeComponent();
-            _db = database ?? throw new ArgumentNullException(nameof(database));
+            ApplyLocalization();
+
+            _supplyService = supplyService ?? throw new ArgumentNullException(nameof(supplyService));
+            _currentUserService = currentUserService ?? throw new ArgumentNullException(nameof(currentUserService));
+            _daDataService = daDataService ?? throw new ArgumentNullException(nameof(daDataService));
+
+            counterpartyStatus = CounterpartyCheckStatus.Blocked;
+            isCounterpartyChecked = false;
+
             this.Load += new System.EventHandler(this.CreateSupply_Load);
         }
 
         /// <summary>
         /// Обработчик загрузки формы
         /// </summary>
-        private void CreateSupply_Load(object sender, EventArgs e)
+        private async void CreateSupply_Load(object sender, EventArgs e)
         {
             LoadProductsFromDatabase();
-            LoadCurrencies();
+            await LoadCurrenciesAsync();
             LoadSuppliersFromDatabase();
 
             TextBoxHelper.SetupWatermarkTextBox(textBoxQuantity, Resources.SQuantityWatermark);
@@ -52,6 +106,13 @@ namespace AutomechanicsProject.Formes
             TextBoxHelper.SetupWatermarkComboBox(comboBoxProduct, Resources.SProductWatermark);
             TextBoxHelper.SetupWatermarkComboBox(comboBoxSupplier, Resources.SSupplierWatermark);
             TextBoxHelper.SetupWatermarkComboBox(comboBoxCurrency, Resources.SCurrencyWatermark);
+            TextBoxHelper.SetupWatermarkTextBox(textBoxinn, Resources.SupplyInnWatermark);
+            TextBoxHelper.SetupWatermarkComboBox(comboBoxsyppliertipe, Resources.SupplySupplierTypeWatermark);
+
+            LoadSupplierTypes();
+
+            textBoxinn.TextChanged += ResetCounterpartyCheck;
+            comboBoxsyppliertipe.SelectedIndexChanged += ResetCounterpartyCheck;
 
             comboBoxCurrency.SelectedIndexChanged += ComboBoxCurrency_SelectedIndexChanged;
             dataGridViewSupply.DoubleClick += DataGridViewSupply_DoubleClick;
@@ -59,7 +120,90 @@ namespace AutomechanicsProject.Formes
             comboBoxProduct.Text = "";
             comboBoxProduct.SelectedIndex = -1;
         }
+        /// <summary>
+        /// Загружает типы поставщика
+        /// </summary>
+        private void LoadSupplierTypes()
+        {
+            comboBoxsyppliertipe.Items.Clear();
 
+            comboBoxsyppliertipe.Items.Add(Resources.SupplySupplierTypeLegalEntity);
+            comboBoxsyppliertipe.Items.Add(Resources.SupplySupplierTypeOrganization);
+        }
+        /// <summary>
+        /// Сбрасывает результат проверки поставщика
+        /// </summary>
+        private void ResetCounterpartyCheck(object sender, EventArgs e)
+        {
+            isCounterpartyChecked = false;
+            counterpartyStatus = CounterpartyCheckStatus.Blocked;
+        }
+
+        /// <summary>
+        /// Проверяет формат ИНН поставщика
+        /// </summary>
+        private bool ValidateSupplierInn()
+        {
+            var inn = textBoxinn.Text.Trim();
+
+            if (string.IsNullOrWhiteSpace(inn) ||
+                inn == Resources.SupplyInnWatermark)
+            {
+                MessageBox.Show(Resources.ErrorEnterInn,
+                    Resources.TitleWarning,
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
+                return false;
+            }
+
+            if (!Regex.IsMatch(inn, @"^\d+$"))
+            {
+                MessageBox.Show(Resources.ErrorInnDigitsOnly,
+                    Resources.TitleWarning,
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
+                return false;
+            }
+
+            if (comboBoxsyppliertipe.SelectedItem == null ||
+                comboBoxsyppliertipe.Text == Resources.SupplySupplierTypeWatermark)
+            {
+                MessageBox.Show(Resources.ErrorSelectSupplierType,
+                    Resources.TitleWarning,
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
+                return false;
+            }
+
+            var supplierType = comboBoxsyppliertipe.SelectedItem.ToString();
+
+            if (supplierType == Resources.SupplySupplierTypeOrganization &&
+    inn.Length != 10)
+            {
+                MessageBox.Show(Resources.ErrorOrganizationInnLength,
+                    Resources.TitleWarning,
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
+                return false;
+            }
+
+            if (supplierType == Resources.SupplySupplierTypeLegalEntity &&
+                inn.Length != 12)
+            {
+                MessageBox.Show(Resources.ErrorLegalEntityInnLength,
+                    Resources.TitleWarning,
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
+                return false;
+            }
+
+            return true;
+        }
         /// <summary>
         /// Настраивает выпадающий список для поиска по товарам
         /// </summary>
@@ -83,7 +227,7 @@ namespace AutomechanicsProject.Formes
             var product = cachedProducts.FirstOrDefault(p => p.Id == selectedProduct.Id);
             if (product != null)
             {
-                bool productHasExpiryDate = product.HasExpiryDate;
+                var productHasExpiryDate = product.HasExpiryDate;
                 dateTimePickerExpiry.Enabled = productHasExpiryDate;
                 dateTimePickerExpiry.Checked = productHasExpiryDate;
 
@@ -95,9 +239,9 @@ namespace AutomechanicsProject.Formes
         }
 
         /// <summary>
-        /// Загружает список валют из API
+        /// Асинхронно загружает список валют из API
         /// </summary>
-        private void LoadCurrencies()
+        private async Task LoadCurrenciesAsync()
         {
             try
             {
@@ -105,13 +249,16 @@ namespace AutomechanicsProject.Formes
                 comboBoxCurrency.Items.Add(Resources.LoadingCurrencies);
                 comboBoxCurrency.Enabled = false;
 
-                currencies = CurrencyHelper.GetCurrenciesFromApi();
+                currencies = await CurrencyHelper.GetCurrenciesFromApiAsync();
 
                 if (currencies == null || currencies.Count == 0)
                 {
                     currencies = CurrencyHelper.GetFallbackCurrencies();
-                    MessageBox.Show(Resources.WarningCurrencyRatesFallback, Resources.TitleWarning,
-                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+                    MessageBox.Show(Resources.WarningCurrencyRatesFallback,
+                        Resources.TitleWarning,
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
                 }
 
                 comboBoxCurrency.DataSource = currencies;
@@ -121,7 +268,7 @@ namespace AutomechanicsProject.Formes
             }
             catch (Exception ex)
             {
-                logger.Error("Ошибка загрузки валют из API", ex);
+                logger.Error(ex, "Ошибка загрузки валют из API");
 
                 currencies = CurrencyHelper.GetFallbackCurrencies();
 
@@ -130,8 +277,10 @@ namespace AutomechanicsProject.Formes
                 currentCurrency = CurrencyCodes.RUB;
                 currentCurrencyRate = 1.00m;
 
-                MessageBox.Show(Resources.WarningCurrencyRatesFallback, Resources.TitleWarning,
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(Resources.WarningCurrencyRatesFallback,
+                    Resources.TitleWarning,
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
             }
         }
 
@@ -171,7 +320,7 @@ namespace AutomechanicsProject.Formes
             }
             catch (Exception ex)
             {
-                logger.Error("Ошибка при смене валюты", ex);
+                logger.Error(ex, "Ошибка при смене валюты");
             }
         }
 
@@ -191,7 +340,7 @@ namespace AutomechanicsProject.Formes
         /// </summary>
         private void ValidateDecimalInput(object sender, KeyPressEventArgs e)
         {
-            TextBox textBox = sender as TextBox;
+            var textBox = sender as TextBox;
             if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && e.KeyChar != '.' && e.KeyChar != ',')
             {
                 e.Handled = true;
@@ -210,20 +359,7 @@ namespace AutomechanicsProject.Formes
         {
             try
             {
-                cachedProducts = _db.Products
-                    .OrderBy(p => p.Name)
-                    .Select(p => new ProductDisplayItem
-                    {
-                        Id = p.Id,
-                        Article = p.Article,
-                        Name = p.Name,
-                        Balance = p.Balance,
-                        IsActive = p.Balance > 0,
-                        HasExpiryDate = p.HasExpiryDate,
-                        ProductExpiryDate = p.ExpiryDate
-                    })
-                    .AsNoTracking()
-                    .ToList();
+                cachedProducts = _supplyService.GetProductsForSupply();
 
                 allProductsForSearch = cachedProducts
                     .Select(p => new ProductComboViewModel
@@ -231,7 +367,8 @@ namespace AutomechanicsProject.Formes
                         Id = p.Id,
                         Article = p.Article,
                         Name = p.Name,
-                        Text = string.Format(Resources.ComboItemFormat, p.Article, p.Name, p.Balance),                      Balance = p.Balance
+                        Text = string.Format(Resources.ComboItemFormat, p.Article, p.Name, p.Balance),                      
+                        Balance = p.Balance
                     })
                     .ToList();
 
@@ -247,7 +384,7 @@ namespace AutomechanicsProject.Formes
             }
             catch (Exception ex)
             {
-                logger.Error("Ошибка при загрузке товаров из БД", ex);
+                logger.Error(ex, "Ошибка при загрузке товаров из БД");
                 MessageBox.Show(Resources.ErrorLoadProducts, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -260,17 +397,9 @@ namespace AutomechanicsProject.Formes
         {
             try
             {
-                var suppliers = _db.Suppliers
-             .OrderBy(s => s.Name)
-             .Select(s => new ComboItemDto
-             {
-                 Id = s.Id,
-                 Text = s.Name
-             })
-             .AsNoTracking()
-             .ToList();
+                cachedSuppliers = _supplyService.GetSuppliersForCombo();
 
-                cachedSuppliers = suppliers;
+                
 
                 if (cachedSuppliers != null && cachedSuppliers.Count > 0)
                 {
@@ -285,7 +414,7 @@ namespace AutomechanicsProject.Formes
             }
             catch (Exception ex)
             {
-                logger.Error("Ошибка при загрузке поставщиков из БД", ex);
+                logger.Error(ex, "Ошибка при загрузке поставщиков из БД");
                 MessageBox.Show(Resources.ErrorLoadSuppliers, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -296,10 +425,10 @@ namespace AutomechanicsProject.Formes
         /// </summary>
         private bool ValidateInputs()
         {
-            string productPlaceholder = Resources.SProductWatermark;
-            string supplierPlaceholder = Resources.SSupplierWatermark;
-            string quantityPlaceholder = Resources.SQuantityWatermark;
-            string pricePlaceholder = Resources.SProductWatermark;
+            var productPlaceholder = Resources.SProductWatermark;
+            var supplierPlaceholder = Resources.SSupplierWatermark;
+            var quantityPlaceholder = Resources.SQuantityWatermark;
+            var pricePlaceholder = Resources.SPriceWatermark;
 
             if (comboBoxProduct.SelectedItem == null ||
                 comboBoxProduct.Text == productPlaceholder ||
@@ -435,7 +564,7 @@ namespace AutomechanicsProject.Formes
         /// </summary>
         private void UpdateTotalAmount()
         {
-            decimal totalInRUB = positions.Sum(p => p.Quantity * p.Price);
+            var totalInRUB = positions.Sum(p => p.Quantity * p.Price);
 
             if (comboBoxCurrency.SelectedItem != null)
             {
@@ -448,7 +577,7 @@ namespace AutomechanicsProject.Formes
                 }
             }
 
-            labelTotalValue.Text = $"{totalInRUB:N2} RUB";
+            labelTotalValue.Text = $"{totalInRUB:N2} {Resources.CurrencyCode_RUB}";
         }
 
         /// <summary>
@@ -470,9 +599,9 @@ namespace AutomechanicsProject.Formes
             decimal rate = selectedCurrency.Rate;
             string currencyCode = selectedCurrency.Code;
 
-            int maxIndex = Math.Min(dataGridViewSupply.Rows.Count, positions.Count);
+            var maxIndex = Math.Min(dataGridViewSupply.Rows.Count, positions.Count);
 
-            for (int i = 0; i < maxIndex; i++)
+            for (var i = 0; i < maxIndex; i++)
             {
                 try
                 {
@@ -488,7 +617,7 @@ namespace AutomechanicsProject.Formes
                         continue;
                     }
 
-                    decimal displayPrice = CurrencyHelper.ConvertFromRUB(position.Price, rate);
+                    var displayPrice = CurrencyHelper.ConvertFromRUB(position.Price, rate);
 
                     if (row.Cells["colPrice"] != null)
                     {
@@ -535,14 +664,14 @@ namespace AutomechanicsProject.Formes
             var selectedProductDto = (ProductComboViewModel)comboBoxProduct.SelectedItem;
             var selectedItem = cachedProducts.FirstOrDefault(p => p.Id == selectedProductDto.Id);
             var selectedSupplier = (ComboItemDto)comboBoxSupplier.SelectedItem;
-            int quantity = int.Parse(textBoxQuantity.Text);
+            var quantity = int.Parse(textBoxQuantity.Text);
             var priceInSelectedCurrency = decimal.Parse(textBoxPrice.Text.Replace('.', ','));
 
             var selectedCurrency = (CurrencyInfo)comboBoxCurrency.SelectedItem;
-            decimal rate = selectedCurrency.Rate;
-            string currencyCode = selectedCurrency.Code;
+            var rate = selectedCurrency.Rate;
+            var currencyCode = selectedCurrency.Code;
 
-            decimal priceInRUB = CurrencyHelper.ConvertToRUB(priceInSelectedCurrency, rate);
+            var priceInRUB = CurrencyHelper.ConvertToRUB(priceInSelectedCurrency, rate);
 
             DateTime? supplyExpiryDate = null;
 
@@ -566,7 +695,7 @@ namespace AutomechanicsProject.Formes
 
             positions.Add(position);
 
-            decimal displayPrice = CurrencyHelper.ConvertFromRUB(priceInRUB, rate);
+            var displayPrice = CurrencyHelper.ConvertFromRUB(priceInRUB, rate);
 
             dataGridViewSupply.Rows.Add(
                 position.Article,
@@ -610,7 +739,7 @@ namespace AutomechanicsProject.Formes
 
                         if (!string.IsNullOrEmpty(importData.Currency))
                         {
-                            int index = comboBoxCurrency.FindStringExact(importData.Currency);
+                            var index = comboBoxCurrency.FindStringExact(importData.Currency);
                             if (index >= 0)
                             {
                                 comboBoxCurrency.SelectedIndex = index;
@@ -702,7 +831,7 @@ namespace AutomechanicsProject.Formes
                         }
                         UpdateTotalAmount();
 
-                        string warningMessage = notFoundCount > 0
+                        var warningMessage = notFoundCount > 0
                             ? $"\n\n{Resources.ErrorImportNotFound}: {notFoundCount}\n{string.Join(", ", notFoundArticles)}"
                             : "";
 
@@ -713,7 +842,7 @@ namespace AutomechanicsProject.Formes
                     }
                     catch (Exception ex)
                     {
-                        logger.Error("Ошибка при импорте", ex);
+                        logger.Error(ex, "Ошибка при импорте");
                         MessageBox.Show(Resources.ErrorImportFailed,
                             Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
@@ -778,7 +907,38 @@ namespace AutomechanicsProject.Formes
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
+            if (!isCounterpartyChecked)
+            {
+                MessageBox.Show(Resources.ErrorSupplierNotChecked,
+                    Resources.TitleWarning,
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
 
+                return;
+            }
+
+            if (counterpartyStatus == CounterpartyCheckStatus.Blocked)
+            {
+                MessageBox.Show(Resources.ErrorSupplierBlocked,
+                    Resources.TitleError,
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+
+                return;
+            }
+
+            if (counterpartyStatus == CounterpartyCheckStatus.Risk)
+            {
+                var riskResult = MessageBox.Show(Resources.ConfirmSupplierRisk,
+                    Resources.TitleWarning,
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Warning);
+
+                if (riskResult != DialogResult.Yes)
+                {
+                    return;
+                }
+            }
             decimal totalInRUB = positions.Sum(p => p.Quantity * p.Price);
             string displayTotalText;
 
@@ -805,83 +965,31 @@ namespace AutomechanicsProject.Formes
 
                 try
                 {
-                    Supply supply = new Supply
-                    {
-                        Id = Guid.NewGuid(),
-                        OrderNumber = GenerateOrderNumber(),
-                        DateCreated = MoscowTime.Now,
-                        UserId = GetCurrentUserId(),
-                        Status = Resources.SupplyStatusCompleted,
-                        TotalAmount = totalInRUB,
-                        CurrencyCode = currentCurrency,
-                        ExchangeRate = currentCurrencyRate,
-                        RateDate = MoscowTime.Now,
-                    };
 
-                    using (var transaction = _db.Database.BeginTransaction())
-                    {
-                        try
-                        {
-                            _db.Supplies.Add(supply);
-                            _db.SaveChanges();
+                    var supply = _supplyService.CreateSupply(
+                        positions,
+                        GetCurrentUserId(),
+                        currentCurrency,
+                        currentCurrencyRate
+);
 
-                            foreach (var pos in positions)
-                            {
-                                var supplyPosition = new SupplyPosition
-                                {
-                                    Id = Guid.NewGuid(),
-                                    SupplyId = supply.Id,
-                                    ProductId = pos.ProductId,
-                                    Quantity = pos.Quantity,
-                                    Price = pos.Price,
-                                    ProductName = pos.ProductName,
-                                    Article = pos.Article,
-                                    SupplierId = pos.SupplierId,
-                                    SupplierName = pos.SupplierName,
-                                    ExpiryDate = pos.ExpiryDate
-                                };
-                                _db.SupplyPositions.Add(supplyPosition);
-                            }
-                            _db.SaveChanges();
-
-                            foreach (var pos in positions)
-                            {
-                                var product = _db.Products.Find(pos.ProductId);
-                                if (product != null)
-                                {
-                                    product.Balance += pos.Quantity;
-
-                                    product.Price = pos.Price;
-
-                                    if (pos.ExpiryDate.HasValue)
-                                    {
-                                        product.ExpiryDate = pos.ExpiryDate;
-                                    }
-
-                                    product.BatchNumber = string.Format(Resources.BatchNumberFormat, MoscowTime.Now);
-                                }
-                            }
-                            _db.SaveChanges();
-                            transaction.Commit();
-                        }
-                        catch (Exception)
-                        {
-                            transaction.Rollback();
-                            throw;
-                        }
-                    }
-
-                    MessageBox.Show(string.Format(Resources.SuccessSupplyFormat, supply.OrderNumber, supply.DateCreated.ToString("dd.MM.yyyy HH:mm"), positions.Count, displayTotalText),
+                    MessageBox.Show(
+                        string.Format(Resources.SuccessSupplyFormat,
+                            supply.OrderNumber,
+                            supply.DateCreated.ToString("dd.MM.yyyy HH:mm"),
+                            positions.Count,
+                            displayTotalText),
                         Resources.TitleSuccess,
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Information);
+                    WarehouseRefreshNotifier.NotifyWarehouseChanged();
 
                     DialogResult = DialogResult.OK;
                     Close();
                 }
                 catch (Exception ex)
                 {
-                    logger.Error("Ошибка при подтверждении поставки", ex);
+                    logger.Error(ex, "Ошибка при подтверждении поставки");
                     MessageBox.Show(Resources.ErrorSupplyFailed, Resources.TitleError,
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
 
@@ -889,7 +997,7 @@ namespace AutomechanicsProject.Formes
                 finally
                 {
                     buttonConfirmSupply.Enabled = true;
-                    buttonConfirmSupply.Text = Resources.ButtonConfirmSupply;
+                    buttonConfirmSupply.Text = Resources.Supply_ButtonConfirmSupply_Text;
                 }
             }
         }
@@ -902,20 +1010,20 @@ namespace AutomechanicsProject.Formes
             return $"PO-{MoscowTime.Now:yyyyMMddHHmmss}-{new Random().Next(1000, 9999)}";
         }
 
+
+        
         /// <summary>
-        /// Возвращает идентификатор текущего авторизованного пользователя
+        /// Возвращает идентификатор текущего пользователя
         /// </summary>
         private Guid GetCurrentUserId()
         {
-            if (Program.CurrentUser != null && Program.CurrentUser.Id != Guid.Empty)
+            if (_currentUserService.CurrentUser != null &&
+                _currentUserService.CurrentUser.Id != Guid.Empty)
             {
-                return Program.CurrentUser.Id;
+                return _currentUserService.CurrentUser.Id;
             }
 
-            MessageBox.Show(Resources.ErrorUserNotAuthorized, Resources.TitleError,
-                MessageBoxButtons.OK, MessageBoxIcon.Error);
-
-            return Guid.Empty;
+            throw new InvalidOperationException(Resources.CurrentUserNotFound);
         }
 
         /// <summary>
@@ -981,6 +1089,53 @@ namespace AutomechanicsProject.Formes
                     comboBoxCurrency.BackColor = SystemColors.Window;
                 }
                 logger.Info($"Товар '{article} - {productName}' удален из списка поставки");
+            }
+        }
+
+        /// <summary>
+        /// Проверяет поставщика по ИНН
+        /// </summary>
+        private async void buttoncheck_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (!ValidateSupplierInn())
+                {
+                    return;
+                }
+
+                var result = await _daDataService.CheckCounterpartyByInnAsync(textBoxinn.Text.Trim());
+
+                counterpartyStatus = result.Status;
+                isCounterpartyChecked = true;
+
+                var icon = MessageBoxIcon.Information;
+
+                if (result.Status == CounterpartyCheckStatus.Risk)
+                {
+                    icon = MessageBoxIcon.Warning;
+                }
+                else if (result.Status == CounterpartyCheckStatus.Blocked)
+                {
+                    icon = MessageBoxIcon.Error;
+                }
+
+                MessageBox.Show(result.Message + Environment.NewLine + result.Name,
+                    Resources.TitleInformation,
+                    MessageBoxButtons.OK,
+                    icon);
+            }
+            catch (Exception ex)
+            {
+                isCounterpartyChecked = false;
+                counterpartyStatus = CounterpartyCheckStatus.Blocked;
+
+                logger.Error(ex, "Ошибка при проверке ИНН поставщика");
+
+                MessageBox.Show(ex.Message,
+                    Resources.TitleError,
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
         }
     }

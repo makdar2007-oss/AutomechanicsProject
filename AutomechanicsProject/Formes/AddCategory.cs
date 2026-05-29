@@ -1,10 +1,9 @@
-﻿using AutomechanicsProject.Classes;
-using AutomechanicsProject.Helpers;
+﻿using AutomechanicsProject.Helpers;
 using AutomechanicsProject.Properties;
-using System;
-using System.Linq;
-using System.Windows.Forms;
+using AutomechanicsProject.Services.Interfaces;
 using NLog;
+using System;
+using System.Windows.Forms;
 
 namespace AutomechanicsProject.Formes
 {
@@ -13,15 +12,44 @@ namespace AutomechanicsProject.Formes
     /// </summary>
     public partial class AddCategory : Form
     {
-        private readonly DateBase _db;
+        /// <summary>
+        /// Сервис категорий
+        /// </summary>
+        private readonly ICategoryService _categoryService;
+
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-        public AddCategory(DateBase database)
+        /// <summary>
+        /// Применяет текст из ресурсов к элементам формы
+        /// </summary>
+        private void ApplyLocalization()
+        {
+            Text = Resources.AddCategory_Title;
+
+            labelAddCategory.Text = Resources.AddCategory_LabelText;
+            buttonCancel.Text = Resources.AddCategory_ButtonCancelText;
+            buttonAdd.Text = Resources.AddCategory_ButtonAddText;
+
+            groupBoxScrapMetal.Text = Resources.Category_GroupBoxScrapMetal_Text;
+            radioButtonScrapYes.Text = Resources.Category_RadioButtonScrapYes_Text;
+            radioButtonScrapNo.Text = Resources.Category_RadioButtonScrapNo_Text;
+
+            groupBoxScrapMetal.Text = Resources.Category_GroupBoxScrapMetal_Text;
+            radioButtonScrapYes.Text = Resources.Category_RadioButtonScrapYes_Text;
+            radioButtonScrapNo.Text = Resources.Category_RadioButtonScrapNo_Text;
+        }
+
+        /// <summary>
+        /// Конструктор формы
+        /// </summary>
+        public AddCategory(ICategoryService categoryService)
         {
             InitializeComponent();
-            _db = database ?? throw new ArgumentNullException(nameof(database));
-            TextBoxHelper.SetupWatermarkTextBox(textBoxAddCategory, Resources.CategoryAddWatermark);
+            ApplyLocalization();
 
+            _categoryService = categoryService ?? throw new ArgumentNullException(nameof(categoryService));
+
+            TextBoxHelper.SetupWatermarkTextBox(textBoxAddCategory, Resources.CategoryAddWatermark);
         }
 
         /// <summary>
@@ -30,12 +58,13 @@ namespace AutomechanicsProject.Formes
         private void buttonAdd_Click(object sender, EventArgs e)
         {
             var categoryName = GetValidatedCategoryName();
+
             if (categoryName == null)
             {
                 return;
             }
 
-            if (CategoryExists(categoryName))
+            if (_categoryService.CategoryExists(categoryName))
             {
                 MessageBox.Show(Resources.ErrorCategoryExists, Resources.TitleWarning,
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -46,9 +75,9 @@ namespace AutomechanicsProject.Formes
         }
 
         /// <summary>
-        /// Проверяет название категории из текстового поля
+        /// Проверяет название категории
         /// </summary>
-        internal string GetValidatedCategoryName()
+        private string GetValidatedCategoryName()
         {
             if (Validation.IsWatermark(textBoxAddCategory.Text, Resources.CategoryAddWatermark))
             {
@@ -61,30 +90,18 @@ namespace AutomechanicsProject.Formes
         }
 
         /// <summary>
-        /// Проверка на наличие категории с таким же названием
-        /// </summary>
-        internal bool CategoryExists(string categoryName)
-        {
-            return _db.Categories.Any(c => c.Name.ToLower() == categoryName.ToLower());
-        }
-
-        /// <summary>
-        /// Создает и сохраняет новую категорию
+        /// Добавляет новую категорию
         /// </summary>
         private void AddNewCategory(string categoryName)
         {
             try
             {
-                var newCategory = new Category
-                {
-                    Id = Guid.NewGuid(),
-                    Name = categoryName
-                };
+                var isScrapMetal = radioButtonScrapYes.Checked;
 
-                _db.Categories.Add(newCategory);
-                _db.SaveChanges();
+                _categoryService.AddCategory(categoryName, isScrapMetal);
 
                 logger.Info($"Категория '{categoryName}' успешно добавлена");
+
                 MessageBox.Show(string.Format(Resources.SuccessCategoryAdded, categoryName),
                     Resources.TitleSuccess, MessageBoxButtons.OK, MessageBoxIcon.Information);
 
@@ -93,14 +110,15 @@ namespace AutomechanicsProject.Formes
             }
             catch (Exception ex)
             {
-                logger.Error($"Ошибка при добавлении категори '{categoryName}'", ex);
+                logger.Error(ex, $"Ошибка при добавлении категории '{categoryName}'");
+
                 MessageBox.Show(Resources.ErrorAddCategory, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         /// <summary>
-        /// Обработчик нажатия кнопки "Отмена"
+        /// Обработчик кнопки отмены
         /// </summary>
         private void ButtonCancel_Click(object sender, EventArgs e)
         {

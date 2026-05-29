@@ -8,5 +8,14 @@
     <Setting Name="ExchangeRate" Type="System.Decimal" Scope="User">
       <Value Profile="(Default)">1</Value>
     </Setting>
+    <Setting Name="SelectedLanguage" Type="System.String" Scope="User">
+      <Value Profile="(Default)">ru</Value>
+    </Setting>
+    <Setting Name="DaDataApiKey" Type="System.String" Scope="User">
+      <Value Profile="(Default)">200afe796dc0cb21d312fc9ee3dcee6d74f2c1c8</Value>
+    </Setting>
+    <Setting Name="OpenWeatherApiKey" Type="System.String" Scope="User">
+      <Value Profile="(Default)">29cb7689edaed0a5e64ee5f8d2af1134</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

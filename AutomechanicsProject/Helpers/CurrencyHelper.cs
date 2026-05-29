@@ -5,9 +5,13 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace AutomechanicsProject.Helpers
 {
+    /// <summary>
+    /// Помогает работать с валютами и курсами
+    /// </summary>
     public static class CurrencyHelper
     {
         private static Dictionary<string, decimal> _cachedRates;
@@ -15,11 +19,11 @@ namespace AutomechanicsProject.Helpers
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         /// <summary>
-        /// Возвращает список доступных валют
+        /// Асинхронно возвращает список доступных валют
         /// </summary>
-        public static List<CurrencyInfo> GetCurrenciesFromApi()
+        public static async Task<List<CurrencyInfo>> GetCurrenciesFromApiAsync()
         {
-            var rates = GetExchangeRates();
+            var rates = await GetExchangeRatesAsync();
             var currencies = new List<CurrencyInfo>();
 
             foreach (var rate in rates)
@@ -36,9 +40,17 @@ namespace AutomechanicsProject.Helpers
         }
 
         /// <summary>
-        /// Получает курсы валют из API
+        /// Возвращает список доступных валют
         /// </summary>
-        public static Dictionary<string, decimal> GetExchangeRates()
+        public static List<CurrencyInfo> GetCurrenciesFromApi()
+        {
+            return GetCurrenciesFromApiAsync().GetAwaiter().GetResult();
+        }
+
+        /// <summary>
+        /// Асинхронно получает курсы валют из API
+        /// </summary>
+        public static async Task<Dictionary<string, decimal>> GetExchangeRatesAsync()
         {
             if (_cachedRates != null && _isLoaded)
             {
@@ -47,14 +59,15 @@ namespace AutomechanicsProject.Helpers
 
             try
             {
-                using (HttpClient client = new HttpClient())
+                using (var client = new HttpClient())
                 {
                     client.Timeout = TimeSpan.FromSeconds(10);
-                    var response = client.GetAsync("https://open.er-api.com/v6/latest/RUB").Result;
+
+                    var response = await client.GetAsync("https://open.er-api.com/v6/latest/RUB");
 
                     if (response.IsSuccessStatusCode)
                     {
-                        var json = response.Content.ReadAsStringAsync().Result;
+                        var json = await response.Content.ReadAsStringAsync();
                         var data = JsonSerializer.Deserialize<Dictionary<string, object>>(json);
 
                         if (data != null && data.ContainsKey("rates"))
@@ -66,11 +79,12 @@ namespace AutomechanicsProject.Helpers
                             {
                                 if (!rates.ContainsKey(CurrencyCodes.RUB))
                                 {
-                                    rates["RUB"] = 1.00m;
+                                    rates[CurrencyCodes.RUB] = 1.00m;
                                 }
 
                                 _cachedRates = rates;
                                 _isLoaded = true;
+
                                 return rates;
                             }
                         }
@@ -79,10 +93,18 @@ namespace AutomechanicsProject.Helpers
             }
             catch (Exception ex)
             {
-                logger.Error("Ошибка получения валют", ex);
+                logger.Error(ex, "Ошибка получения валют");
             }
 
             return GetFallbackRates();
+        }
+
+        /// <summary>
+        /// Получает курсы валют из API
+        /// </summary>
+        public static Dictionary<string, decimal> GetExchangeRates()
+        {
+            return GetExchangeRatesAsync().GetAwaiter().GetResult();
         }
 
         /// <summary>
@@ -109,19 +131,19 @@ namespace AutomechanicsProject.Helpers
         /// <summary>
         /// Возвращает фиксированный курс
         /// </summary>
-        public  static Dictionary<string, decimal> GetFallbackRates()
+        public static Dictionary<string, decimal> GetFallbackRates()
         {
             return new Dictionary<string, decimal>
-            {
-                { "RUB", 1.00m },
-                { "USD", 0.011m },
-                { "EUR", 0.010m },
-                { "CNY", 0.079m },
-                { "KZT", 4.90m },
-                { "BYN", 0.036m },
-                { "GBP", 0.0087m },
-                { "JPY", 1.63m }
-            };
+    {
+        { "RUB", 1.00m },
+        { "USD", 0.011m },
+        { "EUR", 0.010m },
+        { "CNY", 0.079m },
+        { "KZT", 4.90m },
+        { "BYN", 0.036m },
+        { "GBP", 0.0087m },
+        { "JPY", 1.63m }
+    };
         }
 
         /// <summary>
@@ -131,15 +153,24 @@ namespace AutomechanicsProject.Helpers
         {
             switch (code)
             {
-                case "RUB": return Resources.RussianRuble;
-                case "USD": return Resources.CurrencyUSD;
-                case "EUR": return Resources.CurrencyEUR;
-                case "CNY": return Resources.CurrencyCNY;
-                case "KZT": return Resources.CurrencyRUB;
-                case "BYN": return Resources.CurrencyBYN;
-                case "GBP": return Resources.CurrencyGBP;
-                case "JPY": return Resources.CurrencyJPY;
-                default: return code;
+                case "RUB":
+                    return Resources.RussianRuble;
+                case "USD":
+                    return Resources.CurrencyUSD;
+                case "EUR":
+                    return Resources.CurrencyEUR;
+                case "CNY":
+                    return Resources.CurrencyCNY;
+                case "KZT":
+                    return Resources.CurrencyKZT;
+                case "BYN":
+                    return Resources.CurrencyBYN;
+                case "GBP":
+                    return Resources.CurrencyGBP;
+                case "JPY":
+                    return Resources.CurrencyJPY;
+                default:
+                    return code;
             }
         }
 
@@ -164,7 +195,7 @@ namespace AutomechanicsProject.Helpers
             if (rate == 0)
             {
                 return 0;
-            }    
+            }
 
             return amount * rate;
         }

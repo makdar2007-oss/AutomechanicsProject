@@ -48,21 +48,18 @@ namespace AutomechanicsProject.Formes
             this.panelDelete.Controls.Add(this.comboBoxCategory);
             this.panelDelete.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelDelete.Location = new System.Drawing.Point(0, 0);
-            this.panelDelete.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.panelDelete.Name = "panelDelete";
-            this.panelDelete.Size = new System.Drawing.Size(629, 462);
+            this.panelDelete.Size = new System.Drawing.Size(944, 722);
             this.panelDelete.TabIndex = 0;
-            this.panelDelete.Click += new System.EventHandler(this.ButtonCancel_Click);
             // 
             // buttonDelete
             // 
             this.buttonDelete.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.buttonDelete.Location = new System.Drawing.Point(370, 306);
-            this.buttonDelete.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.buttonDelete.Location = new System.Drawing.Point(555, 478);
             this.buttonDelete.Name = "buttonDelete";
-            this.buttonDelete.Size = new System.Drawing.Size(191, 55);
+            this.buttonDelete.Size = new System.Drawing.Size(286, 86);
             this.buttonDelete.TabIndex = 3;
-            this.buttonDelete.Text = Resources.DeleteCategory_ButtonDelete_Text;
+            this.buttonDelete.Text = global::AutomechanicsProject.Properties.Resources.DeleteCategory_ButtonDelete_Text;
             this.buttonDelete.UseVisualStyleBackColor = true;
             this.buttonDelete.Click += new System.EventHandler(this.ButtonDelete_Click);
             // 
@@ -70,12 +67,11 @@ namespace AutomechanicsProject.Formes
             // 
             this.buttonCancel.BackColor = System.Drawing.SystemColors.MenuBar;
             this.buttonCancel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.buttonCancel.Location = new System.Drawing.Point(39, 306);
-            this.buttonCancel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.buttonCancel.Location = new System.Drawing.Point(58, 478);
             this.buttonCancel.Name = "buttonCancel";
-            this.buttonCancel.Size = new System.Drawing.Size(191, 55);
+            this.buttonCancel.Size = new System.Drawing.Size(286, 86);
             this.buttonCancel.TabIndex = 2;
-            this.buttonCancel.Text = Resources.DeleteCategory_ButtonCancel_Text;
+            this.buttonCancel.Text = global::AutomechanicsProject.Properties.Resources.DeleteCategory_ButtonCancel_Text;
             this.buttonCancel.UseVisualStyleBackColor = false;
             this.buttonCancel.Click += new System.EventHandler(this.ButtonCancel_Click);
             // 
@@ -83,36 +79,33 @@ namespace AutomechanicsProject.Formes
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.875F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label1.Location = new System.Drawing.Point(158, 49);
-            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label1.Location = new System.Drawing.Point(237, 77);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(258, 29);
+            this.label1.Size = new System.Drawing.Size(373, 42);
             this.label1.TabIndex = 1;
-            this.label1.Text = Resources.DeleteCategory_LabelTitle_Text;
+            this.label1.Text = "Удалить категорию";
             // 
             // comboBoxCategory
             // 
             this.comboBoxCategory.BackColor = System.Drawing.SystemColors.MenuBar;
+            this.comboBoxCategory.DisplayMember = "Text";
+            this.comboBoxCategory.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxCategory.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.comboBoxCategory.FormattingEnabled = true;
-            this.comboBoxCategory.Location = new System.Drawing.Point(83, 135);
-            this.comboBoxCategory.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.comboBoxCategory.Location = new System.Drawing.Point(124, 211);
             this.comboBoxCategory.Name = "comboBoxCategory";
-            this.comboBoxCategory.Size = new System.Drawing.Size(407, 33);
+            this.comboBoxCategory.Size = new System.Drawing.Size(608, 45);
             this.comboBoxCategory.TabIndex = 0;
-            this.comboBoxCategory.DropDownStyle = ComboBoxStyle.DropDownList;
-            this.comboBoxCategory.DisplayMember = "Text";
             this.comboBoxCategory.ValueMember = "Id";
             // 
             // DeleteCategory
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(629, 462);
+            this.ClientSize = new System.Drawing.Size(944, 722);
             this.Controls.Add(this.panelDelete);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "DeleteCategory";
-            this.Text = Resources.DeleteCategory_Form_Title;
+            this.Text = "Удалить категорию";
             this.Load += new System.EventHandler(this.DeleteCategory_Load);
             this.panelDelete.ResumeLayout(false);
             this.panelDelete.PerformLayout();

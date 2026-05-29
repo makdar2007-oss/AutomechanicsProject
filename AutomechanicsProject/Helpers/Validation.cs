@@ -59,7 +59,7 @@ public static class Validation
         {
             return false;
         }
-        string pattern = @"^[а-яА-ЯёЁ\s\-]+$";
+        var pattern = @"^[а-яА-ЯёЁ\s\-]+$";
         return Regex.IsMatch(text, pattern);
     }
 
@@ -73,7 +73,7 @@ public static class Validation
             return false;
         }
 
-        string pattern = @"^[a-zA-Z0-9_]+$";
+        var pattern = @"^[a-zA-Z0-9_]+$";
         return Regex.IsMatch(text, pattern);
     }
 
@@ -152,7 +152,7 @@ public static class Validation
 
         if (IsWatermark(surname, surnameWatermark))
         {
-            errorMessage = Resources.  ErrorEnterSurname;
+            errorMessage = Resources.ErrorEnterSurname;
             return false;
         }
         if (!IsValidRussianName(surname))

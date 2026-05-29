@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using AutomechanicsProject.Services.Interfaces;
 
 namespace AutomechanicsProject.Formes
 {
@@ -16,16 +17,34 @@ namespace AutomechanicsProject.Formes
     /// </summary>
     public partial class ReportForm : Form
     {
-        private readonly DateBase _db;
+        private readonly IReportService _reportService;
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
+
+        /// <summary>
+        /// Применяет текст из ресурсов к элементам формы
+        /// </summary>
+        private void ApplyLocalization()
+        {
+            Text = Resources.Report_Form_Title;
+
+            labelTitle.Text = Resources.Report_LabelTitle_Text;
+            labelPeriod.Text = Resources.Report_LabelPeriod_Text;
+            labelFrom.Text = Resources.Report_LabelFrom_Text;
+            labelTo.Text = Resources.Report_LabelTo_Text;
+            labelTotalAmountCaption.Text = Resources.Report_LabelTotalAmount_Text;
+            labelProfitCaption.Text = Resources.Report_LabelProfit_Text;
+            buttonExport.Text = Resources.Report_ButtonExport_Text;
+        }
 
         /// <summary>
         /// Инициализирует новый экземпляр формы отчета
         /// </summary>
-        public ReportForm(DateBase database)
+        public ReportForm(IReportService reportService)
         {
             InitializeComponent();
-            _db = database ?? throw new ArgumentNullException(nameof(database));
+            ApplyLocalization();
+
+            _reportService = reportService ?? throw new ArgumentNullException(nameof(reportService));
         }
 
         /// <summary>
@@ -60,17 +79,11 @@ namespace AutomechanicsProject.Formes
                     return;
                 }
 
-                var shipments = _db.Shipments
-                    .Include(s => s.User)
-                    .Include(s => s.CreatedByUser)
-                    .Include(s => s.Items)
-                    .Where(s => s.Date >= moscowStartDate && s.Date < moscowEndDate).OrderByDescending(s => s.Date)
-                    .ToList();
+                var shipments = _reportService.GetShipments(moscowStartDate, moscowEndDate)
+                     .OrderByDescending(s => s.Date)
+                     .ToList();
 
-                var supplies = _db.Supplies
-                    .Include(s => s.User)
-                    .Include(s => s.Positions)
-                    .Where(s => s.DateCreated >= moscowStartDate && s.DateCreated < moscowEndDate).ToList();
+                var supplies = _reportService.GetSupplies(moscowStartDate, moscowEndDate).ToList();
 
                 if (shipments.Count == 0 && supplies.Count == 0)
                 {
@@ -173,7 +186,7 @@ namespace AutomechanicsProject.Formes
             }
             catch (Exception ex)
             {
-                logger.Error("Ошибка загрузки отчета", ex);
+                logger.Error(ex, "Ошибка загрузки отчета");
                 MessageBox.Show(Resources.ErrorLoadReportFormat,
                     Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -187,7 +200,7 @@ namespace AutomechanicsProject.Formes
             if (dataGridViewReport.Columns.Count == 0) return;
 
             if (dataGridViewReport.Columns["Number"] != null)
-                dataGridViewReport.Columns["Number"].HeaderText = "№";
+                dataGridViewReport.Columns["Number"].HeaderText = Resources.Report_ColumnNumber;
 
             if (dataGridViewReport.Columns["Article"] != null)
                 dataGridViewReport.Columns["Article"].HeaderText = Resources.Report_Article;
@@ -350,7 +363,7 @@ namespace AutomechanicsProject.Formes
             }
             catch (Exception ex)
             {
-                logger.Error("Ошибка загрузки экспортируемого файла", ex);
+                logger.Error(ex, "Ошибка загрузки экспортируемого файла");
                 MessageBox.Show(Resources.ErrorExportToCsvWithMessage,
                     Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }

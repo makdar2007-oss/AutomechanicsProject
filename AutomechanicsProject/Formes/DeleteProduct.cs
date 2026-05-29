@@ -1,12 +1,11 @@
 ﻿using AutomechanicsProject.Classes;
 using AutomechanicsProject.Helpers;
 using AutomechanicsProject.Properties;
-using Microsoft.EntityFrameworkCore;
 using NLog;
 using System;
 using System.Drawing;
-using System.Linq;
 using System.Windows.Forms;
+using AutomechanicsProject.Services.Interfaces;
 
 namespace AutomechanicsProject.Formes
 {
@@ -15,24 +14,43 @@ namespace AutomechanicsProject.Formes
     /// </summary>
     public partial class DeleteProduct : Form
     {
-        private readonly DateBase _db;
+       
+        private readonly IProductService _productService;
         private readonly Guid? _productId;
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         /// <summary>
-        /// Инициализирует форму удаления товара (поиск по артикулу)
+        /// Применяет текст из ресурсов к элементам формы
         /// </summary>
-        public DeleteProduct(DateBase database)
+        private void ApplyLocalization()
+        {
+            Text = Resources.DeleteProduct_Form_Title;
+
+            labelDeleteProduct.Text = Resources.DeleteProduct_LabelTitle_Text;
+            buttonDelete.Text = Resources.DeleteProduct_ButtonDelete_Text;
+            buttonCancel.Text = Resources.DeleteProduct_ButtonCancel_Text;
+        }
+
+        /// <summary>
+        /// Инициализирует форму удаления товара по артикулу
+        /// </summary>
+        public DeleteProduct(IProductService productService)
         {
             InitializeComponent();
-            _db = database ?? throw new ArgumentNullException(nameof(database));
-            TextBoxHelper.SetupWatermarkTextBox(textBoxArt, Resources.DeleteArticleWatermark);
+            ApplyLocalization();
+
+            _productService = productService ??
+                throw new ArgumentNullException(nameof(productService));
+
+            TextBoxHelper.SetupWatermarkTextBox(
+                textBoxArt,
+                Resources.DeleteArticleWatermark);
         }
 
         /// <summary>
         /// Инициализирует форму удаления товара по ID
         /// </summary>
-        public DeleteProduct(DateBase database, Guid id) : this(database)
+        public DeleteProduct(IProductService productService, Guid id) : this(productService)
         {
             _productId = id;
             LoadProductById();
@@ -50,9 +68,7 @@ namespace AutomechanicsProject.Formes
                     return;
                 }
 
-                var product = _db.Products
-                    .Include(p => p.Category)
-                    .FirstOrDefault(p => p.Id == _productId.Value);
+                var product = _productService.GetProductById(_productId.Value);
 
                 if (product != null)
                 {
@@ -64,7 +80,7 @@ namespace AutomechanicsProject.Formes
             }
             catch (Exception ex)
             {
-                logger.Error($"Ошибка при загрузке товара с ID {_productId}", ex);
+                logger.Error(ex, $"Ошибка при загрузке товара с ID {_productId}");
                 MessageBox.Show(Resources.ErrorLoadProduct, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -80,9 +96,7 @@ namespace AutomechanicsProject.Formes
                 return null;
             }
 
-            return _db.Products
-                .Include(p => p.Category)
-                .FirstOrDefault(p => p.Article == article.Trim());
+            return _productService.GetProductByArticle(article);
         }
 
         /// <summary>
@@ -108,20 +122,13 @@ namespace AutomechanicsProject.Formes
                     return;
                 }
 
-                if (HasShipments(product, out int shipmentsCount))
-                {
-                    MessageBox.Show(string.Format(Resources.ErrorProductInShipments, product.Article, shipmentsCount),
-                        Resources.TitleWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
 
                 if (!ConfirmDelete(product))
                 {
                     return;
                 }
 
-                _db.Products.Remove(product);
-                _db.SaveChanges();
+                _productService.DeleteProduct(product.Id);
 
                 logger.Info($"Товар '{product.Article} - {product.Name}' удален");
 
@@ -133,9 +140,12 @@ namespace AutomechanicsProject.Formes
             }
             catch (Exception ex)
             {
-                logger.Error("ошибка при удалении товара", ex);
-                MessageBox.Show(Resources.ErrorDeleteProduct, Resources.TitleError,
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                logger.Error(ex, "Ошибка при удалении товара");
+
+                MessageBox.Show(Resources.ErrorDeleteProduct,
+                    Resources.TitleError,
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
         }
 
@@ -145,7 +155,7 @@ namespace AutomechanicsProject.Formes
         private bool ConfirmDelete(Product product)
         {
             var categoryName = product.Category?.Name ?? Resources.CategoryNone;
-            var unitName = product.Unit?.Name ?? "шт";
+            var unitName = product.Unit?.Name ?? Resources.Unit_Piece_Short;
 
             var result = MessageBox.Show(
                 string.Format(Resources.ConfirmDeleteProduct,
@@ -157,14 +167,7 @@ namespace AutomechanicsProject.Formes
             return result == DialogResult.Yes;
         }
 
-        /// <summary>
-        /// Проверка использования в отгрузках
-        /// </summary>
-        private bool HasShipments(Product product, out int count)
-        {
-            count = _db.ShipmentItems.Count(si => si.ProductId == product.Id);
-            return count > 0;
-        }
+        
 
         /// <summary>
         /// Проверка валидности артикула
@@ -208,9 +211,7 @@ namespace AutomechanicsProject.Formes
         {
             if (_productId.HasValue)
             {
-                return _db.Products
-                    .Include(p => p.Category)
-                    .FirstOrDefault(p => p.Id == _productId.Value);
+                return _productService.GetProductById(_productId.Value);
             }
 
             return FindProductByArticle(textBoxArt.Text);

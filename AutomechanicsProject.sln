@@ -5,7 +5,7 @@ VisualStudioVersion = 17.14.37027.9
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutomechanicsProject", "AutomechanicsProject\AutomechanicsProject.csproj", "{E0B202F7-7AAE-4D6D-BD23-9322566A5EB9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutomechanicsProjectTest", "AutomechanicsProjectTest\AutomechanicsProjectTest.csproj", "{910A7149-0B7A-48E6-854B-1D31FAD8F797}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutomechanicsProject.Test", "AutomechanicsProject.Test\AutomechanicsProject.Test.csproj", "{25BA7997-B743-4E70-848C-9E2EDD91380C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{E0B202F7-7AAE-4D6D-BD23-9322566A5EB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E0B202F7-7AAE-4D6D-BD23-9322566A5EB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E0B202F7-7AAE-4D6D-BD23-9322566A5EB9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{910A7149-0B7A-48E6-854B-1D31FAD8F797}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{910A7149-0B7A-48E6-854B-1D31FAD8F797}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{910A7149-0B7A-48E6-854B-1D31FAD8F797}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{910A7149-0B7A-48E6-854B-1D31FAD8F797}.Release|Any CPU.Build.0 = Release|Any CPU
+		{25BA7997-B743-4E70-848C-9E2EDD91380C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{25BA7997-B743-4E70-848C-9E2EDD91380C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{25BA7997-B743-4E70-848C-9E2EDD91380C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{25BA7997-B743-4E70-848C-9E2EDD91380C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

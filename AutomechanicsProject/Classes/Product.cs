@@ -94,5 +94,11 @@ namespace AutomechanicsProject.Classes
         /// </summary>
         [Column("is_metal")]
         public bool IsMetal { get; set; }
+
+        /// <summary>
+        /// Показывает, удален ли товар из каталога
+        /// </summary>
+        [Column("is_deleted")]
+        public bool IsDeleted { get; set; }
     }
 }

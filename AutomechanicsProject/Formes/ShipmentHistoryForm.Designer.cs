@@ -52,9 +52,8 @@ namespace AutomechanicsProject.Formes
             this.panelHistory.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelHistory.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.panelHistory.Location = new System.Drawing.Point(0, 0);
-            this.panelHistory.Margin = new System.Windows.Forms.Padding(2);
             this.panelHistory.Name = "panelHistory";
-            this.panelHistory.Size = new System.Drawing.Size(836, 547);
+            this.panelHistory.Size = new System.Drawing.Size(1254, 855);
             this.panelHistory.TabIndex = 0;
             // 
             // dataGridViewHistory
@@ -66,8 +65,7 @@ namespace AutomechanicsProject.Formes
             this.dataGridViewHistory.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.dataGridViewHistory.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewHistory.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridViewHistory.Location = new System.Drawing.Point(0, 80);
-            this.dataGridViewHistory.Margin = new System.Windows.Forms.Padding(2);
+            this.dataGridViewHistory.Location = new System.Drawing.Point(0, 126);
             this.dataGridViewHistory.MultiSelect = false;
             this.dataGridViewHistory.Name = "dataGridViewHistory";
             this.dataGridViewHistory.ReadOnly = true;
@@ -75,18 +73,18 @@ namespace AutomechanicsProject.Formes
             this.dataGridViewHistory.RowHeadersWidth = 82;
             this.dataGridViewHistory.RowTemplate.Height = 33;
             this.dataGridViewHistory.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewHistory.Size = new System.Drawing.Size(836, 467);
+            this.dataGridViewHistory.Size = new System.Drawing.Size(1254, 729);
             this.dataGridViewHistory.TabIndex = 1;
             // 
             // tableLayoutPanelTop
             // 
             this.tableLayoutPanelTop.AutoSize = true;
             this.tableLayoutPanelTop.ColumnCount = 6;
-            this.tableLayoutPanelTop.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 57F));
-            this.tableLayoutPanelTop.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 146F));
-            this.tableLayoutPanelTop.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 46F));
-            this.tableLayoutPanelTop.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 159F));
-            this.tableLayoutPanelTop.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 141F));
+            this.tableLayoutPanelTop.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 86F));
+            this.tableLayoutPanelTop.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 219F));
+            this.tableLayoutPanelTop.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 69F));
+            this.tableLayoutPanelTop.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 238F));
+            this.tableLayoutPanelTop.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 212F));
             this.tableLayoutPanelTop.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanelTop.Controls.Add(this.labelPeriod, 0, 0);
             this.tableLayoutPanelTop.Controls.Add(this.dateTimePickerFrom, 1, 0);
@@ -94,13 +92,12 @@ namespace AutomechanicsProject.Formes
             this.tableLayoutPanelTop.Controls.Add(this.buttonApplyFilter, 4, 0);
             this.tableLayoutPanelTop.Controls.Add(this.dateTimePickerTo, 3, 0);
             this.tableLayoutPanelTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.tableLayoutPanelTop.Location = new System.Drawing.Point(0, 38);
-            this.tableLayoutPanelTop.Margin = new System.Windows.Forms.Padding(2);
+            this.tableLayoutPanelTop.Location = new System.Drawing.Point(0, 60);
             this.tableLayoutPanelTop.Name = "tableLayoutPanelTop";
-            this.tableLayoutPanelTop.Padding = new System.Windows.Forms.Padding(7, 3, 7, 3);
+            this.tableLayoutPanelTop.Padding = new System.Windows.Forms.Padding(10, 5, 10, 5);
             this.tableLayoutPanelTop.RowCount = 1;
             this.tableLayoutPanelTop.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanelTop.Size = new System.Drawing.Size(836, 42);
+            this.tableLayoutPanelTop.Size = new System.Drawing.Size(1254, 66);
             this.tableLayoutPanelTop.TabIndex = 2;
             // 
             // labelPeriod
@@ -108,12 +105,11 @@ namespace AutomechanicsProject.Formes
             this.labelPeriod.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.labelPeriod.AutoSize = true;
             this.labelPeriod.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelPeriod.Location = new System.Drawing.Point(44, 11);
-            this.labelPeriod.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.labelPeriod.Location = new System.Drawing.Point(65, 17);
             this.labelPeriod.Name = "labelPeriod";
-            this.labelPeriod.Size = new System.Drawing.Size(18, 20);
+            this.labelPeriod.Size = new System.Drawing.Size(28, 31);
             this.labelPeriod.TabIndex = 0;
-            this.labelPeriod.Text = Resources.History_LabelFrom_Text;
+            this.labelPeriod.Text = "с";
             // 
             // dateTimePickerFrom
             // 
@@ -121,10 +117,9 @@ namespace AutomechanicsProject.Formes
             this.dateTimePickerFrom.CustomFormat = "dd.MM.yyyy";
             this.dateTimePickerFrom.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.dateTimePickerFrom.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dateTimePickerFrom.Location = new System.Drawing.Point(66, 8);
-            this.dateTimePickerFrom.Margin = new System.Windows.Forms.Padding(2);
+            this.dateTimePickerFrom.Location = new System.Drawing.Point(99, 14);
             this.dateTimePickerFrom.Name = "dateTimePickerFrom";
-            this.dateTimePickerFrom.Size = new System.Drawing.Size(141, 26);
+            this.dateTimePickerFrom.Size = new System.Drawing.Size(210, 38);
             this.dateTimePickerFrom.TabIndex = 1;
             // 
             // labelTo
@@ -132,12 +127,11 @@ namespace AutomechanicsProject.Formes
             this.labelTo.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.labelTo.AutoSize = true;
             this.labelTo.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelTo.Location = new System.Drawing.Point(225, 11);
-            this.labelTo.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.labelTo.Location = new System.Drawing.Point(337, 17);
             this.labelTo.Name = "labelTo";
-            this.labelTo.Size = new System.Drawing.Size(29, 20);
+            this.labelTo.Size = new System.Drawing.Size(44, 31);
             this.labelTo.TabIndex = 2;
-            this.labelTo.Text = Resources.History_LabelTo_Text;
+            this.labelTo.Text = "по";
             // 
             // buttonApplyFilter
             // 
@@ -149,12 +143,11 @@ namespace AutomechanicsProject.Formes
             this.buttonApplyFilter.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonApplyFilter.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.buttonApplyFilter.ForeColor = System.Drawing.Color.Black;
-            this.buttonApplyFilter.Location = new System.Drawing.Point(417, 5);
-            this.buttonApplyFilter.Margin = new System.Windows.Forms.Padding(2);
+            this.buttonApplyFilter.Location = new System.Drawing.Point(625, 8);
             this.buttonApplyFilter.Name = "buttonApplyFilter";
-            this.buttonApplyFilter.Size = new System.Drawing.Size(137, 32);
+            this.buttonApplyFilter.Size = new System.Drawing.Size(206, 50);
             this.buttonApplyFilter.TabIndex = 4;
-            this.buttonApplyFilter.Text = Resources.History_ButtonApplyFilter_Text;
+            this.buttonApplyFilter.Text = global::AutomechanicsProject.Properties.Resources.History_ButtonApplyFilter_Text;
             this.buttonApplyFilter.UseVisualStyleBackColor = false;
             this.buttonApplyFilter.Click += new System.EventHandler(this.buttonApplyFilter_Click);
             // 
@@ -164,10 +157,9 @@ namespace AutomechanicsProject.Formes
             this.dateTimePickerTo.CustomFormat = "dd.MM.yyyy";
             this.dateTimePickerTo.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.dateTimePickerTo.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dateTimePickerTo.Location = new System.Drawing.Point(258, 8);
-            this.dateTimePickerTo.Margin = new System.Windows.Forms.Padding(2);
+            this.dateTimePickerTo.Location = new System.Drawing.Point(387, 14);
             this.dateTimePickerTo.Name = "dateTimePickerTo";
-            this.dateTimePickerTo.Size = new System.Drawing.Size(147, 26);
+            this.dateTimePickerTo.Size = new System.Drawing.Size(218, 38);
             this.dateTimePickerTo.TabIndex = 3;
             // 
             // textBoxHistory
@@ -178,25 +170,24 @@ namespace AutomechanicsProject.Formes
             this.textBoxHistory.Font = new System.Drawing.Font("Microsoft Sans Serif", 19.875F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.textBoxHistory.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.textBoxHistory.Location = new System.Drawing.Point(0, 0);
-            this.textBoxHistory.Margin = new System.Windows.Forms.Padding(2);
             this.textBoxHistory.Name = "textBoxHistory";
             this.textBoxHistory.ReadOnly = true;
-            this.textBoxHistory.Size = new System.Drawing.Size(836, 38);
+            this.textBoxHistory.Size = new System.Drawing.Size(1254, 60);
             this.textBoxHistory.TabIndex = 0;
-            this.textBoxHistory.Text = Resources.History_TextBox_Text;
+            this.textBoxHistory.TabStop = false;
+            this.textBoxHistory.Text = "История отгрузок";
             this.textBoxHistory.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // ShipmentHistoryForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(836, 547);
+            this.ClientSize = new System.Drawing.Size(1254, 855);
             this.Controls.Add(this.panelHistory);
-            this.Margin = new System.Windows.Forms.Padding(2);
-            this.MinimumSize = new System.Drawing.Size(539, 401);
+            this.MinimumSize = new System.Drawing.Size(796, 587);
             this.Name = "ShipmentHistoryForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = Resources.History_Form_Title;
+            this.Text = "История отгрузок";
             this.Load += new System.EventHandler(this.ShipmentHistoryForm_Load);
             this.panelHistory.ResumeLayout(false);
             this.panelHistory.PerformLayout();

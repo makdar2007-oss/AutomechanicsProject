@@ -3,6 +3,7 @@ using AutomechanicsProject.Dtos.Service;
 using AutomechanicsProject.Helpers;
 using AutomechanicsProject.Mappers;
 using AutomechanicsProject.Properties;
+using AutomechanicsProject.Services.Interfaces;
 using AutomechanicsProject.Services;
 using Microsoft.EntityFrameworkCore;
 using NLog;
@@ -11,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 
+
 namespace AutomechanicsProject.Formes
 {
     /// <summary>
@@ -18,16 +20,71 @@ namespace AutomechanicsProject.Formes
     /// </summary>
     public partial class StorekeeperForm : Form
     {
-        private readonly DateBase db;
+        private readonly IProductService _productService;
+        private readonly IAuthService _authService;
+        private readonly IShipmentService _shipmentService;
+        private readonly ISupplyService _supplyService;
+        private readonly IExpiredProductsService _expiredProductsService;
+        private readonly ISupplyCurrencyService _supplyCurrencyService;
+        private readonly ICategoryService _categoryService;
+        private readonly IReportService _reportService;
+        private readonly ICurrentUserService _currentUserService;
+        private readonly ICurrencySettingsService _currencySettingsService;
+        private readonly IWarehouseHeatmapService _warehouseHeatmapService;
+        private readonly IDaDataService _daDataService;
+        private readonly IWeatherService _weatherService;
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
+
+
+        /// <summary>
+        /// Применяет текст из ресурсов к элементам формы
+        /// </summary>
+        private void ApplyLocalization()
+        {
+            Text = Resources.StorekeeperForm_Title;
+
+            toolStripTextBoxStorekeeper.Text = Resources.StorekeeperForm_ToolStripStorekeeperText;
+            buttonExit.Text = Resources.Storekeeper_ButtonExitText;
+            buttonSettings.Text = Resources.Storekeeper_ButtonSettingsText;
+            buttonSupply.Text = Resources.Storekeeper_ButtonSupplyText;
+            buttonShipment.Text = Resources.Storekeeper_ButtonShipmentText;
+            buttonWarehouse.Text = Resources.Warehouse_Button;
+        }
 
         /// <summary>
         /// Инициализирует новый экземпляр формы кладовщика
         /// </summary>
-        public StorekeeperForm(DateBase database)
+        public StorekeeperForm(
+             IProductService productService,
+             ICategoryService categoryService,
+             IAuthService authService,
+             IShipmentService shipmentService,
+             ISupplyService supplyService,
+             IReportService reportService,
+             IExpiredProductsService expiredProductsService,
+             ISupplyCurrencyService supplyCurrencyService,
+             ICurrentUserService currentUserService,
+             ICurrencySettingsService currencySettingsService,
+             IWarehouseHeatmapService warehouseHeatmapService,
+            IDaDataService daDataService,
+            IWeatherService weatherService)
         {
             InitializeComponent();
-            db = database ?? throw new ArgumentNullException(nameof(database));
+            ApplyLocalization();
+
+            _productService = productService ?? throw new ArgumentNullException(nameof(productService));
+            _authService = authService ?? throw new ArgumentNullException(nameof(authService));
+            _shipmentService = shipmentService ?? throw new ArgumentNullException(nameof(shipmentService));
+            _supplyService = supplyService ?? throw new ArgumentNullException(nameof(supplyService));
+            _expiredProductsService = expiredProductsService ?? throw new ArgumentNullException(nameof(expiredProductsService));
+            _supplyCurrencyService = supplyCurrencyService ?? throw new ArgumentNullException(nameof(supplyCurrencyService));
+            _categoryService = categoryService ?? throw new ArgumentNullException(nameof(categoryService));
+            _reportService = reportService ?? throw new ArgumentNullException(nameof(reportService));
+            _currentUserService = currentUserService ?? throw new ArgumentNullException(nameof(currentUserService));
+            _currencySettingsService = currencySettingsService ?? throw new ArgumentNullException(nameof(currencySettingsService));
+            _warehouseHeatmapService = warehouseHeatmapService ?? throw new ArgumentNullException(nameof(warehouseHeatmapService));
+            _daDataService = daDataService ?? throw new ArgumentNullException(nameof(daDataService));
+            _weatherService = weatherService ?? throw new ArgumentNullException(nameof(weatherService));
             AutoWriteOffExpiredProducts();
 
             TextBoxHelper.SetupWatermarkTextBox(textBoxSearch, Resources.SearchWatermark);
@@ -65,8 +122,8 @@ namespace AutomechanicsProject.Formes
                     {
                         if (expiryDate.Value <= today)
                         {
-                            row.DefaultCellStyle.BackColor = System.Drawing.Color.DarkRed;
-                            row.DefaultCellStyle.ForeColor = System.Drawing.Color.White;
+                            row.DefaultCellStyle.BackColor = System.Drawing.Color.Coral;
+                            row.DefaultCellStyle.ForeColor = System.Drawing.Color.Black;
                         }
                         else if ((expiryDate.Value - today).Days <= 30)
                         {
@@ -76,7 +133,7 @@ namespace AutomechanicsProject.Formes
                 }
                 catch (Exception ex)
                 {
-                    logger.Error("Ошибка при подсветке строки", ex);
+                    logger.Error(ex,"Ошибка при подсветке строки");
                 }
             }
         }
@@ -88,7 +145,7 @@ namespace AutomechanicsProject.Formes
         {
             try
             {
-                var count = ExpiredProductsService.AutoWriteOffExpiredProducts(db);
+                var count = _expiredProductsService.AutoWriteOffExpiredProducts();
 
                 if (count > 0)
                 {
@@ -108,31 +165,44 @@ namespace AutomechanicsProject.Formes
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
 
-                logger.Error("Ошибка при списании товаров с истекшим сроком годности", ex);
+                logger.Error(ex,"Ошибка при списании товаров с истекшим сроком годности");
             }
         }
 
         /// <summary>
-        /// Обработчик нажатия кнопки "Выбор валюты"
+        /// Открывает форму настроек
         /// </summary>
-        private void ButtonCurrency_Click(object sender, EventArgs e)
+        private void ButtonSettings_Click(object sender, EventArgs e)
         {
             try
             {
-                using (var currencyForm = new ChoosingCurrency())
+                var oldSearchWatermark = Resources.SearchWatermark;
+
+                using (var settingsForm = new FormSettings(_currencySettingsService))
                 {
-                    if (currencyForm.ShowDialog() == DialogResult.OK)
+                    if (settingsForm.ShowDialog() == DialogResult.OK)
                     {
+                        ApplyLocalization();
+
+                        if (textBoxSearch.Text == oldSearchWatermark)
+                        {
+                            textBoxSearch.Text = Resources.SearchWatermark;
+                        }
+
                         RefreshProductList();
-                        logger.Info("Валюта изменена");
+
+                        logger.Info("Настройки изменены");
                     }
                 }
             }
             catch (Exception ex)
             {
-                logger.Error("Ошибка при открытии формы выбора валюты", ex);
-                MessageBox.Show(Resources.ErrorOpenCurrencyForm, Resources.TitleError,
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                logger.Error(ex, "Ошибка при открытии формы настроек");
+
+                MessageBox.Show(Resources.ErrorOpenSettingsForm,
+                    Resources.TitleError,
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
         }
 
@@ -143,7 +213,7 @@ namespace AutomechanicsProject.Formes
         {
             try
             {
-                using (var shipmentForm = new CreateShipment(db))
+                using (var shipmentForm = new CreateShipment(_shipmentService, _currentUserService, _daDataService, _weatherService))
                 {
                     if (shipmentForm.ShowDialog() == DialogResult.OK)
                     {
@@ -154,9 +224,12 @@ namespace AutomechanicsProject.Formes
             }
             catch (Exception ex)
             {
-                logger.Error("Ошибка при открытии формы отгрузки", ex);
-                MessageBox.Show(Resources.ErrorOpenShipmentForm, Resources.TitleError,
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                logger.Error(ex, "Ошибка при открытии формы отгрузки");
+
+                MessageBox.Show(Resources.ErrorOpenShipmentForm,
+                    Resources.TitleError,
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
         }
 
@@ -167,20 +240,30 @@ namespace AutomechanicsProject.Formes
         {
             try
             {
-                ChoosingCurrency.SelectedCurrencyCode = CurrencyCodes.RUB;
-                ChoosingCurrency.CurrentExchangeRate = 1m;
-                ChoosingCurrency.SelectedCurrencyName = Resources.RussianRuble;
+                _currencySettingsService.ResetToRub();
                 logger.Info("Пользователь вышел из системы, валюта сброшена");
 
                 Close();
-
-                var loginForm = new Autorization(db);
+                var loginForm = new Autorization(
+                    _authService,
+                    _productService,
+                    _categoryService,
+                    _supplyService,
+                    _reportService,
+                    _shipmentService,
+                    _expiredProductsService,
+                    _supplyCurrencyService,
+                    _currentUserService,
+                    _currencySettingsService,
+                    _warehouseHeatmapService,
+                    _daDataService,
+                    _weatherService);
                 loginForm.ShowDialog();
-                
+
             }
             catch (Exception ex)
             {
-                logger.Error("Ошибка при выходе из системы", ex);
+                logger.Error(ex, "Ошибка при выходе из системы");
                 MessageBox.Show(Resources.ErrorLogout, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -203,12 +286,8 @@ namespace AutomechanicsProject.Formes
             {
                 var today = MoscowTime.Today;
 
-                var products = db.Products
-                    .AsNoTracking()
-                    .Include(p => p.Category)
-                    .Include(p => p.Unit)
-                    .Where(p => p.Balance > 0)
-                    .ToList();
+                var products = _productService.GetAllProducts();
+
 
                 var productList = new List<ProductListItemDto>();
 
@@ -257,9 +336,12 @@ namespace AutomechanicsProject.Formes
             }
             catch (Exception ex)
             {
-                logger.Error("Ошибка при загрузке товаров", ex);
-                MessageBox.Show(Resources.ErrorLoadProductsList, Resources.TitleError,
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                logger.Error(ex, "Ошибка при загрузке товаров");
+
+                MessageBox.Show(Resources.ErrorLoadProducts,
+                    Resources.TitleError,
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
         }
 
@@ -268,7 +350,7 @@ namespace AutomechanicsProject.Formes
         /// </summary>
         private decimal CalculateProductPrice(ProductListItemDto product)
         {
-            decimal priceInRub = product.PurchasePrice;
+            var priceInRub = product.PurchasePrice;
 
             if (product.ExpiryDate.HasValue &&
                 product.ExpiryDate.Value.Date >= MoscowTime.Today &&
@@ -277,7 +359,7 @@ namespace AutomechanicsProject.Formes
                 priceInRub = priceInRub * 0.9m;
             }
 
-            return ChoosingCurrency.ConvertPrice(priceInRub);
+            return _currencySettingsService.ConvertPrice(priceInRub);
         }
 
         /// <summary>
@@ -285,30 +367,30 @@ namespace AutomechanicsProject.Formes
         /// </summary>
         private decimal GetPurchasePriceBySupplyRate(Guid productId, decimal priceInRub)
         {
-            if (ChoosingCurrency.SelectedCurrencyCode == CurrencyCodes.RUB)
+            if (_currencySettingsService.SelectedCurrencyCode == CurrencyCodes.RUB)
             {
                 return priceInRub;
-            }    
+            }
 
             try
             {
-                var (supplyCurrency, supplyRate, _) = SupplyCurrencyService.GetProductCurrency(productId, db);
+                var (supplyCurrency, supplyRate, _) = _supplyCurrencyService.GetProductCurrency(productId);
 
                 if (supplyCurrency != CurrencyCodes.RUB && supplyRate != 1.00m)
                 {
-                    decimal priceInSupplyCurrency = priceInRub * supplyRate;
+                    var priceInSupplyCurrency = priceInRub * supplyRate;
 
-                    decimal priceInRubAgain = priceInSupplyCurrency / supplyRate;
+                    var priceInRubAgain = priceInSupplyCurrency / supplyRate;
 
-                    return ChoosingCurrency.ConvertPrice(priceInRubAgain);
+                    return _currencySettingsService.ConvertPrice(priceInRubAgain);
                 }
 
-                return ChoosingCurrency.ConvertPrice(priceInRub);
+                return _currencySettingsService.ConvertPrice(priceInRub);
             }
             catch (Exception ex)
             {
                 logger.Error($"Ошибка конвертации цены для товара {productId}", ex);
-                return ChoosingCurrency.ConvertPrice(priceInRub);
+                return _currencySettingsService.ConvertPrice(priceInRub);
             }
         }
 
@@ -333,7 +415,7 @@ namespace AutomechanicsProject.Formes
 
             if (dataGridViewStore.Columns["Article"] != null)
             {
-                dataGridViewStore.Columns["Article"].HeaderText = Resources.ColumnArticle ;
+                dataGridViewStore.Columns["Article"].HeaderText = Resources.ColumnArticle;
             }
 
             if (dataGridViewStore.Columns["Name"] != null)
@@ -355,10 +437,10 @@ namespace AutomechanicsProject.Formes
             {
                 dataGridViewStore.Columns["ExpiryDate"].HeaderText = Resources.ColumnExpiryDate;
             }
-            
+
             if (dataGridViewStore.Columns["PurchasePrice"] != null)
             {
-                dataGridViewStore.Columns["PurchasePrice"].HeaderText = string.Format(Resources.ColumnPurchasePriceFormat, ChoosingCurrency.SelectedCurrencyCode);
+                dataGridViewStore.Columns["PurchasePrice"].HeaderText = string.Format(Resources.ColumnPurchasePriceFormat, _currencySettingsService.SelectedCurrencyCode);
             }
 
             if (dataGridViewStore.Columns["Price"] != null)
@@ -455,7 +537,7 @@ namespace AutomechanicsProject.Formes
             catch (Exception ex)
             {
                 toolStripTextBoxStorekeeper.Text = Resources.StatusError;
-                logger.Error("Ошибка при загрузке формы кладовщика", ex);
+                logger.Error(ex,"Ошибка при загрузке формы кладовщика");
             }
         }
 
@@ -464,7 +546,7 @@ namespace AutomechanicsProject.Formes
         /// </summary>
         private void buttonSupply_Click_1(object sender, EventArgs e)
         {
-            using (CreateSupply supplyForm = new CreateSupply(db))
+            using (CreateSupply supplyForm = new CreateSupply(_supplyService, _currentUserService, _daDataService))
             {
                 if (supplyForm.ShowDialog() == DialogResult.OK)
                 {
@@ -472,6 +554,7 @@ namespace AutomechanicsProject.Formes
                 }
             }
         }
+        
 
         /// <summary>
         /// Показывает информацию о курсе при наведении на ячейку "ЦенаЗакупки"
@@ -480,17 +563,17 @@ namespace AutomechanicsProject.Formes
         {
             if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
             {
-                string columnName = dataGridViewStore.Columns[e.ColumnIndex].Name;
+                var columnName = dataGridViewStore.Columns[e.ColumnIndex].Name;
 
-                if (columnName == "Price") 
+                if (columnName == "Price")
                 {
                     var article = dataGridViewStore.Rows[e.RowIndex].Cells["Article"]?.Value?.ToString();
                     if (!string.IsNullOrEmpty(article))
                     {
-                        var product = db.Products.FirstOrDefault(p => p.Article == article);
+                        var product = _productService.GetProductByArticle(article);
                         if (product != null)
                         {
-                            var tooltipText = SupplyCurrencyService.GetTooltipText(product.Id, product.Name, db);
+                            var tooltipText = _supplyCurrencyService.GetTooltipText(product.Id, product.Name);
                             dataGridViewStore.Rows[e.RowIndex].Cells[e.ColumnIndex].ToolTipText = tooltipText;
                         }
                     }
@@ -510,6 +593,16 @@ namespace AutomechanicsProject.Formes
             {
                 dataGridViewStore.Rows[e.RowIndex].Cells[e.ColumnIndex].ToolTipText = null;
             }
-        } 
+        }
+        /// <summary>
+        /// Открывает тепловую карту склада
+        /// </summary>
+        private void ButtonWarehouse_Click(object sender, EventArgs e)
+        {
+            using (var warehouseForm = new WarehouseHeatmapForm(_warehouseHeatmapService))
+            {
+                warehouseForm.ShowDialog();
+            }
+        }
     }
 }

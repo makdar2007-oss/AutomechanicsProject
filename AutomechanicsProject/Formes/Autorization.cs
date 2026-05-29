@@ -2,11 +2,10 @@
 using AutomechanicsProject.Formes;
 using AutomechanicsProject.Helpers;
 using AutomechanicsProject.Properties;
-using Microsoft.EntityFrameworkCore;
+using AutomechanicsProject.Services;
+using AutomechanicsProject.Services.Interfaces;
 using NLog;
 using System;
-using System.Drawing;
-using System.Linq;
 using System.Windows.Forms;
 
 namespace AutomechanicsProject
@@ -16,22 +15,80 @@ namespace AutomechanicsProject
     /// </summary>
     public partial class Autorization : Form
     {
-        private readonly DateBase _db;
+        /// <summary>
+        /// Сервис авторизации
+        /// </summary>
+        private readonly IAuthService _authService;
+        private readonly IProductService _productService;
+        private readonly ICategoryService _categoryService;
+        private readonly ISupplyService _supplyService;
+        private readonly IReportService _reportService;
+        private readonly IShipmentService _shipmentService;
+        private readonly IExpiredProductsService _expiredProductsService;
+        private readonly ISupplyCurrencyService _supplyCurrencyService;
+        private readonly ICurrentUserService _currentUserService;
+        private readonly ICurrencySettingsService _currencySettingsService;
+        private readonly IWarehouseHeatmapService _warehouseHeatmapService;
+        private readonly IDaDataService _daDataService;
+        private readonly IWeatherService _weatherService;
+
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         /// <summary>
-        /// Инициализирует новый экземпляр формы авторизации
+        /// Применяет текст из ресурсов к элементам формы
         /// </summary>
-        public Autorization(DateBase database)
+        private void ApplyLocalization()
+        {
+            Text = Resources.Auth_Form_Title;
+
+            labelEnter.Text = Resources.Auth_LabelEnter_Text;
+            labelLogin.Text = Resources.Auth_LabelLogin_Text;
+            labelPassword.Text = Resources.Auth_LabelPassword_Text;
+            buttonEnter.Text = Resources.Auth_ButtonEnter_Text;
+            buttonRegest.Text = Resources.Auth_ButtonRegister_Text;
+        }
+
+        /// <summary>
+        /// Конструктор
+        /// </summary>
+        public Autorization(
+             IAuthService authService,
+             IProductService productService,
+             ICategoryService categoryService,
+             ISupplyService supplyService,
+             IReportService reportService,
+             IShipmentService shipmentService,
+             IExpiredProductsService expiredProductsService,
+             ISupplyCurrencyService supplyCurrencyService,
+             ICurrentUserService currentUserService,
+             ICurrencySettingsService currencySettingsService,
+             IWarehouseHeatmapService warehouseHeatmapService,
+             IDaDataService daDataService,
+             IWeatherService weatherService)
         {
             InitializeComponent();
-            _db = database ?? throw new ArgumentNullException(nameof(database));
+            ApplyLocalization();
+
+            _authService = authService ?? throw new ArgumentNullException(nameof(authService));
+            _productService = productService ?? throw new ArgumentNullException(nameof(productService));
+            _categoryService = categoryService ?? throw new ArgumentNullException(nameof(categoryService));
+            _supplyService = supplyService ?? throw new ArgumentNullException(nameof(supplyService));
+            _reportService = reportService ?? throw new ArgumentNullException(nameof(reportService));
+            _shipmentService = shipmentService ?? throw new ArgumentNullException(nameof(shipmentService));
+            _expiredProductsService = expiredProductsService ?? throw new ArgumentNullException(nameof(expiredProductsService));
+            _supplyCurrencyService = supplyCurrencyService ?? throw new ArgumentNullException(nameof(supplyCurrencyService));
+            _currentUserService = currentUserService ?? throw new ArgumentNullException(nameof(currentUserService));
+            _currencySettingsService = currencySettingsService ?? throw new ArgumentNullException(nameof(currencySettingsService));
+            _warehouseHeatmapService = warehouseHeatmapService ?? throw new ArgumentNullException(nameof(warehouseHeatmapService));
+            _daDataService = daDataService ?? throw new ArgumentNullException(nameof(daDataService));
+            _weatherService = weatherService ?? throw new ArgumentNullException(nameof(weatherService));
+
             TextBoxHelper.SetupWatermarkTextBox(textBoxLogin, Resources.AuthLoginWatermark);
             TextBoxHelper.SetupPasswordTextBox(textBoxPassword, Resources.AuthPasswordWatermark);
         }
 
         /// <summary>
-        /// Обработчик нажатия клавиш в текстовых полях
+        /// Нажатие Enter
         /// </summary>
         private void TextBox_KeyDown(object sender, KeyEventArgs e)
         {
@@ -43,17 +100,30 @@ namespace AutomechanicsProject
         }
 
         /// <summary>
-        /// Обработчик перехода на форму регистрации
+        /// Переход на регистрацию
         /// </summary>
         private void linkRegisterClick(object sender, EventArgs e)
         {
-            new Registration(_db).Show();
+            var form = new Registration(
+                _authService,
+                _productService,
+                _categoryService,
+                _supplyService,
+                _reportService,
+                _shipmentService,
+                _expiredProductsService,
+                _supplyCurrencyService,
+                _currentUserService,
+                _currencySettingsService,
+                _warehouseHeatmapService,
+                _daDataService,
+                _weatherService);
+            form.Show();
             Hide();
         }
 
         /// <summary>
-        /// Обработчик нажатия кнопки "Войти"
-        /// Выполняет аутентификацию пользователя и открывает соответствующую главную форму
+        /// Нажатие кнопки "Войти"
         /// </summary>
         private void BtnLoginClick(object sender, EventArgs e)
         {
@@ -77,9 +147,7 @@ namespace AutomechanicsProject
 
             try
             {
-                var user = _db.Users
-                    .Include(u => u.Role)
-                    .FirstOrDefault(u => u.Login == textBoxLogin.Text);
+                var user = _authService.Login(textBoxLogin.Text, textBoxPassword.Text);
 
                 if (user == null)
                 {
@@ -90,62 +158,65 @@ namespace AutomechanicsProject
                     return;
                 }
 
-                bool isValid;
+                _currentUserService.SetCurrentUser(user);
 
-                if (user.Password.StartsWith("$2"))
-                {
-                    isValid = PasswordHelper.VerifyPassword(textBoxPassword.Text, user.Password);
-                }
-                else
-                {
-                    isValid = textBoxPassword.Text == user.Password;
-
-                    if (isValid)
-                    {
-                        user.Password = PasswordHelper.HashPassword(textBoxPassword.Text);
-                        _db.SaveChanges();
-                        logger.Info($"Пароль для пользователя {user.Login} был хеширован");
-                    }
-                }
-
-                if (!isValid)
-                {
-                    Validation.HighlightError(textBoxPassword, true);
-
-                    MessageBox.Show(Resources.ErrorAuthInvalid, Resources.TitleWarning,
-                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-
-                Program.CurrentUser = user;
                 OpenMainForm(user);
             }
             catch (Exception ex)
             {
-                FormHelper.HandleException("Ошибка авторизации", ex);
+                FormHelper.HandleException(Resources.ErrorAuthorization, ex);
             }
         }
 
         /// <summary>
-        /// Открывает главную форму в зависимости от роли пользователя
+        /// Открывает главную форму
         /// </summary>
         private void OpenMainForm(Users user)
         {
             Form nextForm = null;
+
             if (user.Role != null)
             {
                 switch (user.Role.Type)
                 {
                     case RoleType.Administrator:
-                        nextForm = new AdminForm(_db);
+                        nextForm = new AdminForm(
+                            _productService,
+                            _categoryService,
+                            _authService,
+                            _supplyService,
+                            _reportService,
+                            _shipmentService,
+                            _expiredProductsService,
+                            _supplyCurrencyService,
+                            _currentUserService,
+                            _currencySettingsService,
+                            _warehouseHeatmapService,
+                            _daDataService,
+                            _weatherService);
                         logger.Info("Открыта форма администратора для {0}", user.FullName);
                         break;
+
                     case RoleType.Storekeeper:
-                            nextForm = new StorekeeperForm(_db);
+                        nextForm = new StorekeeperForm(
+                            _productService,
+                            _categoryService,
+                            _authService,
+                            _shipmentService,
+                            _supplyService,
+                            _reportService,
+                            _expiredProductsService,
+                            _supplyCurrencyService,
+                            _currentUserService,
+                            _currencySettingsService,
+                            _warehouseHeatmapService,
+                            _daDataService,
+                            _weatherService);
                         logger.Info("Открыта форма кладовщика для {0}", user.FullName);
                         break;
                 }
             }
+
             if (nextForm != null)
             {
                 nextForm.Show();
@@ -155,8 +226,11 @@ namespace AutomechanicsProject
             {
                 MessageBox.Show(Resources.ErrorNoAccess, Resources.TitleError,
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
-                logger.Warn($"Пользователь {user.FullName} не имеет назначенной роли");
+
+                logger.Warn($"Пользователь {user.FullName} не имеет роли");
             }
         }
+
+        
     }
 }

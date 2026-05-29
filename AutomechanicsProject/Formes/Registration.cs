@@ -1,6 +1,8 @@
 ﻿using AutomechanicsProject.Classes;
 using AutomechanicsProject.Helpers;
 using AutomechanicsProject.Properties;
+using AutomechanicsProject.Services;
+using AutomechanicsProject.Services.Interfaces;
 using NLog;
 using System;
 using System.Drawing;
@@ -15,16 +17,75 @@ namespace AutomechanicsProject.Formes
     /// </summary>
     public partial class Registration : Form
     {
-        private readonly DateBase _db;
+        private readonly IAuthService _authService;
+        private readonly IProductService _productService;
+        private readonly ICategoryService _categoryService;
+        private readonly ISupplyService _supplyService;
+        private readonly IReportService _reportService;
+        private readonly IShipmentService _shipmentService;
+        private readonly IExpiredProductsService _expiredProductsService;
+        private readonly ISupplyCurrencyService _supplyCurrencyService;
+        private readonly ICurrentUserService _currentUserService;
+        private readonly ICurrencySettingsService _currencySettingsService;
+        private readonly IWarehouseHeatmapService _warehouseHeatmapService;
+        private readonly IDaDataService _daDataService;
+        private readonly IWeatherService _weatherService;
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
+
+
+        /// <summary>
+        /// Применяет текст из ресурсов к элементам формы
+        /// </summary>
+        private void ApplyLocalization()
+        {
+            Text = Resources.Registration_Form_Title;
+
+            labelRegistration.Text = Resources.Registration_LabelTitle_Text;
+            labelSurname.Text = Resources.Registration_LabelSurname_Text;
+            labelName.Text = Resources.Registration_LabelName_Text;
+            labelLastname.Text = Resources.Registration_LabelLastname_Text;
+            labelLogin.Text = Resources.Registration_LabelLogin_Text;
+            labelPassword.Text = Resources.Registration_LabelPassword_Text;
+            labelAgreePassword.Text = Resources.Registration_LabelConfirmPassword_Text;
+
+            buttonRegistration.Text = Resources.Registration_ButtonRegister_Text;
+            buttonEnter.Text = Resources.Registration_ButtonEnter_Text;
+        }
 
         /// <summary>
         /// Инициализирует новый экземпляр формы регистрации
         /// </summary>
-        public Registration(DateBase database)
+        public Registration(
+            IAuthService authService,
+            IProductService productService,
+            ICategoryService categoryService,
+            ISupplyService supplyService,
+            IReportService reportService,
+            IShipmentService shipmentService,
+            IExpiredProductsService expiredProductsService,
+            ISupplyCurrencyService supplyCurrencyService,
+            ICurrentUserService currentUserService,
+            ICurrencySettingsService currencySettingsService,
+            IWarehouseHeatmapService warehouseHeatmapService,
+            IDaDataService daDataService,
+            IWeatherService weatherService)
         {
             InitializeComponent();
-            _db = database ?? throw new ArgumentNullException(nameof(database));
+            ApplyLocalization();
+
+            _authService = authService ?? throw new ArgumentNullException(nameof(authService));
+            _productService = productService ?? throw new ArgumentNullException(nameof(productService));
+            _categoryService = categoryService ?? throw new ArgumentNullException(nameof(categoryService));
+            _supplyService = supplyService ?? throw new ArgumentNullException(nameof(supplyService));
+            _reportService = reportService ?? throw new ArgumentNullException(nameof(reportService));
+            _shipmentService = shipmentService ?? throw new ArgumentNullException(nameof(shipmentService));
+            _expiredProductsService = expiredProductsService ?? throw new ArgumentNullException(nameof(expiredProductsService));
+            _supplyCurrencyService = supplyCurrencyService ?? throw new ArgumentNullException(nameof(supplyCurrencyService));
+            _currentUserService = currentUserService ?? throw new ArgumentNullException(nameof(currentUserService));
+            _currencySettingsService = currencySettingsService ?? throw new ArgumentNullException(nameof(currencySettingsService));
+            _warehouseHeatmapService = warehouseHeatmapService ?? throw new ArgumentNullException(nameof(warehouseHeatmapService));
+            _daDataService = daDataService ?? throw new ArgumentNullException(nameof(daDataService));
+            _weatherService = weatherService ?? throw new ArgumentNullException(nameof(weatherService));
 
             TextBoxHelper.SetupWatermarkTextBox(textBoxSurname, Resources.RegSurnameWatermark);
             TextBoxHelper.SetupWatermarkTextBox(textBoxName, Resources.RegNameWatermark);
@@ -63,50 +124,29 @@ namespace AutomechanicsProject.Formes
 
                 var login = textBoxLogin.Text.Trim();
 
-                var role = _db.Roles.FirstOrDefault(r => r.Position == Resources.StorekeeperRoleName);
-                if (role == null)
-                {
-                    MessageBox.Show(Resources.ErrorRoleNotFound,
-                        Resources.TitleError, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
+                var lastname = Validation.IsWatermark(textBoxLastname.Text, Resources.RegLastnameWatermark)
+                    ? string.Empty
+                    : textBoxLastname.Text.Trim();
 
-                if (_db.Users.Any(u => u.Login == login))
-                {
-                    Validation.HighlightError(textBoxLogin, true);
-                    MessageBox.Show(Resources.ErrorUserExists,
-                        Resources.TitleWarning, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-
-                var newUser = new Users
-                {
-                    Id = Guid.NewGuid(),
-                    Surname = textBoxSurname.Text.Trim(),
-                    Name = textBoxName.Text.Trim(),
-                    Lastname = Validation.IsWatermark(textBoxLastname.Text, Resources.RegLastnameWatermark)
-                        ? null
-                        : textBoxLastname.Text.Trim(),
-                    Login = login,
-                    Password = PasswordHelper.HashPassword(textBoxPassword.Text),
-                    RoleId = role.Id
-                };
-
-                _db.Users.Add(newUser);
-                _db.SaveChanges();
+                _authService.Register(
+                    textBoxSurname.Text.Trim(),
+                    textBoxName.Text.Trim(),
+                    lastname,
+                    login,
+                    textBoxPassword.Text);
 
                 MessageBox.Show(
-                    string.Format(Resources.SuccessRegistrationWithDetails, login, newUser.FullName),
+                    string.Format(Resources.SuccessRegistrationWithDetails, login,
+                        $"{textBoxSurname.Text.Trim()} {textBoxName.Text.Trim()} {lastname}".Trim()),
                     Resources.TitleSuccess,
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Information
                 );
-
                 OpenAuthorization();
             }
             catch (Exception ex)
             {
-                FormHelper.HandleException("Ошибка регистрации", ex, this);
+                FormHelper.HandleException(Resources.ErrorRegistration, ex, this);
             }
         }
         /// <summary>
@@ -114,7 +154,20 @@ namespace AutomechanicsProject.Formes
         /// </summary>
         private void OpenAuthorization()
         {
-            var authForm = new Autorization(_db);
+            var authForm = new Autorization(
+                _authService,
+                _productService,
+                _categoryService,
+                _supplyService,
+                _reportService,
+                _shipmentService,
+                _expiredProductsService,
+                _supplyCurrencyService,
+                _currentUserService,
+                _currencySettingsService,
+                _warehouseHeatmapService,
+                _daDataService,
+                _weatherService);
             authForm.Show();
             Close();
         }

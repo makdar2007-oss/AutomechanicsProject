@@ -27,7 +27,7 @@ namespace AutomechanicsProject.Classes
         /// Идентификатор товара
         /// </summary>
         [Column("product_id")]
-        public Guid ProductId { get; set; }
+        public Guid? ProductId { get; set; }
 
         /// <summary>
         /// Количество товара

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AutomechanicsProject.Properties;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -23,6 +24,11 @@ namespace AutomechanicsProject.Classes
         /// </summary>
         [Column("name")]
         public string Name { get; set; }
+        /// <summary>
+        /// Показывает, является ли категория металлоломом
+        /// </summary>
+        [Column("is_scrap_metal")]
+        public bool IsScrapMetal { get; set; }
 
         /// <summary>
         /// Коллекция товаров, принадлежащих данной категории
@@ -33,6 +39,11 @@ namespace AutomechanicsProject.Classes
         /// Отображаемое имя категории с количеством товаров 
         /// </summary>
         [NotMapped]
-        public string DisplayName => $"{Name} (товаров: {Products?.Count ?? 0})";
+        public string DisplayName => string.Format(Resources.CategoryDisplayFormat_WithCount, Name, Products?.Count ?? 0);
+
+        /// <summary>
+        /// Показывает, удалена ли категория из каталога
+        /// </summary>
+        public bool IsDeleted { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AutomechanicsProject.Properties;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -39,8 +40,8 @@ namespace AutomechanicsProject.Classes
         [NotMapped]
         public RoleType Type
         {
-            get => Position == "Администратор" ? RoleType.Administrator : RoleType.Storekeeper;
-            set => Position = value == RoleType.Administrator ? "Администратор" : "Кладовщик";
+            get => Position?.Trim() == Resources.RoleAdministratorforcheck ? RoleType.Administrator : RoleType.Storekeeper;
+            set => Position = value == RoleType.Administrator ? Resources.RoleAdministratorforcheck : Resources.RoleStorekeeperforcheck;
         }
 
         /// <summary>
@@ -66,6 +67,6 @@ namespace AutomechanicsProject.Classes
         /// <summary>
         /// Возвращает строковое представление роли
         /// </summary>
-        public override string ToString() => Type == RoleType.Administrator ? "Администратор" : "Кладовщик";
+        public override string ToString() => Type == RoleType.Administrator ? Resources.RoleAdministrator : Resources.RoleStorekeeper;
     }
 }

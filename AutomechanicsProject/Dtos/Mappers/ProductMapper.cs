@@ -1,5 +1,6 @@
 ﻿using AutomechanicsProject.Classes;
 using AutomechanicsProject.Dtos.Service;
+using AutomechanicsProject.Properties;
 using AutomechanicsProject.ViewModels;
 using System;
 
@@ -111,7 +112,7 @@ namespace AutomechanicsProject.Mappers
             return new ProductComboViewModel
             {
                 Id = dto.Id,
-                Text = $"{dto.Article} - {dto.Name} (остаток: {dto.Balance} {dto.UnitName})",
+                Text = string.Format(Resources.ComboItemFormat, dto.Article, dto.Name, dto.Balance, dto.UnitName),
                 Article = dto.Article,
                 Name = dto.Name,
                 Price = dto.Price,

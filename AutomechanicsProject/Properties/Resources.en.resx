@@ -1,0 +1,1798 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AuthLoginWatermark" xml:space="preserve">
+    <value>Enter first name</value>
+  </data>
+  <data name="AuthPasswordWatermark" xml:space="preserve">
+    <value>Enter password</value>
+  </data>
+  <data name="CategoryAddWatermark" xml:space="preserve">
+    <value>Enter name</value>
+  </data>
+  <data name="CategorySelectWatermark" xml:space="preserve">
+    <value>Select a category</value>
+  </data>
+  <data name="DeleteArticleWatermark" xml:space="preserve">
+    <value>Enter product article number</value>
+  </data>
+  <data name="EditArticleWatermark" xml:space="preserve">
+    <value>Article</value>
+  </data>
+  <data name="EditCategoryWatermark" xml:space="preserve">
+    <value>Enter name</value>
+  </data>
+  <data name="EditNameWatermark" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="EditPriceWatermark" xml:space="preserve">
+    <value>Price</value>
+  </data>
+  <data name="ProductArticleWatermark" xml:space="preserve">
+    <value>Enter article number</value>
+  </data>
+  <data name="ProductNameWatermark" xml:space="preserve">
+    <value>Enter name</value>
+  </data>
+  <data name="ProductPriceWatermark" xml:space="preserve">
+    <value>Enter price</value>
+  </data>
+  <data name="RegConfirmPasswordWatermark" xml:space="preserve">
+    <value>Repeat password</value>
+  </data>
+  <data name="RegLastnameWatermark" xml:space="preserve">
+    <value>Enter patronymic</value>
+  </data>
+  <data name="RegLoginWatermark" xml:space="preserve">
+    <value>Enter login</value>
+  </data>
+  <data name="RegNameWatermark" xml:space="preserve">
+    <value>Enter first name</value>
+  </data>
+  <data name="RegPasswordWatermark" xml:space="preserve">
+    <value>Enter password</value>
+  </data>
+  <data name="RegSurnameWatermark" xml:space="preserve">
+    <value>Enter last name</value>
+  </data>
+  <data name="SearchWatermark" xml:space="preserve">
+    <value>Search:</value>
+  </data>
+  <data name="ShipmentQuantityWatermark" xml:space="preserve">
+    <value>Enter product quantity</value>
+  </data>
+  <data name="UnitSelectWatermark" xml:space="preserve">
+    <value>Select a unit of measure</value>
+  </data>
+  <data name="SQuantityWatermark" xml:space="preserve">
+    <value>Enter product quantity</value>
+  </data>
+  <data name="SPriceWatermark" xml:space="preserve">
+    <value>Enter price</value>
+  </data>
+  <data name="SProductWatermark" xml:space="preserve">
+    <value>Select a product from the list</value>
+  </data>
+  <data name="SSupplierWatermark" xml:space="preserve">
+    <value>Select a supplier</value>
+  </data>
+  <data name="SCurrencyWatermark" xml:space="preserve">
+    <value>Select purchase currency</value>
+  </data>
+  <data name="ShipmentRecipientWatermark" xml:space="preserve">
+    <value>Select recipient</value>
+  </data>
+  <data name="ShipmentTypeWatermark" xml:space="preserve">
+    <value>Select shipment type</value>
+  </data>
+  <data name="ShipmentExpiryDateWatermark" xml:space="preserve">
+    <value>Select expiration date</value>
+  </data>
+  <data name="NoExpiryDateWatermark" xml:space="preserve">
+    <value>No expiration date</value>
+  </data>
+  <data name="ButtonConfirmSupply" xml:space="preserve">
+    <value>Confirm supply</value>
+  </data>
+  <data name="ConfirmCancelAddProduct" xml:space="preserve">
+    <value>Are you sure you want to cancel adding the product?
+
+All entered data will be lost.</value>
+  </data>
+  <data name="ConfirmCancelDelete" xml:space="preserve">
+    <value>Are you sure you want to cancel deletion?</value>
+  </data>
+  <data name="ConfirmCancelEdit" xml:space="preserve">
+    <value>You have unsaved changes.
+
+Do you really want to cancel editing?</value>
+  </data>
+  <data name="ConfirmCancelEditWithDetails" xml:space="preserve">
+    <value>You have unsaved changes.
+
+Do you really want to cancel editing?</value>
+  </data>
+  <data name="ConfirmCancelShipment" xml:space="preserve">
+    <value>You have added products in the shipment list.
+
+Do you really want to cancel creating the shipment?</value>
+  </data>
+  <data name="ConfirmCancelSupply" xml:space="preserve">
+    <value>Cancel supply? All data will be lost.</value>
+  </data>
+  <data name="ConfirmDeleteCategory" xml:space="preserve">
+    <value>Do you really want to delete category "{0}"?</value>
+  </data>
+  <data name="ConfirmDeleteCategoryWithProducts" xml:space="preserve">
+    <value>Category "{0}" contains {1} products.
+
+Are you sure you want to delete the category and all products in it?
+This action cannot be undone.</value>
+  </data>
+  <data name="ConfirmDeleteProduct" xml:space="preserve">
+    <value>Do you really want to delete the product?
+
+Article: {0}
+Name: {1}
+Category: {2}
+Price: {3:F2}
+Stock: {4} {5}
+
+This action cannot be undone!</value>
+  </data>
+  <data name="ConfirmRemoveShipmentItem" xml:space="preserve">
+    <value>Remove product "{0}" from the shipment list?</value>
+  </data>
+  <data name="ConfirmShipment" xml:space="preserve">
+    <value>Confirm shipment?
+
+Recipient: {0}
+Number of items: {1}
+Total amount: {2:C2}</value>
+  </data>
+  <data name="ConfirmSupplyFormat" xml:space="preserve">
+    <value>Confirm supply?
+Total amount: {0}</value>
+  </data>
+  <data name="CurrencyBYN" xml:space="preserve">
+    <value>Belarusian ruble</value>
+  </data>
+  <data name="CurrencyChangeConfirm" xml:space="preserve">
+    <value>Settings have been successfully applied.
+
+Interface language: {0}
+Currency: {1}
+Exchange rate: 1 RUB = {2:F4} {3}
+
+All prices will be displayed in the selected currency.</value>
+  </data>
+  <data name="CurrencyChangeTitle" xml:space="preserve">
+    <value>Currency change</value>
+  </data>
+  <data name="CurrencyCNY" xml:space="preserve">
+    <value>Chinese yuan</value>
+  </data>
+  <data name="CurrencyEUR" xml:space="preserve">
+    <value>Euro</value>
+  </data>
+  <data name="CurrencyGBP" xml:space="preserve">
+    <value>British pound</value>
+  </data>
+  <data name="CurrencyJPY" xml:space="preserve">
+    <value>Japanese yen</value>
+  </data>
+  <data name="CurrencyKZT" xml:space="preserve">
+    <value>Kazakhstani tenge</value>
+  </data>
+  <data name="CurrencyRUB" xml:space="preserve">
+    <value>Russian ruble</value>
+  </data>
+  <data name="CurrencyUSD" xml:space="preserve">
+    <value>US dollar</value>
+  </data>
+  <data name="DebugSavingCache" xml:space="preserve">
+    <value>Saving cache to: {0}</value>
+  </data>
+  <data name="StatusError" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="ErrorImportFailed" xml:space="preserve">
+    <value>Error importing data. The operation was canceled. Details were written to the error log.</value>
+  </data>
+  <data name="ErrorCreateShipment" xml:space="preserve">
+    <value>Failed to create shipment.</value>
+  </data>
+  <data name="ErrorAutoWriteOff" xml:space="preserve">
+    <value>Error during automatic write-off of expired products.</value>
+  </data>
+  <data name="ErrorCurrencyFixed" xml:space="preserve">
+    <value>Currency cannot be changed after items were added to the supply.</value>
+  </data>
+  <data name="ErrorExpiryDateRequired" xml:space="preserve">
+    <value>Expiration date cannot be in the past</value>
+  </data>
+  <data name="ErrorExpiryDateExceedsProduct" xml:space="preserve">
+    <value>The supply expiration date cannot exceed the product expiration date ({0})</value>
+  </data>
+  <data name="ErrorNoExpiryDateAllowed" xml:space="preserve">
+    <value>The selected product has no expiration date. The date field must be empty.</value>
+  </data>
+  <data name="ErrorAddCategory" xml:space="preserve">
+    <value>Failed to add category. Try again later.</value>
+  </data>
+  <data name="ErrorAddProduct" xml:space="preserve">
+    <value>Error adding product</value>
+  </data>
+  <data name="ErrorAuthFailed" xml:space="preserve">
+    <value>Login error</value>
+  </data>
+  <data name="ErrorAuthInvalid" xml:space="preserve">
+    <value>Invalid login or password!</value>
+  </data>
+  <data name="ErrorCannotDeleteCategoryWithShipments" xml:space="preserve">
+    <value>Cannot delete the category because some products are used in shipments.
+Delete the related shipments first.</value>
+  </data>
+  <data name="ErrorCategoryExists" xml:space="preserve">
+    <value>A category with this name already exists!</value>
+  </data>
+  <data name="ErrorCategoryNotFound" xml:space="preserve">
+    <value>Category was not found in the database!</value>
+  </data>
+  <data name="ErrorDeleteCategory" xml:space="preserve">
+    <value>Failed to delete category. Try again later.</value>
+  </data>
+  <data name="ErrorDeleteProduct" xml:space="preserve">
+    <value>Failed to delete product. Try again later.</value>
+  </data>
+  <data name="ErrorEditCategory" xml:space="preserve">
+    <value>Failed to edit category. Try again later.</value>
+  </data>
+  <data name="ErrorEditProduct" xml:space="preserve">
+    <value>Error editing product</value>
+  </data>
+  <data name="ErrorEnterArticle" xml:space="preserve">
+    <value>Enter product article number!</value>
+  </data>
+  <data name="ErrorEnterCorrectPrice" xml:space="preserve">
+    <value>Enter a valid price!</value>
+  </data>
+  <data name="ErrorEnterCorrectQuantity" xml:space="preserve">
+    <value>Enter a valid quantity (positive integer)!</value>
+  </data>
+  <data name="ErrorEnterValidPrice" xml:space="preserve">
+    <value>Enter a valid purchase price!</value>
+  </data>
+  <data name="ErrorEnterValidQuantity" xml:space="preserve">
+    <value>Enter a valid product quantity!</value>
+  </data>
+  <data name="ErrorExportToCsvWithMessage" xml:space="preserve">
+    <value>Error exporting data.</value>
+  </data>
+  <data name="ErrorFillCategory" xml:space="preserve">
+    <value>Enter category name!</value>
+  </data>
+  <data name="ErrorFillFields" xml:space="preserve">
+    <value>Fill in all required fields!</value>
+  </data>
+  <data name="ErrorFixFormErrors" xml:space="preserve">
+    <value>Please correct the errors in the form.
+Fields highlighted in pink are filled in incorrectly.</value>
+  </data>
+  <data name="ErrorFormatColumnsMessage" xml:space="preserve">
+    <value>Error displaying the table. Some columns may be displayed incorrectly.</value>
+  </data>
+  <data name="ErrorHighlightRow" xml:space="preserve">
+    <value>Error highlighting row</value>
+  </data>
+  <data name="ErrorImportNoData" xml:space="preserve">
+    <value>The file contains no data to import!</value>
+  </data>
+  <data name="ErrorImportNotFound" xml:space="preserve">
+    <value>Not found in catalog</value>
+  </data>
+  <data name="ErrorInsufficientStockWithDetails" xml:space="preserve">
+    <value>Not enough stock in the warehouse!
+Available: {0} {1}</value>
+  </data>
+  <data name="ErrorLoadCategories" xml:space="preserve">
+    <value>Failed to load categories</value>
+  </data>
+  <data name="ErrorLoadProduct" xml:space="preserve">
+    <value>Failed to load product</value>
+  </data>
+  <data name="ErrorLoadProductData" xml:space="preserve">
+    <value>Failed to load product data</value>
+  </data>
+  <data name="ErrorLoadProducts" xml:space="preserve">
+    <value>Failed to load products</value>
+  </data>
+  <data name="ErrorLoadProductsList" xml:space="preserve">
+    <value>Failed to load product list. Try again later.</value>
+  </data>
+  <data name="ErrorLoadRecipients" xml:space="preserve">
+    <value>Failed to load recipients list</value>
+  </data>
+  <data name="ErrorLoadReportFormat" xml:space="preserve">
+    <value>Error loading report</value>
+  </data>
+  <data name="ErrorLoadShipmentHistory" xml:space="preserve">
+    <value>Failed to load shipment history.</value>
+  </data>
+  <data name="ErrorLoadSuppliers" xml:space="preserve">
+    <value>Error loading suppliers</value>
+  </data>
+  <data name="ErrorLoadUnits" xml:space="preserve">
+    <value>Failed to load unit list</value>
+  </data>
+  <data name="ErrorLogout" xml:space="preserve">
+    <value>Logout error</value>
+  </data>
+  <data name="ErrorNoAccess" xml:space="preserve">
+    <value>You do not have access to the system! Contact the administrator.</value>
+  </data>
+  <data name="ErrorNoDataToExport" xml:space="preserve">
+    <value>No data to export</value>
+  </data>
+  <data name="ErrorNoItemsInShipment" xml:space="preserve">
+    <value>Add products to the shipment list!</value>
+  </data>
+  <data name="ErrorNoPositions" xml:space="preserve">
+    <value>Add at least one item!</value>
+  </data>
+  <data name="ErrorNoProducts" xml:space="preserve">
+    <value>There are no products in the database! Add products through the catalog.</value>
+  </data>
+  <data name="ErrorNoSuppliers" xml:space="preserve">
+    <value>There are no suppliers in the database! Add suppliers.</value>
+  </data>
+  <data name="ErrorOpenAddCategoryForm" xml:space="preserve">
+    <value>Failed to open the category add form</value>
+  </data>
+  <data name="ErrorOpenAddProductForm" xml:space="preserve">
+    <value>Failed to open the product add form</value>
+  </data>
+  <data name="ErrorOpenCurrencyForm" xml:space="preserve">
+    <value>Error opening the currency selection form</value>
+  </data>
+  <data name="ErrorOpenDeleteCategoryForm" xml:space="preserve">
+    <value>Failed to delete category</value>
+  </data>
+  <data name="ErrorOpenEditCategoryForm" xml:space="preserve">
+    <value>Failed to open the category edit form</value>
+  </data>
+  <data name="ErrorOpenHistory" xml:space="preserve">
+    <value>Failed to open history</value>
+  </data>
+  <data name="ErrorOpenShipmentForm" xml:space="preserve">
+    <value>Failed to open shipment form</value>
+  </data>
+  <data name="ErrorProductInShipments" xml:space="preserve">
+    <value>Cannot delete product "{0}" because it is used in {1} shipments.</value>
+  </data>
+  <data name="ErrorProductNotFound" xml:space="preserve">
+    <value>Product with article number "{0}" was not found!</value>
+  </data>
+  <data name="ErrorProductNotFoundGeneric" xml:space="preserve">
+    <value>Product not found!</value>
+  </data>
+  <data name="ErrorRegistration" xml:space="preserve">
+    <value>Registration error. Try again later.</value>
+  </data>
+  <data name="ErrorRoleNotFound" xml:space="preserve">
+    <value>Error: role 'Storekeeper' was not found!
+Contact the administrator.</value>
+  </data>
+  <data name="ErrorSelectCategory" xml:space="preserve">
+    <value>Select a category!</value>
+  </data>
+  <data name="ErrorSelectCategoryForDelete" xml:space="preserve">
+    <value>Select a category to delete!</value>
+  </data>
+  <data name="ErrorSelectProduct" xml:space="preserve">
+    <value>Select a product from the list!</value>
+  </data>
+  <data name="ErrorSelectRecipient" xml:space="preserve">
+    <value>Select a recipient from the list!</value>
+  </data>
+  <data name="ErrorSelectSupplier" xml:space="preserve">
+    <value>Please select a supplier!</value>
+  </data>
+  <data name="ErrorSelectUnit" xml:space="preserve">
+    <value>Select a unit of measure!</value>
+  </data>
+  <data name="ErrorSupplyFailed" xml:space="preserve">
+    <value>Error confirming supply.</value>
+  </data>
+  <data name="ErrorUpdateProduct" xml:space="preserve">
+    <value>Failed to update product. Try again later.</value>
+  </data>
+  <data name="ErrorUserExists" xml:space="preserve">
+    <value>A user with this login already exists!</value>
+  </data>
+  <data name="ErrorUserNotAuthorized" xml:space="preserve">
+    <value>Error: user is not authorized!</value>
+  </data>
+  <data name="ErrorWithDetails" xml:space="preserve">
+    <value>Error.</value>
+  </data>
+  <data name="ErrorSurnameLength" xml:space="preserve">
+    <value>Last name must be from 2 to 100 characters.</value>
+  </data>
+  <data name="ErrorEnterSurname" xml:space="preserve">
+    <value>Enter last name</value>
+  </data>
+  <data name="ErrorInvalidSurname" xml:space="preserve">
+    <value>Last name must contain only Russian letters, hyphen and space.</value>
+  </data>
+  <data name="ErrorEnterName" xml:space="preserve">
+    <value>Enter first name</value>
+  </data>
+  <data name="ErrorInvalidName" xml:space="preserve">
+    <value>First name must contain only Russian letters, hyphen and space.</value>
+  </data>
+  <data name="ErrorNameLength" xml:space="preserve">
+    <value>First name must be from 2 to 100 characters.</value>
+  </data>
+  <data name="ErrorInvalidLastname" xml:space="preserve">
+    <value>Patronymic must contain only Russian letters, hyphen and space.</value>
+  </data>
+  <data name="ErrorLastnameLength" xml:space="preserve">
+    <value>Patronymic must be from 2 to 100 characters.</value>
+  </data>
+  <data name="ErrorEnterLogin" xml:space="preserve">
+    <value>Enter login</value>
+  </data>
+  <data name="ErrorInvalidLogin" xml:space="preserve">
+    <value>Login may contain only English letters, digits and underscore.</value>
+  </data>
+  <data name="ErrorLoginLength" xml:space="preserve">
+    <value>Login must be from 3 to 20 characters.</value>
+  </data>
+  <data name="ErrorEnterPassword" xml:space="preserve">
+    <value>Enter password</value>
+  </data>
+  <data name="ErrorInvalidPassword" xml:space="preserve">
+    <value>Password must contain at least 6 characters, at least one digit and one letter.</value>
+  </data>
+  <data name="ErrorConfirmPassword" xml:space="preserve">
+    <value>Confirm password</value>
+  </data>
+  <data name="ErrorPasswordMismatch" xml:space="preserve">
+    <value>Passwords do not match!</value>
+  </data>
+  <data name="ErrorGeneric" xml:space="preserve">
+    <value>An error occurred. Try again later.</value>
+  </data>
+  <data name="ErrorCurrencyRatesLoad" xml:space="preserve">
+    <value>Critical error loading currency rates</value>
+  </data>
+  <data name="CategoryNone" xml:space="preserve">
+    <value>No category</value>
+  </data>
+  <data name="InfoCategoryNameNotChanged" xml:space="preserve">
+    <value>Category name was not changed</value>
+  </data>
+  <data name="InfoHistoryEmpty" xml:space="preserve">
+    <value>Set the period correctly</value>
+  </data>
+  <data name="InfoNoDataForPeriod" xml:space="preserve">
+    <value>No data for history</value>
+  </data>
+  <data name="InfoNoPositionsToDisplay" xml:space="preserve">
+    <value>No items to display</value>
+  </data>
+  <data name="InfoNoProductsForShipment" xml:space="preserve">
+    <value>No products in stock for shipment!</value>
+  </data>
+  <data name="InfoNoRecipientsAvailable" xml:space="preserve">
+    <value>No recipients available!
+Contact the administrator to add companies.</value>
+  </data>
+  <data name="InfoUsingCachedCurrencies" xml:space="preserve">
+    <value>Saved currency rates are used (internet is unavailable)</value>
+  </data>
+  <data name="InfoCurrencyRatesLoaded" xml:space="preserve">
+    <value>Currency rates loaded successfully</value>
+  </data>
+  <data name="JsonFileFilter" xml:space="preserve">
+    <value>JSON files (*.json)|*.json|All files (*.*)|*.*</value>
+  </data>
+  <data name="ImportSupplyTitle" xml:space="preserve">
+    <value>Import supply data from JSON file</value>
+  </data>
+  <data name="SaveCsvFileTitle" xml:space="preserve">
+    <value>Save CSV file</value>
+  </data>
+  <data name="LoadingCurrencies" xml:space="preserve">
+    <value>Loading currency rates...</value>
+  </data>
+  <data name="WarningNoDataForPeriod" xml:space="preserve">
+    <value>Set the period correctly</value>
+  </data>
+  <data name="WarningNoHistoryForPeriod" xml:space="preserve">
+    <value>Set the period correctly</value>
+  </data>
+  <data name="NoCategoriesForDelete" xml:space="preserve">
+    <value>No categories available for deletion</value>
+  </data>
+  <data name="NoCurrenciesAvailable" xml:space="preserve">
+    <value>No currencies available</value>
+  </data>
+  <data name="PleaseSelectCurrency" xml:space="preserve">
+    <value>Please select a currency</value>
+  </data>
+  <data name="ProductAlreadyInList" xml:space="preserve">
+    <value>Product "{0}" is already added to the list.
+Current quantity: {1} {2}
+
+Replace the quantity with a new value?</value>
+  </data>
+  <data name="SelectCategoryForDelete" xml:space="preserve">
+    <value>Select a category to delete</value>
+  </data>
+  <data name="SelectCategoryForEdit" xml:space="preserve">
+    <value>Select a category to edit</value>
+  </data>
+  <data name="SelectProductForDelete" xml:space="preserve">
+    <value>Select a product to delete</value>
+  </data>
+  <data name="SelectProductForEdit" xml:space="preserve">
+    <value>Select a product to edit</value>
+  </data>
+  <data name="ShipmentHistoryTitle" xml:space="preserve">
+    <value>Shipment history - Shipped: {0} units | Written off: {1} units | Amount: {2:C2} | Profit: {3:C2} | Loss: {4:C2}</value>
+  </data>
+  <data name="StatusSaving" xml:space="preserve">
+    <value>Saving...</value>
+  </data>
+  <data name="StorekeeperRoleName" xml:space="preserve">
+    <value>Storekeeper</value>
+  </data>
+  <data name="SupplyStatusCompleted" xml:space="preserve">
+    <value>Completed</value>
+  </data>
+  <data name="UnknownSupplier" xml:space="preserve">
+    <value>Not specified</value>
+  </data>
+  <data name="WarningShipmentsWithoutItems" xml:space="preserve">
+    <value>Found {0} shipments, but none contains items!</value>
+  </data>
+  <data name="WarningNoProductExpiryDate" xml:space="preserve">
+    <value>The selected product has no expiration date. Supply date is not required.</value>
+  </data>
+  <data name="WarningCurrencyRatesFallback" xml:space="preserve">
+    <value>Failed to load current currency rates. Fallback values are used.</value>
+  </data>
+  <data name="WarningCurrencyRatesFailed" xml:space="preserve">
+    <value>Currency rate loading error: {0}</value>
+  </data>
+  <data name="WarningUsingCachedRates" xml:space="preserve">
+    <value>Saved currency rates are used (internet is unavailable)</value>
+  </data>
+  <data name="SuccessAutoWriteOffMessage" xml:space="preserve">
+    <value>{0} expired products were written off.</value>
+  </data>
+  <data name="SuccessCategoryAdded" xml:space="preserve">
+    <value>Category "{0}" was successfully added!</value>
+  </data>
+  <data name="SuccessCategoryAndProductsDeleted" xml:space="preserve">
+    <value>Category "{0}" and all ({1}) products in it were successfully deleted!</value>
+  </data>
+  <data name="SuccessCategoryDeleted" xml:space="preserve">
+    <value>Category "{0}" was successfully deleted!</value>
+  </data>
+  <data name="SuccessCategoryRenamed" xml:space="preserve">
+    <value>Category "{0}" was successfully renamed to "{1}"!</value>
+  </data>
+  <data name="SuccessExportFormat" xml:space="preserve">
+    <value>Data was successfully exported to file: {0}</value>
+  </data>
+  <data name="SuccessImportFormat" xml:space="preserve">
+    <value>Successfully imported {0} products!</value>
+  </data>
+  <data name="SuccessProductAdded" xml:space="preserve">
+    <value>Product was successfully added!</value>
+  </data>
+  <data name="SuccessProductAddedToList" xml:space="preserve">
+    <value>Product added to the shipment list</value>
+  </data>
+  <data name="SuccessProductDeleted" xml:space="preserve">
+    <value>Product was successfully deleted!</value>
+  </data>
+  <data name="SuccessProductUpdated" xml:space="preserve">
+    <value>Product was successfully updated!</value>
+  </data>
+  <data name="SuccessRegistrationWithDetails" xml:space="preserve">
+    <value>Registration successful!
+
+Login: {0}
+Full name: {1}
+
+Now you can log in.</value>
+  </data>
+  <data name="SuccessShipmentCreatedWithDetails" xml:space="preserve">
+    <value>Shipment created successfully!
+
+Recipient: {0}
+Number of items: {1}
+Total amount: {2:C2}</value>
+  </data>
+  <data name="SuccessSupplyFormat" xml:space="preserve">
+    <value>Supply completed!
+
+Number: {0}
+Date: {1}
+Products in supply: {2}
+Total amount: {3}</value>
+  </data>
+  <data name="TitleAutoWriteOff" xml:space="preserve">
+    <value>Automatic write-off</value>
+  </data>
+  <data name="TitleConfirmation" xml:space="preserve">
+    <value>Confirmation</value>
+  </data>
+  <data name="TitleDeleteConfirmation" xml:space="preserve">
+    <value>Delete confirmation</value>
+  </data>
+  <data name="TitleError" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="TitleInformation" xml:space="preserve">
+    <value>Information</value>
+  </data>
+  <data name="TitleProductAlreadyInList" xml:space="preserve">
+    <value>Product is already in the list</value>
+  </data>
+  <data name="TitleRemoveConfirmation" xml:space="preserve">
+    <value>Delete confirmation</value>
+  </data>
+  <data name="TitleSuccess" xml:space="preserve">
+    <value>Success</value>
+  </data>
+  <data name="TitleWarning" xml:space="preserve">
+    <value>Warning</value>
+  </data>
+  <data name="Unit_Piece_Short" xml:space="preserve">
+    <value>pcs</value>
+  </data>
+  <data name="BatchNumberFormat" xml:space="preserve">
+    <value>Batch_{0:yyyyMM}</value>
+  </data>
+  <data name="CategoryDisplayFormat_WithCount" xml:space="preserve">
+    <value>{0} (products: {1})</value>
+  </data>
+  <data name="CategoryItemFormat" xml:space="preserve">
+    <value>{0} (products: {1})</value>
+  </data>
+  <data name="ComboItemFormat" xml:space="preserve">
+    <value>{0} - {1} (stock: {2})</value>
+  </data>
+  <data name="ConfirmDeleteSupplyItem" xml:space="preserve">
+    <value>Do you really want to remove product "{0} - {1}" from the supply list?</value>
+  </data>
+  <data name="CurrencyFormat_Rub" xml:space="preserve">
+    <value>{0:N2} RUB</value>
+  </data>
+  <data name="ExpiryDisplayFormat_WithBalance" xml:space="preserve">
+    <value>Expiration: {0:dd.MM.yyyy} (stock: {1})</value>
+  </data>
+  <data name="FileNameDateFormat" xml:space="preserve">
+    <value>yyyyMMdd_HHmmss</value>
+  </data>
+  <data name="NoExpiryDisplayFormat" xml:space="preserve">
+    <value>No expiration date (stock: {0})</value>
+  </data>
+  <data name="ProductDisplayFormat_WithBalance" xml:space="preserve">
+    <value>{0} - {1} (stock: {2} {3})</value>
+  </data>
+  <data name="RussianRuble" xml:space="preserve">
+    <value>Russian ruble</value>
+  </data>
+  <data name="SaveFileDefaultExt_CSV" xml:space="preserve">
+    <value>csv</value>
+  </data>
+  <data name="SaveFileFileNameTemplate_Report" xml:space="preserve">
+    <value>Report_{0}</value>
+  </data>
+  <data name="SaveFileFilter_CSV" xml:space="preserve">
+    <value>CSV files (*.csv)|*.csv|All files (*.*)|*.*</value>
+  </data>
+  <data name="ShipmentForm_TitleFormat" xml:space="preserve">
+    <value>Shipment creation - Total amount: {0:F2}, Profit: {1:F2}</value>
+  </data>
+  <data name="SupplierNotFoundFormat" xml:space="preserve">
+    <value>{0} (supplier '{1}' not found)</value>
+  </data>
+  <data name="TitleConfirmDelete" xml:space="preserve">
+    <value>Delete confirmation</value>
+  </data>
+  <data name="ShipmentType_Supply" xml:space="preserve">
+    <value>Supply</value>
+  </data>
+  <data name="ColumnArticle" xml:space="preserve">
+    <value>Article</value>
+  </data>
+  <data name="ColumnName" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="ColumnCategory" xml:space="preserve">
+    <value>Category</value>
+  </data>
+  <data name="ColumnUnit" xml:space="preserve">
+    <value>Unit</value>
+  </data>
+  <data name="ColumnExpiryDate" xml:space="preserve">
+    <value>Expiration date</value>
+  </data>
+  <data name="ColumnPrice" xml:space="preserve">
+    <value>Purchase price</value>
+  </data>
+  <data name="ColumnPurchasePrice" xml:space="preserve">
+    <value>Price</value>
+  </data>
+  <data name="ColumnPurchasePriceFormat" xml:space="preserve">
+    <value>Price ({0})</value>
+  </data>
+  <data name="ColumnBalance" xml:space="preserve">
+    <value>Stock</value>
+  </data>
+  <data name="History_Number" xml:space="preserve">
+    <value>History  Number</value>
+  </data>
+  <data name="History_Article" xml:space="preserve">
+    <value>Article</value>
+  </data>
+  <data name="History_Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="History_Quantity" xml:space="preserve">
+    <value>Quantity</value>
+  </data>
+  <data name="History_Price" xml:space="preserve">
+    <value>Price</value>
+  </data>
+  <data name="History_Profit" xml:space="preserve">
+    <value>Profit</value>
+  </data>
+  <data name="History_Total" xml:space="preserve">
+    <value>Amount</value>
+  </data>
+  <data name="History_Recipient" xml:space="preserve">
+    <value>Recipient</value>
+  </data>
+  <data name="History_Storekeeper" xml:space="preserve">
+    <value>Storekeeper</value>
+  </data>
+  <data name="History_Date" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="Report_Article" xml:space="preserve">
+    <value>Article</value>
+  </data>
+  <data name="Report_Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="Report_Quantity" xml:space="preserve">
+    <value>Quantity</value>
+  </data>
+  <data name="Report_Price" xml:space="preserve">
+    <value>Price</value>
+  </data>
+  <data name="Report_Profit" xml:space="preserve">
+    <value>Profit</value>
+  </data>
+  <data name="Report_Total" xml:space="preserve">
+    <value>Amount</value>
+  </data>
+  <data name="Report_Recipient" xml:space="preserve">
+    <value>Recipient</value>
+  </data>
+  <data name="Report_Storekeeper" xml:space="preserve">
+    <value>Storekeeper</value>
+  </data>
+  <data name="Report_Date" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="NotListed" xml:space="preserve">
+    <value>Not specified</value>
+  </data>
+  <data name="ND" xml:space="preserve">
+    <value>N D</value>
+  </data>
+  <data name="AddCategory_Title" xml:space="preserve">
+    <value>Add Category</value>
+  </data>
+  <data name="AddCategory_LabelText" xml:space="preserve">
+    <value>Add Category</value>
+  </data>
+  <data name="AddCategory_ButtonAddText" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="AddCategory_ButtonCancelText" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="AddProduct_Title" xml:space="preserve">
+    <value>Add Product</value>
+  </data>
+  <data name="AddProduct_LabelText" xml:space="preserve">
+    <value>Add Product</value>
+  </data>
+  <data name="AddProduct_GroupBoxExpiry_Text" xml:space="preserve">
+    <value>Expiration date</value>
+  </data>
+  <data name="AddProduct_RadioButtonHasExpiry_Text" xml:space="preserve">
+    <value>Has expiration date</value>
+  </data>
+  <data name="AddProduct_RadioButtonNoExpiry_Text" xml:space="preserve">
+    <value>No expiration date</value>
+  </data>
+  <data name="AddProduct_ButtonAddText" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="AddProduct_ButtonCancelText" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="AddProduct_TextBoxArt_Watermark" xml:space="preserve">
+    <value>Enter article number</value>
+  </data>
+  <data name="AddProduct_TextBoxArt_DefaultText" xml:space="preserve">
+    <value>Enter article number</value>
+  </data>
+  <data name="AdminForm_Title" xml:space="preserve">
+    <value>Main Form</value>
+  </data>
+  <data name="AdminForm_ButtonExitText" xml:space="preserve">
+    <value>Exit</value>
+  </data>
+  <data name="AdminForm_ButtonReportText" xml:space="preserve">
+    <value>Report</value>
+  </data>
+  <data name="AdminForm_ButtonCurrencyText" xml:space="preserve">
+    <value>Currency selection</value>
+  </data>
+  <data name="AdminForm_ButtonSupplyText" xml:space="preserve">
+    <value>Supply</value>
+  </data>
+  <data name="AdminForm_ButtonHistoryText" xml:space="preserve">
+    <value>Shipment history</value>
+  </data>
+  <data name="AdminForm_TextBoxSearch_Text" xml:space="preserve">
+    <value>Search:</value>
+  </data>
+  <data name="AdminForm_ToolStripAddText" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="AdminForm_ToolStripEditText" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="AdminForm_ToolStripDeleteText" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="AdminForm_ToolStripProductText" xml:space="preserve">
+    <value>Product</value>
+  </data>
+  <data name="AdminForm_ToolStripCategoryText" xml:space="preserve">
+    <value>Category</value>
+  </data>
+  <data name="AdminForm_ToolStripAdminText" xml:space="preserve">
+    <value>Administrator</value>
+  </data>
+  <data name="Auth_Form_Title" xml:space="preserve">
+    <value>Authorization</value>
+  </data>
+  <data name="Auth_LabelEnter_Text" xml:space="preserve">
+    <value>Login</value>
+  </data>
+  <data name="Auth_LabelLogin_Text" xml:space="preserve">
+    <value>Login </value>
+  </data>
+  <data name="Auth_LabelPassword_Text" xml:space="preserve">
+    <value>Password </value>
+  </data>
+  <data name="Auth_ButtonEnter_Text" xml:space="preserve">
+    <value>Login</value>
+  </data>
+  <data name="Auth_ButtonRegister_Text" xml:space="preserve">
+    <value>&#x8;Don't have an account? Sign up</value>
+  </data>
+  <data name="Currency_Form_Title" xml:space="preserve">
+    <value>Currency selection</value>
+  </data>
+  <data name="Currency_TextBox_Text" xml:space="preserve">
+    <value>Currency selection</value>
+  </data>
+  <data name="Currency_ButtonChoose_Text" xml:space="preserve">
+    <value>Select</value>
+  </data>
+  <data name="Currency_ButtonCancel_Text" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Shipment_Form_Title" xml:space="preserve">
+    <value>Create Shipment</value>
+  </data>
+  <data name="Shipment_LabelTitle_Text" xml:space="preserve">
+    <value>Create Shipment</value>
+  </data>
+  <data name="Shipment_LabelType_Text" xml:space="preserve">
+    <value>Shipment  Label Type  Text</value>
+  </data>
+  <data name="Shipment_LabelSelectProduct_Text" xml:space="preserve">
+    <value>Shipment  Label Select Product  Text</value>
+  </data>
+  <data name="Shipment_LabelQuantity_Text" xml:space="preserve">
+    <value>Shipment  Label Quantity  Text</value>
+  </data>
+  <data name="Shipment_LabelRecipient_Text" xml:space="preserve">
+    <value>Shipment  Label Recipient  Text</value>
+  </data>
+  <data name="Shipment_LabelExpiry_Text" xml:space="preserve">
+    <value>Expiration date:</value>
+  </data>
+  <data name="Shipment_ButtonAdd_Text" xml:space="preserve">
+    <value>Add to list</value>
+  </data>
+  <data name="Shipment_ButtonShipment_Text" xml:space="preserve">
+    <value>Shipment  Button Shipment  Text</value>
+  </data>
+  <data name="Shipment_ButtonCancel_Text" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Shipment_LabelTotalCaption_Text" xml:space="preserve">
+    <value>Total:</value>
+  </data>
+  <data name="ShipmentType_Shipment" xml:space="preserve">
+    <value>Shipment</value>
+  </data>
+  <data name="ShipmentType_WriteOff" xml:space="preserve">
+    <value>Write Off</value>
+  </data>
+  <data name="ShipmentType_Defect" xml:space="preserve">
+    <value>Defect</value>
+  </data>
+  <data name="Supply_Form_Title" xml:space="preserve">
+    <value>Create Supply</value>
+  </data>
+  <data name="Supply_LabelTitle_Text" xml:space="preserve">
+    <value>Supply</value>
+  </data>
+  <data name="Supply_LabelProduct_Text" xml:space="preserve">
+    <value>Select a product from the list:</value>
+  </data>
+  <data name="Supply_LabelQuantity_Text" xml:space="preserve">
+    <value>Enter quantity:</value>
+  </data>
+  <data name="Supply_LabelExpiry_Text" xml:space="preserve">
+    <value>Expiration date:</value>
+  </data>
+  <data name="Supply_LabelSupplier_Text" xml:space="preserve">
+    <value>Select a supplier:</value>
+  </data>
+  <data name="Supply_LabelCurrency_Text" xml:space="preserve">
+    <value>Purchase currency:</value>
+  </data>
+  <data name="Supply_LabelPrice_Text" xml:space="preserve">
+    <value>Enter price:</value>
+  </data>
+  <data name="Supply_ButtonAddToList_Text" xml:space="preserve">
+    <value>Add To List</value>
+  </data>
+  <data name="Supply_ButtonConfirmSupply_Text" xml:space="preserve">
+    <value>Confirm supply</value>
+  </data>
+  <data name="Supply_ButtonCancel_Text" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Supply_ButtonImport_Text" xml:space="preserve">
+    <value>Import  file</value>
+  </data>
+  <data name="Supply_LabelTotalCaption_Text" xml:space="preserve">
+    <value>Total:</value>
+  </data>
+  <data name="Supply_DataGridView_ColumnArticle" xml:space="preserve">
+    <value>Article</value>
+  </data>
+  <data name="Supply_DataGridView_ColumnName" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="Supply_DataGridView_ColumnQuantity" xml:space="preserve">
+    <value>Quantity</value>
+  </data>
+  <data name="Supply_DataGridView_ColumnPrice" xml:space="preserve">
+    <value>Price</value>
+  </data>
+  <data name="Supply_DataGridView_ColumnTotal" xml:space="preserve">
+    <value>Amount</value>
+  </data>
+  <data name="Supply_DataGridView_ColumnSupplier" xml:space="preserve">
+    <value>Supplier</value>
+  </data>
+  <data name="Supply_DataGridView_ColumnExpiry" xml:space="preserve">
+    <value>Expiration date</value>
+  </data>
+  <data name="DeleteCategory_Form_Title" xml:space="preserve">
+    <value>Delete Category</value>
+  </data>
+  <data name="DeleteCategory_LabelTitle_Text" xml:space="preserve">
+    <value>Delete Category</value>
+  </data>
+  <data name="DeleteCategory_ButtonDelete_Text" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="DeleteCategory_ButtonCancel_Text" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="DeleteProduct_Form_Title" xml:space="preserve">
+    <value>Delete Product</value>
+  </data>
+  <data name="DeleteProduct_LabelTitle_Text" xml:space="preserve">
+    <value>Delete Product</value>
+  </data>
+  <data name="DeleteProduct_ButtonDelete_Text" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="DeleteProduct_ButtonCancel_Text" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="DeleteProduct_TextBoxArt_Watermark" xml:space="preserve">
+    <value>Enter product article number</value>
+  </data>
+  <data name="DeleteProductWithDetails" xml:space="preserve">
+    <value>Deleting product: {0} - {1}</value>
+  </data>
+  <data name="EditCategory_Form_Title" xml:space="preserve">
+    <value>Edit Category</value>
+  </data>
+  <data name="EditCategory_LabelTitle_Text" xml:space="preserve">
+    <value>Edit Category</value>
+  </data>
+  <data name="EditCategory_ButtonEdit_Text" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="EditCategory_ButtonCancel_Text" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="EditCategory_TextBoxNewName_Watermark" xml:space="preserve">
+    <value>Enter name</value>
+  </data>
+  <data name="RedactProduct_Form_Title" xml:space="preserve">
+    <value>Edit Product</value>
+  </data>
+  <data name="RedactProduct_LabelTitle_Text" xml:space="preserve">
+    <value>Edit Product</value>
+  </data>
+  <data name="RedactProduct_TextBoxArt_Watermark" xml:space="preserve">
+    <value>Article</value>
+  </data>
+  <data name="RedactProduct_TextBoxName_Watermark" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="RedactProduct_TextBoxCategory_Watermark" xml:space="preserve">
+    <value>Category</value>
+  </data>
+  <data name="RedactProduct_TextBoxPrice_Watermark" xml:space="preserve">
+    <value>Price</value>
+  </data>
+  <data name="RedactProduct_ButtonRedact_Text" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="RedactProduct_ButtonCancel_Text" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Registration_Form_Title" xml:space="preserve">
+    <value>Registration</value>
+  </data>
+  <data name="Registration_LabelTitle_Text" xml:space="preserve">
+    <value>Registration</value>
+  </data>
+  <data name="Registration_LabelSurname_Text" xml:space="preserve">
+    <value>Surname  </value>
+  </data>
+  <data name="Registration_LabelName_Text" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="Registration_LabelLastname_Text" xml:space="preserve">
+    <value>Lastname </value>
+  </data>
+  <data name="Registration_LabelLogin_Text" xml:space="preserve">
+    <value>Login</value>
+  </data>
+  <data name="Registration_LabelPassword_Text" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="Registration_LabelConfirmPassword_Text" xml:space="preserve">
+    <value>Confirm Password</value>
+  </data>
+  <data name="Registration_ButtonRegister_Text" xml:space="preserve">
+    <value>Sign up</value>
+  </data>
+  <data name="Registration_ButtonEnter_Text" xml:space="preserve">
+    <value>Already have an account? Sign in</value>
+  </data>
+  <data name="Registration_TextBoxSurname_Watermark" xml:space="preserve">
+    <value>Enter last name</value>
+  </data>
+  <data name="Registration_TextBoxName_Watermark" xml:space="preserve">
+    <value>Enter first name</value>
+  </data>
+  <data name="Registration_TextBoxLastname_Watermark" xml:space="preserve">
+    <value>Enter patronymic</value>
+  </data>
+  <data name="Registration_TextBoxLogin_Watermark" xml:space="preserve">
+    <value>Enter login</value>
+  </data>
+  <data name="Registration_TextBoxPassword_Watermark" xml:space="preserve">
+    <value>Enter password</value>
+  </data>
+  <data name="Registration_TextBoxConfirmPassword_Watermark" xml:space="preserve">
+    <value>Repeat password</value>
+  </data>
+  <data name="Report_Form_Title" xml:space="preserve">
+    <value>Report</value>
+  </data>
+  <data name="Report_LabelTitle_Text" xml:space="preserve">
+    <value>Report</value>
+  </data>
+  <data name="Report_LabelPeriod_Text" xml:space="preserve">
+    <value>Select period:</value>
+  </data>
+  <data name="Report_LabelFrom_Text" xml:space="preserve">
+    <value>from</value>
+  </data>
+  <data name="Report_LabelTo_Text" xml:space="preserve">
+    <value>to</value>
+  </data>
+  <data name="Report_ButtonExport_Text" xml:space="preserve">
+    <value>Report  Button Export  Text</value>
+  </data>
+  <data name="Report_LabelTotalAmount_Text" xml:space="preserve">
+    <value>Total Amount(RUB):</value>
+  </data>
+  <data name="Report_LabelProfit_Text" xml:space="preserve">
+    <value>Profit (RUB):</value>
+  </data>
+  <data name="Report_ColumnNumber" xml:space="preserve">
+    <value>Report  Column Number</value>
+  </data>
+  <data name="Report_ColumnArticle" xml:space="preserve">
+    <value>Article</value>
+  </data>
+  <data name="Report_ColumnName" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="Report_ColumnQuantity" xml:space="preserve">
+    <value>Quantity</value>
+  </data>
+  <data name="Report_ColumnPrice" xml:space="preserve">
+    <value>&#x8;Price (in rubles)</value>
+  </data>
+  <data name="Report_ColumnProfit" xml:space="preserve">
+    <value>Profit</value>
+  </data>
+  <data name="Report_ColumnTotal" xml:space="preserve">
+    <value>Amount</value>
+  </data>
+  <data name="Report_ColumnRecipient" xml:space="preserve">
+    <value>Recipient</value>
+  </data>
+  <data name="Report_ColumnStorekeeper" xml:space="preserve">
+    <value>Storekeeper</value>
+  </data>
+  <data name="Report_ColumnDate" xml:space="preserve">
+    <value>Date and time (Moscow time)</value>
+  </data>
+  <data name="History_Form_Title" xml:space="preserve">
+    <value>Shipment history</value>
+  </data>
+  <data name="History_TextBox_Text" xml:space="preserve">
+    <value>Shipment history</value>
+  </data>
+  <data name="History_LabelFrom_Text" xml:space="preserve">
+    <value>from</value>
+  </data>
+  <data name="History_LabelTo_Text" xml:space="preserve">
+    <value>to</value>
+  </data>
+  <data name="History_ButtonApplyFilter_Text" xml:space="preserve">
+    <value>Apply</value>
+  </data>
+  <data name="Storekeeper_Form_Title" xml:space="preserve">
+    <value>Storekeeper - Warehouse management</value>
+  </data>
+  <data name="Storekeeper_ButtonExitText" xml:space="preserve">
+    <value>Exit</value>
+  </data>
+  <data name="Storekeeper_ButtonCurrencyText" xml:space="preserve">
+    <value>Currency selection</value>
+  </data>
+  <data name="Storekeeper_ButtonSupplyText" xml:space="preserve">
+    <value>Supply</value>
+  </data>
+  <data name="Storekeeper_ButtonShipmentText" xml:space="preserve">
+    <value>Create shipment</value>
+  </data>
+  <data name="Storekeeper_TextBoxSearch_Text" xml:space="preserve">
+    <value>Search:</value>
+  </data>
+  <data name="Storekeeper_ToolStripText" xml:space="preserve">
+    <value>Storekeeper</value>
+  </data>
+  <data name="DataGridView_ColumnArticle" xml:space="preserve">
+    <value>Article</value>
+  </data>
+  <data name="DataGridView_ColumnName" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="DataGridView_ColumnCategory" xml:space="preserve">
+    <value>Category</value>
+  </data>
+  <data name="DataGridView_ColumnUnit" xml:space="preserve">
+    <value>Unit</value>
+  </data>
+  <data name="DataGridView_ColumnExpiryDate" xml:space="preserve">
+    <value>Expiration date</value>
+  </data>
+  <data name="DataGridView_ColumnPrice" xml:space="preserve">
+    <value>Price</value>
+  </data>
+  <data name="DataGridView_ColumnBalance" xml:space="preserve">
+    <value>Stock</value>
+  </data>
+  <data name="ScrapMetal_Title" xml:space="preserve">
+    <value>Scrap metal</value>
+  </data>
+  <data name="ScrapMetal_ReturnMessage" xml:space="preserve">
+    <value>{0} item(s) delivered as scrap metal. Return received: {1:F2} ₽. Loss from defect reduced by this amount.</value>
+  </data>
+  <data name="ScrapMetal_NoReturnMessage" xml:space="preserve">
+    <value>Shipment contains {0} metal item(s) that were NOT delivered as scrap metal. No return received.</value>
+  </data>
+  <data name="Warehouse_Title" xml:space="preserve">
+    <value>Warehouse heat map</value>
+  </data>
+  <data name="Warehouse_SearchFound" xml:space="preserve">
+    <value>Found: {0} cells</value>
+  </data>
+  <data name="Warehouse_SearchNothingFound" xml:space="preserve">
+    <value>Nothing found</value>
+  </data>
+  <data name="Warehouse_SearchMinLength" xml:space="preserve">
+    <value>Enter at least 3 characters to search</value>
+  </data>
+  <data name="Warehouse_SearchTitle" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="Warehouse_SearchResultTitle" xml:space="preserve">
+    <value>Search result</value>
+  </data>
+  <data name="Warehouse_EmptyCell" xml:space="preserve">
+    <value>Empty</value>
+  </data>
+  <data name="Warehouse_NoExpiryRequired" xml:space="preserve">
+    <value>Not required</value>
+  </data>
+  <data name="Warehouse_FreeCell" xml:space="preserve">
+    <value>Free cell</value>
+  </data>
+  <data name="Warehouse_CellEmptyMessage" xml:space="preserve">
+    <value>Cell is empty</value>
+  </data>
+  <data name="Warehouse_CellCodeLabel" xml:space="preserve">
+    <value>Cell: {0}</value>
+  </data>
+  <data name="Warehouse_ProductNameLabel" xml:space="preserve">
+    <value>Product: {0}</value>
+  </data>
+  <data name="Warehouse_ArticleLabel" xml:space="preserve">
+    <value>Article: {0}</value>
+  </data>
+  <data name="Warehouse_BalanceLabel" xml:space="preserve">
+    <value>Stock: {0} pcs</value>
+  </data>
+  <data name="Warehouse_CategoryLabel" xml:space="preserve">
+    <value>Category: {0}</value>
+  </data>
+  <data name="Warehouse_ExpiryLabel" xml:space="preserve">
+    <value>Expiration date: {0}</value>
+  </data>
+  <data name="Warehouse_UnitPieceShort" xml:space="preserve">
+    <value>pcs.</value>
+  </data>
+  <data name="CurrentUserNotFound" xml:space="preserve">
+    <value>Current user not found</value>
+  </data>
+  <data name="StorekeeperForm_SearchText" xml:space="preserve">
+    <value>Search:</value>
+  </data>
+  <data name="StorekeeperForm_ToolStripStorekeeperText" xml:space="preserve">
+    <value>Storekeeper</value>
+  </data>
+  <data name="StorekeeperForm_Title" xml:space="preserve">
+    <value>Storekeeper - Warehouse management</value>
+  </data>
+  <data name="ErrorAuthorization" xml:space="preserve">
+    <value>Authorization error</value>
+  </data>
+  <data name="RoleNotAssigned" xml:space="preserve">
+    <value>Not assigned</value>
+  </data>
+  <data name="RoleAdministrator" xml:space="preserve">
+    <value>Administrator</value>
+  </data>
+  <data name="RoleStorekeeper" xml:space="preserve">
+    <value>Storekeeper</value>
+  </data>
+  <data name="ErrorProductAlreadyDeleted" xml:space="preserve">
+    <value>Product is already deleted</value>
+  </data>
+  <data name="ErrorProductNotFoundOrDeleted" xml:space="preserve">
+    <value>Product was not found or was deleted</value>
+  </data>
+  <data name="ProductDisplay_InStockFormat" xml:space="preserve">
+    <value>{0} (in stock: {1})</value>
+  </data>
+  <data name="ProductDisplay_WaitingSupplyFormat" xml:space="preserve">
+    <value>{0} (awaiting supply)</value>
+  </data>
+  <data name="Warehouse_SearchLabel" xml:space="preserve">
+    <value>Search:</value>
+  </data>
+  <data name="Warehouse_LegendTitle" xml:space="preserve">
+    <value>Legend</value>
+  </data>
+  <data name="Warehouse_CardTitle" xml:space="preserve">
+    <value>Product card</value>
+  </data>
+  <data name="Warehouse_LegendRed" xml:space="preserve">
+    <value>Quantity less than 10 pcs</value>
+  </data>
+  <data name="Warehouse_LegendGreen" xml:space="preserve">
+    <value>Expiration date is more than 30 days</value>
+  </data>
+  <data name="Warehouse_LegendYellow" xml:space="preserve">
+    <value>Expiration date from 7 to 30 days</value>
+  </data>
+  <data name="Warehouse_LegendOrange" xml:space="preserve">
+    <value>Expiration date is less than 7 days</value>
+  </data>
+  <data name="Warehouse_LegendRule" xml:space="preserve">
+    <value>expiration date is checked first, then quantity</value>
+  </data>
+  <data name="Warehouse_CardNameCaption" xml:space="preserve">
+    <value>Name:</value>
+  </data>
+  <data name="Warehouse_CardCategoryCaption" xml:space="preserve">
+    <value>Category:</value>
+  </data>
+  <data name="Warehouse_CardStockCaption" xml:space="preserve">
+    <value>Stock:</value>
+  </data>
+  <data name="Warehouse_CardExpiryCaption" xml:space="preserve">
+    <value>Expiration date:</value>
+  </data>
+  <data name="Warehouse_CardCellCaption" xml:space="preserve">
+    <value>Cell:</value>
+  </data>
+  <data name="Warehouse_InfoTitle" xml:space="preserve">
+    <value>General information:</value>
+  </data>
+  <data name="Warehouse_TotalCount" xml:space="preserve">
+    <value>Total products</value>
+  </data>
+  <data name="Warehouse_ExpSoon" xml:space="preserve">
+    <value>Expiring soon (&lt;7 days)</value>
+  </data>
+  <data name="Warehouse_ExpNormal" xml:space="preserve">
+    <value>Expires in 7-30 days:</value>
+  </data>
+  <data name="Warehouse_LowStock" xml:space="preserve">
+    <value>Quantity &lt; 10 pcs</value>
+  </data>
+  <data name="Warehouse_LegendBlue" xml:space="preserve">
+    <value>No expiration date</value>
+  </data>
+  <data name="AddProduct_ArticleWatermark" xml:space="preserve">
+    <value>Enter article number</value>
+  </data>
+  <data name="AddProduct_NameWatermark" xml:space="preserve">
+    <value>Enter name</value>
+  </data>
+  <data name="AddProduct_PriceWatermark" xml:space="preserve">
+    <value>Enter price</value>
+  </data>
+  <data name="Warehouse_Button" xml:space="preserve">
+    <value>Warehouse</value>
+  </data>
+  <data name="CurrencyCode_RUB" xml:space="preserve">
+    <value>RUB</value>
+  </data>
+  <data name="Warehouse_Dash" xml:space="preserve">
+    <value>—</value>
+  </data>
+  <data name="CriticalApplicationError" xml:space="preserve">
+    <value>Critical error starting the application</value>
+  </data>
+  <data name="SupplyCurrencyTooltip_NoSupplyData" xml:space="preserve">
+    <value>{0}\nNo supply data\nPrice is displayed in {1}</value>
+  </data>
+  <data name="SupplyCurrencyTooltip_RubSupply" xml:space="preserve">
+    <value>{0}\nPurchase in rubles\nCurrent currency: {1}</value>
+  </data>
+  <data name="SupplyCurrencyTooltip_ForeignSupply" xml:space="preserve">
+    <value>{0}\nSupply currency: {1}\nRate at supply time: 1 {2} = {3:F4} {1}</value>
+  </data>
+  <data name="CurrencySymbol_RUB" xml:space="preserve">
+    <value>₽</value>
+  </data>
+  <data name="Settings_Form_Title" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="Settings_TextBox_Title" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="Settings_ButtonChoose_Text" xml:space="preserve">
+    <value>Select</value>
+  </data>
+  <data name="Settings_ButtonCancel_Text" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Language_Russian" xml:space="preserve">
+    <value>Russian</value>
+  </data>
+  <data name="Language_English" xml:space="preserve">
+    <value>English</value>
+  </data>
+  <data name="Language_Chuvash" xml:space="preserve">
+    <value>Chuvash</value>
+  </data>
+  <data name="Language_Tatar" xml:space="preserve">
+    <value>Tatar</value>
+  </data>
+  <data name="Settings_CurrencyWatermark" xml:space="preserve">
+    <value>Select currency</value>
+  </data>
+  <data name="Settings_LanguageWatermark" xml:space="preserve">
+    <value>Select language</value>
+  </data>
+  <data name="AdminForm_ButtonSettingsText" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="Storekeeper_ButtonSettingsText" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="ErrorOpenSettingsForm" xml:space="preserve">
+    <value>Failed to open settings form</value>
+  </data>
+  <data name="ErrorEnterInn" xml:space="preserve">
+    <value> Enter INN</value>
+  </data>
+  <data name="ErrorDaDataApiKeyMissing" xml:space="preserve">
+    <value>API key is not specified</value>
+  </data>
+  <data name="ErrorCounterpartyNotFound" xml:space="preserve">
+    <value>No counterparty found with this INN</value>
+  </data>
+  <data name="CounterpartyAllowedMessage" xml:space="preserve">
+    <value>Counterparty verified. No risk found</value>
+  </data>
+  <data name="CounterpartyRiskMessage" xml:space="preserve">
+    <value>Counterparty found, but there is a risk</value>
+  </data>
+  <data name="CounterpartyBlockedMessage" xml:space="preserve">
+    <value>Counterparty is prohibited from shipment</value>
+  </data>
+  <data name="ErrorEnterCity" xml:space="preserve">
+    <value>Select the delivery city</value>
+  </data>
+  <data name="ErrorOpenWeatherApiKeyMissing" xml:space="preserve">
+    <value>API key is not specified</value>
+  </data>
+  <data name="ErrorWeatherForecastLoad" xml:space="preserve">
+    <value>Failed to get the weather forecast</value>
+  </data>
+  <data name="ShipmentCustomerTypeWatermark" xml:space="preserve">
+    <value>Select the customer type</value>
+  </data>
+  <data name="ShipmentCustomerTypeLegalEntity" xml:space="preserve">
+    <value>Legal entity</value>
+  </data>
+  <data name="ShipmentCustomerTypeOrganization" xml:space="preserve">
+    <value>Organization</value>
+  </data>
+  <data name="ShipmentInnWatermark" xml:space="preserve">
+    <value>Enter INN</value>
+  </data>
+  <data name="ErrorInnDigitsOnly" xml:space="preserve">
+    <value> INN must contain only digits</value>
+  </data>
+  <data name="ErrorSelectCustomerType" xml:space="preserve">
+    <value>Select the customer type</value>
+  </data>
+  <data name="ErrorLegalEntityInnLength" xml:space="preserve">
+    <value>For a legal entity, the INN must contain 12 digits</value>
+  </data>
+  <data name="ErrorOrganizationInnLength" xml:space="preserve">
+    <value>For a legal entity, the INN must contain 10 digits</value>
+  </data>
+  <data name="SupplyInnWatermark" xml:space="preserve">
+    <value>Enter INN</value>
+  </data>
+  <data name="SupplySupplierTypeWatermark" xml:space="preserve">
+    <value>Select supplier type</value>
+  </data>
+  <data name="SupplySupplierTypeLegalEntity" xml:space="preserve">
+    <value>Legal entity</value>
+  </data>
+  <data name="SupplySupplierTypeOrganization" xml:space="preserve">
+    <value>Organization</value>
+  </data>
+  <data name="SupplySupplierTypeIndividual" xml:space="preserve">
+    <value>Individual entrepreneur</value>
+  </data>
+  <data name="ErrorSelectSupplierType" xml:space="preserve">
+    <value>Select supplier type</value>
+  </data>
+  <data name="ErrorSupplierNotChecked" xml:space="preserve">
+    <value>Check the supplier by INN</value>
+  </data>
+  <data name="ErrorSupplierBlocked" xml:space="preserve">
+    <value>Supplier is blocked for supply</value>
+  </data>
+  <data name="ConfirmSupplierRisk" xml:space="preserve">
+    <value>Risk found for supplier. Continue with the supply?</value>
+  </data>
+  <data name="SupplierStatusWarning" xml:space="preserve">
+    <value>Supplier status: high risk</value>
+  </data>
+  <data name="SupplierStatusOk" xml:space="preserve">
+    <value>Supplier status: verified</value>
+  </data>
+  <data name="SupplierCheckRequired" xml:space="preserve">
+    <value> Supplier verification required</value>
+  </data>
+  <data name="ShipmentTownWatermark" xml:space="preserve">
+    <value>Enter delivery city</value>
+  </data>
+  <data name="ErrorSelectTown" xml:space="preserve">
+    <value>Select delivery city</value>
+  </data>
+  <data name="ErrorInvalidTown" xml:space="preserve">
+    <value>Delivery city not recognized. Check the input</value>
+  </data>
+  <data name="WarningTemperatureLimit" xml:space="preserve">
+    <value>Temperature in the delivery city exceeds permissible limits</value>
+  </data>
+  <data name="ThermoContainerAddedMessage" xml:space="preserve">
+    <value>Temperature in the delivery city exceeds permissible limits for the next 3 days. A thermocontainer worth {0:N2} RUB has been added for each unit of goods. Total cost of thermocontainers: {1:N2} RUB.</value>
+  </data>
+  <data name="ThermoContainerAddedTitle" xml:space="preserve">
+    <value>Thermocontainer Added</value>
+  </data>
+  <data name="ShipmentTown_Moscow" xml:space="preserve">
+    <value>Москва</value>
+  </data>
+  <data name="ShipmentTown_SaintPetersburg" xml:space="preserve">
+    <value>Санкт-Петербург</value>
+  </data>
+  <data name="ShipmentTown_Novosibirsk" xml:space="preserve">
+    <value>Новосибирск</value>
+  </data>
+  <data name="ShipmentTown_Ekaterinburg" xml:space="preserve">
+    <value>Екатеринбург</value>
+  </data>
+  <data name="ShipmentTown_Kazan" xml:space="preserve">
+    <value>Казань</value>
+  </data>
+  <data name="ShipmentTown_NizhnyNovgorod" xml:space="preserve">
+    <value>Нижний Новгород</value>
+  </data>
+  <data name="ShipmentTown_Chelyabinsk" xml:space="preserve">
+    <value>Челябинск</value>
+  </data>
+  <data name="ShipmentTown_Samara" xml:space="preserve">
+    <value>Самара</value>
+  </data>
+  <data name="ShipmentTown_Omsk" xml:space="preserve">
+    <value>Омск</value>
+  </data>
+  <data name="ShipmentTown_Rostov" xml:space="preserve">
+    <value>Ростов-на-Дону</value>
+  </data>
+  <data name="ShipmentTown_Ufa" xml:space="preserve">
+    <value>Уфа</value>
+  </data>
+  <data name="ShipmentTown_Krasnoyarsk" xml:space="preserve">
+    <value>Красноярск</value>
+  </data>
+  <data name="ShipmentTown_Perm" xml:space="preserve">
+    <value>Пермь</value>
+  </data>
+  <data name="ShipmentTown_Voronezh" xml:space="preserve">
+    <value>Воронеж</value>
+  </data>
+  <data name="ShipmentTown_Volgograd" xml:space="preserve">
+    <value>Волгоград</value>
+  </data>
+  <data name="ErrorCounterpartyNotChecked" xml:space="preserve">
+    <value>Check the customer by INN</value>
+  </data>
+  <data name="ErrorCounterpartyBlocked" xml:space="preserve">
+    <value>Customer is blocked for shipment</value>
+  </data>
+  <data name="ConfirmCounterpartyRisk" xml:space="preserve">
+    <value>Risk found for customer. Continue with the shipment?</value>
+  </data>
+  <data name="CounterpartyStatusWarning" xml:space="preserve">
+    <value>Customer status: high risk</value>
+  </data>
+  <data name="CounterpartyStatusOk" xml:space="preserve">
+    <value>✓ Customer status: verified</value>
+  </data>
+  <data name="CounterpartyCheckRequired" xml:space="preserve">
+    <value>Customer verification required</value>
+  </data>
+  <data name="Warehouse_FilterButton" xml:space="preserve">
+    <value>Filter</value>
+  </data>
+  <data name="WarehouseFilter_Title" xml:space="preserve">
+    <value>Warehouse heat map (filter)</value>
+  </data>
+  <data name="WarehouseFilter_SortBy" xml:space="preserve">
+    <value>Sort by:</value>
+  </data>
+  <data name="WarehouseFilter_SortExpiry" xml:space="preserve">
+    <value>By expiry</value>
+  </data>
+  <data name="WarehouseFilter_SortQuantity" xml:space="preserve">
+    <value>By quantity</value>
+  </data>
+  <data name="WarehouseFilter_Apply" xml:space="preserve">
+    <value>Apply</value>
+  </data>
+  <data name="WarehouseFilter_Reset" xml:space="preserve">
+    <value>Reset</value>
+  </data>
+  <data name="Category_GroupBoxScrapMetal_Text" xml:space="preserve">
+    <value>Scrap metal</value>
+  </data>
+  <data name="Category_RadioButtonScrapYes_Text" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="Category_RadioButtonScrapNo_Text" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="ErrorScrapMetalPurchasePriceMissing" xml:space="preserve">
+    <value>Cannot calculate scrap metal price: purchase price is missing</value>
+  </data>
+  <data name="RoleAdministratorforcheck" xml:space="preserve">
+    <value>Администратор</value>
+  </data>
+  <data name="RoleStorekeeperforcheck" xml:space="preserve">
+    <value>Кладовщик</value>
+  </data>
+  <data name="ErrorThermoContainerNotFound" xml:space="preserve">
+    <value>Thermo container not found in the database</value>
+  </data>
+  <data name="ErrorNotEnoughThermoContainers" xml:space="preserve">
+    <value>Not enough thermo containers in stock</value>
+  </data>
+  <data name="ShipmentTown_Bangkok" xml:space="preserve">
+    <value>Бангкок</value>
+  </data>
+</root>
