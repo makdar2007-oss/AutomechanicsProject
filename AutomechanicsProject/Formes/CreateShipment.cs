@@ -800,10 +800,12 @@ namespace AutomechanicsProject.Formes
                 };
             }).ToList();
             dataGridViewShipment.DataSource = displayList;
+            ApplyShipmentGridHeaders();
 
             if (dataGridViewShipment.Columns["ScrapMetal"] != null)
             {
                 dataGridViewShipment.Columns["ScrapMetal"].Visible = (currentShipmentType == ShipmentTypeEnum.Defect);
+                dataGridViewShipment.Columns["ScrapMetal"].ReadOnly = true;
             }
 
             if (currentShipmentType == ShipmentTypeEnum.Defect)
@@ -821,7 +823,66 @@ namespace AutomechanicsProject.Formes
 
             UpdateDisplay(totalProfit);
         }
+        /// <summary>
+        /// Применяет локализацию к столбцам таблицы отгрузки
+        /// </summary>
+        private void ApplyShipmentGridHeaders()
+        {
+            if (dataGridViewShipment.Columns["Article"] != null)
+            {
+                dataGridViewShipment.Columns["Article"].HeaderText = Resources.Report_ColumnArticle;
+            }
 
+            if (dataGridViewShipment.Columns["Name"] != null)
+            {
+                dataGridViewShipment.Columns["Name"].HeaderText = Resources.Report_ColumnName;
+            }
+
+            if (dataGridViewShipment.Columns["Quantity"] != null)
+            {
+                dataGridViewShipment.Columns["Quantity"].HeaderText = Resources.Report_ColumnQuantity;
+            }
+
+            if (dataGridViewShipment.Columns["Price"] != null)
+            {
+                dataGridViewShipment.Columns["Price"].HeaderText = Resources.Report_ColumnPrice;
+            }
+
+            if (dataGridViewShipment.Columns["Profit"] != null)
+            {
+                dataGridViewShipment.Columns["Profit"].HeaderText = Resources.Report_ColumnProfit;
+            }
+
+            if (dataGridViewShipment.Columns["Total"] != null)
+            {
+                dataGridViewShipment.Columns["Total"].HeaderText = Resources.Report_ColumnTotal;
+            }
+
+            if (dataGridViewShipment.Columns["RecipientName"] != null)
+            {
+                dataGridViewShipment.Columns["RecipientName"].HeaderText = Resources.Report_ColumnRecipient;
+            }
+
+            if (dataGridViewShipment.Columns["ScrapMetal"] != null)
+            {
+                dataGridViewShipment.Columns["ScrapMetal"].HeaderText = Resources.Category_GroupBoxScrapMetal_Text;
+            }
+
+            if (dataGridViewShipment.Columns["ProductId"] != null)
+            {
+                dataGridViewShipment.Columns["ProductId"].Visible = false;
+            }
+
+            if (dataGridViewShipment.Columns["IsMetal"] != null)
+            {
+                dataGridViewShipment.Columns["IsMetal"].Visible = false;
+            }
+
+            if (dataGridViewShipment.Columns["IsScrapped"] != null)
+            {
+                dataGridViewShipment.Columns["IsScrapped"].Visible = false;
+            }
+        }
         /// <summary>
         /// Обновляет отображение итоговой суммы и прибыли
         /// </summary>
