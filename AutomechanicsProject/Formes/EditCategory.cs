@@ -20,6 +20,7 @@ namespace AutomechanicsProject.Formes
         private readonly ICategoryService _categoryService;
         private Guid? selectedCategoryId;
         private string selectedCategoryName;
+        private bool selectedCategoryIsScrapMetal;
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         /// <summary>
@@ -32,6 +33,10 @@ namespace AutomechanicsProject.Formes
             labelTitle.Text = Resources.EditCategory_LabelTitle_Text;
             buttonEdit.Text = Resources.EditCategory_ButtonEdit_Text;
             buttonCancel.Text = Resources.EditCategory_ButtonCancel_Text;
+
+            groupBoxScrapMetal.Text = Resources.Category_GroupBoxScrapMetal_Text;
+            radioButtonScrapYes.Text = Resources.Category_RadioButtonScrapYes_Text;
+            radioButtonScrapNo.Text = Resources.Category_RadioButtonScrapNo_Text;
         }
 
         /// <summary>
@@ -46,6 +51,8 @@ namespace AutomechanicsProject.Formes
             _categoryService = categoryService ?? throw new ArgumentNullException(nameof(categoryService));
 
             TextBoxHelper.SetupWatermarkTextBox(textBoxNewName, Resources.EditCategoryWatermark);
+            groupBoxScrapMetal.Enabled = false;
+            radioButtonScrapNo.Checked = true;
         }
 
         /// <summary>
@@ -78,6 +85,10 @@ namespace AutomechanicsProject.Formes
 
                 selectedCategoryId = null;
                 selectedCategoryName = null;
+                selectedCategoryIsScrapMetal = false;
+
+                groupBoxScrapMetal.Enabled = false;
+                radioButtonScrapNo.Checked = true;
             }
             catch (Exception ex)
             {
@@ -100,10 +111,16 @@ namespace AutomechanicsProject.Formes
 
                 selectedCategoryId = selectedItem.Id;
                 selectedCategoryName = _categoryService.GetCategoryNameById(selectedItem.Id);
+                selectedCategoryIsScrapMetal = _categoryService.GetCategoryIsScrapMetalById(selectedItem.Id);
 
                 textBoxNewName.Text = selectedCategoryName;
                 textBoxNewName.ForeColor = System.Drawing.Color.Black;
                 textBoxNewName.Enabled = true;
+
+                groupBoxScrapMetal.Enabled = true;
+                radioButtonScrapYes.Checked = selectedCategoryIsScrapMetal;
+                radioButtonScrapNo.Checked = !selectedCategoryIsScrapMetal;
+
                 buttonEdit.Enabled = true;
             }
             else
@@ -115,6 +132,10 @@ namespace AutomechanicsProject.Formes
 
                 selectedCategoryId = null;
                 selectedCategoryName = null;
+                selectedCategoryIsScrapMetal = false;
+
+                groupBoxScrapMetal.Enabled = false;
+                radioButtonScrapNo.Checked = true;
             }
         }
 
@@ -139,7 +160,9 @@ namespace AutomechanicsProject.Formes
                 return;
             }
 
-            if (newName == selectedCategoryName)
+            var isScrapMetal = radioButtonScrapYes.Checked;
+
+            if (newName == selectedCategoryName && isScrapMetal == selectedCategoryIsScrapMetal)
             {
                 MessageBox.Show(Resources.InfoCategoryNameNotChanged, Resources.TitleInformation,
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -150,7 +173,7 @@ namespace AutomechanicsProject.Formes
             {
                 var oldName = selectedCategoryName;
 
-                _categoryService.EditCategory(selectedCategoryId.Value, newName);
+                _categoryService.EditCategory(selectedCategoryId.Value, newName, isScrapMetal);
 
                 logger.Info($"Категория '{oldName}' переименована в '{newName}'");
 
@@ -174,8 +197,9 @@ namespace AutomechanicsProject.Formes
         private void ButtonCancel_Click(object sender, EventArgs e)
         {
             var hasChanges = selectedCategoryId.HasValue &&
-                 textBoxNewName.Text != selectedCategoryName &&
-                 textBoxNewName.Text != Resources.EditCategoryWatermark;
+                 textBoxNewName.Text != Resources.EditCategoryWatermark &&
+                 (textBoxNewName.Text != selectedCategoryName ||
+                  radioButtonScrapYes.Checked != selectedCategoryIsScrapMetal);
 
             if (hasChanges)
             {

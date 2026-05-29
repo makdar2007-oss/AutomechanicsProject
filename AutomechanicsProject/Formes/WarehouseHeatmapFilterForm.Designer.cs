@@ -94,12 +94,14 @@
             // 
             // comboBoxSortBy
             // 
-            this.comboBoxSortBy.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxSortBy.FormattingEnabled = true;
-            this.comboBoxSortBy.Location = new System.Drawing.Point(238, 79);
+            this.comboBoxSortBy.Location = new System.Drawing.Point(24, 81);
             this.comboBoxSortBy.Name = "comboBoxSortBy";
-            this.comboBoxSortBy.Size = new System.Drawing.Size(276, 33);
+            this.comboBoxSortBy.Size = new System.Drawing.Size(459, 33);
             this.comboBoxSortBy.TabIndex = 5;
+            this.comboBoxSortBy.Enter += new System.EventHandler(this.comboBoxSortBy_Enter);
+            this.comboBoxSortBy.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.comboBoxSortBy_KeyPress);
+            this.comboBoxSortBy.Leave += new System.EventHandler(this.comboBoxSortBy_Leave);
             // 
             // labelSortBy
             // 
@@ -111,6 +113,7 @@
             this.labelSortBy.Size = new System.Drawing.Size(205, 29);
             this.labelSortBy.TabIndex = 4;
             this.labelSortBy.Text = "Сортировать по:";
+            this.labelSortBy.Visible = false;
             // 
             // labelmain
             // 

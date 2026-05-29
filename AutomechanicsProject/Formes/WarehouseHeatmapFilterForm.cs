@@ -22,6 +22,7 @@ namespace AutomechanicsProject.Formes
 
         private List<WarehouseCellViewModel> _allCells = new List<WarehouseCellViewModel>();
         private List<WarehouseCellViewModel> _visibleCells = new List<WarehouseCellViewModel>();
+        private bool _isSortWatermark = true;
 
         /// <summary>
         /// Создает форму фильтрации тепловой карты склада
@@ -50,10 +51,13 @@ namespace AutomechanicsProject.Formes
             buttonApply.Text = Resources.WarehouseFilter_Apply;
             buttonReset.Text = Resources.WarehouseFilter_Reset;
 
+            labelSortBy.Visible = false;
+
             comboBoxSortBy.Items.Clear();
             comboBoxSortBy.Items.Add(Resources.WarehouseFilter_SortExpiry);
             comboBoxSortBy.Items.Add(Resources.WarehouseFilter_SortQuantity);
-            comboBoxSortBy.SelectedIndex = 0;
+
+            SetSortWatermark();
 
             labellegend.Text = Resources.Warehouse_LegendTitle;
             labelgreent.Text = Resources.Warehouse_LegendGreen;
@@ -64,7 +68,58 @@ namespace AutomechanicsProject.Formes
             laberule.Text = Resources.Warehouse_LegendRule;
         }
 
+        /// <summary>
+        /// Устанавливает подсказку в список сортировки
+        /// </summary>
+        private void SetSortWatermark()
+        {
+            _isSortWatermark = true;
+            comboBoxSortBy.SelectedIndex = -1;
+            comboBoxSortBy.Text = Resources.WarehouseFilter_SortBy;
+            comboBoxSortBy.ForeColor = Color.Gray;
+        }
 
+        /// <summary>
+        /// Убирает подсказку из списка сортировки
+        /// </summary>
+        private void RemoveSortWatermark()
+        {
+            if (!_isSortWatermark)
+            {
+                return;
+            }
+
+            _isSortWatermark = false;
+            comboBoxSortBy.Text = "";
+            comboBoxSortBy.ForeColor = Color.Black;
+        }
+
+        /// <summary>
+        /// Обрабатывает вход в список сортировки
+        /// </summary>
+        private void comboBoxSortBy_Enter(object sender, EventArgs e)
+        {
+            RemoveSortWatermark();
+        }
+
+        /// <summary>
+        /// Обрабатывает выход из списка сортировки
+        /// </summary>
+        private void comboBoxSortBy_Leave(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(comboBoxSortBy.Text))
+            {
+                SetSortWatermark();
+            }
+        }
+
+        /// <summary>
+        /// Запрещает ручной ввод в список сортировки
+        /// </summary>
+        private void comboBoxSortBy_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            e.Handled = true;
+        }
 
         /// <summary>
         /// Настраивает выбранный вариант сортировки
@@ -244,31 +299,30 @@ namespace AutomechanicsProject.Formes
                 return Color.LightGray;
             }
 
+            if (cell.Balance < LowStockLimit)
+            {
+                return Color.FromArgb(255, 128, 128);
+            }
+
             if (cell.HasExpiryDate && cell.ExpiryDate.HasValue)
             {
                 var days = (cell.ExpiryDate.Value.Date - MoscowTime.Today).Days;
 
                 if (days <= 7)
                 {
-                    return Color.Orange;
+                    return Color.FromArgb(255, 192, 128);
                 }
 
                 if (days <= 30)
                 {
-                    return Color.Khaki;
+                    return Color.FromArgb(255, 255, 128);
                 }
 
-                return Color.LightGreen;
-            }
-
-            if (cell.Balance < LowStockLimit)
-            {
-                return Color.LightCoral;
+                return Color.FromArgb(128, 255, 128);
             }
 
             return Color.LightSkyBlue;
         }
-
         /// <summary>
         /// Возвращает текст срока годности
         /// </summary>
@@ -300,13 +354,21 @@ namespace AutomechanicsProject.Formes
         /// </summary>
         private void buttonApply_Click_1(object sender, EventArgs e)
         {
+            if (_isSortWatermark)
+            {
+                return;
+            }
+
             if (comboBoxSortBy.SelectedIndex == 0)
             {
                 SortByExpiryDate();
                 return;
             }
 
-            SortByQuantity();
+            if (comboBoxSortBy.SelectedIndex == 1)
+            {
+                SortByQuantity();
+            }
         }
 
         /// <summary>
@@ -314,9 +376,9 @@ namespace AutomechanicsProject.Formes
         /// </summary>
         private void buttonReset_Click_1(object sender, EventArgs e)
         {
-            comboBoxSortBy.SelectedIndex = 0;
-
             ResetSorting();
+
+            SetSortWatermark();
         }
     }
 }

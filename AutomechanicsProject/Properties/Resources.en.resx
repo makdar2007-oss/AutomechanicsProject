@@ -274,10 +274,11 @@ Total amount: {0}</value>
     <value>Belarusian ruble</value>
   </data>
   <data name="CurrencyChangeConfirm" xml:space="preserve">
-    <value>&#x8;Settings successfully applied!
+    <value>Settings have been successfully applied.
 
 Interface language: {0}
-Currency: {1} (1 RUB = {2:F4} {1})
+Currency: {1}
+Exchange rate: 1 RUB = {2:F4} {3}
 
 All prices will be displayed in the selected currency.</value>
   </data>
@@ -936,12 +937,11 @@ Total amount: {3}</value>
   <data name="AddProduct_GroupBoxExpiry_Text" xml:space="preserve">
     <value>Expiration date</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="AddProduct_RadioButtonHasExpiry_Text" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="AddProduct_RadioButtonHasExpiry_Text" xml:space="preserve">
+    <value>Has expiration date</value>
   </data>
-  <data name="AddProduct_RadioButtonNoExpiry_Text" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="AddProduct_RadioButtonNoExpiry_Text" xml:space="preserve">
+    <value>No expiration date</value>
   </data>
   <data name="AddProduct_ButtonAddText" xml:space="preserve">
     <value>Add</value>
@@ -1046,7 +1046,7 @@ Total amount: {3}</value>
     <value>Expiration date:</value>
   </data>
   <data name="Shipment_ButtonAdd_Text" xml:space="preserve">
-    <value>&#x8;</value>
+    <value>Add to list</value>
   </data>
   <data name="Shipment_ButtonShipment_Text" xml:space="preserve">
     <value>Shipment  Button Shipment  Text</value>
@@ -1055,7 +1055,7 @@ Total amount: {3}</value>
     <value>Cancel</value>
   </data>
   <data name="Shipment_LabelTotalCaption_Text" xml:space="preserve">
-    <value>Shipment  Label Total Caption  Text</value>
+    <value>Total:</value>
   </data>
   <data name="ShipmentType_Shipment" xml:space="preserve">
     <value>Shipment</value>
@@ -1132,8 +1132,8 @@ Total amount: {3}</value>
   <data name="DeleteCategory_LabelTitle_Text" xml:space="preserve">
     <value>Delete Category</value>
   </data>
-  <data name="DeleteCategory_ButtonDelete_Text" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="DeleteCategory_ButtonDelete_Text" xml:space="preserve">
+    <value>Delete</value>
   </data>
   <data name="DeleteCategory_ButtonCancel_Text" xml:space="preserve">
     <value>Cancel</value>
@@ -1144,8 +1144,8 @@ Total amount: {3}</value>
   <data name="DeleteProduct_LabelTitle_Text" xml:space="preserve">
     <value>Delete Product</value>
   </data>
-  <data name="DeleteProduct_ButtonDelete_Text" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="DeleteProduct_ButtonDelete_Text" xml:space="preserve">
+    <value>Delete</value>
   </data>
   <data name="DeleteProduct_ButtonCancel_Text" xml:space="preserve">
     <value>Cancel</value>
@@ -1162,8 +1162,8 @@ Total amount: {3}</value>
   <data name="EditCategory_LabelTitle_Text" xml:space="preserve">
     <value>Edit Category</value>
   </data>
-  <data name="EditCategory_ButtonEdit_Text" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="EditCategory_ButtonEdit_Text" xml:space="preserve">
+    <value>Edit</value>
   </data>
   <data name="EditCategory_ButtonCancel_Text" xml:space="preserve">
     <value>Cancel</value>
@@ -1189,8 +1189,8 @@ Total amount: {3}</value>
   <data name="RedactProduct_TextBoxPrice_Watermark" xml:space="preserve">
     <value>Price</value>
   </data>
-  <data name="RedactProduct_ButtonRedact_Text" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="RedactProduct_ButtonRedact_Text" xml:space="preserve">
+    <value>Edit</value>
   </data>
   <data name="RedactProduct_ButtonCancel_Text" xml:space="preserve">
     <value>Cancel</value>
@@ -1219,11 +1219,11 @@ Total amount: {3}</value>
   <data name="Registration_LabelConfirmPassword_Text" xml:space="preserve">
     <value>Confirm Password</value>
   </data>
-  <data name="Registration_ButtonRegister_Text" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="Registration_ButtonRegister_Text" xml:space="preserve">
+    <value>Sign up</value>
   </data>
-  <data name="Registration_ButtonEnter_Text" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="Registration_ButtonEnter_Text" xml:space="preserve">
+    <value>Already have an account? Sign in</value>
   </data>
   <data name="Registration_TextBoxSurname_Watermark" xml:space="preserve">
     <value>Enter last name</value>
@@ -1249,8 +1249,8 @@ Total amount: {3}</value>
   <data name="Report_LabelTitle_Text" xml:space="preserve">
     <value>Report</value>
   </data>
-  <data name="Report_LabelPeriod_Text" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="Report_LabelPeriod_Text" xml:space="preserve">
+    <value>Select period:</value>
   </data>
   <data name="Report_LabelFrom_Text" xml:space="preserve">
     <value>from</value>
@@ -1264,8 +1264,8 @@ Total amount: {3}</value>
   <data name="Report_LabelTotalAmount_Text" xml:space="preserve">
     <value>Total Amount(RUB):</value>
   </data>
-  <data name="Report_LabelProfit_Text" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="Report_LabelProfit_Text" xml:space="preserve">
+    <value>Profit (RUB):</value>
   </data>
   <data name="Report_ColumnNumber" xml:space="preserve">
     <value>Report  Column Number</value>
@@ -1295,7 +1295,7 @@ Total amount: {3}</value>
     <value>Storekeeper</value>
   </data>
   <data name="Report_ColumnDate" xml:space="preserve">
-    <value>&#x8;Date and time (Moscow time)</value>
+    <value>Date and time (Moscow time)</value>
   </data>
   <data name="History_Form_Title" xml:space="preserve">
     <value>Shipment history</value>
@@ -1625,7 +1625,7 @@ Total amount: {3}</value>
     <value>Select the customer type</value>
   </data>
   <data name="ErrorLegalEntityInnLength" xml:space="preserve">
-    <value>For a legal entity, the INN must contain 10 digits</value>
+    <value>For a legal entity, the INN must contain 12 digits</value>
   </data>
   <data name="ErrorOrganizationInnLength" xml:space="preserve">
     <value>For a legal entity, the INN must contain 10 digits</value>
@@ -1767,5 +1767,32 @@ Total amount: {3}</value>
   </data>
   <data name="WarehouseFilter_Reset" xml:space="preserve">
     <value>Reset</value>
+  </data>
+  <data name="Category_GroupBoxScrapMetal_Text" xml:space="preserve">
+    <value>Scrap metal</value>
+  </data>
+  <data name="Category_RadioButtonScrapYes_Text" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="Category_RadioButtonScrapNo_Text" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="ErrorScrapMetalPurchasePriceMissing" xml:space="preserve">
+    <value>Cannot calculate scrap metal price: purchase price is missing</value>
+  </data>
+  <data name="RoleAdministratorforcheck" xml:space="preserve">
+    <value>Администратор</value>
+  </data>
+  <data name="RoleStorekeeperforcheck" xml:space="preserve">
+    <value>Кладовщик</value>
+  </data>
+  <data name="ErrorThermoContainerNotFound" xml:space="preserve">
+    <value>Thermo container not found in the database</value>
+  </data>
+  <data name="ErrorNotEnoughThermoContainers" xml:space="preserve">
+    <value>Not enough thermo containers in stock</value>
+  </data>
+  <data name="ShipmentTown_Bangkok" xml:space="preserve">
+    <value>Бангкок</value>
   </data>
 </root>

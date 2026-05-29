@@ -191,6 +191,9 @@ namespace AutomechanicsProject.Classes
                     .HasColumnName("name")
                     .IsRequired()
                     .HasMaxLength(255);
+                entity.Property(e => e.IsScrapMetal)
+                    .HasColumnName("is_scrap_metal")
+                    .HasDefaultValue(false);
 
                 entity.Property(e => e.IsDeleted)
                     .HasColumnName("is_deleted")

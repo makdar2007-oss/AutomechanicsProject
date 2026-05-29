@@ -22,6 +22,7 @@ namespace AutomechanicsProject.Formes
 
         private List<WarehouseCellViewModel> _allCells = new List<WarehouseCellViewModel>();
         private string _searchText = "";
+        private bool _isSearchWatermark = true;
 
         /// <summary>
         /// Создает форму тепловой карты склада
@@ -37,8 +38,24 @@ namespace AutomechanicsProject.Formes
             ConfigureSearch();
 
             Load += WarehouseHeatmapForm_Load;
+            FormClosed += WarehouseHeatmapForm_FormClosed;
+            WarehouseRefreshNotifier.WarehouseChanged += WarehouseRefreshNotifier_WarehouseChanged;
+        }
+        /// <summary>
+        /// Обновляет тепловую карту после изменения склада
+        /// </summary>
+        private void WarehouseRefreshNotifier_WarehouseChanged()
+        {
+            RefreshWarehouse();
         }
 
+        /// <summary>
+        /// Отписывает форму от обновлений склада при закрытии
+        /// </summary>
+        private void WarehouseHeatmapForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            WarehouseRefreshNotifier.WarehouseChanged -= WarehouseRefreshNotifier_WarehouseChanged;
+        }
         /// <summary>
         /// Применяет текст из ресурсов к элементам формы
         /// </summary>
@@ -49,7 +66,7 @@ namespace AutomechanicsProject.Formes
             buttonFilter.Text = Resources.Warehouse_FilterButton;
 
             labelmain.Text = Resources.Warehouse_Title;
-            lblSearch.Text = Resources.Warehouse_SearchLabel;
+            lblSearch.Visible = false;
 
             labellegend.Text = Resources.Warehouse_LegendTitle;
             labelgreent.Text = Resources.Warehouse_LegendGreen;
@@ -100,6 +117,7 @@ namespace AutomechanicsProject.Formes
             dataGridViewWarehouse.CellMouseEnter += DataGridViewWarehouse_CellMouseEnter;
         }
 
+        
         private void ConfigureSearch()
         {
             txtSearch.TextChanged -= TxtSearch_TextChanged;
@@ -107,8 +125,58 @@ namespace AutomechanicsProject.Formes
 
             txtSearch.KeyDown -= TxtSearch_KeyDown;
             txtSearch.KeyDown += TxtSearch_KeyDown;
+
+            txtSearch.Enter -= TxtSearch_Enter;
+            txtSearch.Enter += TxtSearch_Enter;
+
+            txtSearch.Leave -= TxtSearch_Leave;
+            txtSearch.Leave += TxtSearch_Leave;
+
+            SetSearchWatermark();
+        }
+        /// <summary>
+        /// Устанавливает подсказку в поле поиска
+        /// </summary>
+        private void SetSearchWatermark()
+        {
+            _isSearchWatermark = true;
+            txtSearch.Text = Resources.Warehouse_SearchLabel;
+            txtSearch.ForeColor = Color.Gray;
         }
 
+        /// <summary>
+        /// Убирает подсказку из поля поиска
+        /// </summary>
+        private void RemoveSearchWatermark()
+        {
+            if (!_isSearchWatermark)
+            {
+                return;
+            }
+
+            _isSearchWatermark = false;
+            txtSearch.Text = "";
+            txtSearch.ForeColor = Color.Black;
+        }
+
+        /// <summary>
+        /// Обрабатывает вход в поле поиска
+        /// </summary>
+        private void TxtSearch_Enter(object sender, EventArgs e)
+        {
+            RemoveSearchWatermark();
+        }
+
+        /// <summary>
+        /// Обрабатывает выход из поля поиска
+        /// </summary>
+        private void TxtSearch_Leave(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(txtSearch.Text))
+            {
+                SetSearchWatermark();
+            }
+        }
         private void RefreshWarehouse()
         {
             _warehouseHeatmapService.EnsureCellsForProducts();
@@ -232,6 +300,9 @@ namespace AutomechanicsProject.Formes
                    category.Contains(_searchText);
         }
 
+        /// <summary>
+        /// Возвращает цвет ячейки
+        /// </summary>
         private Color GetCellColor(WarehouseCellViewModel cell)
         {
             if (cell.IsEmpty)
@@ -244,31 +315,30 @@ namespace AutomechanicsProject.Formes
                 return Color.LightGray;
             }
 
+            if (cell.Balance < LowStockLimit)
+            {
+                return Color.FromArgb(255, 128, 128);
+            }
+
             if (cell.HasExpiryDate && cell.ExpiryDate.HasValue)
             {
                 var days = (cell.ExpiryDate.Value.Date - MoscowTime.Today).Days;
 
                 if (days <= 7)
                 {
-                    return Color.Orange;
+                    return Color.FromArgb(255, 192, 128);
                 }
 
                 if (days <= 30)
                 {
-                    return Color.Khaki;
+                    return Color.FromArgb(255, 255, 128);
                 }
 
-                return Color.LightGreen;
-            }
-
-            if (cell.Balance < LowStockLimit)
-            {
-                return Color.LightCoral;
+                return Color.FromArgb(128, 255, 128);
             }
 
             return Color.LightSkyBlue;
         }
-
         private Color GetSearchColor(Color baseColor, bool isMatch)
         {
             if (string.IsNullOrWhiteSpace(_searchText) || _searchText.Length < 3)
@@ -369,6 +439,13 @@ namespace AutomechanicsProject.Formes
 
         private void TxtSearch_TextChanged(object sender, EventArgs e)
         {
+            if (_isSearchWatermark)
+            {
+                _searchText = "";
+                RenderGrid();
+                return;
+            }
+
             _searchText = txtSearch.Text.Trim().ToLower();
 
             RenderGrid();
@@ -412,6 +489,13 @@ namespace AutomechanicsProject.Formes
             }
 
             e.SuppressKeyPress = true;
+
+            if (_isSearchWatermark)
+            {
+                _searchText = "";
+                ShowSearchMessage();
+                return;
+            }
 
             _searchText = txtSearch.Text.Trim().ToLower();
 

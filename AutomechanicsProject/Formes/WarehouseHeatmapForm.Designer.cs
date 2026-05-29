@@ -116,17 +116,18 @@
             this.lblSearch.AutoSize = true;
             this.lblSearch.BackColor = System.Drawing.SystemColors.Control;
             this.lblSearch.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblSearch.Location = new System.Drawing.Point(19, 75);
+            this.lblSearch.Location = new System.Drawing.Point(12, 77);
             this.lblSearch.Name = "lblSearch";
             this.lblSearch.Size = new System.Drawing.Size(89, 29);
             this.lblSearch.TabIndex = 2;
             this.lblSearch.Text = "Поиск:";
+            this.lblSearch.Visible = false;
             // 
             // txtSearch
             // 
-            this.txtSearch.Location = new System.Drawing.Point(114, 75);
+            this.txtSearch.Location = new System.Drawing.Point(17, 77);
             this.txtSearch.Name = "txtSearch";
-            this.txtSearch.Size = new System.Drawing.Size(300, 31);
+            this.txtSearch.Size = new System.Drawing.Size(387, 31);
             this.txtSearch.TabIndex = 1;
             // 
             // pnlBottom

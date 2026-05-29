@@ -23,6 +23,10 @@ namespace AutomechanicsProject.Services.Interfaces
         /// Возвращает название категории по идентификатору
         /// </summary>
         string GetCategoryNameById(Guid categoryId);
+        /// <summary>
+        /// Возвращает признак металлолома по идентификатору категории
+        /// </summary>
+        bool GetCategoryIsScrapMetalById(Guid categoryId);
 
         /// <summary>
         /// Возвращает количество товаров в категории
@@ -40,9 +44,19 @@ namespace AutomechanicsProject.Services.Interfaces
         void AddCategory(string categoryName);
 
         /// <summary>
+        /// Добавляет категорию с признаком металлолома
+        /// </summary>
+        void AddCategory(string categoryName, bool isScrapMetal);
+
+        /// <summary>
         /// Изменяет название выбранной категории
         /// </summary>
         void EditCategory(Guid categoryId, string newName);
+
+        /// <summary>
+        /// Изменяет выбранную категорию с признаком металлолома
+        /// </summary>
+        void EditCategory(Guid categoryId, string newName, bool isScrapMetal);
 
         /// <summary>
         /// Удаляет выбранную категорию

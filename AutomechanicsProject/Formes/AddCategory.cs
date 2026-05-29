@@ -29,6 +29,14 @@ namespace AutomechanicsProject.Formes
             labelAddCategory.Text = Resources.AddCategory_LabelText;
             buttonCancel.Text = Resources.AddCategory_ButtonCancelText;
             buttonAdd.Text = Resources.AddCategory_ButtonAddText;
+
+            groupBoxScrapMetal.Text = Resources.Category_GroupBoxScrapMetal_Text;
+            radioButtonScrapYes.Text = Resources.Category_RadioButtonScrapYes_Text;
+            radioButtonScrapNo.Text = Resources.Category_RadioButtonScrapNo_Text;
+
+            groupBoxScrapMetal.Text = Resources.Category_GroupBoxScrapMetal_Text;
+            radioButtonScrapYes.Text = Resources.Category_RadioButtonScrapYes_Text;
+            radioButtonScrapNo.Text = Resources.Category_RadioButtonScrapNo_Text;
         }
 
         /// <summary>
@@ -88,7 +96,9 @@ namespace AutomechanicsProject.Formes
         {
             try
             {
-                _categoryService.AddCategory(categoryName);
+                var isScrapMetal = radioButtonScrapYes.Checked;
+
+                _categoryService.AddCategory(categoryName, isScrapMetal);
 
                 logger.Info($"Категория '{categoryName}' успешно добавлена");
 

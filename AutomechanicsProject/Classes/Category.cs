@@ -24,6 +24,11 @@ namespace AutomechanicsProject.Classes
         /// </summary>
         [Column("name")]
         public string Name { get; set; }
+        /// <summary>
+        /// Показывает, является ли категория металлоломом
+        /// </summary>
+        [Column("is_scrap_metal")]
+        public bool IsScrapMetal { get; set; }
 
         /// <summary>
         /// Коллекция товаров, принадлежащих данной категории

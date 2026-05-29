@@ -239,58 +239,46 @@ namespace AutomechanicsProject.Formes
         /// </summary>
         private void buttonChoose_Click(object sender, EventArgs e)
         {
-            if (comboBoxCurrency.SelectedIndex >= 0 && comboBoxCurrency.SelectedIndex < currencies.Count)
-            {
-                var selected = currencies[comboBoxCurrency.SelectedIndex];
-                var oldCurrency = _currencySettingsService.SelectedCurrencyCode;
-                var oldRate = _currencySettingsService.CurrentExchangeRate;
-                var oldName = _currencySettingsService.SelectedCurrencyName;
-
-                _currencySettingsService.SetCurrency(
-                    selected.Code,
-                    CurrencyHelper.GetCurrencyName(selected.Code),
-                    selected.Rate);
-
-                
-
-                if (exchangeRates != null)
-                {
-                    SaveToCache(exchangeRates);
-                }
-
-                DialogResult result = MessageBox.Show(
-                    string.Format(Resources.CurrencyChangeConfirm,
-                        CurrencyHelper.GetCurrencyName(oldCurrency),
-                        _currencySettingsService.SelectedCurrencyName,
-                        _currencySettingsService.CurrentExchangeRate,
-                        _currencySettingsService.SelectedCurrencyCode,
-                        _currencySettingsService.SelectedCurrencyCode),
-                    Resources.CurrencyChangeTitle,
-                    MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Question);
-
-                if (result == DialogResult.Yes)
-                {
-                    Settings.Default.SelectedCurrency = selected.Code;
-                    Settings.Default.ExchangeRate = selected.Rate;
-                    SaveLanguage();
-                    Settings.Default.Save();
-
-                    DialogResult = DialogResult.OK;
-                    Close();
-                }
-                else
-                {
-                    _currencySettingsService.SetCurrency(oldCurrency, oldName, oldRate);
-                }
-            }
-            else
+            if (comboBoxCurrency.SelectedIndex < 0 || comboBoxCurrency.SelectedIndex >= currencies.Count)
             {
                 MessageBox.Show(Resources.PleaseSelectCurrency, Resources.TitleWarning,
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
-        }
 
+                return;
+            }
+
+            var selected = currencies[comboBoxCurrency.SelectedIndex];
+            var selectedLanguageName = comboBoxLanguage.SelectedItem?.ToString();
+            var selectedCurrencyName = CurrencyHelper.GetCurrencyName(selected.Code);
+
+            _currencySettingsService.SetCurrency(
+                selected.Code,
+                selectedCurrencyName,
+                selected.Rate);
+
+            if (exchangeRates != null)
+            {
+                SaveToCache(exchangeRates);
+            }
+
+            Settings.Default.SelectedCurrency = selected.Code;
+            Settings.Default.ExchangeRate = selected.Rate;
+            SaveLanguage();
+            Settings.Default.Save();
+
+            MessageBox.Show(
+                string.Format(Resources.CurrencyChangeConfirm,
+                    selectedLanguageName,
+                    selectedCurrencyName,
+                    selected.Rate,
+                    selected.Code),
+                Resources.CurrencyChangeTitle,
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information);
+            ApplySelectedLanguage();
+            DialogResult = DialogResult.OK;
+            Close();
+        }
         /// <summary>
         /// Сохраняет выбранный язык
         /// </summary>
@@ -320,11 +308,17 @@ namespace AutomechanicsProject.Formes
             {
                 Settings.Default.SelectedLanguage = "ru";
             }
-
+        }
+        /// <summary>
+        /// Применяет сохраненный язык интерфейса
+        /// </summary>
+        private void ApplySelectedLanguage()
+        {
             var culture = new CultureInfo(Settings.Default.SelectedLanguage);
 
             Thread.CurrentThread.CurrentCulture = culture;
             Thread.CurrentThread.CurrentUICulture = culture;
+
             CultureInfo.DefaultThreadCurrentCulture = culture;
             CultureInfo.DefaultThreadCurrentUICulture = culture;
         }

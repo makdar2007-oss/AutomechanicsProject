@@ -76,6 +76,21 @@ namespace AutomechanicsProject.Formes
             comboBoxcustomer.Items.Add(Resources.ShipmentCustomerTypeLegalEntity);
             comboBoxcustomer.Items.Add(Resources.ShipmentCustomerTypeOrganization);
         }
+        /// <summary>
+        /// Загружает типы отгрузки
+        /// </summary>
+        private void LoadShipmentTypes()
+        {
+            comboBox1.Items.Clear();
+
+            comboBox1.Items.Add(Resources.ShipmentType_Shipment);
+            comboBox1.Items.Add(Resources.ShipmentType_WriteOff);
+            comboBox1.Items.Add(Resources.ShipmentType_Defect);
+
+            comboBox1.SelectedIndex = -1;
+            comboBox1.Text = Resources.ShipmentTypeWatermark;
+            comboBox1.ForeColor = Color.Gray;
+        }
 
         /// <summary>
         /// Инициализирует новый экземпляр формы создания отгрузки
@@ -161,10 +176,10 @@ namespace AutomechanicsProject.Formes
 
             var customerType = comboBoxcustomer.SelectedItem.ToString();
 
-            if (customerType == Resources.ShipmentCustomerTypeLegalEntity &&
-                inn.Length != 10)
+            if (customerType == Resources.ShipmentCustomerTypeOrganization &&
+    inn.Length != 10)
             {
-                MessageBox.Show(Resources.ErrorLegalEntityInnLength,
+                MessageBox.Show(Resources.ErrorOrganizationInnLength,
                     Resources.TitleWarning,
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Warning);
@@ -172,10 +187,10 @@ namespace AutomechanicsProject.Formes
                 return false;
             }
 
-            if (customerType == Resources.ShipmentCustomerTypeOrganization &&
+            if (customerType == Resources.ShipmentCustomerTypeLegalEntity &&
                 inn.Length != 12)
             {
-                MessageBox.Show(Resources.ErrorOrganizationInnLength,
+                MessageBox.Show(Resources.ErrorLegalEntityInnLength,
                     Resources.TitleWarning,
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Warning);
@@ -206,7 +221,9 @@ namespace AutomechanicsProject.Formes
             LoadProducts();
             LoadRecipients();
             LoadCustomerTypes();
+            LoadShipmentTypes();
             LoadTowns();
+            UpdateRecipientFieldsState();
 
             comboBox1.SelectedIndexChanged += ComboBox_SelectedIndexChanged;
             dataGridViewShipment.CurrentCellDirtyStateChanged += DataGridViewShipment_CurrentCellDirtyStateChanged;
@@ -262,23 +279,17 @@ namespace AutomechanicsProject.Formes
             if (selectedType == Resources.ShipmentType_Shipment)
             {
                 currentShipmentType = ShipmentTypeEnum.Shipment;
-                comboBoxRecipient1.Enabled = true;
-                comboBoxRecipient1.BackColor = System.Drawing.SystemColors.Window;
             }
             else if (selectedType == Resources.ShipmentType_WriteOff)
             {
                 currentShipmentType = ShipmentTypeEnum.WriteOff;
-                comboBoxRecipient1.Enabled = false;
-                comboBoxRecipient1.BackColor = System.Drawing.SystemColors.ControlLight;
-                comboBoxRecipient1.SelectedIndex = -1;
             }
             else if (selectedType == Resources.ShipmentType_Defect)
             {
                 currentShipmentType = ShipmentTypeEnum.Defect;
-                comboBoxRecipient1.Enabled = false;
-                comboBoxRecipient1.BackColor = System.Drawing.SystemColors.ControlLight;
-                comboBoxRecipient1.SelectedIndex = -1;
             }
+
+            UpdateRecipientFieldsState();
         }
 
         /// <summary>
@@ -353,6 +364,7 @@ namespace AutomechanicsProject.Formes
             }
         }
         /// <summary>
+        /// <summary>
         /// Загружает города доставки
         /// </summary>
         private void LoadTowns()
@@ -366,6 +378,7 @@ namespace AutomechanicsProject.Formes
             comboBoxtown.Items.Add(Resources.ShipmentTown_Kazan);
             comboBoxtown.Items.Add(Resources.ShipmentTown_NizhnyNovgorod);
             comboBoxtown.Items.Add(Resources.ShipmentTown_Chelyabinsk);
+            comboBoxtown.Items.Add(Resources.ShipmentTown_Bangkok);
         }
         /// <summary>
         /// Проверяет выбранный город доставки
@@ -385,6 +398,51 @@ namespace AutomechanicsProject.Formes
             }
 
             return true;
+        }
+        /// <summary>
+        /// Обновляет доступность полей получателя и доставки
+        /// </summary>
+        private void UpdateRecipientFieldsState()
+        {
+            var isShipment = currentShipmentType == ShipmentTypeEnum.Shipment;
+
+            comboBoxcustomer.Enabled = isShipment;
+            textBoxINN.Enabled = isShipment;
+            btncheck.Enabled = isShipment;
+            comboBoxRecipient1.Enabled = isShipment;
+            comboBoxtown.Enabled = isShipment;
+
+            if (isShipment)
+            {
+                comboBoxcustomer.BackColor = SystemColors.Window;
+                textBoxINN.BackColor = SystemColors.Window;
+                comboBoxRecipient1.BackColor = SystemColors.Window;
+                comboBoxtown.BackColor = SystemColors.Window;
+
+                return;
+            }
+
+            comboBoxcustomer.SelectedIndex = -1;
+            comboBoxcustomer.Text = Resources.ShipmentCustomerTypeWatermark;
+            comboBoxcustomer.ForeColor = Color.Gray;
+            comboBoxcustomer.BackColor = SystemColors.ControlLight;
+
+            textBoxINN.Text = Resources.ShipmentInnWatermark;
+            textBoxINN.ForeColor = Color.Gray;
+            textBoxINN.BackColor = SystemColors.ControlLight;
+
+            comboBoxRecipient1.SelectedIndex = -1;
+            comboBoxRecipient1.Text = Resources.ShipmentRecipientWatermark;
+            comboBoxRecipient1.ForeColor = Color.Gray;
+            comboBoxRecipient1.BackColor = SystemColors.ControlLight;
+
+            comboBoxtown.SelectedIndex = -1;
+            comboBoxtown.Text = Resources.ShipmentTownWatermark;
+            comboBoxtown.ForeColor = Color.Gray;
+            comboBoxtown.BackColor = SystemColors.ControlLight;
+
+            isCounterpartyChecked = true;
+            counterpartyStatus = CounterpartyCheckStatus.Allowed;
         }
         /// <summary>
         /// Загружает список получателей
@@ -422,25 +480,25 @@ namespace AutomechanicsProject.Formes
         /// </summary>
         private void ButtonAdd_Click(object sender, EventArgs e)
         {
-            if (shipmentItems.Count == 0 && TryAddProductToShipment())
+            var isAdded = TryAddProductToShipment();
+
+            if (!isAdded)
+            {
+                return;
+            }
+
+            if (shipmentItems.Count == 1)
             {
                 isShipmentTypeLocked = true;
                 comboBox1.Enabled = false;
                 comboBox1.BackColor = SystemColors.ControlLight;
-
-                RefreshShipmentList();
-                ClearAddFields();
-                MessageBox.Show(Resources.SuccessProductAddedToList, Resources.TitleSuccess,
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
 
-            else if (TryAddProductToShipment())
-            {
-                RefreshShipmentList();
-                ClearAddFields();
-                MessageBox.Show(Resources.SuccessProductAddedToList, Resources.TitleSuccess,
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
+            RefreshShipmentList();
+            ClearAddFields();
+
+            MessageBox.Show(Resources.SuccessProductAddedToList, Resources.TitleSuccess,
+                MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         /// <summary>
@@ -459,6 +517,8 @@ namespace AutomechanicsProject.Formes
             if (currentShipmentType == ShipmentTypeEnum.Shipment &&
                 (comboBoxRecipient1.SelectedItem == null ||
                  comboBoxRecipient1.Text == Resources.ShipmentRecipientWatermark ||
+                 comboBoxRecipient1.Text.Trim() == Resources.Warehouse_Dash ||
+                 comboBoxRecipient1.Text.Trim() == "-" ||
                  string.IsNullOrWhiteSpace(comboBoxRecipient1.Text)))
             {
                 MessageBox.Show(Resources.ErrorSelectRecipient, Resources.TitleWarning,
@@ -494,13 +554,20 @@ namespace AutomechanicsProject.Formes
                         return false;
                     }
 
+                    var expiryIsScrapMetal = _shipmentService.IsProductMetal(productWithExpiry.Id);
+
+                    if (!TryGetShipmentPrice(productWithExpiry, expiryIsScrapMetal, out var expiryPrice, out var expiryPurchasePrice))
+                    {
+                        return false;
+                    }
+
                     return AddOrUpdateShipmentItem(
                         productWithExpiry.Id,
                         productWithExpiry.Name,
                         productWithExpiry.Article,
                         quantity,
-                        productWithExpiry.Price,
-                        productWithExpiry.Price * 2,
+                        expiryPrice,
+                        expiryPurchasePrice,
                         productWithExpiry.Unit?.Name ?? Resources.Unit_Piece_Short
                     );
                 }
@@ -524,15 +591,22 @@ namespace AutomechanicsProject.Formes
                 return false;
             }
 
-            
+
+
+            var isScrapMetal = _shipmentService.IsProductMetal(productToShip.Id);
+
+            if (!TryGetShipmentPrice(productToShip, isScrapMetal, out var price, out var purchasePrice))
+            {
+                return false;
+            }
 
             return AddOrUpdateShipmentItem(
                 productToShip.Id,
                 productToShip.Name,
                 productToShip.Article,
                 quantity,
-                productToShip.Price,
-                productToShip.Price * 2,
+                price,
+                purchasePrice,
                 productToShip.Unit?.Name ?? Resources.Unit_Piece_Short
             );
         }
@@ -548,7 +622,34 @@ namespace AutomechanicsProject.Formes
             comboBoxExpiry.Text = Resources.NoExpiryDateWatermark;
             comboBoxExpiry.ForeColor = Color.Gray;
         }
+        /// <summary>
+        /// Рассчитывает цену товара для отгрузки
+        /// </summary>
+        private bool TryGetShipmentPrice(Product product, bool isScrapMetal, out decimal price, out decimal purchasePrice)
+        {
+            purchasePrice = product.PurchasePrice;
 
+            if (purchasePrice <= 0)
+            {
+                MessageBox.Show(Resources.ErrorScrapMetalPurchasePriceMissing,
+                    Resources.TitleError,
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+
+                price = 0;
+                return false;
+            }
+
+            if (currentShipmentType == ShipmentTypeEnum.Defect && isScrapMetal)
+            {
+                price = Math.Round(purchasePrice * 0.5m, 2);
+                return true;
+            }
+
+            price = Math.Round(purchasePrice * 2m, 2);
+
+            return true;
+        }
         /// <summary>
         /// Добавляет или обновляет позицию в списке отгрузки
         /// </summary>
@@ -569,7 +670,11 @@ namespace AutomechanicsProject.Formes
                 if (result == DialogResult.Yes)
                 {
                     existingItem.Quantity = quantity;
+                    existingItem.Price = price;
+                    existingItem.PurchasePrice = purchasePrice;
                     existingItem.IsMetal = isMetal;
+                    existingItem.ScrapMetal = currentShipmentType == ShipmentTypeEnum.Defect && isMetal;
+
                     return true;
                 }
                 return false;
@@ -585,7 +690,7 @@ namespace AutomechanicsProject.Formes
                 Price = price,
                 PurchasePrice = purchasePrice,
                 IsMetal = isMetal,
-                ScrapMetal = false
+                ScrapMetal = currentShipmentType == ShipmentTypeEnum.Defect && isMetal
             });
             return true;
         }
@@ -651,18 +756,18 @@ namespace AutomechanicsProject.Formes
 
             var displayList = shipmentItems.Select(item =>
             {
-                var itemTotal = item.Quantity * item.PurchasePrice;
-                var itemCost = item.Quantity * item.Price;
+                var purchaseTotal = item.Quantity * item.PurchasePrice;
+                var saleTotal = item.Quantity * item.Price;
                 decimal profit;
 
                 if (currentShipmentType == ShipmentTypeEnum.Shipment)
                 {
-                    profit = itemTotal - itemCost;
+                    profit = saleTotal - purchaseTotal;
                 }
                 else if (currentShipmentType == ShipmentTypeEnum.Defect)
                 {
-                    decimal scrapReturn = (item.IsMetal && item.ScrapMetal)
-                        ? itemTotal * 0.5m
+                    var scrapReturn = (item.IsMetal && item.ScrapMetal)
+                        ? purchaseTotal * 0.5m
                         : 0;
 
                     profit = -(item.Quantity * item.PurchasePrice) + scrapReturn;
@@ -674,8 +779,8 @@ namespace AutomechanicsProject.Formes
                     profit = -(item.Quantity * item.Price);
                 }
 
-                totalAmount += itemTotal;
-                totalCost += itemCost;
+                totalAmount += saleTotal;
+                totalCost += purchaseTotal;
                 totalProfit += profit;
                 totalItemsCount += item.Quantity;
 
@@ -684,9 +789,9 @@ namespace AutomechanicsProject.Formes
                     Article = item.Article,
                     Name = item.ProductName,
                     Quantity = item.Quantity,
-                    Price = item.PurchasePrice,
+                    Price = item.Price,
                     Profit = profit,
-                    Total = itemTotal,
+                    Total = saleTotal,
                     RecipientName = recipientName,
                     ProductId = item.ProductId ?? Guid.Empty,
                     IsMetal = item.IsMetal,
@@ -694,7 +799,6 @@ namespace AutomechanicsProject.Formes
                     ScrapMetal = item.ScrapMetal
                 };
             }).ToList();
-
             dataGridViewShipment.DataSource = displayList;
 
             if (dataGridViewShipment.Columns["ScrapMetal"] != null)
@@ -741,40 +845,44 @@ namespace AutomechanicsProject.Formes
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-            if (!ValidateTown())
+            if (currentShipmentType == ShipmentTypeEnum.Shipment)
             {
-                return;
-            }
-            if (!isCounterpartyChecked)
-            {
-                MessageBox.Show(Resources.ErrorCounterpartyNotChecked,
-                    Resources.TitleWarning,
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning);
-
-                return;
-            }
-
-            if (counterpartyStatus == CounterpartyCheckStatus.Blocked)
-            {
-                MessageBox.Show(Resources.ErrorCounterpartyBlocked,
-                    Resources.TitleError,
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
-
-                return;
-            }
-
-            if (counterpartyStatus == CounterpartyCheckStatus.Risk)
-            {
-                var riskResult = MessageBox.Show(Resources.ConfirmCounterpartyRisk,
-                    Resources.TitleWarning,
-                    MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Warning);
-
-                if (riskResult != DialogResult.Yes)
+                if (!ValidateTown())
                 {
                     return;
+                }
+
+                if (!isCounterpartyChecked)
+                {
+                    MessageBox.Show(Resources.ErrorCounterpartyNotChecked,
+                        Resources.TitleWarning,
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+
+                    return;
+                }
+
+                if (counterpartyStatus == CounterpartyCheckStatus.Blocked)
+                {
+                    MessageBox.Show(Resources.ErrorCounterpartyBlocked,
+                        Resources.TitleError,
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+
+                    return;
+                }
+
+                if (counterpartyStatus == CounterpartyCheckStatus.Risk)
+                {
+                    var riskResult = MessageBox.Show(Resources.ConfirmCounterpartyRisk,
+                        Resources.TitleWarning,
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Warning);
+
+                    if (riskResult != DialogResult.Yes)
+                    {
+                        return;
+                    }
                 }
             }
             string recipientName;
@@ -784,12 +892,13 @@ namespace AutomechanicsProject.Formes
             switch (currentShipmentType)
             {
                 case ShipmentTypeEnum.WriteOff:
-                    recipientName = Resources.ShipmentType_WriteOff;
+                    recipientName = Resources.Warehouse_Dash;
                     recipientId = null;
                     displayTotal = -totalAmount;
                     break;
+
                 case ShipmentTypeEnum.Defect:
-                    recipientName = Resources.ShipmentType_Defect;
+                    recipientName = Resources.Warehouse_Dash;
                     recipientId = null;
                     displayTotal = -totalAmount;
                     break;
@@ -815,33 +924,72 @@ namespace AutomechanicsProject.Formes
             }
             var finalTotalAmount = displayTotal;
             var thermoContainerTotal = 0m;
+            var itemsToSave = new List<ShipmentItem>(shipmentItems);
 
-            try
+            if (currentShipmentType == ShipmentTypeEnum.Shipment)
             {
-                var isThermoContainerNeeded = await _weatherService.IsThermoContainerNeededAsync(comboBoxtown.Text);
-
-                if (isThermoContainerNeeded)
+                try
                 {
-                    thermoContainerTotal = shipmentItems.Sum(i => i.Quantity) * ThermoContainerPrice;
-                    finalTotalAmount += thermoContainerTotal;
+                    var isThermoContainerNeeded = await _weatherService.IsThermoContainerNeededAsync(comboBoxtown.Text);
 
-                    MessageBox.Show(
-                        string.Format(Resources.ThermoContainerAddedMessage, ThermoContainerPrice, thermoContainerTotal),
-                        Resources.TitleInformation,
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Information);
+                    if (isThermoContainerNeeded)
+                    {
+                        var thermoContainerCount = shipmentItems.Sum(i => i.Quantity);
+                        var thermoContainer = _shipmentService.GetThermoContainerProduct();
+
+                        if (thermoContainer == null)
+                        {
+                            MessageBox.Show(Resources.ErrorThermoContainerNotFound,
+                                Resources.TitleError,
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Error);
+
+                            return;
+                        }
+
+                        if (!_shipmentService.HasEnoughThermoContainers(thermoContainerCount))
+                        {
+                            MessageBox.Show(Resources.ErrorNotEnoughThermoContainers,
+                                Resources.TitleWarning,
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning);
+
+                            return;
+                        }
+
+                        thermoContainerTotal = thermoContainerCount * ThermoContainerPrice;
+                        finalTotalAmount += thermoContainerTotal;
+
+                        itemsToSave.Add(new ShipmentItem
+                        {
+                            Id = Guid.NewGuid(),
+                            ProductId = thermoContainer.Id,
+                            ProductName = thermoContainer.Name,
+                            Article = thermoContainer.Article,
+                            Quantity = thermoContainerCount,
+                            Price = ThermoContainerPrice,
+                            PurchasePrice = ThermoContainerPrice,
+                            ScrapReturn = 0
+                        });
+
+                        MessageBox.Show(
+                            string.Format(Resources.ThermoContainerAddedMessage, ThermoContainerPrice, thermoContainerTotal),
+                            Resources.TitleInformation,
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Information);
+                    }
                 }
-            }
-            catch (Exception ex)
-            {
-                logger.Error(ex, "Ошибка при проверке погоды для отгрузки");
+                catch (Exception ex)
+                {
+                    logger.Error(ex, "Ошибка при проверке погоды для отгрузки");
 
-                MessageBox.Show(Resources.ErrorWeatherForecastLoad,
-                    Resources.TitleError,
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
+                    MessageBox.Show(Resources.ErrorWeatherForecastLoad,
+                        Resources.TitleError,
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
 
-                return;
+                    return;
+                }
             }
             var confirmResult = MessageBox.Show(
                 string.Format(Resources.ConfirmShipment, recipientName, shipmentItems.Count, finalTotalAmount),
@@ -866,7 +1014,7 @@ namespace AutomechanicsProject.Formes
                     return;
                 }
                 _shipmentService.CreateShipment(
-                    shipmentItems,
+                    itemsToSave,
                     recipientId,
                     _currentUserService.CurrentUser.Id,
                     finalTotalAmount,
@@ -900,11 +1048,10 @@ namespace AutomechanicsProject.Formes
                     }
                 }
 
-                logger.Info($"Отгрузка успешно оформлена! Получатель: {recipientName}, Количество позиций: {shipmentItems.Count}, Общая сумма: {totalAmount:C2}");
-
+                logger.Info($"Отгрузка успешно оформлена! Получатель: {recipientName}, Количество позиций: {shipmentItems.Count}, Общая сумма: {finalTotalAmount:C2}");
                 MessageBox.Show(string.Format(Resources.SuccessShipmentCreatedWithDetails, recipientName, shipmentItems.Count, finalTotalAmount),
                     Resources.TitleSuccess, MessageBoxButtons.OK, MessageBoxIcon.Information);
-
+                WarehouseRefreshNotifier.NotifyWarehouseChanged();
                 DialogResult = DialogResult.OK;
                 Close();
             }

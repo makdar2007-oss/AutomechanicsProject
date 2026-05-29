@@ -72,7 +72,20 @@ namespace AutomechanicsProject.Services
 
             return category.Name;
         }
+        /// <summary>
+        /// Возвращает признак металлолома категории по id
+        /// </summary>
+        public bool GetCategoryIsScrapMetalById(Guid categoryId)
+        {
+            var category = _db.Categories.FirstOrDefault(c => c.Id == categoryId);
 
+            if (category == null)
+            {
+                throw new Exception(Resources.ErrorCategoryNotFound);
+            }
+
+            return category.IsScrapMetal;
+        }
         /// <summary>
         /// Возвращает количество неудаленных товаров в категории
         /// </summary>
@@ -97,6 +110,14 @@ namespace AutomechanicsProject.Services
         /// </summary>
         public void AddCategory(string categoryName)
         {
+            AddCategory(categoryName, false);
+        }
+
+        /// <summary>
+        /// Добавляет новую категорию или восстанавливает удаленную с признаком металлолома
+        /// </summary>
+        public void AddCategory(string categoryName, bool isScrapMetal)
+        {
             var name = categoryName.Trim();
 
             var category = _db.Categories
@@ -110,6 +131,8 @@ namespace AutomechanicsProject.Services
                 }
 
                 category.IsDeleted = false;
+                category.IsScrapMetal = isScrapMetal;
+
                 _db.SaveChanges();
                 return;
             }
@@ -118,6 +141,7 @@ namespace AutomechanicsProject.Services
             {
                 Id = Guid.NewGuid(),
                 Name = name,
+                IsScrapMetal = isScrapMetal,
                 IsDeleted = false
             };
 
@@ -129,6 +153,14 @@ namespace AutomechanicsProject.Services
         /// Изменяет название выбранной неудаленной категории
         /// </summary>
         public void EditCategory(Guid categoryId, string newName)
+        {
+            EditCategory(categoryId, newName, false);
+        }
+
+        /// <summary>
+        /// Изменяет выбранную неудаленную категорию с признаком металлолома
+        /// </summary>
+        public void EditCategory(Guid categoryId, string newName, bool isScrapMetal)
         {
             var category = _db.Categories
                 .FirstOrDefault(c => c.Id == categoryId && !c.IsDeleted);
@@ -151,6 +183,8 @@ namespace AutomechanicsProject.Services
             }
 
             category.Name = name;
+            category.IsScrapMetal = isScrapMetal;
+
             _db.SaveChanges();
         }
 

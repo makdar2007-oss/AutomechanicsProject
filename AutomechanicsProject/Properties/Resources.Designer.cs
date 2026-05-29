@@ -421,6 +421,33 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Металлолом.
+        /// </summary>
+        public static string Category_GroupBoxScrapMetal_Text {
+            get {
+                return ResourceManager.GetString("Category_GroupBoxScrapMetal_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Нет.
+        /// </summary>
+        public static string Category_RadioButtonScrapNo_Text {
+            get {
+                return ResourceManager.GetString("Category_RadioButtonScrapNo_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Да.
+        /// </summary>
+        public static string Category_RadioButtonScrapYes_Text {
+            get {
+                return ResourceManager.GetString("Category_RadioButtonScrapYes_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Введите название.
         /// </summary>
         public static string CategoryAddWatermark {
@@ -823,13 +850,13 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Настройки успешно применены!
+        ///   Ищет локализованную строку, похожую на Настройки успешно применены.
         ///
         ///Язык интерфейса: {0}
-        ///Валюта: {1} (1 RUB = {2:F4} {1})
+        ///Валюта: {1}
+        ///Курс: 1 RUB = {2:F4} {3}
         ///
-        ///Все цены будут отображаться в выбранной валюте.
-        ///.
+        ///Все цены будут отображаться в выбранной валюте..
         /// </summary>
         public static string CurrencyChangeConfirm {
             get {
@@ -1678,7 +1705,7 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Для юридического лица ИНН должен содержать 10 цифр.
+        ///   Ищет локализованную строку, похожую на Для юридического лица ИНН должен содержать 12 цифр.
         /// </summary>
         public static string ErrorLegalEntityInnLength {
             get {
@@ -1867,6 +1894,15 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на На складе недостаточно термоконтейнеров.
+        /// </summary>
+        public static string ErrorNotEnoughThermoContainers {
+            get {
+                return ResourceManager.GetString("ErrorNotEnoughThermoContainers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Не удалось открыть форму добавления категории.
         /// </summary>
         public static string ErrorOpenAddCategoryForm {
@@ -1948,7 +1984,7 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Для организации ИНН должен содержать 12 цифр.
+        ///   Ищет локализованную строку, похожую на Для организации ИНН должен содержать 10 цифр.
         /// </summary>
         public static string ErrorOrganizationInnLength {
             get {
@@ -2026,6 +2062,15 @@ namespace AutomechanicsProject.Properties {
         public static string ErrorRoleNotFound {
             get {
                 return ResourceManager.GetString("ErrorRoleNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Невозможно рассчитать цену металлолома: отсутствует цена закупки.
+        /// </summary>
+        public static string ErrorScrapMetalPurchasePriceMissing {
+            get {
+                return ResourceManager.GetString("ErrorScrapMetalPurchasePriceMissing", resourceCulture);
             }
         }
         
@@ -2143,6 +2188,15 @@ namespace AutomechanicsProject.Properties {
         public static string ErrorSurnameLength {
             get {
                 return ResourceManager.GetString("ErrorSurnameLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Термоконтейнер не найден в базе данных.
+        /// </summary>
+        public static string ErrorThermoContainerNotFound {
+            get {
+                return ResourceManager.GetString("ErrorThermoContainerNotFound", resourceCulture);
             }
         }
         
@@ -2445,7 +2499,7 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на English.
+        ///   Ищет локализованную строку, похожую на Английский.
         /// </summary>
         public static string Language_English {
             get {
@@ -3132,6 +3186,15 @@ namespace AutomechanicsProject.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Администратор.
+        /// </summary>
+        public static string RoleAdministratorforcheck {
+            get {
+                return ResourceManager.GetString("RoleAdministratorforcheck", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Не назначена.
         /// </summary>
         public static string RoleNotAssigned {
@@ -3146,6 +3209,15 @@ namespace AutomechanicsProject.Properties {
         public static string RoleStorekeeper {
             get {
                 return ResourceManager.GetString("RoleStorekeeper", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Кладовщик.
+        /// </summary>
+        public static string RoleStorekeeperforcheck {
+            get {
+                return ResourceManager.GetString("RoleStorekeeperforcheck", resourceCulture);
             }
         }
         
@@ -3512,6 +3584,15 @@ namespace AutomechanicsProject.Properties {
         public static string ShipmentRecipientWatermark {
             get {
                 return ResourceManager.GetString("ShipmentRecipientWatermark", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Бангкок.
+        /// </summary>
+        public static string ShipmentTown_Bangkok {
+            get {
+                return ResourceManager.GetString("ShipmentTown_Bangkok", resourceCulture);
             }
         }
         

@@ -40,8 +40,8 @@ namespace AutomechanicsProject.Classes
         [NotMapped]
         public RoleType Type
         {
-            get => Position == Resources.RoleAdministrator ? RoleType.Administrator : RoleType.Storekeeper;
-            set => Position = value == RoleType.Administrator ? Resources.RoleAdministrator : Resources.RoleStorekeeper;
+            get => Position?.Trim() == Resources.RoleAdministratorforcheck ? RoleType.Administrator : RoleType.Storekeeper;
+            set => Position = value == RoleType.Administrator ? Resources.RoleAdministratorforcheck : Resources.RoleStorekeeperforcheck;
         }
 
         /// <summary>

@@ -124,7 +124,7 @@ namespace AutomechanicsProject.Services
                 .ToList();
         }
 
-       
+
         /// <summary>
         /// Получает неудаленный товар для отгрузки по id
         /// </summary>
@@ -132,6 +132,7 @@ namespace AutomechanicsProject.Services
         {
             return _db.Products
                 .Include(p => p.Unit)
+                .Include(p => p.Category)
                 .FirstOrDefault(p => p.Id == productId && !p.IsDeleted);
         }
 
@@ -142,25 +143,51 @@ namespace AutomechanicsProject.Services
         {
             return _db.Products
                 .Include(p => p.Unit)
+                .Include(p => p.Category)
                 .FirstOrDefault(p => p.Name == productName &&
                                      !p.IsDeleted &&
                                      p.Balance > 0);
         }
 
         /// <summary>
-        /// Проверяет, является ли неудаленный товар металлом
+        /// Проверяет, относится ли товар к категории металлолома
         /// </summary>
         public bool IsProductMetal(Guid productId)
         {
-            var product = _db.Products.FirstOrDefault(p => p.Id == productId && !p.IsDeleted);
+            var product = _db.Products
+                .Include(p => p.Category)
+                .FirstOrDefault(p => p.Id == productId && !p.IsDeleted);
 
-            return product?.IsMetal ?? false;
+            return product?.Category?.IsScrapMetal ?? false;
+        }
+        /// <summary>
+        /// Получает термоконтейнер для отгрузки
+        /// </summary>
+        public Product GetThermoContainerProduct()
+        {
+            return _db.Products
+                .Include(p => p.Unit)
+                .FirstOrDefault(p => p.Article == "TC-001" && !p.IsDeleted);
         }
 
         /// <summary>
+        /// Проверяет, хватает ли термоконтейнеров на складе
+        /// </summary>
+        public bool HasEnoughThermoContainers(int count)
+        {
+            var thermoContainer = GetThermoContainerProduct();
+
+            if (thermoContainer == null)
+            {
+                return false;
+            }
+
+            return thermoContainer.Balance >= count;
+        }
+        /// <summary>
         /// Создаёт отгрузку
         /// </summary>
-       
+
         public void CreateShipment(
             List<ShipmentItem> items,
             Guid? recipientId,

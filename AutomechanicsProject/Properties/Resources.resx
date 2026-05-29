@@ -274,13 +274,13 @@
     <value>Белорусский рубль</value>
   </data>
   <data name="CurrencyChangeConfirm" xml:space="preserve">
-    <value>Настройки успешно применены!
+    <value>Настройки успешно применены.
 
 Язык интерфейса: {0}
-Валюта: {1} (1 RUB = {2:F4} {1})
+Валюта: {1}
+Курс: 1 RUB = {2:F4} {3}
 
-Все цены будут отображаться в выбранной валюте.
-</value>
+Все цены будут отображаться в выбранной валюте.</value>
   </data>
   <data name="CurrencyChangeTitle" xml:space="preserve">
     <value>Изменение валюты</value>
@@ -1562,7 +1562,7 @@
     <value>Русский</value>
   </data>
   <data name="Language_English" xml:space="preserve">
-    <value>English</value>
+    <value>Английский</value>
   </data>
   <data name="Language_Chuvash" xml:space="preserve">
     <value>Чувашский</value>
@@ -1631,10 +1631,10 @@
     <value>Выберите тип заказчика</value>
   </data>
   <data name="ErrorLegalEntityInnLength" xml:space="preserve">
-    <value>Для юридического лица ИНН должен содержать 10 цифр</value>
+    <value>Для юридического лица ИНН должен содержать 12 цифр</value>
   </data>
   <data name="ErrorOrganizationInnLength" xml:space="preserve">
-    <value>Для организации ИНН должен содержать 12 цифр</value>
+    <value>Для организации ИНН должен содержать 10 цифр</value>
   </data>
   <data name="SupplyInnWatermark" xml:space="preserve">
     <value>Введите ИНН</value>
@@ -1773,5 +1773,32 @@
   </data>
   <data name="WarehouseFilter_Reset" xml:space="preserve">
     <value>Сбросить</value>
+  </data>
+  <data name="Category_GroupBoxScrapMetal_Text" xml:space="preserve">
+    <value>Металлолом</value>
+  </data>
+  <data name="Category_RadioButtonScrapYes_Text" xml:space="preserve">
+    <value>Да</value>
+  </data>
+  <data name="Category_RadioButtonScrapNo_Text" xml:space="preserve">
+    <value>Нет</value>
+  </data>
+  <data name="ErrorScrapMetalPurchasePriceMissing" xml:space="preserve">
+    <value>Невозможно рассчитать цену металлолома: отсутствует цена закупки</value>
+  </data>
+  <data name="RoleAdministratorforcheck" xml:space="preserve">
+    <value>Администратор</value>
+  </data>
+  <data name="RoleStorekeeperforcheck" xml:space="preserve">
+    <value>Кладовщик</value>
+  </data>
+  <data name="ErrorThermoContainerNotFound" xml:space="preserve">
+    <value>Термоконтейнер не найден в базе данных</value>
+  </data>
+  <data name="ErrorNotEnoughThermoContainers" xml:space="preserve">
+    <value>На складе недостаточно термоконтейнеров</value>
+  </data>
+  <data name="ShipmentTown_Bangkok" xml:space="preserve">
+    <value>Бангкок</value>
   </data>
 </root>

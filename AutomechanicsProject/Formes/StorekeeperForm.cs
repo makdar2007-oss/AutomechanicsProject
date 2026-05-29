@@ -48,6 +48,7 @@ namespace AutomechanicsProject.Formes
             buttonSettings.Text = Resources.Storekeeper_ButtonSettingsText;
             buttonSupply.Text = Resources.Storekeeper_ButtonSupplyText;
             buttonShipment.Text = Resources.Storekeeper_ButtonShipmentText;
+            buttonWarehouse.Text = Resources.Warehouse_Button;
         }
 
         /// <summary>
@@ -121,8 +122,8 @@ namespace AutomechanicsProject.Formes
                     {
                         if (expiryDate.Value <= today)
                         {
-                            row.DefaultCellStyle.BackColor = System.Drawing.Color.DarkRed;
-                            row.DefaultCellStyle.ForeColor = System.Drawing.Color.White;
+                            row.DefaultCellStyle.BackColor = System.Drawing.Color.Coral;
+                            row.DefaultCellStyle.ForeColor = System.Drawing.Color.Black;
                         }
                         else if ((expiryDate.Value - today).Days <= 30)
                         {

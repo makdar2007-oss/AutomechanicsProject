@@ -180,10 +180,10 @@ namespace AutomechanicsProject.Formes
 
             var supplierType = comboBoxsyppliertipe.SelectedItem.ToString();
 
-            if (supplierType == Resources.SupplySupplierTypeLegalEntity &&
-                inn.Length != 10)
+            if (supplierType == Resources.SupplySupplierTypeOrganization &&
+    inn.Length != 10)
             {
-                MessageBox.Show(Resources.ErrorLegalEntityInnLength,
+                MessageBox.Show(Resources.ErrorOrganizationInnLength,
                     Resources.TitleWarning,
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Warning);
@@ -191,10 +191,10 @@ namespace AutomechanicsProject.Formes
                 return false;
             }
 
-            if (supplierType == Resources.SupplySupplierTypeOrganization &&
+            if (supplierType == Resources.SupplySupplierTypeLegalEntity &&
                 inn.Length != 12)
             {
-                MessageBox.Show(Resources.ErrorOrganizationInnLength,
+                MessageBox.Show(Resources.ErrorLegalEntityInnLength,
                     Resources.TitleWarning,
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Warning);
@@ -982,6 +982,7 @@ namespace AutomechanicsProject.Formes
                         Resources.TitleSuccess,
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Information);
+                    WarehouseRefreshNotifier.NotifyWarehouseChanged();
 
                     DialogResult = DialogResult.OK;
                     Close();

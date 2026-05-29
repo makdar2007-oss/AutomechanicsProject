@@ -42,6 +42,16 @@ namespace AutomechanicsProject.Services.Interfaces
         /// Проверяет, является ли товар металлом
         /// </summary>
         bool IsProductMetal(Guid productId);
+
+        /// <summary>
+        /// Получает термоконтейнер для отгрузки
+        /// </summary>
+        Product GetThermoContainerProduct();
+
+        /// <summary>
+        /// Проверяет, хватает ли термоконтейнеров на складе
+        /// </summary>
+        bool HasEnoughThermoContainers(int count);
         /// <summary>
         /// Создаёт отгрузку
         /// </summary>

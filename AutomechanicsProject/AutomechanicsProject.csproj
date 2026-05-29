@@ -250,6 +250,7 @@
     <Compile Include="Classes\MoscowTime.cs" />
     <Compile Include="Classes\Product.cs" />
     <Compile Include="Classes\WarehouseCell.cs" />
+    <Compile Include="Classes\WarehouseRefreshNotifier.cs" />
     <Compile Include="Config\WindsorConfig.cs" />
     <Compile Include="Dtos\CounterpartyCheckResultDto.cs" />
     <Compile Include="Dtos\Service\InnInfoDto.cs" />
@@ -487,7 +488,9 @@
     <EmbeddedResource Include="Formes\WarehouseHeatmapForm.resx">
       <DependentUpon>WarehouseHeatmapForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.en.resx" />
+    <EmbeddedResource Include="Properties\Resources.en.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>

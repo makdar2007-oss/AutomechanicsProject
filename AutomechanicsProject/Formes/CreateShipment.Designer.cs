@@ -138,10 +138,6 @@ namespace AutomechanicsProject.Formes
             this.comboBoxcustomer.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxcustomer.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.comboBoxcustomer.FormattingEnabled = true;
-            this.comboBoxcustomer.Items.AddRange(new object[] {
-            "Отгрузка",
-            "Списание",
-            "Брак"});
             this.comboBoxcustomer.Location = new System.Drawing.Point(34, 202);
             this.comboBoxcustomer.Name = "comboBoxcustomer";
             this.comboBoxcustomer.Size = new System.Drawing.Size(460, 41);
@@ -175,10 +171,6 @@ namespace AutomechanicsProject.Formes
             this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Items.AddRange(new object[] {
-            "Отгрузка",
-            "Списание",
-            "Брак"});
             this.comboBox1.Location = new System.Drawing.Point(34, 114);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(460, 41);
@@ -236,7 +228,7 @@ namespace AutomechanicsProject.Formes
             // 
             this.labelTotalValue.AutoSize = true;
             this.labelTotalValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelTotalValue.Location = new System.Drawing.Point(177, 831);
+            this.labelTotalValue.Location = new System.Drawing.Point(181, 843);
             this.labelTotalValue.Name = "labelTotalValue";
             this.labelTotalValue.Size = new System.Drawing.Size(0, 37);
             this.labelTotalValue.TabIndex = 9;
@@ -245,7 +237,7 @@ namespace AutomechanicsProject.Formes
             // 
             this.labelTotalCaption.AutoSize = true;
             this.labelTotalCaption.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelTotalCaption.Location = new System.Drawing.Point(27, 840);
+            this.labelTotalCaption.Location = new System.Drawing.Point(27, 843);
             this.labelTotalCaption.Name = "labelTotalCaption";
             this.labelTotalCaption.Size = new System.Drawing.Size(110, 37);
             this.labelTotalCaption.TabIndex = 8;
@@ -307,7 +299,7 @@ namespace AutomechanicsProject.Formes
             this.buttonAdd.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonAdd.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.125F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.buttonAdd.ForeColor = System.Drawing.Color.White;
-            this.buttonAdd.Location = new System.Drawing.Point(104, 905);
+            this.buttonAdd.Location = new System.Drawing.Point(115, 906);
             this.buttonAdd.Name = "buttonAdd";
             this.buttonAdd.Size = new System.Drawing.Size(285, 106);
             this.buttonAdd.TabIndex = 4;

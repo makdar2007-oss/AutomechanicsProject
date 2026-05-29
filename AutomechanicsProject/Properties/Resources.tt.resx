@@ -274,10 +274,11 @@
     <value>Беларусь рубле</value>
   </data>
   <data name="CurrencyChangeConfirm" xml:space="preserve">
-    <value>&#x8;Көйләүләр уңышлы кулланылды!
+    <value>Көйләүләр уңышлы кулланылды.
 
 Интерфейс теле: {0}
-Валюта: {1} (1 RUB = {2:F4} {1})
+Валюта: {1}
+Курс: 1 сум = {2:F4} {3}
 
 Барлык бәяләр сайланган валютада күрсәтеләчәк.</value>
   </data>
@@ -1054,7 +1055,7 @@
     <value>Барлыгы:</value>
   </data>
   <data name="ShipmentType_Shipment" xml:space="preserve">
-    <value>Отгрузка</value>
+    <value>Җибәрү</value>
   </data>
   <data name="ShipmentType_WriteOff" xml:space="preserve">
     <value>Списание</value>
@@ -1557,7 +1558,7 @@
     <value>Русча</value>
   </data>
   <data name="Language_English" xml:space="preserve">
-    <value>English</value>
+    <value>Инглизчә</value>
   </data>
   <data name="Language_Chuvash" xml:space="preserve">
     <value>Чуашча</value>
@@ -1628,10 +1629,10 @@
     <value>Заказчик төрен сайлагыз</value>
   </data>
   <data name="ErrorLegalEntityInnLength" xml:space="preserve">
-    <value>Юридик зат өчен ИНН 10 саннан торырга тиеш</value>
+    <value>Юридик зат өчен ИНН 12 саннан торырга тиеш</value>
   </data>
   <data name="ErrorOrganizationInnLength" xml:space="preserve">
-    <value>Оешма өчен ИНН 12 саннан торырга тиеш</value>
+    <value>Оешма өчен ИНН 10 саннан торырга тиеш</value>
   </data>
   <data name="SupplyInnWatermark" xml:space="preserve">
     <value>ИНН кертегез</value>
@@ -1770,5 +1771,32 @@
   </data>
   <data name="WarehouseFilter_Reset" xml:space="preserve">
     <value>Кире кайтару</value>
+  </data>
+  <data name="Category_GroupBoxScrapMetal_Text" xml:space="preserve">
+    <value>Тимер-томыр</value>
+  </data>
+  <data name="Category_RadioButtonScrapYes_Text" xml:space="preserve">
+    <value>Әйе</value>
+  </data>
+  <data name="Category_RadioButtonScrapNo_Text" xml:space="preserve">
+    <value>Юк</value>
+  </data>
+  <data name="ErrorScrapMetalPurchasePriceMissing" xml:space="preserve">
+    <value>Тимер-томыр бәясен исәпли алмыйбыз: сатып алу бәясе юк</value>
+  </data>
+  <data name="RoleAdministratorforcheck" xml:space="preserve">
+    <value>Администратор</value>
+  </data>
+  <data name="RoleStorekeeperforcheck" xml:space="preserve">
+    <value>Кладовщик</value>
+  </data>
+  <data name="ErrorThermoContainerNotFound" xml:space="preserve">
+    <value>Термоконтейнер мәгълүматлар базасында табылмады</value>
+  </data>
+  <data name="ErrorNotEnoughThermoContainers" xml:space="preserve">
+    <value>Складда термоконтейнерлар җитми</value>
+  </data>
+  <data name="ShipmentTown_Bangkok" xml:space="preserve">
+    <value>Бангкок</value>
   </data>
 </root>

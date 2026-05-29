@@ -270,12 +270,13 @@
     <value>Белорус рублӗ</value>
   </data>
   <data name="CurrencyChangeConfirm" xml:space="preserve">
-    <value>Тӳрлетӳсем ăнăçлă çирĕплетĕнче!
+    <value>Тӳрлетӳсем ӳтĕмлĕн ĕçленĕ.
 
-Чĕлхе: {0}
-Валюта: {1} (1 RUB = {2:F4} {1})
+Интерфейс чĕлхи: {0}
+Валюта: {1}
+Курс: 1 тенкĕ = {2:F4} {3}
 
-Пĕрремĕш хаксем суйласа илнĕ валюта кăтартăнĕç.</value>
+Пур хаксем суйланă валютара кăтартăнĕç.</value>
   </data>
   <data name="CurrencyChangeTitle" xml:space="preserve">
     <value>Валютӑ улӑшни</value>
@@ -1540,7 +1541,7 @@
     <value>Вырӑсла</value>
   </data>
   <data name="Language_English" xml:space="preserve">
-    <value>English</value>
+    <value>Англисла</value>
   </data>
   <data name="Language_Chuvash" xml:space="preserve">
     <value>Чӑвашла</value>
@@ -1609,10 +1610,10 @@
     <value>Заказчик тĕсне суйласа илĕр</value>
   </data>
   <data name="ErrorLegalEntityInnLength" xml:space="preserve">
-    <value>Юридици сăнарĕн ИНН-ĕ 10 цифрăран тăрмалла</value>
+    <value>Юридици сăнарĕн ИНН-ĕ 12 цифрăран тăрмалла</value>
   </data>
   <data name="ErrorOrganizationInnLength" xml:space="preserve">
-    <value>Организацин ИНН-ĕ 12 цифрăран тăрмалла</value>
+    <value>Организацин ИНН-ĕ 10 цифрăран тăрмалла</value>
   </data>
   <data name="SupplyInnWatermark" xml:space="preserve">
     <value>ИНН кĕртĕр</value>
@@ -1751,5 +1752,32 @@
   </data>
   <data name="WarehouseFilter_Reset" xml:space="preserve">
     <value>Сӳтер </value>
+  </data>
+  <data name="Category_GroupBoxScrapMetal_Text" xml:space="preserve">
+    <value>Металл каяшĕ</value>
+  </data>
+  <data name="Category_RadioButtonScrapYes_Text" xml:space="preserve">
+    <value>Çитет</value>
+  </data>
+  <data name="Category_RadioButtonScrapNo_Text" xml:space="preserve">
+    <value>Çук</value>
+  </data>
+  <data name="ErrorScrapMetalPurchasePriceMissing" xml:space="preserve">
+    <value>Металл каяшĕн хакне шутласа кăлараймастпăр: суту-илӳ хакĕ çук</value>
+  </data>
+  <data name="RoleAdministratorforcheck" xml:space="preserve">
+    <value>Администратор</value>
+  </data>
+  <data name="RoleStorekeeperforcheck" xml:space="preserve">
+    <value>Кладовщик</value>
+  </data>
+  <data name="ErrorThermoContainerNotFound" xml:space="preserve">
+    <value>Термоконтейнер базăра тупăнмарĕ</value>
+  </data>
+  <data name="ErrorNotEnoughThermoContainers" xml:space="preserve">
+    <value>Складра термоконтейнерсем çитмеççĕ</value>
+  </data>
+  <data name="ShipmentTown_Bangkok" xml:space="preserve">
+    <value>Бангкок</value>
   </data>
 </root>
