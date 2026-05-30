@@ -10,16 +10,22 @@ using System.Threading;
 
 namespace AutomechanicsProject
 {
+    /// <summary>
+    /// Главный класс точки входа в приложение
+    /// </summary>
     internal static class Program
     {
-        
+
         private static readonly NLog.Logger logger = LogManager.GetCurrentClassLogger();
-        
+
 
 
         [STAThread]
 
-        
+
+        /// <summary>
+        /// Главный метод приложения
+        /// </summary>
         static void Main()
         {
             try
